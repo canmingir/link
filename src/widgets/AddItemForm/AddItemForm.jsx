@@ -1,0 +1,153 @@
+import AppsIcon from "@mui/icons-material/Apps";
+import Picker from "@emoji-mart/react";
+import TeamIcons from "../../lib/TeamIcons";
+import data from "@emoji-mart/data";
+import styles from "./styles";
+
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+
+function NewItemForm({
+  title,
+  itemProperties,
+  onSubmit,
+  open,
+  onClose,
+  itemToEdit,
+}) {
+  const [newItem, setNewItem] = useState(
+    itemProperties.reduce((obj, property) => ({ ...obj, [property]: "" }), {})
+  );
+  const [emojiDialogOpen, setEmojiDialogOpen] = useState(false);
+  useEffect(() => {
+    if (itemToEdit) {
+      setNewItem(itemToEdit);
+    } else if (!open) {
+      setNewItem(
+        itemProperties.reduce(
+          (obj, property) => ({ ...obj, [property]: "" }),
+          {}
+        )
+      );
+    }
+  }, [open, itemProperties, itemToEdit]);
+
+  const handleSave = () => {
+    if (newItem.id) {
+      const { id, ...rest } = newItem;
+      onSubmit(id, rest);
+    } else {
+      onSubmit(newItem);
+    }
+    onClose();
+  };
+
+  const handleEmojiButtonClick = () => {
+    setEmojiDialogOpen(true);
+  };
+
+  const handleEmojiSelect = (emoji) => {
+    setNewItem((prevItem) => {
+      return {
+        ...prevItem,
+        icon: `:${emoji.id}:`,
+        src: `${emoji.src}`,
+      };
+    });
+    setEmojiDialogOpen(false);
+  };
+  const handleInputChange = (property) => (event) => {
+    setNewItem({ ...newItem, [property]: event.target.value });
+  };
+
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      PaperProps={{ sx: { borderRadius: "25px" } }}
+    >
+      <DialogTitle sx={styles.dialogTitle}>Add a new {title}</DialogTitle>
+      <DialogContent sx={styles.dialogContent}>
+        {itemProperties.map((property) =>
+          property === "icon" ? (
+            <div key={property}>
+              <Typography sx={styles.iconTitle}>{property}</Typography>
+              <Divider sx={styles.iconDivider} />
+              <Box sx={styles.iconBox}>
+                <Box sx={styles.iconPreview}>
+                  <Box component={"img"} key={property} src={newItem.src} />
+                  <Typography sx={styles.iconName}>
+                    {newItem.icon.replace(/:/g, "")}
+                  </Typography>
+                </Box>
+                <Button
+                  onClick={handleEmojiButtonClick}
+                  variant="contained"
+                  color="secondary"
+                  sx={styles.iconButton}
+                >
+                  <AppsIcon />
+                  Pick Icon
+                </Button>
+                <Dialog open={emojiDialogOpen}>
+                  <Picker
+                    data={data}
+                    onEmojiSelect={handleEmojiSelect}
+                    custom={TeamIcons}
+                    categories={"team_icons"}
+                    categoryIcons={{
+                      team_icons: { src: `./media/logo.png` },
+                    }}
+                    emojiButtonSize={90}
+                    emojiSize={75}
+                    perLine={4}
+                    previewPosition={"none"}
+                    searchPosition={"none"}
+                    theme={"light"}
+                  />
+                </Dialog>
+              </Box>
+            </div>
+          ) : (
+            <TextField
+              key={property}
+              autoFocus
+              margin="dense"
+              label={property}
+              fullWidth
+              value={newItem[property] || ""}
+              onChange={handleInputChange(property)}
+              InputLabelProps={{ sx: { color: "primary.main" } }}
+              sx={{ mt: "1rem", textTransform: "capitalize" }}
+            />
+          )
+        )}
+      </DialogContent>
+      <DialogActions sx={styles.dialogActions}>
+        <Button
+          onClick={handleSave}
+          variant="contained"
+          color={"secondary"}
+          sx={styles.saveButton}
+        >
+          Save
+        </Button>
+        <Button onClick={onClose} sx={styles.cancelButton}>
+          Cancel
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+export default NewItemForm;
