@@ -26,12 +26,10 @@ const menuConfig = {
     {
       name: "Colleagues",
       url: "/teams/colleagues",
-      icon: ListIcon,
     },
     {
       name: "Chat",
       url: "/teams/chat",
-      icon: ChatIcon,
     },
   ],
 };
