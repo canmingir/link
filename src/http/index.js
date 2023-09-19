@@ -1,18 +1,23 @@
 import axios from "axios";
-import config from "../../config";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 import oauth from "./oauth";
 import { publish } from "@nucleoidjs/synapses";
 import { storage } from "@nucleoidjs/webstorage";
 
+let globalConfig = {};
+
 const instance = axios.create({
-  baseURL: config.api,
   headers: {
     common: {
       "Content-Type": "application/json",
     },
   },
 });
+
+export const updateAxiosInstanceConfig = (config) => {
+  instance.defaults.baseURL = config.api;
+  globalConfig = config;
+};
 
 instance.interceptors.request.use((request) => {
   publish("LOADED", { loading: true });
@@ -94,7 +99,7 @@ const refreshAuthLogic = async (failedRequest) => {
   } catch (error) {
     storage.remove("accessToken");
     storage.remove("refreshToken");
-    window.location.href = `${config.base}/login`;
+    window.location.href = `${globalConfig.base}/login`;
     return false;
   }
 };
