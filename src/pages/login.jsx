@@ -24,7 +24,7 @@ function LoginPage() {
 
   useEffect(() => {
     if (token()) {
-      navigate("/teams");
+      navigate("/");
     }
   }, [navigate]);
 

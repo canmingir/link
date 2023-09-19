@@ -26,7 +26,7 @@ function Callback() {
 
         storage.set("dashboard", "accessToken", accessToken);
         storage.set("dashboard", "refreshToken", refreshToken);
-        navigate("/teams");
+        navigate("/");
       })
       .catch((error) => {
         console.debug(error);
