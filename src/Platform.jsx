@@ -1,3 +1,4 @@
+import { ConfigProvider } from "./context/ConfigContext";
 import ContextProvider from "./ContextProvider/ContextProvider";
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
 import Loading from "./Loading/Loading";
@@ -12,23 +13,25 @@ import {
 } from "@mui/material";
 import { initialState, reducer } from "./context/reducer";
 
-const Platform = ({ routes, theme }) => {
+const Platform = ({ routes, theme, config }) => {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <ContextProvider reducer={reducer} state={initialState}>
-          <SnackbarProvider
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-          >
-            <Loading />
-            <GlobalSnackMessage />
-            <RouteManager routes={routes} />
-          </SnackbarProvider>
-        </ContextProvider>
+        <ConfigProvider value={config}>
+          <ContextProvider reducer={reducer} state={initialState}>
+            <SnackbarProvider
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <Loading />
+              <GlobalSnackMessage />
+              <RouteManager routes={routes} />
+            </SnackbarProvider>
+          </ContextProvider>
+        </ConfigProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   );
