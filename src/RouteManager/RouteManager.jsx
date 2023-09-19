@@ -1,3 +1,4 @@
+import Callback from "../pages/callback";
 import { HelmetProvider } from "react-helmet-async";
 import Login from "../pages/login";
 import React from "react";
@@ -12,6 +13,7 @@ export default function RouteManager({ routes, config }) {
         <Routes>
           <Route>
             <Route path={`/login`} index element={<Login />} />
+            <Route path={`/callback`} element={<Callback />} />
           </Route>
           <Route>
             {routes.map((each) => (
