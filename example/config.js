@@ -6,6 +6,7 @@ const config = {
   api: "http://localhost:5001",
   login: {
     icon: "/media/logo.png",
+    largeIcon: "/media/largeLogo.png",
     name: "Gray Collar Dashboard",
     github: {
       authUrl: "https://github.com/login/oauth/authorize",

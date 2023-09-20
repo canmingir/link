@@ -1,10 +1,10 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import GrayCollarLogo from "./GrayCollarLogo.png";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Person } from "@mui/icons-material";
 import React from "react";
 import styles from "./styles";
+import { useConfig } from "../../context/ConfigContext";
 import { useContext } from "../../ContextProvider/ContextProvider";
 import { useNavigate } from "react-router";
 
@@ -35,7 +35,7 @@ function TopNavBar({
   itemName,
 }) {
   const [anchorElItem, setAnchorElItem] = React.useState(null);
-
+  const globalConfig = useConfig();
   const handleOpenItemMenu = (event) => {
     setAnchorElItem(event.currentTarget);
   };
@@ -79,7 +79,7 @@ function TopNavBar({
       <Toolbar disableGutters sx={styles.toolBar}>
         <Box
           component="img"
-          src={GrayCollarLogo}
+          src={globalConfig.login.largeIcon}
           onClick={() => navigate("/")}
           sx={{ cursor: "pointer" }}
         />
