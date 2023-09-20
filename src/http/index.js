@@ -1,12 +1,19 @@
 import axios from "axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
+import globalConfig from "../config";
 import oauth from "./oauth";
 import { publish } from "@nucleoidjs/synapses";
 import { storage } from "@nucleoidjs/webstorage";
 
-let globalConfig = {};
+const config = globalConfig();
+
+function updateConfig() {
+  const config = globalConfig();
+  instance.defaults.baseURL = config.api;
+}
 
 const instance = axios.create({
+  baseURL: config.api,
   headers: {
     common: {
       "Content-Type": "application/json",
@@ -14,12 +21,8 @@ const instance = axios.create({
   },
 });
 
-export const updateAxiosInstanceConfig = (config) => {
-  instance.defaults.baseURL = config.api;
-  globalConfig = config;
-};
-
 instance.interceptors.request.use((request) => {
+  globalConfig();
   publish("LOADED", { loading: true });
   const accessToken = storage.get("dashboard", "accessToken");
   request.headers["Authorization"] = `Bearer ${accessToken}`;
@@ -88,6 +91,7 @@ instance.interceptors.response.use(
 
 const refreshAuthLogic = async (failedRequest) => {
   try {
+    updateConfig();
     const { data } = await oauth.post("/oauth", {
       refresh_token: storage.get("dashboard", "refreshToken"),
     });
@@ -99,7 +103,7 @@ const refreshAuthLogic = async (failedRequest) => {
   } catch (error) {
     storage.remove("accessToken");
     storage.remove("refreshToken");
-    window.location.href = `${globalConfig.base}/login`;
+    window.location.href = `${config.base}/login`;
     return false;
   }
 };

@@ -4,8 +4,7 @@ import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
 import Loading from "./Loading/Loading";
 import RouteManager from "./RouteManager/RouteManager";
 import { SnackbarProvider } from "notistack";
-import { updateAxiosInstanceConfig as updateFirstAxiosInstanceConfig } from "./http/index";
-import { updateAxiosInstanceConfig as updateSecondAxiosInstanceConfig } from "./http/oauth";
+import globalConfig from "./config";
 
 import {
   CssBaseline,
@@ -17,9 +16,8 @@ import { initialState, reducer } from "./context/reducer";
 
 const Platform = ({ routes, theme, config }) => {
   useEffect(() => {
-    updateFirstAxiosInstanceConfig(config);
-    updateSecondAxiosInstanceConfig(config);
-  }, [config]);
+    globalConfig(config);
+  }, []);
 
   return (
     <StyledEngineProvider injectFirst>
