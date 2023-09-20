@@ -1,3 +1,4 @@
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import GrayCollarLogo from "./GrayCollarLogo.png";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -24,12 +25,34 @@ function TopNavBar({
   anchorElUser,
   handleOpenUserMenu,
   handleCloseUserMenu,
+  itemsData,
+  onItemSelect,
   routes,
   sideBarToggle,
+  selectedItem,
+  setSelectedItem,
+  itemUrl,
+  itemName,
 }) {
+  const [anchorElItem, setAnchorElItem] = React.useState(null);
+
+  const handleOpenItemMenu = (event) => {
+    setAnchorElItem(event.currentTarget);
+  };
+
+  const handleCloseItemMenu = () => {
+    setAnchorElItem(null);
+  };
   const navigate = useNavigate();
 
-  const [, dispatch] = useContext();
+  const selectItem = (item) => {
+    dispatch({ type: "ITEM_SELECT", payload: item.id });
+    setSelectedItem(item);
+    onItemSelect(item);
+    handleCloseItemMenu();
+  };
+
+  const [state, dispatch] = useContext();
   const settings = [
     {
       name: "Profile",
@@ -47,6 +70,10 @@ function TopNavBar({
     },
   ];
 
+  React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.itemId]);
+
   return (
     <AppBar position="sticky" sx={styles.appBar}>
       <Toolbar disableGutters sx={styles.toolBar}>
@@ -56,19 +83,46 @@ function TopNavBar({
           onClick={() => navigate("/")}
           sx={{ cursor: "pointer" }}
         />
-
-        <Box>
-          <IconButton size="large" onClick={sideBarToggle} color="inherit">
-            <MenuIcon />
-          </IconButton>
-        </Box>
-
+        {selectedItem && (
+          <Box>
+            <IconButton size="large" onClick={sideBarToggle} color="inherit">
+              <MenuIcon />
+            </IconButton>
+          </Box>
+        )}
         <Box
           sx={{
             flexGrow: 0,
             pl: 2,
           }}
         >
+          <Button
+            onClick={handleOpenItemMenu}
+            sx={{ my: 2, color: "primary.contrastText" }}
+          >
+            {state.itemId ? selectedItem?.name : `Select a ${itemName}`}
+            <ArrowDropDownIcon />
+          </Button>
+          <Menu
+            id="item-menu"
+            anchorEl={anchorElItem}
+            keepMounted
+            open={Boolean(anchorElItem)}
+            onClose={handleCloseItemMenu}
+            sx={{ my: 2, color: "primary.contrastText" }}
+          >
+            {itemsData?.map((item) => (
+              <MenuItem
+                key={item.id}
+                component={Link}
+                to={itemUrl}
+                onClick={() => selectItem(item)}
+              >
+                <Typography textAlign="center">{item.name}</Typography>
+              </MenuItem>
+            ))}
+          </Menu>
+
           {routes
             .filter((route) => !route.hide)
             .map((page, index) => (
