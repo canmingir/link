@@ -2,7 +2,7 @@ import jwtDecode from "jwt-decode";
 import { storage } from "@nucleoidjs/webstorage";
 
 let login = true;
-const teamId = storage.get("dashboard", "teamId");
+const itemId = storage.get("dashboard", "itemId");
 try {
   const token = storage.get("dashboard", "accessToken");
   const decodedToken = jwtDecode(token);
@@ -16,7 +16,7 @@ try {
 
 export const initialState = {
   login,
-  teamId,
+  itemId,
 };
 
 export const reducer = (state, action) => {
@@ -29,15 +29,15 @@ export const reducer = (state, action) => {
       break;
     }
 
-    case "TEAM_SELECT": {
-      state.teamId = action.payload;
-      storage.set("dashboard", "teamId", state.teamId);
+    case "ITEM_SELECT": {
+      state.itemId = action.payload;
+      storage.set("dashboard", "itemId", state.itemId);
       break;
     }
 
-    case "TEAM_DELETE": {
-      storage.remove("dashboard", "teamId");
-      state.teamId = null;
+    case "ITEM_DELETE": {
+      storage.remove("dashboard", "itemId");
+      state.itemId = null;
       break;
     }
 
