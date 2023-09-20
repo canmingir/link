@@ -20,6 +20,28 @@ const config = {
     url: "http://flowise.graycollar.ai:3000/api/v1/prediction/88666388-0cae-4735-96e9-7c15b12896df",
   },
   ...menuConfig,
+  itemsData: [
+    {
+      id: 1,
+      name: "Project X",
+      icon: "team",
+    },
+    {
+      id: 2,
+      name: "Project top",
+      icon: "team",
+    },
+    {
+      id: 3,
+      name: "Team 3",
+      icon: "team",
+    },
+    {
+      id: 4,
+      name: "Team red",
+      icon: "team",
+    },
+  ],
 };
 
 export default config;
