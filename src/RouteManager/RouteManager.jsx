@@ -1,33 +1,28 @@
 import Callback from "../pages/callback";
-import Console from "../layouts/Console";
 import { HelmetProvider } from "react-helmet-async";
 import Login from "../pages/login";
 import React from "react";
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-export default function RouteManager({ routes, config }) {
+export default function RouteManager({ routes }) {
   return (
     //normalde browserrouter, helmetprovider main'in içerisinde dashboard'da.
     <HelmetProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route>
-            <Route path={`/login`} index element={<Login />} />
-            <Route path={`/callback`} element={<Callback />} />
-          </Route>
-          <Route element={<Console />}>
-            {routes.map((each) => (
-              <Route
-                key={each.url}
-                path={`${each.url}`}
-                element={<each.element />}
-              />
-            ))}
-          </Route>
-          <Route path="*" element={<>not found</>} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route>
+          <Route path={`/login`} index element={<Login />} />
+          <Route path={`/callback`} element={<Callback />} />
+        </Route>
+        {routes.map((each) => (
+          <Route
+            key={each.url}
+            path={`${each.url}`}
+            element={<each.element />}
+          />
+        ))}
+        <Route path="*" element={<>not found</>} />
+      </Routes>
     </HelmetProvider>
   );
 }
