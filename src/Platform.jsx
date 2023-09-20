@@ -1,5 +1,3 @@
-import AppLayout from "./layouts/AppLayout";
-import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider } from "./context/ConfigContext";
 import ContextProvider from "./ContextProvider/ContextProvider";
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
@@ -19,30 +17,28 @@ import { initialState, reducer } from "./context/reducer";
 const Platform = ({ routes, theme, config }) => {
   useEffect(() => {
     globalConfig(config);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <BrowserRouter>
-          <ConfigProvider value={config}>
-            <ContextProvider reducer={reducer} state={initialState}>
-              <SnackbarProvider
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-              >
-                <AppLayout>
-                  <Loading />
-                  <GlobalSnackMessage />
-                  <RouteManager routes={routes} />
-                </AppLayout>
-              </SnackbarProvider>
-            </ContextProvider>
-          </ConfigProvider>
-        </BrowserRouter>
+
+        <ConfigProvider value={config}>
+          <ContextProvider reducer={reducer} state={initialState}>
+            <SnackbarProvider
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <Loading />
+              <GlobalSnackMessage />
+              <RouteManager routes={routes} />
+            </SnackbarProvider>
+          </ContextProvider>
+        </ConfigProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   );
