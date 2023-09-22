@@ -1,6 +1,9 @@
-import ChatIcon from "@mui/icons-material/Chat";
-import ListIcon from "@mui/icons-material/List";
-
+import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import HomeFilledIcon from "@mui/icons-material/Home";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import InfoIcon from "@mui/icons-material/Info";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 const menuConfig = {
   topMenu: [
     { name: "/", url: `/`, hide: true, hideTopBar: false },
@@ -11,36 +14,33 @@ const menuConfig = {
       hideTopBar: true,
     },
     {
-      name: "Chat",
-      url: "/teams/chat",
-      hide: true,
-      hideTopBar: false,
-    },
-    {
-      name: "Colleagues",
-      url: "/teams/colleagues",
-      hide: true,
-      hideTopBar: false,
-    },
-    {
-      name: "Colleagues",
-      url: "/colleagues/:colleagueId",
+      name: "Main",
+      url: "/main",
       hide: true,
       hideTopBar: false,
     },
   ],
   sideMenu: [
     {
-      name: "Colleagues",
-      url: "/teams/colleagues",
-      icon: ListIcon,
+      name: "Index",
+      url: "/",
+      activeIcon: InfoIcon,
+      deactiveIcon: InfoOutlinedIcon,
       hideTopBar: false,
     },
     {
-      name: "Chat",
-      url: "/teams/chat",
-      icon: ChatIcon,
-      hideTopBar: true,
+      name: "Main",
+      url: "/main",
+      activeIcon: HomeFilledIcon,
+      deactiveIcon: HomeOutlinedIcon,
+      hideTopBar: false,
+    },
+    {
+      name: "Second Page",
+      url: "/main/secondPage",
+      activeIcon: AccessTimeFilledIcon,
+      deactiveIcon: AccessTimeIcon,
+      hideTopBar: false,
     },
   ],
   topMenuColor: "custom.sidebarBG",
