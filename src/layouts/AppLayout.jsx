@@ -89,6 +89,7 @@ function AppLayout({ children }) {
             sx={{ flexShrink: 0 }}
             routes={globalConfig.sideMenu}
             isCollapsed={isCollapsed}
+            currentPage={location.pathname}
           />
         ) : null}
         <Box sx={{ flexGrow: 1, overflow: "auto" }}>{children}</Box>
