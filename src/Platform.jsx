@@ -1,3 +1,5 @@
+import AppLayout from "./layouts/AppLayout";
+import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider } from "./context/ConfigContext";
 import ContextProvider from "./ContextProvider/ContextProvider";
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
@@ -24,21 +26,24 @@ const Platform = ({ routes, theme, config }) => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-
-        <ConfigProvider value={config}>
-          <ContextProvider reducer={reducer} state={initialState}>
-            <SnackbarProvider
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-            >
-              <Loading />
-              <GlobalSnackMessage />
-              <RouteManager routes={routes} />
-            </SnackbarProvider>
-          </ContextProvider>
-        </ConfigProvider>
+        <BrowserRouter>
+          <ConfigProvider value={config}>
+            <ContextProvider reducer={reducer} state={initialState}>
+              <SnackbarProvider
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
+                <AppLayout>
+                  <Loading />
+                  <GlobalSnackMessage />
+                  <RouteManager routes={routes} />
+                </AppLayout>
+              </SnackbarProvider>
+            </ContextProvider>
+          </ConfigProvider>
+        </BrowserRouter>
       </ThemeProvider>
     </StyledEngineProvider>
   );
