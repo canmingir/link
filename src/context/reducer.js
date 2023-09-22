@@ -23,6 +23,10 @@ export const reducer = (state, action) => {
   state = { ...state };
 
   switch (action.type) {
+    case "LOGIN": {
+      state.login = true;
+      break;
+    }
     case "LOGOUT": {
       storage.clear();
       state.login = false;
