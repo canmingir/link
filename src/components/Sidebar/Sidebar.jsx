@@ -7,7 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import React from "react";
 import styles from "./styles";
 import { useConfig } from "../../context/ConfigContext";
-const Sidebar = ({ routes, isCollapsed }) => {
+
   const drawerWidth = isCollapsed ? 75 : 280;
   // TODO : responsive sidebar
   // const matches = useMediaQuery("(min-width:600px)");
@@ -50,16 +50,19 @@ const Sidebar = ({ routes, isCollapsed }) => {
                       alignItems: isCollapsed ? "center" : "flex-start",
                     }}
                   >
-                    {page.icon && (
-                      <Box
-                        sx={{
-                          mb: isCollapsed ? 0 : 0,
-                          mr: isCollapsed ? 0 : 3,
-                        }}
-                      >
-                        <page.icon />
-                      </Box>
-                    )}
+                    <Box
+                      sx={{
+                        mb: isCollapsed ? 0 : 0,
+                        mr: isCollapsed ? 0 : 3,
+                      }}
+                    >
+                      {page.url === currentPage ? (
+                        <page.activeIcon />
+                      ) : (
+                        <page.deactiveIcon />
+                      )}
+                    </Box>
+
                     {!isCollapsed && <ListItemText primary={page.name} />}
                   </Box>
                 </ListItemButton>
