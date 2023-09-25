@@ -34,6 +34,7 @@ function Callback() {
       .catch((error) => {
         console.debug(error);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search, navigate]);
 
   return (
