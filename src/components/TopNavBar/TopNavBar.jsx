@@ -1,7 +1,6 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Person } from "@mui/icons-material";
 import React from "react";
 import styles from "./styles";
 import { useConfig } from "../../context/ConfigContext";
@@ -33,6 +32,7 @@ function TopNavBar({
   setSelectedItem,
   itemUrl,
   itemName,
+  userAvatar,
 }) {
   const [anchorElItem, setAnchorElItem] = React.useState(null);
   const globalConfig = useConfig();
@@ -65,6 +65,7 @@ function TopNavBar({
       action: () => {
         dispatch({ type: "LOGOUT" });
         handleCloseUserMenu();
+        navigate("/login");
         navigate(0);
       },
     },
@@ -75,7 +76,7 @@ function TopNavBar({
   }, [state.itemId]);
 
   return (
-    <AppBar position="sticky" sx={styles.appBar}>
+    <AppBar position="sticky" sx={{ ...styles.appBar, maxHeight: "4.25rem" }}>
       <Toolbar disableGutters sx={styles.toolBar}>
         <Box
           component="img"
@@ -139,9 +140,10 @@ function TopNavBar({
         <Box sx={{ position: "absolute", right: 30 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar sx={{ backgroundColor: "background.default" }}>
-                <Person color="primary" />
-              </Avatar>
+              <Avatar
+                sx={{ width: "2.2rem", height: "auto" }}
+                src={userAvatar}
+              />
             </IconButton>
           </Tooltip>
           <Menu

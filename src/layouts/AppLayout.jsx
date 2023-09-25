@@ -5,6 +5,7 @@ import TopNavBar from "../components/TopNavBar";
 import { useConfig } from "../context/ConfigContext";
 import { useContext } from "../ContextProvider/ContextProvider";
 import { useLocation } from "react-router-dom";
+import user from "../http/user";
 
 import React, { useEffect, useState } from "react";
 
@@ -15,6 +16,7 @@ function AppLayout({ children }) {
   const [selectedItem, setSelectedItem] = useState();
   const [state, dispatch] = useContext();
   const [miniTopMenu, setMiniTopMenu] = useState(false);
+  const [userAvatar, setUserAvatar] = useState(null);
   const location = useLocation();
   const globalConfig = useConfig();
 
@@ -51,6 +53,13 @@ function AppLayout({ children }) {
   }, []);
 
   useEffect(() => {
+    user.get("https://api.github.com/user").then((response) => {
+      setUserAvatar(response.data.avatar_url);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.login]);
+
+  useEffect(() => {
     const targetPage = globalConfig.topMenu.find(
       (target) => target.url === location.pathname
     );
@@ -80,6 +89,7 @@ function AppLayout({ children }) {
             setSelectedItem={setSelectedItem}
             itemUrl="/"
             itemName="ITEEEEEM"
+            userAvatar={userAvatar}
           />
         ))}
 
