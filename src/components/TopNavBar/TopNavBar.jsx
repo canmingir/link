@@ -32,7 +32,7 @@ function TopNavBar({
   setSelectedItem,
   itemUrl,
   itemName,
-  userAvatar,
+  userData,
 }) {
   const [anchorElItem, setAnchorElItem] = React.useState(null);
   const globalConfig = useConfig();
@@ -142,7 +142,7 @@ function TopNavBar({
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar
                 sx={{ width: "2.2rem", height: "auto" }}
-                src={userAvatar}
+                src={userData?.avatar_url || userData?.picture}
               />
             </IconButton>
           </Tooltip>
@@ -162,6 +162,13 @@ function TopNavBar({
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
+            <Typography
+              sx={{
+                margin: "0.5rem",
+              }}
+            >
+              {userData?.name}
+            </Typography>
             {settings.map((setting) => (
               <MenuItem key={setting.name} onClick={setting.action}>
                 <Typography textAlign="center">{setting.name}</Typography>

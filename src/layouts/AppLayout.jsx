@@ -16,7 +16,7 @@ function AppLayout({ children }) {
   const [selectedItem, setSelectedItem] = useState();
   const [state, dispatch] = useContext();
   const [miniTopMenu, setMiniTopMenu] = useState(false);
-  const [userAvatar, setUserAvatar] = useState(null);
+  const [userData, setUserData] = useState(null);
   const location = useLocation();
   const globalConfig = useConfig();
 
@@ -54,7 +54,7 @@ function AppLayout({ children }) {
 
   useEffect(() => {
     user.get("https://api.github.com/user").then((response) => {
-      setUserAvatar(response.data.avatar_url);
+      setUserData(response.data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.login]);
@@ -89,7 +89,7 @@ function AppLayout({ children }) {
             setSelectedItem={setSelectedItem}
             itemUrl="/"
             itemName="ITEEEEEM"
-            userAvatar={userAvatar}
+            userData={userData}
           />
         ))}
 
