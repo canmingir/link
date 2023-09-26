@@ -1,10 +1,12 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import GrayCollarLogo from "./GrayCollarLogo.png";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Person } from "@mui/icons-material";
 import React from "react";
+import config from "../../../config";
 import styles from "./styles";
-import { useConfig } from "../../context/ConfigContext";
-import { useContext } from "../../ContextProvider/ContextProvider";
+import { useContext } from "../../context/ContextProvider";
 import { useNavigate } from "react-router";
 
 import {
@@ -24,32 +26,29 @@ function TopNavBar({
   anchorElUser,
   handleOpenUserMenu,
   handleCloseUserMenu,
-  itemsData,
-  onItemSelect,
+  teamState,
+  onTeamSelect,
   routes,
   sideBarToggle,
-  selectedItem,
-  setSelectedItem,
-  itemUrl,
-  itemName,
-  userData,
+  selectedTeam,
+  setSelectedTeam,
 }) {
-  const [anchorElItem, setAnchorElItem] = React.useState(null);
-  const globalConfig = useConfig();
-  const handleOpenItemMenu = (event) => {
-    setAnchorElItem(event.currentTarget);
+  const [anchorElTeam, setAnchorElTeam] = React.useState(null);
+
+  const handleOpenTeamMenu = (event) => {
+    setAnchorElTeam(event.currentTarget);
   };
 
-  const handleCloseItemMenu = () => {
-    setAnchorElItem(null);
+  const handleCloseTeamMenu = () => {
+    setAnchorElTeam(null);
   };
   const navigate = useNavigate();
 
-  const selectItem = (item) => {
-    dispatch({ type: "ITEM_SELECT", payload: item.id });
-    setSelectedItem(item);
-    onItemSelect(item);
-    handleCloseItemMenu();
+  const selectTeam = (team) => {
+    dispatch({ type: "TEAM_SELECT", payload: team.id });
+    setSelectedTeam(team);
+    onTeamSelect(team);
+    handleCloseTeamMenu();
   };
 
   const [state, dispatch] = useContext();
@@ -65,7 +64,6 @@ function TopNavBar({
       action: () => {
         dispatch({ type: "LOGOUT" });
         handleCloseUserMenu();
-        navigate("/login");
         navigate(0);
       },
     },
@@ -73,18 +71,18 @@ function TopNavBar({
 
   React.useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.itemId]);
+  }, [state.teamId]);
 
   return (
-    <AppBar position="sticky" sx={{ ...styles.appBar, maxHeight: "4.25rem" }}>
+    <AppBar position="sticky" sx={styles.appBar}>
       <Toolbar disableGutters sx={styles.toolBar}>
         <Box
           component="img"
-          src={globalConfig.login.largeIcon}
+          src={GrayCollarLogo}
           onClick={() => navigate("/")}
           sx={{ cursor: "pointer" }}
         />
-        {selectedItem && (
+        {selectedTeam && (
           <Box>
             <IconButton size="large" onClick={sideBarToggle} color="inherit">
               <MenuIcon />
@@ -98,28 +96,36 @@ function TopNavBar({
           }}
         >
           <Button
-            onClick={handleOpenItemMenu}
+            onClick={handleOpenTeamMenu}
             sx={{ my: 2, color: "primary.contrastText" }}
           >
-            {state.itemId ? selectedItem?.name : `Select a ${itemName}`}
+            {state.teamId ? selectedTeam?.name : "Select a Team"}
             <ArrowDropDownIcon />
           </Button>
           <Menu
-            id="item-menu"
-            anchorEl={anchorElItem}
+            id="team-menu"
+            anchorEl={anchorElTeam}
             keepMounted
-            open={Boolean(anchorElItem)}
-            onClose={handleCloseItemMenu}
+            open={Boolean(anchorElTeam)}
+            onClose={handleCloseTeamMenu}
             sx={{ my: 2, color: "primary.contrastText" }}
           >
-            {itemsData?.map((item) => (
+            {teamState.teamsData.map((team) => (
               <MenuItem
-                key={item.id}
+                key={team.id}
                 component={Link}
-                to={itemUrl}
-                onClick={() => selectItem(item)}
+                to={`/teams/colleagues`}
+                onClick={() => selectTeam(team)}
               >
-                <Typography textAlign="center">{item.name}</Typography>
+                <Box
+                  component="img"
+                  src={`${config.base}/media/TeamIcons/${team.icon.replace(
+                    /:/g,
+                    ""
+                  )}.png`}
+                  sx={styles.imgBox}
+                ></Box>
+                <Typography textAlign="center">{team.name}</Typography>
               </MenuItem>
             ))}
           </Menu>
@@ -140,10 +146,9 @@ function TopNavBar({
         <Box sx={{ position: "absolute", right: 30 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar
-                sx={{ width: "2.2rem", height: "auto" }}
-                src={userData?.avatar_url || userData?.picture}
-              />
+              <Avatar sx={{ backgroundColor: "background.default" }}>
+                <Person color="primary" />
+              </Avatar>
             </IconButton>
           </Tooltip>
           <Menu
@@ -162,13 +167,6 @@ function TopNavBar({
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            <Typography
-              sx={{
-                margin: "0.5rem",
-              }}
-            >
-              {userData?.name}
-            </Typography>
             {settings.map((setting) => (
               <MenuItem key={setting.name} onClick={setting.action}>
                 <Typography textAlign="center">{setting.name}</Typography>

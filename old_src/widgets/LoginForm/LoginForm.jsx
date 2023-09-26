@@ -1,7 +1,7 @@
 import NucleoidLoginForm from "../../components/NucleoidLoginForm";
 import SocialLoginButtons from "../../components/SocialLoginButtons";
+import config from "../../../config";
 import styles from "./LoginFormStyles";
-import { useConfig } from "../../context/ConfigContext";
 
 import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
 import React, { useState } from "react";
@@ -13,7 +13,7 @@ const handleOAuthLogin = ({ authUrl, clientId, redirectUri, scope }) => {
 function LoginForm({ icon, name }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const config = useConfig();
+
   return (
     <Box
       sx={{

@@ -1,1 +1,10 @@
-export const OAUTH_SERVICE = import.meta.env.VITE_OAUTH_SERVICE;
+let _config = {};
+
+function globalConfig(cfg) {
+  if (cfg) {
+    _config = cfg;
+  }
+  return _config;
+}
+
+export default globalConfig;
