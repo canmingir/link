@@ -1,4 +1,3 @@
-import AppLayout from "./layouts/AppLayout";
 import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider } from "./context/ConfigContext";
 import ContextProvider from "./ContextProvider/ContextProvider";
@@ -35,11 +34,9 @@ const Platform = ({ routes, theme, config }) => {
                   horizontal: "right",
                 }}
               >
-                <AppLayout>
-                  <Loading />
-                  <GlobalSnackMessage />
-                  <RouteManager routes={routes} />
-                </AppLayout>
+                <Loading />
+                <GlobalSnackMessage />
+                <RouteManager routes={routes} />
               </SnackbarProvider>
             </ContextProvider>
           </ConfigProvider>

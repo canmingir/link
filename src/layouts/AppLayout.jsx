@@ -4,12 +4,12 @@ import Sidebar from "../components/Sidebar";
 import TopNavBar from "../components/TopNavBar";
 import { useConfig } from "../context/ConfigContext";
 import { useContext } from "../ContextProvider/ContextProvider";
-import { useLocation } from "react-router-dom";
 import user from "../http/user";
 
+import { Outlet, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
-function AppLayout({ children }) {
+function AppLayout() {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isSubmenuOpen, setSubmenuOpen] = useState(false);
@@ -102,7 +102,9 @@ function AppLayout({ children }) {
             currentPage={location.pathname}
           />
         ) : null}
-        <Box sx={{ flexGrow: 1, overflow: "auto" }}>{children}</Box>
+        <Box sx={{ flexGrow: 1, overflow: "auto" }}>
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );

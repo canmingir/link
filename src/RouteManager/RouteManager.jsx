@@ -1,3 +1,4 @@
+import AppLayout from "../layouts/AppLayout";
 import Callback from "../pages/callback";
 import { HelmetProvider } from "react-helmet-async";
 import Login from "../pages/login";
@@ -14,13 +15,15 @@ export default function RouteManager({ routes }) {
           <Route path={`/login`} index element={<Login />} />
           <Route path={`/callback`} element={<Callback />} />
         </Route>
-        {routes.map((each) => (
-          <Route
-            key={each.url}
-            path={`${each.url}`}
-            element={<each.element />}
-          />
-        ))}
+        <Route element={<AppLayout />}>
+          {routes.map((each) => (
+            <Route
+              key={each.url}
+              path={`${each.url}`}
+              element={<each.element />}
+            />
+          ))}
+        </Route>
         <Route path="*" element={<>not found</>} />
       </Routes>
     </HelmetProvider>
