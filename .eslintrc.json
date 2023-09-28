@@ -10,7 +10,8 @@
     "plugin:prettier/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:storybook/recommended"
+    "plugin:storybook/recommended",
+    "plugin:cypress/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -34,10 +35,7 @@
     "react/display-name": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "eqeqeq": [
-      "error",
-      "always"
-    ],
+    "eqeqeq": ["error", "always"],
     "no-console": "off",
     "no-eval": "error",
     "no-var": "error",
@@ -45,12 +43,7 @@
     "sort-imports": [
       "warn",
       {
-        "memberSyntaxSortOrder": [
-          "none",
-          "single",
-          "multiple",
-          "all"
-        ]
+        "memberSyntaxSortOrder": ["none", "single", "multiple", "all"]
       }
     ]
   }
