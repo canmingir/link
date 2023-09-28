@@ -21,12 +21,4 @@ instance.interceptors.request.use(async (request) => {
   return request;
 });
 
-instance.interceptors.response.use((response) => {
-  if (response.headers["content-type"] === "application/json") {
-    response.data = JSON.parse(response.data);
-  }
-
-  return response;
-});
-
 export default instance;
