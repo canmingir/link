@@ -23,3 +23,10 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("checkStorage", (key, expectedValue) => {
+  cy.window().should((win) => {
+    const actualValue = win.localStorage.getItem(key);
+    expect(actualValue).to.eq(expectedValue);
+  });
+});
