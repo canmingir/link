@@ -142,6 +142,7 @@ function TopNavBar({
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar
                 sx={{ width: "2.2rem", height: "auto" }}
+                data-cy="user-avatar"
                 src={userData?.avatar_url || userData?.picture}
               />
             </IconButton>
@@ -166,6 +167,7 @@ function TopNavBar({
               sx={{
                 margin: "0.5rem",
               }}
+              data-cy="user-name"
             >
               {userData?.name}
             </Typography>

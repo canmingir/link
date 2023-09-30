@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import React from "react";
 import styles from "../../widgets/LoginForm/LoginFormStyles";
+
 import { GitHub, Google, LinkedIn } from "@mui/icons-material";
 
 const SocialLoginButtons = ({
@@ -16,6 +17,7 @@ const SocialLoginButtons = ({
       {githubEnable && (
         <Button
           startIcon={<GitHub />}
+          data-cy="github-login-button"
           variant="contained"
           color="primary"
           sx={styles.githubButtonStyle}
