@@ -15,7 +15,6 @@
     "@mui/material": "^5.14.10",
     "cypress": "^13.3.0",
     "eslint-plugin-cypress": "^2.15.1",
-    "platform": "file:../",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

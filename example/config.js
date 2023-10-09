@@ -1,5 +1,5 @@
 import menuConfig from "./config.menu";
-
+import routes from "./config.routes";
 const config = {
   name: "GrayCollar",
   base: "",
@@ -21,6 +21,7 @@ const config = {
     url: "http://flowise.graycollar.ai:3000/api/v1/prediction/88666388-0cae-4735-96e9-7c15b12896df",
   },
   ...menuConfig,
+  routes,
   itemsData: [
     {
       id: 1,

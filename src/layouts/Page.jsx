@@ -1,16 +1,7 @@
-import { Helmet } from "react-helmet-async";
 import React from "react";
 
-function Page({ children, title }) {
-  return (
-    <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>{title}</title>
-      </Helmet>
-      {children}
-    </>
-  );
+function Page({ children }) {
+  return <div>{children}</div>;
 }
 
 export default Page;

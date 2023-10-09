@@ -1,4 +1,5 @@
-import { Container, Typography } from "@mui/material";
+import { Container, Button, Typography } from "@mui/material";
+import { message } from "../../../src/Platform";
 function MainPage() {
   return (
     <Container
@@ -9,7 +10,9 @@ function MainPage() {
         justifyContent: "center",
       }}
     >
-      <Typography variant="h3">Main</Typography>
+      <Typography variant="h3">
+        <Button onClick={() => message.success("a")}>test</Button>
+      </Typography>
     </Container>
   );
 }

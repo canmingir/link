@@ -1,6 +1,5 @@
 import Page from "../layouts/Page";
 import oauth from "../http/oauth";
-import qs from "qs";
 import { storage } from "@nucleoidjs/webstorage";
 import { useConfig } from "../context/ConfigContext";
 import { useContext } from "../ContextProvider/ContextProvider";
@@ -15,13 +14,8 @@ function Callback() {
   const config = useConfig();
 
   useEffect(() => {
-    const parsedQuery = qs.parse(location.search, { ignoreQueryPrefix: true });
-    const { code } = parsedQuery;
-
     oauth
-      .post("/oauth", {
-        code,
-      })
+      .post("/oauth", {})
       .then(({ data }) => {
         const accessToken = data.access_token;
         const refreshToken = data.refresh_token;

@@ -1,7 +1,5 @@
 import axios from "axios";
-import axiosRetry from "axios-retry";
 import globalConfig from "../config";
-import qs from "qs";
 
 const instance = axios.create({
   baseURL: "",
@@ -11,8 +9,6 @@ const instance = axios.create({
     },
   },
 });
-
-axiosRetry(instance, { retries: 3 });
 
 function updateBaseURL() {
   const config = globalConfig();
@@ -33,7 +29,6 @@ instance.interceptors.request.use((request) => {
 
 instance.interceptors.response.use(
   (response) => {
-    response.data = qs.parse(response.data);
     return response;
   },
   (error) => {
