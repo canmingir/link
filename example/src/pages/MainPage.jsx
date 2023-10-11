@@ -1,5 +1,5 @@
 import { Container, Button, Typography } from "@mui/material";
-import { message } from "../../../src/Platform";
+import { message } from "../../../index";
 function MainPage() {
   return (
     <Container

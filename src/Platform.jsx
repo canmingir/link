@@ -1,12 +1,13 @@
 import "react-toastify/dist/ReactToastify.css";
+import "./style.css";
 import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider } from "./context/ConfigContext";
 import ContextProvider from "./ContextProvider/ContextProvider";
 import Loading from "./Loading/Loading";
 import RouteManager from "./RouteManager/RouteManager";
+import { ToastContainer } from "react-toastify";
 import globalConfig from "./config";
 import React, { useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
 import { initialState, reducer } from "./context/reducer";
 
 const Platform = ({ config }) => {
@@ -27,5 +28,5 @@ const Platform = ({ config }) => {
     </BrowserRouter>
   );
 };
-export { toast as message };
+
 export default Platform;

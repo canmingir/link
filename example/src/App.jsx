@@ -1,4 +1,4 @@
-import { Platform } from "../../index";
+import Platform from "../../index";
 import config from "../config";
 
 function App() {

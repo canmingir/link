@@ -1,5 +1,6 @@
 import menuConfig from "./config.menu";
 import routes from "./config.routes";
+
 const config = {
   name: "GrayCollar",
   base: "",
@@ -8,17 +9,20 @@ const config = {
     icon: "/media/logo.png",
     largeIcon: "/media/largeLogo.png",
     name: "Gray Collar Dashboard",
-    github: {
-      authUrl: "https://github.com/login/oauth/authorize",
-      clientId: "0c2844d3d19dc9293fc5",
-      redirectUri: "http://localhost:5173/callback",
-      scope: "user",
-      response_type: "code",
-    },
-  },
-  flowise: {
-    token: "Bearer LoLQZcqQsDQgqVCEGbV4fH7CL9HLnzryWObnPYxch5o=",
-    url: "http://flowise.graycollar.ai:3000/api/v1/prediction/88666388-0cae-4735-96e9-7c15b12896df",
+    platforms: [
+      {
+        name: "Github",
+        title: "Github",
+        icon: null,
+        strategy: {
+          authUrl: "https://github.com/login/oauth/authorize",
+          clientId: "0c2844d3d19dc9293fc5",
+          redirectUri: "http://localhost:5173/callback",
+          scope: "user",
+          response_type: "code",
+        },
+      },
+    ],
   },
   ...menuConfig,
   routes,
