@@ -7,10 +7,7 @@ function LoginPage() {
   const navigate = useNavigate();
 
   function token() {
-    if (
-      storage.get("dashboard", "refreshToken") &&
-      storage.get("dashboard", "accessToken")
-    ) {
+    if (storage.get("refreshToken") && storage.get("accessToken")) {
       return true;
     } else {
       return false;

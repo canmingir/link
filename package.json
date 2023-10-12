@@ -1,7 +1,7 @@
 {
   "name": "nuc-platform",
   "private": false,
-  "version": "0.0.18",
+  "version": "0.0.19",
   "scripts": {
     "prepare": "node prepare.js",
     "dev": "vite",

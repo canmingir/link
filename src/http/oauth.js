@@ -1,6 +1,5 @@
 import axios from "axios";
 import globalConfig from "../config";
-// import qs from "qs";
 
 const instance = axios.create({
   baseURL: "",

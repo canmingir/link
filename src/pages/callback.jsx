@@ -20,16 +20,15 @@ function Callback() {
         const accessToken = data.access_token;
         const refreshToken = data.refresh_token;
 
-        storage.set("dashboard", "accessToken", accessToken);
-        storage.set("dashboard", "refreshToken", refreshToken);
+        storage.set("accessToken", accessToken);
+        storage.set("refreshToken", refreshToken);
         dispatch({ type: "LOGIN" });
         navigate("/");
       })
       .catch((error) => {
         console.debug(error);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search, navigate]);
+  }, [dispatch, location.search, navigate]);
 
   return "loading";
 }
