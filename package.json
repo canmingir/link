@@ -10,6 +10,7 @@
     "build:storybook": "storybook build"
   },
   "dependencies": {
+    "@mui/material": "^5.14.13",
     "@nucleoidjs/components": "^1.2.0",
     "@nucleoidjs/synapses": "^1.0.8",
     "@nucleoidjs/webstorage": "^1.0.2",
