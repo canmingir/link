@@ -3,12 +3,10 @@ import { storage } from "@nucleoidjs/webstorage";
 import { useContext } from "../ContextProvider/ContextProvider";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 function Callback() {
   const [, dispatch] = useContext();
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -23,12 +21,12 @@ function Callback() {
         storage.set("accessToken", accessToken);
         storage.set("refreshToken", refreshToken);
         dispatch({ type: "LOGIN" });
-        navigate("/");
+        window.location.href = "/";
       })
       .catch((error) => {
         console.debug(error);
       });
-  }, [dispatch, location.search, navigate]);
+  }, [dispatch, location.search]);
 
   return "loading";
 }
