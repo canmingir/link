@@ -5,15 +5,15 @@ import Page from "../layouts/Page";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-export default function RouteManager({ routes }) {
+export default function RouteManager({ config }) {
   return (
     <Routes>
       <Route>
         <Route path={`/login`} index element={<Login />} />
         <Route path={`/callback`} element={<Callback />} />
       </Route>
-      <Route element={<AppLayout />}>
-        {routes.map((route) => (
+      <Route element={<AppLayout config={config} />}>
+        {config?.routes?.map((route) => (
           <Route
             key={route.url}
             path={`${route.url}`}

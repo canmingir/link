@@ -1,5 +1,6 @@
 import "react-toastify/dist/ReactToastify.css";
 import "./style.css";
+
 import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider } from "./context/ConfigContext";
 import ContextProvider from "./ContextProvider/ContextProvider";
@@ -13,8 +14,7 @@ import { initialState, reducer } from "./context/reducer";
 const Platform = ({ config }) => {
   useEffect(() => {
     globalConfig(config);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [config]);
 
   return (
     <BrowserRouter>
@@ -22,7 +22,7 @@ const Platform = ({ config }) => {
         <ContextProvider reducer={reducer} state={initialState}>
           <ToastContainer />
           <Loading />
-          <RouteManager routes={config.routes} />
+          <RouteManager config={config} />
         </ContextProvider>
       </ConfigProvider>
     </BrowserRouter>

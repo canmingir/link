@@ -12,7 +12,6 @@
     "cypress:run": "cypress run"
   },
   "dependencies": {
-    "@mui/material": "^5.14.10",
     "cypress": "^13.3.0",
     "eslint-plugin-cypress": "^2.15.1",
     "react": "^18.2.0",
