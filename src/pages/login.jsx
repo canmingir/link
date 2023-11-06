@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import LoginForm from "../widgets/LoginForm/LoginForm";
 import React from "react";
 import { storage } from "@nucleoidjs/webstorage";
@@ -37,7 +38,19 @@ function LoginPage() {
           position: "fixed",
         }}
       />
-      <LoginForm />
+      <Box
+        sx={{
+          position: "absolute",
+          width: "100%",
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <LoginForm />
+      </Box>
     </>
   );
 }

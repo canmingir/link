@@ -1,8 +1,9 @@
 import NucleoidLoginForm from "../../components/NucleoidLoginForm";
 import SocialLoginButtons from "../../components/SocialLoginButtons";
-
+import styles from "./LoginFormStyles";
 import { useConfig } from "../../context/ConfigContext";
 
+import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
 import React, { useState } from "react";
 
 const handleOAuthLogin = ({ authUrl, clientId, redirectUri, scope }) => {
@@ -14,29 +15,64 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const config = useConfig();
   return (
-    <div style={{ position: "fixed", width: "100%", height: "100%" }}>
-      <p>Sign in to your account</p>
-      {!!config.login.nucleoid && (
-        <>
-          <NucleoidLoginForm
-            email={email}
-            password={password}
-            setEmail={setEmail}
-            setPassword={setPassword}
-            // TODO: Add function for login without Oauth 2.0
-            onSubmit={() => handleOAuthLogin({ ...config.login.github })}
-          />
-        </>
-      )}
-
-      {config.login.platforms.map((platform) => (
-        <SocialLoginButtons
-          key={platform.name}
-          title={platform.title}
-          handleClick={() => handleOAuthLogin({ ...platform.strategy })}
+    <>
+      <Box
+        sx={{
+          ...styles.mainBoxStyle,
+          backgroundColor: "#141616",
+        }}
+      >
+        <Box
+          component="img"
+          src={config.login.icon}
+          alt={config.login.name}
+          sx={styles.iconBoxStyle}
         />
-      ))}
-    </div>
+
+        <Typography
+          variant="subtitle1"
+          sx={{
+            textAlign: "center",
+            width: "100%",
+            color: "primary.contrastText",
+          }}
+        >
+          Sign in to your account
+        </Typography>
+        {!!config.login.nucleoid && (
+          <>
+            <NucleoidLoginForm
+              email={email}
+              password={password}
+              setEmail={setEmail}
+              setPassword={setPassword}
+              // TODO: Add function for login without Oauth 2.0
+              onSubmit={() => handleOAuthLogin({ ...config.login.github })}
+            />
+            <Typography
+              variant="body2"
+              sx={{ width: "100%", textAlign: "center" }}
+            >
+              Don&apos;t have an account?
+              <MuiLink href="/console/login2" variant="body2">
+                Sign Up Now
+              </MuiLink>
+            </Typography>
+
+            <Divider sx={{ width: "100%", margin: "1rem 0" }}>
+              <Box sx={{ px: 2 }}>or</Box>
+            </Divider>
+          </>
+        )}
+        {config.login.platforms.map((platform) => (
+          <SocialLoginButtons
+            key={platform.name}
+            title={platform.title}
+            handleClick={() => handleOAuthLogin({ ...platform.strategy })}
+          />
+        ))}
+      </Box>
+    </>
   );
 }
 

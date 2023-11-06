@@ -1,4 +1,4 @@
-import Platform from "../../index";
+import Platform from "nuc-platform-drl";
 import config from "../config";
 
 function App() {
