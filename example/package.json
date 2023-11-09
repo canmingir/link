@@ -17,7 +17,7 @@
     "@mui/material": "^5.14.13",
     "cypress": "^13.3.0",
     "eslint-plugin-cypress": "^2.15.1",
-    "nuc-platform-drl": "^1.0.1",
+    "nuc-platform-drl": "^1.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
