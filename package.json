@@ -24,7 +24,7 @@
     "@nucleoidjs/components": "^1.2.0",
     "@nucleoidjs/synapses": "^1.0.8",
     "@nucleoidjs/webstorage": "^1.0.2",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "axios-auth-refresh": "^3.3.6",
     "axios-retry": "^3.5.0",
     "emoji-mart": "^5.5.2",
