@@ -3,10 +3,12 @@ function MainPage() {
   return (
     <Container
       sx={{
-        height: "100dvh",
-        display: "flex",
-        alignItems: "center",
+        backgroundColor: "red",
+        width: "100%",
+        height: "100%",
         justifyContent: "center",
+        alignItems: "center",
+        display: "flex",
       }}
     >
       <Typography variant="h3">Main</Typography>

@@ -1,17 +1,31 @@
-import { Container, Typography } from "@mui/material";
-function SecondPage() {
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+
+export default function SecondPage() {
   return (
-    <Container
-      sx={{
-        height: "100dvh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Typography variant="h3">Second Page</Typography>
-    </Container>
+    <Stack spacing={1} alignItems="center">
+      <Button variant="contained">Button</Button>
+      <Button variant="contained" color="primary">
+        Button
+      </Button>
+      <Button variant="contained" color="secondary">
+        Button
+      </Button>
+      <Button variant="contained" color="info">
+        Button
+      </Button>
+      <Button variant="contained" color="success">
+        Button
+      </Button>
+      <Button variant="contained" color="warning">
+        Button
+      </Button>
+      <Button variant="contained" color="error">
+        Button
+      </Button>
+      <Button disabled variant="contained">
+        Button
+      </Button>
+    </Stack>
   );
 }
-
-export default SecondPage;

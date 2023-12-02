@@ -1,5 +1,5 @@
-import AppLayout from "../layouts/AppLayout";
 import Callback from "../pages/callback";
+import Dashboard from "../layouts/dashboard";
 import { HelmetProvider } from "react-helmet-async";
 import Login from "../pages/login";
 import React from "react";
@@ -15,7 +15,7 @@ export default function RouteManager({ routes }) {
           <Route path={`/login`} index element={<Login />} />
           <Route path={`/callback`} element={<Callback />} />
         </Route>
-        <Route element={<AppLayout />}>
+        <Route element={<Dashboard />}>
           {routes.map((each) => (
             <Route
               key={each.url}
