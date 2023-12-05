@@ -1,19 +1,14 @@
-import { memo } from 'react';
-
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import { useTheme } from '@mui/material/styles';
-
-import { useMockedUser } from 'src/hooks/use-mocked-user';
-
-import { bgBlur } from 'src/theme/css';
-
-import Scrollbar from 'src/components/scrollbar';
-import { NavSectionHorizontal } from 'src/components/nav-section';
-
-import { HEADER } from '../config-layout';
-import { useNavData } from './config-navigation';
-import HeaderShadow from '../common/header-shadow';
+import AppBar from "@mui/material/AppBar";
+import { HEADER } from "../config-layout";
+import HeaderShadow from "../common/header-shadow";
+import { NavSectionHorizontal } from "../../components/nav-section";
+import Scrollbar from "../../components/scrollbar";
+import Toolbar from "@mui/material/Toolbar";
+import { bgBlur } from "../../theme/css";
+import { memo } from "react";
+import { useMockedUser } from "../../hooks/use-mocked-user";
+import { useNavData } from "./config-navigation";
+import { useTheme } from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 
@@ -40,8 +35,8 @@ function NavHorizontal() {
       >
         <Scrollbar
           sx={{
-            '& .simplebar-content': {
-              display: 'flex',
+            "& .simplebar-content": {
+              display: "flex",
             },
           }}
         >

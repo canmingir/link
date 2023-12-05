@@ -1,15 +1,12 @@
-import PropTypes from 'prop-types';
-import { forwardRef } from 'react';
-
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Tooltip from '@mui/material/Tooltip';
-import { styled } from '@mui/material/styles';
-import ListItemButton from '@mui/material/ListItemButton';
-
-import { RouterLink } from 'src/routes/components';
-
 import Iconify from '../../iconify';
+import Link from '@mui/material/Link';
+import ListItemButton from '@mui/material/ListItemButton';
+import PropTypes from 'prop-types';
+import { RouterLink } from 'src/routes/components';
+import Tooltip from '@mui/material/Tooltip';
+import { forwardRef } from 'react';
+import { styled } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -47,7 +44,7 @@ const NavItem = forwardRef(
       >
         {icon && (
           <Box component="span" className="icon">
-            {icon}
+            <Iconify icon={icon} />
           </Box>
         )}
 

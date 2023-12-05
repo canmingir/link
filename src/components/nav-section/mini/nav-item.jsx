@@ -46,7 +46,7 @@ const NavItem = forwardRef(
       >
         {icon && (
           <Box component="span" className="icon">
-            {icon}
+            <Iconify width={16} icon={icon} />
           </Box>
         )}
 

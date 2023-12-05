@@ -1,22 +1,21 @@
+import CompactLayout from "../src/layouts/CompactLayout";
+import Dashboard from "../src/layouts/dashboard";
 import Index from "./src/pages/index";
+import Main from "../src/layouts/main";
 import MainPage from "./src/pages/MainPage";
 import SecondPage from "./src/pages/SecondPage";
-
 const routes = [
   {
-    name: "/",
-    url: `/`,
-    element: Index,
+    element: CompactLayout,
+    children: [{ path: "/", element: Index }],
   },
   {
-    name: "Main",
-    url: `/main`,
-    element: MainPage,
+    element: Dashboard,
+    children: [{ path: "/main", element: MainPage }],
   },
   {
-    name: "SecondPage",
-    url: "/main/secondPage",
-    element: SecondPage,
+    element: Main,
+    children: [{ path: "/secondPage", element: SecondPage }],
   },
 ];
 

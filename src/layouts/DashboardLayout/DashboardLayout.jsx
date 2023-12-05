@@ -39,7 +39,6 @@ export default function DashboardLayout() {
         {lgUp ? renderHorizontal : renderNavVertical}
 
         <Main>
-          {" "}
           <Outlet />
         </Main>
       </>

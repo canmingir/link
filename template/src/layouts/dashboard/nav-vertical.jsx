@@ -1,23 +1,17 @@
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Drawer from '@mui/material/Drawer';
-
-import { usePathname } from 'src/routes/hooks';
-
-import { useResponsive } from 'src/hooks/use-responsive';
-import { useMockedUser } from 'src/hooks/use-mocked-user';
-
-import Logo from 'src/components/logo';
-import Scrollbar from 'src/components/scrollbar';
-import { NavSectionVertical } from 'src/components/nav-section';
-
-import { NAV } from '../config-layout';
-import NavUpgrade from '../common/nav-upgrade';
-import { useNavData } from './config-navigation';
-import NavToggleButton from '../common/nav-toggle-button';
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import Logo from "../../components/logo";
+import { NAV } from "../config-layout";
+import { NavSectionVertical } from "../../components/nav-section";
+import NavToggleButton from "../common/nav-toggle-button";
+import PropTypes from "prop-types";
+import Scrollbar from "../../components/scrollbar";
+import Stack from "@mui/material/Stack";
+import { useEffect } from "react";
+import { useMockedUser } from "../../hooks/use-mocked-user";
+import { useNavData } from "./config-navigation";
+import { usePathname } from "../../routes/hooks/use-pathname";
+import { useResponsive } from "../../hooks/use-responsive";
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +20,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
 
   const pathname = usePathname();
 
-  const lgUp = useResponsive('up', 'lg');
+  const lgUp = useResponsive("up", "lg");
 
   const navData = useNavData();
 
@@ -41,10 +35,10 @@ export default function NavVertical({ openNav, onCloseNav }) {
     <Scrollbar
       sx={{
         height: 1,
-        '& .simplebar-content': {
+        "& .simplebar-content": {
           height: 1,
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
         },
       }}
     >
@@ -58,8 +52,6 @@ export default function NavVertical({ openNav, onCloseNav }) {
       />
 
       <Box sx={{ flexGrow: 1 }} />
-
-      <NavUpgrade />
     </Scrollbar>
   );
 
@@ -76,7 +68,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
         <Stack
           sx={{
             height: 1,
-            position: 'fixed',
+            position: "fixed",
             width: NAV.W_VERTICAL,
             borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           }}

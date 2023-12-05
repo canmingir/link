@@ -1,36 +1,35 @@
-import PropTypes from 'prop-types';
-
-import Box from '@mui/material/Box';
-
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useResponsive } from 'src/hooks/use-responsive';
-
-import { useSettingsContext } from 'src/components/settings';
-
-import Main from './main';
-import Header from './header';
-import NavMini from './nav-mini';
-import NavVertical from './nav-vertical';
-import NavHorizontal from './nav-horizontal';
+import Box from "@mui/material/Box";
+import Header from "./header";
+import Main from "./main";
+import NavHorizontal from "./nav-horizontal";
+import NavMini from "./nav-mini";
+import NavVertical from "./nav-vertical";
+import { Outlet } from "react-router";
+import PropTypes from "prop-types";
+import { useBoolean } from "../../hooks/use-boolean";
+import { useResponsive } from "../../hooks/use-responsive";
+import { useSettingsContext } from "../../components/settings";
 
 // ----------------------------------------------------------------------
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout() {
   const settings = useSettingsContext();
 
-  const lgUp = useResponsive('up', 'lg');
+  const lgUp = useResponsive("up", "lg");
 
   const nav = useBoolean();
 
-  const isHorizontal = settings.themeLayout === 'horizontal';
+  const isHorizontal = settings.themeLayout === "horizontal";
 
-  const isMini = settings.themeLayout === 'mini';
+  const isMini = settings.themeLayout === "mini";
 
   const renderNavMini = <NavMini />;
 
   const renderHorizontal = <NavHorizontal />;
 
-  const renderNavVertical = <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />;
+  const renderNavVertical = (
+    <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />
+  );
 
   if (isHorizontal) {
     return (
@@ -39,7 +38,10 @@ export default function DashboardLayout({ children }) {
 
         {lgUp ? renderHorizontal : renderNavVertical}
 
-        <Main>{children}</Main>
+        <Main>
+          {" "}
+          <Outlet />
+        </Main>
       </>
     );
   }
@@ -52,13 +54,15 @@ export default function DashboardLayout({ children }) {
         <Box
           sx={{
             minHeight: 1,
-            display: 'flex',
-            flexDirection: { xs: 'column', lg: 'row' },
+            display: "flex",
+            flexDirection: { xs: "column", lg: "row" },
           }}
         >
           {lgUp ? renderNavMini : renderNavVertical}
 
-          <Main>{children}</Main>
+          <Main>
+            <Outlet />
+          </Main>
         </Box>
       </>
     );
@@ -71,13 +75,15 @@ export default function DashboardLayout({ children }) {
       <Box
         sx={{
           minHeight: 1,
-          display: 'flex',
-          flexDirection: { xs: 'column', lg: 'row' },
+          display: "flex",
+          flexDirection: { xs: "column", lg: "row" },
         }}
       >
         {renderNavVertical}
 
-        <Main>{children}</Main>
+        <Main>
+          <Outlet />
+        </Main>
       </Box>
     </>
   );

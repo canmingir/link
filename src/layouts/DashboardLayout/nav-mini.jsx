@@ -5,15 +5,15 @@ import { NavSectionMini } from "../../components/nav-section";
 import NavToggleButton from "../common/nav-toggle-button";
 import Stack from "@mui/material/Stack";
 import { hideScroll } from "../../theme/css";
+import { useConfig } from "../../context/ConfigContext";
 import { useMockedUser } from "../../hooks/use-mocked-user";
-import { useNavData } from "./config-navigation";
 
 // ----------------------------------------------------------------------
 
 export default function NavMini() {
   const { user } = useMockedUser();
 
-  const navData = useNavData();
+  const { sideMenu } = useConfig();
 
   return (
     <Box
@@ -42,7 +42,7 @@ export default function NavMini() {
         <Logo sx={{ mx: "auto", my: 2 }} />
 
         <NavSectionMini
-          data={navData}
+          data={sideMenu}
           slotProps={{
             currentRole: user?.role,
           }}

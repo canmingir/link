@@ -1,11 +1,11 @@
 import Container from "@mui/material/Container";
 import Header from "../common/header-simple";
-import PropTypes from "prop-types";
+import { Outlet } from "react-router";
 import Stack from "@mui/material/Stack";
 
 // ----------------------------------------------------------------------
 
-export default function CompactLayout({ children }) {
+const CompactLayout = () => {
   return (
     <>
       <Header />
@@ -21,13 +21,11 @@ export default function CompactLayout({ children }) {
             justifyContent: "center",
           }}
         >
-          {children}
+          <Outlet />
         </Stack>
       </Container>
     </>
   );
-}
-
-CompactLayout.propTypes = {
-  children: PropTypes.node,
 };
+
+export default CompactLayout;

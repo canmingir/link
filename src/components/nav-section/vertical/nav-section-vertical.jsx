@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
-import { memo, useState, useCallback } from 'react';
+import Collapse from "@mui/material/Collapse";
+import ListSubheader from "@mui/material/ListSubheader";
+import NavList from "./nav-list";
+import PropTypes from "prop-types";
+import Stack from "@mui/material/Stack";
 
-import Stack from '@mui/material/Stack';
-import Collapse from '@mui/material/Collapse';
-import ListSubheader from '@mui/material/ListSubheader';
-
-import NavList from './nav-list';
+import { memo, useCallback, useState } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -39,8 +38,8 @@ function Group({ subheader, items, slotProps }) {
   const handleToggle = useCallback(() => {
     setOpen((prev) => !prev);
   }, []);
-
-  const renderContent = items.map((list) => (
+  console.log(items, "asd");
+  const renderContent = items?.map((list) => (
     <NavList key={list.title} data={list} depth={1} slotProps={slotProps} />
   ));
 
@@ -54,18 +53,18 @@ function Group({ subheader, items, slotProps }) {
             onClick={handleToggle}
             sx={{
               fontSize: 11,
-              cursor: 'pointer',
-              typography: 'overline',
-              display: 'inline-flex',
-              color: 'text.disabled',
+              cursor: "pointer",
+              typography: "overline",
+              display: "inline-flex",
+              color: "text.disabled",
               mb: `${slotProps?.gap || 4}px`,
               p: (theme) => theme.spacing(2, 1, 1, 1.5),
               transition: (theme) =>
-                theme.transitions.create(['color'], {
+                theme.transitions.create(["color"], {
                   duration: theme.transitions.duration.shortest,
                 }),
-              '&:hover': {
-                color: 'text.primary',
+              "&:hover": {
+                color: "text.primary",
               },
               ...slotProps?.subheader,
             }}

@@ -1,49 +1,60 @@
-import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import HomeFilledIcon from "@mui/icons-material/Home";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import InfoIcon from "@mui/icons-material/Info";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 const menuConfig = {
-  topMenu: [
-    { name: "/", url: `/`, hide: true, hideTopBar: false },
-    {
-      name: "Main",
-      url: "/main",
-      hide: true,
-      hideTopBar: true,
-    },
-    {
-      name: "Main",
-      url: "/main",
-      hide: true,
-      hideTopBar: false,
-    },
-  ],
   sideMenu: [
     {
-      name: "Index",
-      url: "/",
-      activeIcon: InfoIcon,
-      deactiveIcon: InfoOutlinedIcon,
-      hideTopBar: false,
+      subheader: "Anasayfa",
+      items: [
+        {
+          title: "Index",
+          icon: "solar:home-2-bold-duotone",
+          path: "/",
+        },
+        {
+          title: "Main",
+          icon: "solar:home-2-bold-duotone",
+          path: "/main",
+        },
+        {
+          title: "SecondPage",
+          icon: "solar:atom-bold-duotone",
+          path: "/secondPage",
+        },
+      ],
     },
+
     {
-      name: "Main",
-      url: "/main",
-      activeIcon: HomeFilledIcon,
-      deactiveIcon: HomeOutlinedIcon,
-      hideTopBar: false,
-    },
-    {
-      name: "Second Page",
-      url: "/main/secondPage",
-      activeIcon: AccessTimeFilledIcon,
-      deactiveIcon: AccessTimeIcon,
-      hideTopBar: false,
+      subheader: "management",
+      items: [
+        {
+          title: "user",
+          path: "https://solarjs.vercel.app/components",
+          icon: "solar:home-2-bold-duotone",
+          children: [
+            { title: "four", path: "https://solarjs.vercel.app/components" },
+            { title: "five", path: "https://solarjs.vercel.app/componentse" },
+            { title: "six", path: "https://solarjs.vercel.app/components" },
+          ],
+        },
+      ],
     },
   ],
-  topMenuColor: "custom.sidebarBG",
+
+  topMenu: [
+    {
+      title: "Index",
+      icon: "solar:home-2-bold-duotone",
+      path: "/",
+    },
+    {
+      title: "Main",
+      icon: "solar:home-2-bold-duotone",
+      path: "/main",
+    },
+    {
+      title: "SecondPage",
+      icon: "solar:atom-bold-duotone",
+      path: "/secondPage",
+    },
+  ],
 };
 
 export default menuConfig;

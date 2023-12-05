@@ -7,9 +7,9 @@ import NavToggleButton from "../common/nav-toggle-button";
 import PropTypes from "prop-types";
 import Scrollbar from "../../components/scrollbar";
 import Stack from "@mui/material/Stack";
+import { useConfig } from "../../context/ConfigContext";
 import { useEffect } from "react";
 import { useMockedUser } from "../../hooks/use-mocked-user";
-import { useNavData } from "./config-navigation";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
 
@@ -22,7 +22,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
 
   const lgUp = useResponsive("up", "lg");
 
-  const navData = useNavData();
+  const { sideMenu } = useConfig();
 
   useEffect(() => {
     if (openNav) {
@@ -45,7 +45,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
       <Logo sx={{ mt: 3, ml: 4, mb: 1 }} />
 
       <NavSectionVertical
-        data={navData}
+        data={sideMenu}
         slotProps={{
           currentRole: user?.role,
         }}

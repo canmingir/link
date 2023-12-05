@@ -34,7 +34,6 @@ export default function NavList({ data, depth, slotProps }) {
   const handleCloseMenu = useCallback(() => {
     setOpenMenu(false);
   }, []);
-
   return (
     <>
       <NavItem
@@ -53,7 +52,7 @@ export default function NavList({ data, depth, slotProps }) {
         //
         depth={depth}
         hasChild={!!data.children}
-        externalLink={data.path.includes("http")}
+        externalLink={data.path?.includes("http")}
         currentRole={slotProps?.currentRole}
         //
         active={active}

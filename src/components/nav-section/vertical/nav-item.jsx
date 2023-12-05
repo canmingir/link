@@ -46,13 +46,13 @@ const NavItem = forwardRef(
       >
         {!subItem && icon && (
           <Box component="span" className="icon">
-            {icon}
+            <Iconify width={24} icon={icon} />
           </Box>
         )}
 
         {subItem && icon ? (
           <Box component="span" className="icon">
-            {icon}
+            <Iconify width={24} icon={icon} />
           </Box>
         ) : (
           <Box component="span" className="sub-icon" />

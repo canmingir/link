@@ -1,6 +1,11 @@
 {
   "name": "platform-npm",
-  "version": "0.0.2",
+  "version": "0.0.65",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./layouts": "./src/layouts/index.js"
+  },
   "scripts": {
     "prepare": "node prepare.js",
     "dev": "vite",

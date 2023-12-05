@@ -6,10 +6,9 @@ import Scrollbar from "../../components/scrollbar";
 import Toolbar from "@mui/material/Toolbar";
 import { bgBlur } from "../../theme/css";
 import { memo } from "react";
+import { useConfig } from "../../context/ConfigContext";
 import { useMockedUser } from "../../hooks/use-mocked-user";
-import { useNavData } from "./config-navigation";
 import { useTheme } from "@mui/material/styles";
-
 // ----------------------------------------------------------------------
 
 function NavHorizontal() {
@@ -17,8 +16,7 @@ function NavHorizontal() {
 
   const { user } = useMockedUser();
 
-  const navData = useNavData();
-
+  const { topMenu } = useConfig();
   return (
     <AppBar
       component="div"
@@ -41,7 +39,7 @@ function NavHorizontal() {
           }}
         >
           <NavSectionHorizontal
-            data={navData}
+            data={topMenu}
             slotProps={{
               currentRole: user?.role,
             }}

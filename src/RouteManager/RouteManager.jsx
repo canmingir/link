@@ -1,31 +1,20 @@
-import Callback from "../pages/callback";
-import Dashboard from "../layouts/dashboard";
-import { HelmetProvider } from "react-helmet-async";
-import Login from "../pages/login";
-import React from "react";
+import { Suspense } from "react";
 
 import { Route, Routes } from "react-router-dom";
 
 export default function RouteManager({ routes }) {
+  console.log(routes);
   return (
-    //normalde browserrouter, helmetprovider main'in içerisinde dashboard'da.
-    <HelmetProvider>
+    <Suspense fallback={<div>Loading...</div>}>
       <Routes>
-        <Route>
-          <Route path={`/login`} index element={<Login />} />
-          <Route path={`/callback`} element={<Callback />} />
-        </Route>
-        <Route element={<Dashboard />}>
-          {routes.map((each) => (
-            <Route
-              key={each.url}
-              path={`${each.url}`}
-              element={<each.element />}
-            />
-          ))}
-        </Route>
-        <Route path="*" element={<>not found</>} />
+        {routes.map((route, i) => (
+          <Route key={i} path="/" element={route.element()}>
+            {route.children.map((child, j) => (
+              <Route key={j} path={child.path} element={child.element()} />
+            ))}
+          </Route>
+        ))}
       </Routes>
-    </HelmetProvider>
+    </Suspense>
   );
 }
