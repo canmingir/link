@@ -6,43 +6,30 @@ import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { alpha } from "@mui/material/styles";
-import { m } from "framer-motion";
-import { useMockedUser } from "../../hooks/use-mocked-user";
+import { motion } from "framer-motion";
+import { useConfig } from "../../context/ConfigContext";
+import { useContext } from "../../ContextProvider/ContextProvider";
 import { useRouter } from "../../routes/hooks";
+import { useUser } from "../../hooks/use-user";
 import { varHover } from "../../components/animate";
 
 import CustomPopover, { usePopover } from "../../components/custom-popover";
 
 // ----------------------------------------------------------------------
 
-const OPTIONS = [
-  {
-    label: "Home",
-    linkTo: "/",
-  },
-  {
-    label: "Profile",
-    linkTo: "/#1",
-  },
-  {
-    label: "Settings",
-    linkTo: "/#2",
-  },
-];
-
-// ----------------------------------------------------------------------
-
 export default function AccountPopover() {
   const router = useRouter();
+  const [, dispatch] = useContext();
+  const { userData } = useUser();
 
-  const { user } = useMockedUser();
-
+  const { options } = useConfig();
   const popover = usePopover();
 
   const handleLogout = async () => {
     try {
+      dispatch({ type: "LOGOUT" });
       popover.onClose();
-      router.replace("/");
+      router.replace("/login");
     } catch (error) {
       console.error(error);
     }
@@ -56,7 +43,7 @@ export default function AccountPopover() {
   return (
     <>
       <IconButton
-        component={m.button}
+        component={motion.button}
         whileTap="tap"
         whileHover="hover"
         variants={varHover(1.05)}
@@ -72,15 +59,15 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          src={user?.photoURL}
-          alt={user?.displayName}
+          src={userData?.avatar_url}
+          alt={userData?.name}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {user?.displayName.charAt(0).toUpperCase()}
+          {userData?.name.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
@@ -91,18 +78,18 @@ export default function AccountPopover() {
       >
         <Box sx={{ p: 2, pb: 1.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
+            {userData?.name}
           </Typography>
 
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {user?.email}
+            {userData?.email}
           </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
         <Stack sx={{ p: 1 }}>
-          {OPTIONS.map((option) => (
+          {options.map((option) => (
             <MenuItem
               key={option.label}
               onClick={() => handleClickItem(option.linkTo)}

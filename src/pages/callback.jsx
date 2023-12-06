@@ -7,13 +7,11 @@ import { useContext } from "../ContextProvider/ContextProvider";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
 function Callback() {
   const [, dispatch] = useContext();
   const location = useLocation();
   const navigate = useNavigate();
   const config = useConfig();
-
   useEffect(() => {
     const parsedQuery = qs.parse(location.search, { ignoreQueryPrefix: true });
     const { code } = parsedQuery;

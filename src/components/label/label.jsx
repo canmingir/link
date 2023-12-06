@@ -1,21 +1,30 @@
-import PropTypes from 'prop-types';
-import { forwardRef } from 'react';
-
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
-
-import { StyledLabel } from './styles';
+import Box from "@mui/material/Box";
+import PropTypes from "prop-types";
+import { StyledLabel } from "./styles";
+import { forwardRef } from "react";
+import { useTheme } from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 
 const Label = forwardRef(
-  ({ children, color = 'default', variant = 'soft', startIcon, endIcon, sx, ...other }, ref) => {
+  (
+    {
+      children,
+      color = "default",
+      variant = "soft",
+      startIcon,
+      endIcon,
+      sx,
+      ...other
+    },
+    ref
+  ) => {
     const theme = useTheme();
 
     const iconStyles = {
       width: 16,
       height: 16,
-      '& svg, img': { width: 1, height: 1, objectFit: 'cover' },
+      "& svg, img": { width: 1, height: 1, objectFit: "cover" },
     };
 
     return (
@@ -46,15 +55,15 @@ Label.propTypes = {
   endIcon: PropTypes.object,
   startIcon: PropTypes.object,
   sx: PropTypes.object,
-  variant: PropTypes.oneOf(['filled', 'outlined', 'ghost', 'soft']),
+  variant: PropTypes.oneOf(["filled", "outlined", "ghost", "soft"]),
   color: PropTypes.oneOf([
-    'default',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error',
+    "default",
+    "primary",
+    "secondary",
+    "info",
+    "success",
+    "warning",
+    "error",
   ]),
 };
 

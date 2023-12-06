@@ -1,19 +1,24 @@
-import { m } from 'framer-motion';
-import PropTypes from 'prop-types';
+import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 
-import { varContainer } from './variants';
+import { varContainer } from "./variants";
 
 // ----------------------------------------------------------------------
 
-export default function MotionContainer({ animate, action = false, children, ...other }) {
+export default function MotionContainer({
+  animate,
+  action = false,
+  children,
+  ...other
+}) {
   if (action) {
     return (
       <Box
-        component={m.div}
+        component={motion.div}
         initial={false}
-        animate={animate ? 'animate' : 'exit'}
+        animate={animate ? "animate" : "exit"}
         variants={varContainer()}
         {...other}
       >
@@ -24,7 +29,7 @@ export default function MotionContainer({ animate, action = false, children, ...
 
   return (
     <Box
-      component={m.div}
+      component={motion.div}
       initial="initial"
       animate="animate"
       exit="exit"

@@ -1,9 +1,9 @@
 import menuConfig from "./config.menu";
 
 const config = {
-  name: "GrayCollar",
+  name: "dashboard",
   base: "",
-  api: "http://localhost:5001",
+  api: "http://localhost:3001",
   login: {
     icon: "/media/logo.png",
     largeIcon: "/media/largeLogo.png",

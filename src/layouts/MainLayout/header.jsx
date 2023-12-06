@@ -1,11 +1,8 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import { HEADER } from "../config-layout";
 import HeaderShadow from "../common/header-shadow";
-import Label from "../../components/label";
-import Link from "@mui/material/Link";
 import Logo from "../../components/logo";
 import NavDesktop from "./nav/desktop";
 import NavMobile from "./nav/mobile";
@@ -13,13 +10,10 @@ import SettingsButton from "../common/settings-button";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import { bgBlur } from "../../theme/css";
-import { paths } from "../../routes/paths";
 import { useConfig } from "../../context/ConfigContext";
 import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useTheme } from "@mui/material/styles";
-
-import Badge, { badgeClasses } from "@mui/material/Badge";
 
 // ----------------------------------------------------------------------
 
@@ -55,33 +49,7 @@ export default function Header() {
         }}
       >
         <Container sx={{ height: 1, display: "flex", alignItems: "center" }}>
-          <Badge
-            sx={{
-              [`& .${badgeClasses.badge}`]: {
-                top: 8,
-                right: -16,
-              },
-            }}
-            badgeContent={
-              <Link
-                href={paths.changelog}
-                target="_blank"
-                rel="noopener"
-                underline="none"
-                sx={{ ml: 1 }}
-              >
-                <Label
-                  color="info"
-                  sx={{ textTransform: "unset", height: 22, px: 0.5 }}
-                >
-                  v5.6.0
-                </Label>
-              </Link>
-            }
-          >
-            <Logo />
-          </Badge>
-
+          <Logo />
           <Box sx={{ flexGrow: 1 }} />
 
           {mdUp && <NavDesktop data={topMenu} />}
@@ -90,15 +58,6 @@ export default function Header() {
             alignItems="center"
             direction={{ xs: "row", md: "row-reverse" }}
           >
-            <Button
-              variant="contained"
-              target="_blank"
-              rel="noopener"
-              href={paths.minimalUI}
-            >
-              Purchase Now
-            </Button>
-
             <SettingsButton
               sx={{
                 ml: { xs: 1, md: 0 },

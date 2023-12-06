@@ -55,6 +55,21 @@ const menuConfig = {
       path: "/secondPage",
     },
   ],
+
+  options: [
+    {
+      label: "Home",
+      linkTo: "/",
+    },
+    {
+      label: "Profile",
+      linkTo: "/",
+    },
+    {
+      label: "Settings",
+      linkTo: "/",
+    },
+  ],
 };
 
 export default menuConfig;

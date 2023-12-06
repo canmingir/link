@@ -6,12 +6,12 @@ import NavToggleButton from "../common/nav-toggle-button";
 import Stack from "@mui/material/Stack";
 import { hideScroll } from "../../theme/css";
 import { useConfig } from "../../context/ConfigContext";
-import { useMockedUser } from "../../hooks/use-mocked-user";
+import { useUser } from "../../hooks/use-user";
 
 // ----------------------------------------------------------------------
 
 export default function NavMini() {
-  const { user } = useMockedUser();
+  const { user } = useUser();
 
   const { sideMenu } = useConfig();
 

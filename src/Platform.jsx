@@ -1,9 +1,11 @@
+import "./global.css";
 import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider } from "./context/ConfigContext";
 import ContextProvider from "./ContextProvider/ContextProvider";
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
 import Loading from "./Loading/Loading";
 import RouteManager from "./RouteManager/RouteManager";
+import { SettingsDrawer } from "./components/settings";
 import { SettingsProvider } from "./components/settings";
 import { SnackbarProvider } from "notistack";
 import ThemeProvider from "./theme";
@@ -40,6 +42,7 @@ const Platform = ({ routes, config }) => {
                     horizontal: "right",
                   }}
                 >
+                  <SettingsDrawer />
                   <Loading />
                   <GlobalSnackMessage />
                   <RouteManager routes={routes} />

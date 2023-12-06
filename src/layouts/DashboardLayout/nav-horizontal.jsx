@@ -7,16 +7,16 @@ import Toolbar from "@mui/material/Toolbar";
 import { bgBlur } from "../../theme/css";
 import { memo } from "react";
 import { useConfig } from "../../context/ConfigContext";
-import { useMockedUser } from "../../hooks/use-mocked-user";
 import { useTheme } from "@mui/material/styles";
+import { useUser } from "../../hooks/use-user";
 // ----------------------------------------------------------------------
 
 function NavHorizontal() {
   const theme = useTheme();
 
-  const { user } = useMockedUser();
+  const { user } = useUser();
 
-  const { topMenu } = useConfig();
+  const { sideMenu } = useConfig();
   return (
     <AppBar
       component="div"
@@ -39,7 +39,7 @@ function NavHorizontal() {
           }}
         >
           <NavSectionHorizontal
-            data={topMenu}
+            data={sideMenu}
             slotProps={{
               currentRole: user?.role,
             }}

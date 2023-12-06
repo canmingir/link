@@ -33,7 +33,6 @@ const NavItem = forwardRef(
     ref
   ) => {
     const subItem = depth !== 1;
-
     const renderContent = (
       <StyledNavItem
         disableGutters

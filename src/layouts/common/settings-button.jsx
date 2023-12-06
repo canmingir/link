@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Iconify from "../../components/iconify";
 import PropTypes from "prop-types";
-import { m } from "framer-motion";
+import { motion } from "framer-motion";
 import { useSettingsContext } from "../../components/settings";
 import { varHover } from "../../components/animate";
 
@@ -15,7 +15,7 @@ export default function SettingsButton({ sx }) {
 
   return (
     <Badge
-      color="error"
+      color="info"
       variant="dot"
       invisible={!settings.canReset}
       sx={{
@@ -27,7 +27,7 @@ export default function SettingsButton({ sx }) {
       }}
     >
       <Box
-        component={m.div}
+        component={motion.div}
         animate={{
           rotate: [0, settings.open ? 0 : 360],
         }}
@@ -38,7 +38,7 @@ export default function SettingsButton({ sx }) {
         }}
       >
         <IconButton
-          component={m.button}
+          component={motion.button}
           whileTap="tap"
           whileHover="hover"
           variants={varHover(1.05)}

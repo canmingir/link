@@ -6,7 +6,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import PropTypes from "prop-types";
 import { RouterLink } from "../../../../routes/components";
 import { forwardRef } from "react";
-import { m } from "framer-motion";
+import { motion } from "framer-motion";
 import { styled } from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
@@ -176,7 +176,7 @@ export function NavItemDashboard({ path, sx, ...other }) {
           ...sx,
         }}
       >
-        <m.div
+        <motion.div
           whileTap="tap"
           whileHover="hover"
           variants={{
@@ -189,7 +189,7 @@ export function NavItemDashboard({ path, sx, ...other }) {
             alt="illustration_dashboard"
             src="/assets/illustrations/illustration_dashboard.png"
           />
-        </m.div>
+        </motion.div>
       </CardActionArea>
     </Link>
   );

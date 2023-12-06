@@ -9,14 +9,14 @@ import Scrollbar from "../../components/scrollbar";
 import Stack from "@mui/material/Stack";
 import { useConfig } from "../../context/ConfigContext";
 import { useEffect } from "react";
-import { useMockedUser } from "../../hooks/use-mocked-user";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
+import { useUser } from "../../hooks/use-user";
 
 // ----------------------------------------------------------------------
 
 export default function NavVertical({ openNav, onCloseNav }) {
-  const { user } = useMockedUser();
+  const { user } = useUser();
 
   const pathname = usePathname();
 

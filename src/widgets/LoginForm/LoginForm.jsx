@@ -9,11 +9,11 @@ import React, { useState } from "react";
 const handleOAuthLogin = ({ authUrl, clientId, redirectUri, scope }) => {
   window.location.href = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
 };
-
 function LoginForm({ icon, name }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const config = useConfig();
+
   return (
     <Box
       sx={{

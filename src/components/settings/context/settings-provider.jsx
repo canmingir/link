@@ -1,10 +1,9 @@
 import PropTypes from "prop-types";
 import { SettingsContext } from "./settings-context";
 import isEqual from "lodash/isEqual";
-import { localStorageGetItem } from "../../../utils/storage-available";
 import { useLocalStorage } from "../../../hooks/use-local-storage";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -17,23 +16,6 @@ export function SettingsProvider({ children, defaultSettings }) {
   );
 
   const [openDrawer, setOpenDrawer] = useState(false);
-
-  const isArabic = localStorageGetItem("i18nextLng") === "ar";
-
-  useEffect(() => {
-    if (isArabic) {
-      onChangeDirectionByLang("ar");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isArabic]);
-
-  // Direction by lang
-  const onChangeDirectionByLang = useCallback(
-    (lang) => {
-      update("themeDirection", lang === "ar" ? "rtl" : "ltr");
-    },
-    [update]
-  );
 
   // Drawer
   const onToggleDrawer = useCallback(() => {
@@ -51,7 +33,6 @@ export function SettingsProvider({ children, defaultSettings }) {
       ...state,
       onUpdate: update,
       // Direction
-      onChangeDirectionByLang,
       // Reset
       canReset,
       onReset: reset,
@@ -60,16 +41,7 @@ export function SettingsProvider({ children, defaultSettings }) {
       onToggle: onToggleDrawer,
       onClose: onCloseDrawer,
     }),
-    [
-      reset,
-      update,
-      state,
-      canReset,
-      openDrawer,
-      onCloseDrawer,
-      onToggleDrawer,
-      onChangeDirectionByLang,
-    ]
+    [reset, update, state, canReset, openDrawer, onCloseDrawer, onToggleDrawer]
   );
 
   return (

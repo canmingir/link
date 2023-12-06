@@ -16,6 +16,7 @@ import { useSettingsContext } from "../context";
 import { useTheme } from "@mui/material/styles";
 
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
+import { Box } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -54,7 +55,6 @@ export default function SettingsDrawer() {
       </IconButton>
     </Stack>
   );
-
   const renderMode = (
     <div>
       <Typography variant="caption" component="div" sx={{ ...labelStyles }}>
@@ -177,15 +177,10 @@ export default function SettingsDrawer() {
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3 }}>
           {renderMode}
-
           {renderContrast}
-
           {renderDirection}
-
           {renderLayout}
-
           {renderStretch}
-
           {renderPresets}
         </Stack>
       </Scrollbar>
