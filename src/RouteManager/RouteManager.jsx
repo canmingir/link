@@ -1,30 +1,29 @@
-import AppLayout from "../layouts/AppLayout";
-import Callback from "../pages/callback";
+import Callback from "../pages/Callback";
+import CompactLayout from "../layouts/CompactLayout";
 import { HelmetProvider } from "react-helmet-async";
-import Login from "../pages/login";
-import React from "react";
-
+import Login from "../pages/Login";
+import NotFoundPage from "../pages/404";
 import { Route, Routes } from "react-router-dom";
-
+import LoginLayout from "../layouts/auth/modern-compact";
 export default function RouteManager({ routes }) {
   return (
-    //normalde browserrouter, helmetprovider main'in içerisinde dashboard'da.
     <HelmetProvider>
       <Routes>
-        <Route>
+        <Route path="/login" element={<LoginLayout />}>
           <Route path={`/login`} index element={<Login />} />
-          <Route path={`/callback`} element={<Callback />} />
         </Route>
-        <Route element={<AppLayout />}>
-          {routes.map((each) => (
-            <Route
-              key={each.url}
-              path={`${each.url}`}
-              element={<each.element />}
-            />
-          ))}
+
+        <Route path={`/callback`} element={<Callback />} />
+        {routes.map((route, i) => (
+          <Route key={i} path="/" element={route.element()}>
+            {route.children.map((child, j) => (
+              <Route key={j} path={child.path} element={child.element()} />
+            ))}
+          </Route>
+        ))}
+        <Route path="*" element={<CompactLayout />}>
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
-        <Route path="*" element={<>not found</>} />
       </Routes>
     </HelmetProvider>
   );
