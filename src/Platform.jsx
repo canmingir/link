@@ -24,11 +24,11 @@ const Platform = ({ routes, config }) => {
     <>
       <SettingsProvider
         defaultSettings={{
-          themeMode: "light", // 'light' | 'dark'
+          themeMode: config.settings.mode, // 'light' | 'dark'
           themeDirection: "ltr", //  'rtl' | 'ltr'
           themeContrast: "default", // 'default' | 'bold'
           themeLayout: "vertical", // 'vertical' | 'horizontal' | 'mini'
-          themeColorPresets: "default", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+          themeColorPresets: config.settings.colorPresets, // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
           themeStretch: false,
         }}
       >
