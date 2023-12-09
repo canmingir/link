@@ -5,30 +5,30 @@ import { useConfig } from "../../context/ConfigContext";
 
 import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
 import React, { useState } from "react";
+import Logo from "../../components/logo";
 
 const handleOAuthLogin = ({ authUrl, clientId, redirectUri, scope }) => {
   window.location.href = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
 };
-
-function LoginForm({ icon, name }) {
+function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const config = useConfig();
+
   return (
     <Box
       sx={{
-        ...styles.mainBoxStyle,
-        backgroundColor: "#141616",
+        width: "22rem",
+        height: "auto",
       }}
     >
-      <Box component="img" src={icon} alt={name} sx={styles.iconBoxStyle} />
+      <Logo sx={styles.iconBoxStyle} />
 
       <Typography
         variant="subtitle1"
         sx={{
           textAlign: "center",
           width: "100%",
-          color: "primary.contrastText",
         }}
       >
         Sign in to your account
@@ -47,8 +47,12 @@ function LoginForm({ icon, name }) {
             variant="body2"
             sx={{ width: "100%", textAlign: "center" }}
           >
-            Don&apos;t have an account?
-            <MuiLink href="/console/login2" variant="body2">
+            Don&apos;t have an account ?
+            <MuiLink
+              href="/console/login2"
+              variant="body2"
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
               Sign Up Now
             </MuiLink>
           </Typography>
