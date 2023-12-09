@@ -2,6 +2,12 @@
   "name": "dashboard.graycollar.ai",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./layouts": "./src/layouts/index.js",
+    "./vite": "./vite/vite.js"
+  },
   "scripts": {
     "prepare": "node prepare.js",
     "dev": "vite",
