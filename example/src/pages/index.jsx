@@ -7,10 +7,12 @@ const Index = () => {
     <Container
       sx={{
         height: "100dvh",
+        width: "100dvh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
+        backgroundColor: "green",
       }}
     >
       <Typography variant="h3">Index</Typography>
