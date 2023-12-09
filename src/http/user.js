@@ -13,8 +13,17 @@ const instance = axios.create({
   },
 });
 
+function getProjectName() {
+  const { name } = globalConfig();
+
+  if (name) {
+    return name;
+  }
+}
+
 instance.interceptors.request.use(async (request) => {
-  const refreshToken = await storage.get("dashboard", "refreshToken");
+  const refreshToken = await storage.get(getProjectName(), "refreshToken");
+  console.log("refreshToken", getProjectName());
   if (refreshToken) {
     request.headers["Authorization"] = `Bearer ${refreshToken}`;
   }
