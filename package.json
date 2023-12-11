@@ -6,7 +6,8 @@
   "exports": {
     ".": "./index.js",
     "./layouts": "./src/layouts/index.js",
-    "./vite": "./vite/vite.js"
+    "./vite": "./vite/vite.js",
+    "./components": "./components/index.js"
   },
   "scripts": {
     "prepare": "node prepare.js",
