@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import LoginForm from "../widgets/LoginForm/LoginForm";
 import Page from "../layouts/Page";
 import React from "react";
@@ -13,8 +12,8 @@ function LoginPage() {
 
   function token() {
     if (
-      storage.get("dashboard", "refreshToken") &&
-      storage.get("dashboard", "accessToken")
+      storage.get(config.name, "refreshToken") &&
+      storage.get(config.name, "accessToken")
     ) {
       return true;
     } else {

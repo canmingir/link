@@ -6,6 +6,7 @@ import { storage } from "@nucleoidjs/webstorage";
 import { useConfig } from "../../context/ConfigContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 // ----------------------------------------------------------------------
 
@@ -18,8 +19,8 @@ export default function Auth0LoginView() {
 
   function token() {
     if (
-      storage.get("dashboard", "refreshToken") &&
-      storage.get("dashboard", "accessToken")
+      storage.get(config.name, "refreshToken") &&
+      storage.get(config.name, "accessToken")
     ) {
       return true;
     } else {
