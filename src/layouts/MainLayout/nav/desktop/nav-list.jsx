@@ -9,6 +9,7 @@ import { paper } from "../../../../theme/css";
 import { useActiveLink } from "../../../../routes/hooks/use-active-link";
 import { usePathname } from "../../../../routes/hooks";
 import { useTheme } from "@mui/material/styles";
+import React from "react";
 
 import { NavItem, NavItemDashboard } from "./nav-item";
 import { useCallback, useEffect, useState } from "react";

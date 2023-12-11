@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo } from "react";
+import React from "react";
 
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +32,12 @@ function SeverErrorIllustration({ ...other }) {
     >
       <BackgroundShape />
 
-      <image href="/assets/illustrations/characters/character_8.png" height="300" x="340" y="30" />
+      <image
+        href="/assets/illustrations/characters/character_8.png"
+        height="300"
+        x="340"
+        y="30"
+      />
 
       <path
         fill={PRIMARY_MAIN}

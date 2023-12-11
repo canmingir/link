@@ -6,6 +6,7 @@ import { bgBlur } from "../../theme/css";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
 import { useTheme } from "@mui/material/styles";
+import React from "react";
 
 // ----------------------------------------------------------------------
 

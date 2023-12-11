@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo } from "react";
+import React from "react";
 
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +30,12 @@ function ForbiddenIllustration({ ...other }) {
     >
       <BackgroundShape />
 
-      <image href="/assets/illustrations/characters/character_4.png" height="300" x="220" y="30" />
+      <image
+        href="/assets/illustrations/characters/character_4.png"
+        height="300"
+        x="220"
+        y="30"
+      />
 
       <path
         fill={PRIMARY_MAIN}
@@ -43,7 +49,10 @@ function ForbiddenIllustration({ ...other }) {
         opacity="0.12"
       />
 
-      <path fill="#FFD666" d="M111.045 121c30.8-.5 30.8-46.3 0-46.8-30.8.5-30.8 46.3 0 46.8z" />
+      <path
+        fill="#FFD666"
+        d="M111.045 121c30.8-.5 30.8-46.3 0-46.8-30.8.5-30.8 46.3 0 46.8z"
+      />
 
       <path
         fill="#FBCDBE"

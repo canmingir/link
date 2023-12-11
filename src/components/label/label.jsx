@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { StyledLabel } from "./styles";
 import { forwardRef } from "react";
 import { useTheme } from "@mui/material/styles";
+import React from "react";
 
 // ----------------------------------------------------------------------
 

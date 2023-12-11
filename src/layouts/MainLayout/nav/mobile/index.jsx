@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import Scrollbar from "../../../../components/scrollbar";
 import SvgColor from "../../../../components/svg-color";
 import { usePathname } from "../../../../routes/hooks";
+import React from "react";
 
 import { useCallback, useEffect, useState } from "react";
 

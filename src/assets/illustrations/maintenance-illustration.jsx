@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo } from "react";
+import React from "react";
 
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
@@ -113,11 +114,20 @@ function MaintenanceIllustration({ ...other }) {
         opacity="0.2"
       />
 
-      <path fill="#FF5630" d="M118.108 103.182a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+      <path
+        fill="#FF5630"
+        d="M118.108 103.182a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"
+      />
 
-      <path fill="#FFAB00" d="M126.108 103.182a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+      <path
+        fill="#FFAB00"
+        d="M126.108 103.182a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"
+      />
 
-      <path fill="#36B37E" d="M134.108 103.182a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+      <path
+        fill="#36B37E"
+        d="M134.108 103.182a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"
+      />
 
       <defs>
         <linearGradient
@@ -207,7 +217,12 @@ function MaintenanceIllustration({ ...other }) {
         </linearGradient>
       </defs>
 
-      <image href="/assets/illustrations/characters/character_5.png" height="300" x="245" y="30" />
+      <image
+        href="/assets/illustrations/characters/character_5.png"
+        height="300"
+        x="245"
+        y="30"
+      />
     </Box>
   );
 }

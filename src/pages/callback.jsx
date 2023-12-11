@@ -7,6 +7,7 @@ import { useContext } from "../ContextProvider/ContextProvider";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 function Callback() {
   const [, dispatch] = useContext();
@@ -26,8 +27,8 @@ function Callback() {
         const accessToken = data.access_token;
         const refreshToken = data.refresh_token;
 
-        storage.set("dashboard", "accessToken", accessToken);
-        storage.set("dashboard", "refreshToken", refreshToken);
+        storage.set(config.name, "accessToken", accessToken);
+        storage.set(config.name, "refreshToken", refreshToken);
         dispatch({ type: "LOGIN" });
         navigate("/");
       })

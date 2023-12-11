@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo } from "react";
+import React from "react";
 
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +30,12 @@ function OrderCompleteIllustration({ ...other }) {
     >
       <BackgroundShape />
 
-      <image href="/assets/illustrations/characters/character_10.png" height="300" x="300" y="30" />
+      <image
+        href="/assets/illustrations/characters/character_10.png"
+        height="300"
+        x="300"
+        y="30"
+      />
 
       <path
         fill="#DFE3E8"

@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { NotFoundView } from "../widgets/error";
+import React from "react";
 
 // ----------------------------------------------------------------------
 

@@ -3,6 +3,7 @@ import { PageNotFoundIllustration } from "../../assets/illustrations";
 import { RouterLink } from "../../routes/components";
 import Typography from "@mui/material/Typography";
 import { motion } from "framer-motion";
+import React from "react";
 
 import { MotionContainer, varBounce } from "../../components/animate";
 

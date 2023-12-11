@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import { hideScroll } from "../../theme/css";
 import { useConfig } from "../../context/ConfigContext";
 import { useUser } from "../../hooks/use-user";
+import React from "react";
 
 // ----------------------------------------------------------------------
 

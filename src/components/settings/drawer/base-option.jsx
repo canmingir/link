@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import Stack from "@mui/material/Stack";
 import SvgColor from "../../svg-color";
 import { alpha } from "@mui/material/styles";
+import React from "react";
+
 // ----------------------------------------------------------------------
 
 export default function BaseOptions({ icons, options, value, onChange }) {

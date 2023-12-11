@@ -5,6 +5,8 @@ import Login from "../pages/Login";
 import NotFoundPage from "../pages/404";
 import { Route, Routes } from "react-router-dom";
 import LoginLayout from "../layouts/auth/modern-compact";
+import React from "react";
+
 export default function RouteManager({ routes }) {
   return (
     <HelmetProvider>

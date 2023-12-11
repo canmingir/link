@@ -14,9 +14,9 @@ import Typography from "@mui/material/Typography";
 import { paper } from "../../../theme/css";
 import { useSettingsContext } from "../context";
 import { useTheme } from "@mui/material/styles";
+import React from "react";
 
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
-import { Box } from "@mui/material";
 
 // ----------------------------------------------------------------------
 

@@ -14,6 +14,7 @@ import { useConfig } from "../../context/ConfigContext";
 import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useTheme } from "@mui/material/styles";
+import React from "react";
 
 // ----------------------------------------------------------------------
 

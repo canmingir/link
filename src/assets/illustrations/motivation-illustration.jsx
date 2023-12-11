@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo } from "react";
+import React from "react";
 
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +28,12 @@ function MotivationIllustration({ ...other }) {
     >
       <BackgroundShape />
 
-      <image href="/assets/illustrations/characters/character_2.png" height="300" x="322" y="30" />
+      <image
+        href="/assets/illustrations/characters/character_2.png"
+        height="300"
+        x="322"
+        y="30"
+      />
 
       <path
         fill="url(#paint0_linear_1_43)"

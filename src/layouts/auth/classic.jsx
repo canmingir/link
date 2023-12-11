@@ -1,15 +1,12 @@
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
 import Logo from "../../components/logo";
 import { Outlet } from "react-router";
 import PropTypes from "prop-types";
-import { RouterLink } from "../../routes/components";
 import Stack from "@mui/material/Stack";
-import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { bgGradient } from "../../theme/css";
-import { paths } from "../../routes/paths";
 import { useResponsive } from "../../hooks/use-responsive";
+import React from "react";
 
 import { alpha, useTheme } from "@mui/material/styles";
 

@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import { useBoolean } from "../../hooks/use-boolean";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
+import React from "react";
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +19,6 @@ export default function DashboardLayout() {
   const lgUp = useResponsive("up", "lg");
 
   const nav = useBoolean();
-
   const isHorizontal = settings.themeLayout === "horizontal";
 
   const isMini = settings.themeLayout === "mini";

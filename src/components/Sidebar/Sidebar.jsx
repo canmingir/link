@@ -7,6 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import React from "react";
 import styles from "./styles";
 import { useConfig } from "../../context/ConfigContext";
+
 const Sidebar = ({ routes, isCollapsed, currentPage }) => {
   const drawerWidth = isCollapsed ? 75 : 280;
   // TODO : responsive sidebar

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { SettingsContext } from "./settings-context";
 import isEqual from "lodash/isEqual";
 import { useLocalStorage } from "../../../hooks/use-local-storage";
-
+import React from "react";
 import { useCallback, useMemo, useState } from "react";
 
 // ----------------------------------------------------------------------

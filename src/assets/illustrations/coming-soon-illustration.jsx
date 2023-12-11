@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo } from "react";
+import React from "react";
 
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +30,12 @@ function ComingSoonIllustration({ ...other }) {
     >
       <BackgroundShape />
 
-      <image href="/assets/illustrations/characters/character_1.png" height="300" x="320" y="30" />
+      <image
+        href="/assets/illustrations/characters/character_1.png"
+        height="300"
+        x="320"
+        y="30"
+      />
 
       <path
         fill="url(#paint0_linear_1_79)"
@@ -42,7 +48,10 @@ function ComingSoonIllustration({ ...other }) {
         opacity="0.24"
       />
 
-      <path fill={PRIMARY_DARK} d="M58.778 79.4l14.6-6 80.2 7.5v7.6l-94.8.3v-9.4z" />
+      <path
+        fill={PRIMARY_DARK}
+        d="M58.778 79.4l14.6-6 80.2 7.5v7.6l-94.8.3v-9.4z"
+      />
       <path fill={PRIMARY_MAIN} d="M85.279 71h-14.4v199.5h14.4V71z" />
       <path
         fill="#fff"

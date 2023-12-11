@@ -4,6 +4,8 @@ import Header from "./header";
 import { Outlet } from "react-router";
 import PropTypes from "prop-types";
 import { usePathname } from "../../routes/hooks";
+import React from "react";
+
 // ----------------------------------------------------------------------
 
 export default function MainLayout() {

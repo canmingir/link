@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { useResponsive } from "../../hooks/use-responsive";
 import { varContainer } from "./variants";
+import React from "react";
 
 // ----------------------------------------------------------------------
 

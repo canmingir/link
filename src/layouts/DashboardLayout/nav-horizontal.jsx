@@ -9,6 +9,8 @@ import { memo } from "react";
 import { useConfig } from "../../context/ConfigContext";
 import { useTheme } from "@mui/material/styles";
 import { useUser } from "../../hooks/use-user";
+import React from "react";
+
 // ----------------------------------------------------------------------
 
 function NavHorizontal() {

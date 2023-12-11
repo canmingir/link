@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
+import React from "react";
 
 import { HEADER, NAV } from "../config-layout";
 

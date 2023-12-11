@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useUser } from "../../hooks/use-user";
+import React from "react";
 
 // ----------------------------------------------------------------------
 

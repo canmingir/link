@@ -12,6 +12,7 @@ import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
 import { useTheme } from "@mui/material/styles";
+import React from "react";
 
 import { HEADER, NAV } from "../config-layout";
 

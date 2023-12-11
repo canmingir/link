@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo } from "react";
+import React from "react";
 
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +29,13 @@ function UploadIllustration({ ...other }) {
       <BackgroundShape />
 
       <defs>
-        <linearGradient id="linearGradient-2" x1="30.113%" x2="30.113%" y1="0%" y2="100%">
+        <linearGradient
+          id="linearGradient-2"
+          x1="30.113%"
+          x2="30.113%"
+          y1="0%"
+          y2="100%"
+        >
           <stop offset="0%" stopOpacity="0" />
           <stop offset="100%" />
         </linearGradient>
