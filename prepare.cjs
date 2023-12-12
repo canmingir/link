@@ -1,4 +1,4 @@
-/*const fs = require("fs");
+const fs = require("fs");
 
 const prePush = `#!/usr/bin/env node
 const { execSync } = require("child_process");
@@ -13,4 +13,3 @@ try {
 `;
 
 fs.writeFileSync(`${__dirname}/.git/hooks/pre-push`, prePush);
-*/
