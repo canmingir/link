@@ -1,6 +1,7 @@
 import AccountPopover from "../common/account-popover";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
+import ItemBar from "../common/searchbar";
 import Logo from "../../components/logo";
 import PropTypes from "prop-types";
 import SettingsButton from "../common/settings-button";
@@ -18,7 +19,12 @@ import { HEADER, NAV } from "../config-layout";
 
 // ----------------------------------------------------------------------
 
-export default function Header({ onOpenNav }) {
+export default function Header({
+  onOpenNav,
+  handleItemSelect,
+  selectedItem,
+  setSelectedItem,
+}) {
   const theme = useTheme();
 
   const settings = useSettingsContext();
@@ -42,7 +48,11 @@ export default function Header({ onOpenNav }) {
           <SvgColor src="/assets/icons/navbar/ic_menu_item.svg" />
         </IconButton>
       )}
-
+      <ItemBar
+        handleItemSelect={handleItemSelect}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+      />
       <Stack
         flexGrow={1}
         direction="row"
