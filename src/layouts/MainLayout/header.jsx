@@ -6,6 +6,7 @@ import HeaderShadow from "../common/header-shadow";
 import Logo from "../../components/logo";
 import NavDesktop from "./nav/desktop";
 import NavMobile from "./nav/mobile";
+import React from "react";
 import SettingsButton from "../common/settings-button";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,7 +15,6 @@ import { useConfig } from "../../context/ConfigContext";
 import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
 
 // ----------------------------------------------------------------------
 

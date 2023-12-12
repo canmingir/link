@@ -1,14 +1,15 @@
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import ListItemText from "@mui/material/ListItemText";
 import PropTypes from "prop-types";
 import React from "react";
-import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
-import { alpha, useTheme } from "@mui/material/styles";
-import { useCallback, useState } from "react";
-import { Card, Tabs, tabsClasses } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import { bgGradient } from "../../src/theme/css";
+
+import { Card, Tabs, tabsClasses } from "@mui/material";
+import { alpha, useTheme } from "@mui/material/styles";
+import { useCallback, useState } from "react";
 
 // ----------------------------------------------------------------------
 

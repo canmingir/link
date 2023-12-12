@@ -70,6 +70,16 @@ const menuConfig = {
       linkTo: "/",
     },
   ],
+
+  itemBar: [
+    {
+      itemName: "item",
+      addNewItem: function addNew() {
+        return console.log("addNewItem");
+      },
+      itemsData: [{ id: 1, title: "item1", icon: ":box:" }],
+    },
+  ],
 };
 
 export default menuConfig;

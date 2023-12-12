@@ -1,10 +1,10 @@
 import NavItem from "./nav-item";
 import Popover from "@mui/material/Popover";
 import PropTypes from "prop-types";
+import React from "react";
 import Stack from "@mui/material/Stack";
 import { useActiveLink } from "../../../routes/hooks";
 import { usePathname } from "../../../routes/hooks";
-import React from "react";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 

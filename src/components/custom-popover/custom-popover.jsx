@@ -1,11 +1,9 @@
-import PropTypes from "prop-types";
-
 import Popover from "@mui/material/Popover";
-import { menuItemClasses } from "@mui/material/MenuItem";
+import PropTypes from "prop-types";
 import React from "react";
-
-import { getPosition } from "./utils";
 import { StyledArrow } from "./styles";
+import { getPosition } from "./utils";
+import { menuItemClasses } from "@mui/material/MenuItem";
 
 // ----------------------------------------------------------------------
 

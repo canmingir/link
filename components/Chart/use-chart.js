@@ -1,9 +1,7 @@
 import merge from "lodash/merge";
-import React from "react";
+import { useResponsive } from "../../src/hooks/use-responsive";
 
 import { alpha, useTheme } from "@mui/material/styles";
-
-import { useResponsive } from "../../src/hooks/use-responsive";
 
 // ----------------------------------------------------------------------
 

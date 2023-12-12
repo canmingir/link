@@ -5,6 +5,7 @@ import { NAV } from "../config-layout";
 import { NavSectionVertical } from "../../components/nav-section";
 import NavToggleButton from "../common/nav-toggle-button";
 import PropTypes from "prop-types";
+import React from "react";
 import Scrollbar from "../../components/scrollbar";
 import Stack from "@mui/material/Stack";
 import { useConfig } from "../../context/ConfigContext";
@@ -12,7 +13,6 @@ import { useEffect } from "react";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useUser } from "../../hooks/use-user";
-import React from "react";
 
 // ----------------------------------------------------------------------
 

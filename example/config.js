@@ -23,6 +23,28 @@ const config = {
     colorPresets: "cyan", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
   },
   ...menuConfig,
+  itemsData: [
+    {
+      id: 1,
+      title: "Project X",
+      icon: ":box:",
+    },
+    {
+      id: 2,
+      title: "Project Y",
+      icon: ":rocket:",
+    },
+    {
+      id: 3,
+      title: "Deneme",
+      icon: ":box:",
+    },
+    {
+      id: 4,
+      title: "Fasign",
+      icon: ":box",
+    },
+  ],
 };
 
 export default config;

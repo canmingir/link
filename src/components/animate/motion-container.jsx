@@ -1,8 +1,7 @@
-import { motion } from "framer-motion";
+import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
 import React from "react";
-import Box from "@mui/material/Box";
-
+import { motion } from "framer-motion";
 import { varContainer } from "./variants";
 
 // ----------------------------------------------------------------------

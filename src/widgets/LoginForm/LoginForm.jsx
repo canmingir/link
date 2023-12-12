@@ -1,3 +1,4 @@
+import Logo from "../../components/logo";
 import NucleoidLoginForm from "../../components/NucleoidLoginForm";
 import SocialLoginButtons from "../../components/SocialLoginButtons";
 import styles from "./LoginFormStyles";
@@ -5,7 +6,6 @@ import { useConfig } from "../../context/ConfigContext";
 
 import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
 import React, { useState } from "react";
-import Logo from "../../components/logo";
 
 const handleOAuthLogin = ({ authUrl, clientId, redirectUri, scope }) => {
   window.location.href = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;

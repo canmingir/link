@@ -2,11 +2,11 @@ import IconButton from "@mui/material/IconButton";
 import Iconify from "../../components/iconify";
 import { NAV } from "../config-layout";
 import PropTypes from "prop-types";
+import React from "react";
 import { bgBlur } from "../../theme/css";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
 
 // ----------------------------------------------------------------------
 

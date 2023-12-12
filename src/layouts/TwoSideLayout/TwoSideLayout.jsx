@@ -14,8 +14,8 @@ export default function TwoSideLayout({ rows, title }) {
       </Typography>
 
       {Object.values(rowData).map((array, index) => {
-        let eleman_sayisi = array.length;
-        let grid_sayisi = 12 / eleman_sayisi;
+        const eleman_sayisi = array.length;
+        const grid_sayisi = 12 / eleman_sayisi;
         return (
           <Grid container spacing={3} key={index}>
             {array.map((component, i) => (

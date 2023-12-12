@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
+import React from "react";
 import { motion } from "framer-motion";
 import { useResponsive } from "../../hooks/use-responsive";
 import { varContainer } from "./variants";
-import React from "react";
 
 // ----------------------------------------------------------------------
 

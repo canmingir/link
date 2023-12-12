@@ -1,9 +1,9 @@
 import Button from "@mui/material/Button";
 import { PageNotFoundIllustration } from "../../assets/illustrations";
+import React from "react";
 import { RouterLink } from "../../routes/components";
 import Typography from "@mui/material/Typography";
 import { motion } from "framer-motion";
-import React from "react";
 
 import { MotionContainer, varBounce } from "../../components/animate";
 

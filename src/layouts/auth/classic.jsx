@@ -2,11 +2,11 @@ import Box from "@mui/material/Box";
 import Logo from "../../components/logo";
 import { Outlet } from "react-router";
 import PropTypes from "prop-types";
+import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { bgGradient } from "../../theme/css";
 import { useResponsive } from "../../hooks/use-responsive";
-import React from "react";
 
 import { alpha, useTheme } from "@mui/material/styles";
 

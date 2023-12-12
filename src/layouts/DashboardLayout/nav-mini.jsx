@@ -3,11 +3,11 @@ import Logo from "../../components/logo";
 import { NAV } from "../config-layout";
 import { NavSectionMini } from "../../components/nav-section";
 import NavToggleButton from "../common/nav-toggle-button";
+import React from "react";
 import Stack from "@mui/material/Stack";
 import { hideScroll } from "../../theme/css";
 import { useConfig } from "../../context/ConfigContext";
 import { useUser } from "../../hooks/use-user";
-import React from "react";
 
 // ----------------------------------------------------------------------
 

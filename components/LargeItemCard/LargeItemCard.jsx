@@ -1,5 +1,3 @@
-import CustomPopover, { usePopover } from "../../src/components/custom-popover";
-
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Box from "@mui/material/Box";
@@ -16,6 +14,8 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { fDate } from "../../src/utils/format-time";
+
+import CustomPopover, { usePopover } from "../../src/components/custom-popover";
 
 // ----------------------------------------------------------------------
 

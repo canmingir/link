@@ -1,10 +1,8 @@
-import { memo } from "react";
-import React from "react";
-
-import Box from "@mui/material/Box";
-import { useTheme } from "@mui/material/styles";
-
 import BackgroundShape from "./background-shape";
+import Box from "@mui/material/Box";
+import React from "react";
+import { memo } from "react";
+import { useTheme } from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 

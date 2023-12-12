@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Iconify from "../../iconify";
 import LayoutOptions from "./layout-options";
 import PresetsOptions from "./presets-options";
+import React from "react";
 import Scrollbar from "../../scrollbar";
 import Stack from "@mui/material/Stack";
 import StretchOptions from "./stretch-options";
@@ -14,7 +15,6 @@ import Typography from "@mui/material/Typography";
 import { paper } from "../../../theme/css";
 import { useSettingsContext } from "../context";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
 
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
 

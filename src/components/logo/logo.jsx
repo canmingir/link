@@ -1,13 +1,13 @@
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import PropTypes from "prop-types";
+import React from "react";
 import { RouterLink } from "../../routes/components";
 import { forwardRef } from "react";
-import React from "react";
 
 // ----------------------------------------------------------------------
 
-const Logo = forwardRef(({ disabledLink = false, sx }, ref) => {
+const Logo = forwardRef(({ disabledLink = false, sx }) => {
   const logo = (
     <Box
       component="img"

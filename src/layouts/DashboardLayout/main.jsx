@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
+import React from "react";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
-import React from "react";
 
 import { HEADER, NAV } from "../config-layout";
 
@@ -12,9 +12,7 @@ const SPACING = 8;
 
 export default function Main({ children, sx, ...other }) {
   const settings = useSettingsContext();
-
   const lgUp = useResponsive("up", "lg");
-
   const isNavHorizontal = settings.themeLayout === "horizontal";
 
   const isNavMini = settings.themeLayout === "mini";

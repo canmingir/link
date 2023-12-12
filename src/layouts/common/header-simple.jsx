@@ -1,15 +1,14 @@
 import AppBar from "@mui/material/AppBar";
 import { HEADER } from "../config-layout";
 import HeaderShadow from "./header-shadow";
-import Link from "@mui/material/Link";
 import Logo from "../../components/logo";
+import React from "react";
 import SettingsButton from "./settings-button";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import { bgBlur } from "../../theme/css";
 import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +41,6 @@ export default function HeaderSimple() {
         }}
       >
         <Logo />
-
         <Stack direction="row" alignItems="center" spacing={1}>
           <SettingsButton />
         </Stack>

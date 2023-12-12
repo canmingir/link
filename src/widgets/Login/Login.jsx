@@ -1,12 +1,12 @@
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
+import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { storage } from "@nucleoidjs/webstorage";
 import { useConfig } from "../../context/ConfigContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import React from "react";
 
 // ----------------------------------------------------------------------
 
@@ -32,6 +32,7 @@ export default function Auth0LoginView() {
     if (token()) {
       navigate("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   return (

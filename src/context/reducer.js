@@ -1,11 +1,11 @@
+import globalConfig from "../config";
 import jwtDecode from "jwt-decode";
 import { storage } from "@nucleoidjs/webstorage";
-import globalConfig from "../config";
 
 const config = globalConfig();
 
 let login = true;
-const itemId = storage.get(config.name, "itemId");
+const itemId = storage.get("itemId");
 try {
   const token = storage.get(config.name, "accessToken");
   const decodedToken = jwtDecode(token);
@@ -38,12 +38,12 @@ export const reducer = (state, action) => {
 
     case "ITEM_SELECT": {
       state.itemId = action.payload;
-      storage.set(config.name, "itemId", state.itemId);
+      storage.set("itemId", state.itemId);
       break;
     }
 
     case "ITEM_DELETE": {
-      storage.remove(config.name, "itemId");
+      storage.remove("itemId");
       state.itemId = null;
       break;
     }

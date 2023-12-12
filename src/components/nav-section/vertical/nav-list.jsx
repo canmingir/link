@@ -1,9 +1,9 @@
 import Collapse from "@mui/material/Collapse";
 import NavItem from "./nav-item";
 import PropTypes from "prop-types";
+import React from "react";
 import { useActiveLink } from "../../../routes/hooks";
 import { usePathname } from "../../../routes/hooks";
-import React from "react";
 
 import { useCallback, useEffect, useState } from "react";
 

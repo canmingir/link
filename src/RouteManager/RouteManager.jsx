@@ -2,10 +2,11 @@ import Callback from "../pages/Callback";
 import CompactLayout from "../layouts/CompactLayout";
 import { HelmetProvider } from "react-helmet-async";
 import Login from "../pages/Login";
-import NotFoundPage from "../pages/404";
-import { Route, Routes } from "react-router-dom";
 import LoginLayout from "../layouts/auth/modern-compact";
+import NotFoundPage from "../pages/404";
 import React from "react";
+
+import { Route, Routes } from "react-router-dom";
 
 export default function RouteManager({ routes }) {
   return (

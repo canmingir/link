@@ -1,10 +1,8 @@
-import { memo } from "react";
-import PropTypes from "prop-types";
-
-import Stack from "@mui/material/Stack";
-import React from "react";
-
 import NavList from "./nav-list";
+import PropTypes from "prop-types";
+import React from "react";
+import Stack from "@mui/material/Stack";
+import { memo } from "react";
 
 // ----------------------------------------------------------------------
 

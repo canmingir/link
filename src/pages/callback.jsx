@@ -1,4 +1,5 @@
 import Page from "../layouts/Page";
+import React from "react";
 import oauth from "../http/oauth";
 import qs from "qs";
 import { storage } from "@nucleoidjs/webstorage";
@@ -7,7 +8,6 @@ import { useContext } from "../ContextProvider/ContextProvider";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import React from "react";
 
 function Callback() {
   const [, dispatch] = useContext();
