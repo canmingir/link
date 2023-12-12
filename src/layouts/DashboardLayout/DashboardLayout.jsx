@@ -6,14 +6,35 @@ import NavMini from "./nav-mini";
 import NavVertical from "./nav-vertical";
 import { Outlet } from "react-router";
 import PropTypes from "prop-types";
+import React from "react";
 import { useBoolean } from "../../hooks/use-boolean";
+import { useConfig } from "../../context/ConfigContext";
+import { useContext } from "../../ContextProvider/ContextProvider";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
-import React from "react";
 
 // ----------------------------------------------------------------------
 
 export default function DashboardLayout() {
+  const [state, dispatch] = useContext();
+  const [selectedItem, setSelectedItem] = React.useState();
+  const globalConfig = useConfig();
+
+  React.useEffect(() => {
+    const foundItem = globalConfig.itemsData.find(
+      (item) => item.id === state.itemId
+    );
+
+    if (foundItem) {
+      setSelectedItem(foundItem);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const handleItemSelect = (item) => {
+    dispatch({ type: "ITEM_SELECT", payload: item.id });
+  };
+
   const settings = useSettingsContext();
 
   const lgUp = useResponsive("up", "lg");
@@ -34,7 +55,12 @@ export default function DashboardLayout() {
   if (isHorizontal) {
     return (
       <>
-        <Header onOpenNav={nav.onTrue} />
+        <Header
+          onOpenNav={nav.onTrue}
+          handleItemSelect={handleItemSelect}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
+        />
 
         {lgUp ? renderHorizontal : renderNavVertical}
 
@@ -48,7 +74,12 @@ export default function DashboardLayout() {
   if (isMini) {
     return (
       <>
-        <Header onOpenNav={nav.onTrue} />
+        <Header
+          onOpenNav={nav.onTrue}
+          handleItemSelect={handleItemSelect}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
+        />
 
         <Box
           sx={{
@@ -69,7 +100,12 @@ export default function DashboardLayout() {
 
   return (
     <>
-      <Header onOpenNav={nav.onTrue} />
+      <Header
+        onOpenNav={nav.onTrue}
+        handleItemSelect={handleItemSelect}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+      />
 
       <Box
         sx={{
