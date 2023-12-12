@@ -3,7 +3,9 @@ import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import ItemBar from "../common/searchbar";
 import Logo from "../../components/logo";
+import NotificationsPopover from "../common/notifications-popover";
 import PropTypes from "prop-types";
+import React from "react";
 import SettingsButton from "../common/settings-button";
 import Stack from "@mui/material/Stack";
 import SvgColor from "../../components/svg-color";
@@ -13,7 +15,6 @@ import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
 
 import { HEADER, NAV } from "../config-layout";
 
@@ -60,6 +61,8 @@ export default function Header({
         justifyContent="flex-end"
         spacing={{ xs: 0.5, sm: 1 }}
       >
+        <NotificationsPopover />
+
         <SettingsButton />
 
         <AccountPopover />
