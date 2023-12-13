@@ -1,18 +1,18 @@
 const LoginFormStyles = {
   mainBoxStyle: {
-    width: { xs: "90%", sm: "50%", md: "33%" },
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     padding: "1rem",
     borderRadius: "10px",
-    boxShadow: "1px 1px 10px rgba(0,0,0,0.5)",
     justifyContent: "center",
   },
   iconBoxStyle: {
     width: { xs: "25%", sm: "25%", md: "20%" },
+    height: { xs: "25%", sm: "25%", md: "20%" },
     borderRadius: "10px",
     margin: "1rem 0",
+    justifyContent: "center",
   },
   formBoxStyle: {
     display: "flex",

@@ -37,7 +37,7 @@ const NucleoidLoginForm = ({
       label="Password"
       type="password"
       variant="outlined"
-      sx={{ margin: "0.5rem 0 0.1rem", width: "100%" }}
+      sx={{ margin: "1rem 0 1rem", width: "100%" }}
       size="small"
       value={password}
       onChange={(e) => setPassword(e.target.value)}
@@ -46,7 +46,11 @@ const NucleoidLoginForm = ({
     <MuiLink
       href="/console/login2"
       variant="body2"
-      sx={{ textDecoration: "none", alignSelf: "flex-start" }}
+      sx={{
+        textDecoration: "none",
+        alignSelf: "center",
+        justifySelf: "center",
+      }}
     >
       Forgot Password?
     </MuiLink>

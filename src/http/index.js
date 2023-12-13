@@ -24,7 +24,7 @@ const instance = axios.create({
 instance.interceptors.request.use((request) => {
   globalConfig();
   publish("LOADED", { loading: true });
-  const accessToken = storage.get("dashboard", "accessToken");
+  const accessToken = storage.get(config.name, "accessToken");
   request.headers["Authorization"] = `Bearer ${accessToken}`;
   return request;
 });
@@ -93,12 +93,12 @@ const refreshAuthLogic = async (failedRequest) => {
   try {
     updateConfig();
     const { data } = await oauth.post("/oauth", {
-      refresh_token: storage.get("dashboard", "refreshToken"),
+      refresh_token: storage.get(config.name, "refreshToken"),
     });
     const accessToken = data.access_token;
     failedRequest.response.config.headers["Authorization"] =
       "Bearer " + accessToken;
-    storage.set("dashboard", "accessToken", accessToken);
+    storage.set(config.name, "accessToken", accessToken);
     return Promise.resolve();
   } catch (error) {
     storage.remove("accessToken");

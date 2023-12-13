@@ -1,9 +1,7 @@
 import menuConfig from "./config.menu";
 
 const config = {
-  name: "GrayCollar",
   base: "",
-  api: "http://localhost:5001",
   login: {
     icon: "/media/logo.png",
     largeIcon: "/media/largeLogo.png",
@@ -20,27 +18,31 @@ const config = {
     token: "Bearer LoLQZcqQsDQgqVCEGbV4fH7CL9HLnzryWObnPYxch5o=",
     url: "http://flowise.graycollar.ai:3000/api/v1/prediction/88666388-0cae-4735-96e9-7c15b12896df",
   },
+  settings: {
+    mode: "dark", // 'light' | 'dark'
+    colorPresets: "cyan", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+  },
   ...menuConfig,
   itemsData: [
     {
       id: 1,
-      name: "Project X",
-      icon: "team",
+      title: "Project X",
+      icon: ":box:",
     },
     {
       id: 2,
-      name: "Project top",
-      icon: "team",
+      title: "Project Y",
+      icon: ":rocket:",
     },
     {
       id: 3,
-      name: "Team 3",
-      icon: "team",
+      title: "Deneme",
+      icon: ":box:",
     },
     {
       id: 4,
-      name: "Team red",
-      icon: "team",
+      title: "Fasign",
+      icon: ":box",
     },
   ],
 };

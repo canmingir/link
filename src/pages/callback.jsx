@@ -1,4 +1,5 @@
 import Page from "../layouts/Page";
+import React from "react";
 import oauth from "../http/oauth";
 import qs from "qs";
 import { storage } from "@nucleoidjs/webstorage";
@@ -26,8 +27,8 @@ function Callback() {
         const accessToken = data.access_token;
         const refreshToken = data.refresh_token;
 
-        storage.set("dashboard", "accessToken", accessToken);
-        storage.set("dashboard", "refreshToken", refreshToken);
+        storage.set(config.name, "accessToken", accessToken);
+        storage.set(config.name, "refreshToken", refreshToken);
         dispatch({ type: "LOGIN" });
         navigate("/");
       })
