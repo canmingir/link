@@ -1,11 +1,10 @@
 import ChatCommands from './ChatCommands';
 import CommandDropdown from './CommandDropdown';
 import Element from './Element';
-import SendIcon from '@mui/icons-material/Send';
 
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, InputAdornment } from '@mui/material';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Transforms, createEditor } from 'slate';
 
 const initialValue = [
@@ -53,7 +52,16 @@ const withInlines = (editor) => {
   return editor;
 };
 
-function MessageInput() {
+const MessageInput = ({
+  value,
+  onKeyUp,
+  onChange,
+  placeholder,
+  disabled,
+  startAdornment,
+  endAdornment,
+  sx,
+}) => {
   const [editor] = useState(() => withInlines(withReact(createEditor())));
   const [showCommands, setShowCommands] = useState(false);
   const [currentInputIndex, setCurrentInputIndex] = useState(-1);
@@ -61,10 +69,10 @@ function MessageInput() {
 
   const handleSend = useCallback(() => {
     const content = extractTextFromNodes(editor.children[0].children);
-    console.log(content);
+    onKeyUp({ key: 'Enter', target: { value: content } });
     Transforms.delete(editor, { at: [0], unit: 'block' });
     Transforms.insertNodes(editor, initialValue[0]);
-  }, [editor]);
+  }, [editor, onKeyUp]);
 
   const handleKeyDown = useCallback(
     (event) => {
@@ -117,11 +125,10 @@ function MessageInput() {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        padding: '10px',
-        borderTop: '1px solid #202225',
-        backgroundColor: '#2f3136',
+        ...sx,
       }}
     >
+      {startAdornment && <div style={{ marginRight: '10px' }}>{startAdornment}</div>}
       <div
         style={{
           position: 'relative',
@@ -138,32 +145,27 @@ function MessageInput() {
             } else {
               setEditorEmpty(false);
             }
+            if (onChange) {
+              onChange({ target: { value: extractTextFromNodes(editor.children[0].children) } });
+            }
           }}
         >
           <Editable
             onKeyDown={handleKeyDown}
-            onKeyUp={handleKeyUp}
+            onKeyUp={(event) => {
+              handleKeyUp(event);
+              onKeyUp && onKeyUp(event);
+            }}
+            placeholder={placeholder}
             renderElement={Element}
             data-testid="message-input"
-            style={{
-              flexGrow: 1,
-              borderRadius: '25px',
-              backgroundColor: '#40444B',
-              padding: '10px 14px',
-              outline: 'none',
-              minWidth: 0,
-              color: 'white',
-              fontFamily: 'inherit',
-              fontSize: 'inherit',
-              border: '1px solid #40444B',
-              '&:focus': {
-                borderColor: '#7289da',
-              },
-            }}
+            style={{ outline: 'none' }}
+            readOnly={disabled}
           />
         </Slate>
         {showCommands && <CommandDropdown commands={ChatCommands} onSelect={handleCommandSelect} />}
       </div>
+      {endAdornment && <div style={{ marginLeft: '10px' }}>{endAdornment}</div>}
       <IconButton
         data-testid="send-button"
         onClick={handleSend}
@@ -172,11 +174,9 @@ function MessageInput() {
         sx={{
           color: '#7289da',
         }}
-      >
-        <SendIcon />
-      </IconButton>
+      ></IconButton>
     </Box>
   );
-}
+};
 
 export default MessageInput;
