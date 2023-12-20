@@ -1,21 +1,17 @@
-import { sub } from 'date-fns';
-import PropTypes from 'prop-types';
-import { useRef, useMemo, useState, useCallback } from 'react';
-
-import Stack from '@mui/material/Stack';
-import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
-
+import Iconify from 'src/components/iconify';
+import InputBase from '@mui/material/InputBase';
+import MessageInput from './MessageInput';
+import PropTypes from 'prop-types';
+import Stack from '@mui/material/Stack';
 import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
-
+import { sub } from 'date-fns';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
-
+import { useRouter } from 'src/routes/hooks';
 import uuidv4 from 'src/utils/uuidv4';
 
-import { sendMessage, createConversation } from 'src/api/chat';
-
-import Iconify from 'src/components/iconify';
+import { createConversation, sendMessage } from 'src/api/chat';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -108,7 +104,7 @@ export default function ChatMessageInput({
 
   return (
     <>
-      <InputBase
+      <MessageInput
         value={message}
         onKeyUp={handleSendMessage}
         onChange={handleChangeMessage}
