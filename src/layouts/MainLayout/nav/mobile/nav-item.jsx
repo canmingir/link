@@ -19,7 +19,7 @@ export const NavItem = forwardRef(
     const renderContent = (
       <StyledNavItem ref={ref} open={open} active={active} {...other}>
         <Box component="span" sx={{ mr: 2, display: "inline-flex" }}>
-          {icon}
+          <Iconify width={16} icon={icon}></Iconify>
         </Box>
 
         <Box component="span" sx={{ flexGrow: 1 }}>
