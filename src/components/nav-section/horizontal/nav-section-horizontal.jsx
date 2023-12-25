@@ -7,7 +7,6 @@ import { memo } from "react";
 // ----------------------------------------------------------------------
 
 function NavSectionHorizontal({ data, slotProps, sx, ...other }) {
-  console.log(data);
   return (
     <Stack
       component="nav"

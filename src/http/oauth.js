@@ -26,7 +26,6 @@ instance.interceptors.request.use((request) => {
   updateBaseURL();
 
   request.baseURL = instance.defaults.baseURL;
-  console.log("Request", request);
 
   return request;
 });
