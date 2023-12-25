@@ -13,7 +13,6 @@ import { useEffect } from "react";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useUser } from "../../hooks/use-user";
-
 // ----------------------------------------------------------------------
 
 export default function NavVertical({ openNav, onCloseNav }) {
@@ -23,7 +22,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
 
   const lgUp = useResponsive("up", "lg");
 
-  const { sideMenu } = useConfig();
+  const { sideMenu, actionButtons } = useConfig();
 
   useEffect(() => {
     if (openNav) {
@@ -44,18 +43,27 @@ export default function NavVertical({ openNav, onCloseNav }) {
       }}
     >
       <Logo sx={{ mt: 3, ml: 4, mb: 1 }} />
-
       <NavSectionVertical
         data={sideMenu}
         slotProps={{
           currentRole: user?.role,
         }}
       />
-
       <Box sx={{ flexGrow: 1 }} />
+      <Stack
+        direction={"column"}
+        alignItems={"center"}
+        justifyItems={"center"}
+        sx={{ marginBottom: 3 }}
+        gap={2}
+      >
+        {actionButtons &&
+          actionButtons.map((Action, index) => (
+            <Box key={index} component={Action}></Box>
+          ))}
+      </Stack>
     </Scrollbar>
   );
-
   return (
     <Box
       sx={{
