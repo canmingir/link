@@ -3,11 +3,10 @@ import Link from "@mui/material/Link";
 import PropTypes from "prop-types";
 import React from "react";
 import { RouterLink } from "../../routes/components";
-import { forwardRef } from "react";
 
 // ----------------------------------------------------------------------
 
-const Logo = forwardRef(({ disabledLink = false, sx }) => {
+const Logo = ({ disabledLink = false, sx }) => {
   const logo = (
     <Box
       component="img"
@@ -25,7 +24,7 @@ const Logo = forwardRef(({ disabledLink = false, sx }) => {
       {logo}
     </Link>
   );
-});
+};
 
 Logo.propTypes = {
   disabledLink: PropTypes.bool,
