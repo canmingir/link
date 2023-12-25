@@ -13,7 +13,7 @@ import { fDate } from "../../src/utils/format-time";
 import CustomPopover, { usePopover } from "../../src/components/custom-popover";
 
 // ----------------------------------------------------------------------
-
+// TODO ADD OPTIONS PROPS
 export default function ItemCard({
   item,
   onView,
@@ -21,14 +21,22 @@ export default function ItemCard({
   onDelete,
   onIconClick,
   icon,
+  onAssign,
+  dataCy,
+  moreVertCY,
+  opt1CY,
+  opt2CY,
+  opt3CY,
+  opt4CY,
 }) {
   const popover = usePopover();
 
-  const { name, createdAt, description } = item;
+  const { name, createdAt, personality, avatar } = item;
   return (
     <>
-      <Card>
+      <Card data-cy={dataCy}>
         <IconButton
+          data-cy={moreVertCY}
           onClick={popover.onOpen}
           sx={{ position: "absolute", top: 8, right: 8 }}
         >
@@ -38,7 +46,10 @@ export default function ItemCard({
         <Stack sx={{ p: 3, pb: 2 }}>
           <Avatar
             alt={name}
-            src={name}
+            src={`https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_${avatar.replace(
+              /:/g,
+              ""
+            )}.jpg`}
             variant="rounded"
             sx={{ width: 48, height: 48, mb: 2 }}
           />
@@ -74,7 +85,7 @@ export default function ItemCard({
               sx={{ paddingY: "0.5rem" }}
             >
               <Iconify icon={"ph:note-pencil-duotone"} width={24} />
-              <Typography variant="subtitle1">Description</Typography>
+              <Typography variant="subtitle1">Personality</Typography>
             </Stack>
             <Stack
               sx={{
@@ -88,11 +99,11 @@ export default function ItemCard({
                 color={"inherit"}
                 variant={"body2"}
               >
-                {description}
+                {personality}
               </Typography>
               <Iconify
                 onClick={() => {
-                  onIconClick;
+                  onIconClick();
                 }}
                 sx={{
                   marginX: 2,
@@ -116,6 +127,7 @@ export default function ItemCard({
         sx={{ width: 140 }}
       >
         <MenuItem
+          data-cy={opt1CY}
           onClick={() => {
             popover.onClose();
             onView();
@@ -126,6 +138,7 @@ export default function ItemCard({
         </MenuItem>
 
         <MenuItem
+          data-cy={opt2CY}
           onClick={() => {
             popover.onClose();
             onEdit();
@@ -134,8 +147,21 @@ export default function ItemCard({
           <Iconify icon="solar:pen-bold" />
           Edit
         </MenuItem>
+        {onAssign && (
+          <MenuItem
+            data-cy={opt3CY}
+            onClick={() => {
+              popover.onClose();
+              onAssign();
+            }}
+          >
+            <Iconify icon="mingcute:transfer-fill" />
+            Reassign
+          </MenuItem>
+        )}
 
         <MenuItem
+          data-cy={opt4CY}
           onClick={() => {
             popover.onClose();
             onDelete();

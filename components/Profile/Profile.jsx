@@ -15,7 +15,7 @@ import { useCallback, useState } from "react";
 
 export default function ProfileCover({
   name,
-  avatarUrl,
+  avatar,
   summary,
   coverUrl,
   TABS,
@@ -56,8 +56,8 @@ export default function ProfileCover({
             }}
           >
             <Avatar
-              src={avatarUrl}
-              alt={name}
+              src={avatar}
+              alt={avatar}
               sx={{
                 mx: "auto",
                 width: { xs: 64, md: 128 },
