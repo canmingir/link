@@ -1,21 +1,15 @@
-import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Label from "../../../components/label";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import PropTypes from "prop-types";
 import React from "react";
+import { Stack } from "@mui/material";
+import SvgColor from "../../../components/svg-color";
 import { alpha } from "@mui/material/styles";
-
 // ----------------------------------------------------------------------
 
-export default function ResultItem({
-  base,
-  title,
-  icon,
-  groupLabel,
-  onClickItem,
-}) {
+export default function SelectBar({ title, icon, groupLabel, onClickItem }) {
   return (
     <ListItemButton
       onClick={onClickItem}
@@ -35,11 +29,21 @@ export default function ResultItem({
         },
       }}
     >
-      <Avatar
-        src={`${base}/media/ProjectIcons/${icon?.replace(/:/g, "")}.png`}
-        variant="square"
-        sx={{ width: 30, height: 30, mx: 2 }}
-      />
+      <Stack
+        sx={{
+          color: "text.disabled",
+          typography: "subtitle2",
+          "& .svg-color": {
+            background: (theme) =>
+              `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
+          },
+        }}
+      >
+        <SvgColor
+          src={`https://api.iconify.design/${icon}.svg`}
+          sx={{ width: 32, height: 32, mx: 2 }}
+        />
+      </Stack>
       <ListItemText
         primaryTypographyProps={{
           typography: "subtitle2",
@@ -63,8 +67,7 @@ export default function ResultItem({
   );
 }
 
-ResultItem.propTypes = {
-  base: PropTypes.string,
+SelectBar.propTypes = {
   groupLabel: PropTypes.string,
   onClickItem: PropTypes.func,
   icon: PropTypes.string,
