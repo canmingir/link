@@ -8,14 +8,12 @@ import Stack from "@mui/material/Stack";
 import { hideScroll } from "../../theme/css";
 import { useConfig } from "../../context/ConfigContext";
 import { useUser } from "../../hooks/use-user";
-
 // ----------------------------------------------------------------------
 
-export default function NavMini() {
+export default function NavMini({ only }) {
   const { user } = useUser();
 
   const { sideMenu } = useConfig();
-
   return (
     <Box
       sx={{
@@ -23,12 +21,14 @@ export default function NavMini() {
         width: { lg: NAV.W_MINI },
       }}
     >
-      <NavToggleButton
-        sx={{
-          top: 22,
-          left: NAV.W_MINI - 12,
-        }}
-      />
+      {!only && (
+        <NavToggleButton
+          sx={{
+            top: 22,
+            left: NAV.W_MINI - 12,
+          }}
+        />
+      )}
 
       <Stack
         sx={{
@@ -41,7 +41,6 @@ export default function NavMini() {
         }}
       >
         <Logo sx={{ mx: "auto", my: 2 }} />
-
         <NavSectionMini
           data={sideMenu}
           slotProps={{
