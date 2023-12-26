@@ -1,3 +1,5 @@
+import { Button } from "@mui/material";
+import ConsoleButton from "./src/widgets/ConsoleButton";
 import menuConfig from "./config.menu";
 
 const config = {
@@ -6,6 +8,7 @@ const config = {
     icon: "/media/logo.png",
     largeIcon: "/media/largeLogo.png",
     name: "Gray Collar Dashboard",
+    nucleoid: {},
     github: {
       authUrl: "https://github.com/login/oauth/authorize",
       clientId: "0c2844d3d19dc9293fc5",
@@ -27,7 +30,7 @@ const config = {
     {
       id: 1,
       title: "Project X",
-      icon: ":box:",
+      icon: "tdesign/anchor",
     },
     {
       id: 2,

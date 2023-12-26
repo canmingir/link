@@ -11,16 +11,18 @@ import { memo, useCallback, useState } from "react";
 
 function NavSectionVertical({ data, slotProps, ...other }) {
   return (
-    <Stack component="nav" id="nav-section-vertical" {...other}>
-      {data.map((group, index) => (
-        <Group
-          key={group.subheader || index}
-          subheader={group.subheader}
-          items={group.items}
-          slotProps={slotProps}
-        />
-      ))}
-    </Stack>
+    <>
+      <Stack component="nav" id="nav-section-vertical" {...other}>
+        {data.map((group, index) => (
+          <Group
+            key={group.subheader || index}
+            subheader={group.subheader}
+            items={group.items}
+            slotProps={slotProps}
+          />
+        ))}
+      </Stack>
+    </>
   );
 }
 
@@ -39,7 +41,6 @@ function Group({ subheader, items, slotProps }) {
   const handleToggle = useCallback(() => {
     setOpen((prev) => !prev);
   }, []);
-  console.log(items, "asd");
   const renderContent = items?.map((list) => (
     <NavList key={list.title} data={list} depth={1} slotProps={slotProps} />
   ));

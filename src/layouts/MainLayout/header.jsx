@@ -1,11 +1,14 @@
+import AccountPopover from "../common/account-popover";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { HEADER } from "../config-layout";
 import HeaderShadow from "../common/header-shadow";
+import ItemBar from "../common/SelectBar";
 import Logo from "../../components/logo";
 import NavDesktop from "./nav/desktop";
 import NavMobile from "./nav/mobile";
+import NotificationsPopover from "../common/notifications-popover";
 import React from "react";
 import SettingsButton from "../common/settings-button";
 import Stack from "@mui/material/Stack";
@@ -18,14 +21,16 @@ import { useTheme } from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 
-export default function Header() {
+export default function Header({
+  handleItemSelect,
+  selectedItem,
+  setSelectedItem,
+}) {
   const { topMenu } = useConfig();
   const theme = useTheme();
 
   const mdUp = useResponsive("up", "md");
-
   const offsetTop = useOffSetTop(HEADER.H_DESKTOP);
-
   return (
     <AppBar>
       <Toolbar
@@ -50,7 +55,13 @@ export default function Header() {
         }}
       >
         <Container sx={{ height: 1, display: "flex", alignItems: "center" }}>
-          <Logo />
+          <Logo sx={{ marginRight: 10 }} />
+
+          <ItemBar
+            handleItemSelect={handleItemSelect}
+            selectedItem={selectedItem}
+            setSelectedItem={setSelectedItem}
+          />
           <Box sx={{ flexGrow: 1 }} />
 
           {mdUp && <NavDesktop data={topMenu} />}
@@ -59,12 +70,11 @@ export default function Header() {
             alignItems="center"
             direction={{ xs: "row", md: "row-reverse" }}
           >
-            <SettingsButton
-              sx={{
-                ml: { xs: 1, md: 0 },
-                mr: { md: 2 },
-              }}
-            />
+            <NotificationsPopover />
+
+            <SettingsButton />
+
+            <AccountPopover />
 
             {!mdUp && <NavMobile data={topMenu} />}
           </Stack>

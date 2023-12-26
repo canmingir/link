@@ -1,5 +1,5 @@
 import merge from "lodash/merge";
-import { useResponsive } from "../../src/hooks/use-responsive";
+import { useResponsive } from "../../hooks/use-responsive";
 
 import { alpha, useTheme } from "@mui/material/styles";
 

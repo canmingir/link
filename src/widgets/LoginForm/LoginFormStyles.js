@@ -7,13 +7,7 @@ const LoginFormStyles = {
     borderRadius: "10px",
     justifyContent: "center",
   },
-  iconBoxStyle: {
-    width: { xs: "25%", sm: "25%", md: "20%" },
-    height: { xs: "25%", sm: "25%", md: "20%" },
-    borderRadius: "10px",
-    margin: "1rem 0",
-    justifyContent: "center",
-  },
+
   formBoxStyle: {
     display: "flex",
     flexDirection: "column",

@@ -1,3 +1,5 @@
+import { Box, Button } from "@mui/material";
+
 const menuConfig = {
   sideMenu: [
     {
@@ -80,6 +82,9 @@ const menuConfig = {
       itemsData: [{ id: 1, title: "item1", icon: ":box:" }],
     },
   ],
+
+  actionButtons: [Button],
+  fullScreenLayout: "top",
 };
 
 export default menuConfig;

@@ -1,7 +1,6 @@
-import Logo from "../../components/logo";
 import NucleoidLoginForm from "../../components/NucleoidLoginForm";
 import SocialLoginButtons from "../../components/SocialLoginButtons";
-import styles from "./LoginFormStyles";
+import Stack from "@mui/material/Stack";
 import { useConfig } from "../../context/ConfigContext";
 
 import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
@@ -15,24 +14,20 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const config = useConfig();
 
-  return (
-    <Box
-      sx={{
-        width: "22rem",
-        height: "auto",
-      }}
-    >
-      <Logo sx={styles.iconBoxStyle} />
+  const renderHead = (
+    <Stack spacing={2} sx={{ mb: 5 }}>
+      <Typography variant="h4">Sign in to Minimal</Typography>
 
-      <Typography
-        variant="subtitle1"
-        sx={{
-          textAlign: "center",
-          width: "100%",
-        }}
-      >
-        Sign in to your account
-      </Typography>
+      <Stack direction="row" spacing={0.5}>
+        <Typography variant="body2">New user?</Typography>
+
+        <MuiLink variant="subtitle2">Create an account</MuiLink>
+      </Stack>
+    </Stack>
+  );
+
+  const renderForm = (
+    <>
       {!!config.login.nucleoid && (
         <>
           <NucleoidLoginForm
@@ -71,7 +66,13 @@ function LoginForm() {
         linkedinEnable={!!config.login.linkedin}
         onLinkedin={() => handleOAuthLogin({ ...config.login.linkedin })}
       />
-    </Box>
+    </>
+  );
+
+  return (
+    <>
+      {renderHead} {renderForm}
+    </>
   );
 }
 export default LoginForm;

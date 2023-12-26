@@ -1,7 +1,7 @@
 import AccountPopover from "../common/account-popover";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
-import ItemBar from "../common/searchbar";
+import ItemBar from "../common/SelectBar";
 import Logo from "../../components/logo";
 import NotificationsPopover from "../common/notifications-popover";
 import PropTypes from "prop-types";
@@ -46,7 +46,7 @@ export default function Header({
 
       {!lgUp && (
         <IconButton onClick={onOpenNav}>
-          <SvgColor src="/assets/icons/navbar/ic_menu_item.svg" />
+          <SvgColor src="https://minimals.cc/assets/icons/navbar/ic_menu_item.svg" />
         </IconButton>
       )}
       <ItemBar

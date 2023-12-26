@@ -1,4 +1,3 @@
-import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Iconify from "../../../components/iconify";
@@ -10,6 +9,7 @@ import ResultItem from "./result-item";
 import Scrollbar from "../../../components/scrollbar";
 import SearchNotFound from "../../../components/search-not-found";
 import Stack from "@mui/material/Stack";
+import SvgColor from "../../../components/svg-color";
 import { alpha } from "@mui/material/styles";
 import { applyFilter } from "./utils";
 import match from "autosuggest-highlight/match";
@@ -26,9 +26,9 @@ import React, { memo, useCallback, useState } from "react";
 
 // ----------------------------------------------------------------------
 
-function Searchbar({ selectedItem, handleItemSelect, setSelectedItem }) {
+function SelectBar({ selectedItem, handleItemSelect, setSelectedItem }) {
   const theme = useTheme();
-  const { base, itemsData } = useConfig();
+  const { itemsData } = useConfig();
   const [state, dispatch] = useContext();
   const search = useBoolean();
 
@@ -70,7 +70,6 @@ function Searchbar({ selectedItem, handleItemSelect, setSelectedItem }) {
     inputData: itemsData,
     query: searchQuery,
   });
-
   const notFound = searchQuery && !dataFiltered.length;
 
   const renderItems = () => (
@@ -80,7 +79,7 @@ function Searchbar({ selectedItem, handleItemSelect, setSelectedItem }) {
         const partsTitle = parse(title, match(title, searchQuery));
         return (
           <ResultItem
-            base={base}
+            data-cy="item-select"
             icon={icon}
             title={partsTitle}
             key={`${title}`}
@@ -93,21 +92,32 @@ function Searchbar({ selectedItem, handleItemSelect, setSelectedItem }) {
   );
   const renderButton = (
     <Stack direction="row" alignItems="center">
-      <IconButton onClick={search.onTrue}>
-        <Avatar
-          src={`${base}/media/ProjectIcons/${selectedItem?.icon?.replace(
-            /:/g,
-            ""
-          )}.png`}
-          variant="square"
+      <IconButton
+        data-cy="item-open-button"
+        onClick={search.onTrue}
+        sx={{
+          color: "text.disabled",
+          typography: "subtitle2",
+          "& .svg-color": {
+            background: (theme) =>
+              `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
+          },
+        }}
+      >
+        <SvgColor
+          src={`https://api.iconify.design/${selectedItem?.icon}.svg`}
           sx={{ width: 32, height: 32 }}
         />
       </IconButton>
 
       {lgUp && (
         <Label
+          color="primary"
           onClick={search.onTrue}
-          sx={{ px: 0.75, fontSize: 14, color: "text.secondary" }}
+          sx={{
+            px: 0.75,
+            fontSize: 14,
+          }}
         >
           {selectedItem?.title}
         </Label>
@@ -167,6 +177,7 @@ function Searchbar({ selectedItem, handleItemSelect, setSelectedItem }) {
       >
         <Box sx={{ p: 3, borderBottom: `solid 1px ${theme.palette.divider}` }}>
           <InputBase
+            data-cy="item-input"
             fullWidth
             autoFocus
             placeholder="Search..."
@@ -205,4 +216,4 @@ function Searchbar({ selectedItem, handleItemSelect, setSelectedItem }) {
   );
 }
 
-export default memo(Searchbar);
+export default memo(SelectBar);

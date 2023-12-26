@@ -12,7 +12,6 @@ import { useConfig } from "../../context/ConfigContext";
 import { useContext } from "../../ContextProvider/ContextProvider";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
-
 // ----------------------------------------------------------------------
 
 export default function DashboardLayout() {
@@ -30,7 +29,7 @@ export default function DashboardLayout() {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [state.itemId]);
   const handleItemSelect = (item) => {
     dispatch({ type: "ITEM_SELECT", payload: item.id });
   };
@@ -49,9 +48,10 @@ export default function DashboardLayout() {
   const renderHorizontal = <NavHorizontal />;
 
   const renderNavVertical = (
-    <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />
+    <>
+      <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />
+    </>
   );
-
   if (isHorizontal) {
     return (
       <>
@@ -97,7 +97,6 @@ export default function DashboardLayout() {
       </>
     );
   }
-
   return (
     <>
       <Header
@@ -115,7 +114,6 @@ export default function DashboardLayout() {
         }}
       >
         {renderNavVertical}
-
         <Main>
           <Outlet />
         </Main>

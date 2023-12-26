@@ -1,8 +1,8 @@
 import Callback from "../pages/Callback";
 import CompactLayout from "../layouts/CompactLayout";
 import { HelmetProvider } from "react-helmet-async";
-import Login from "../pages/Login";
-import LoginLayout from "../layouts/auth/modern-compact";
+import LoginLayout from "../layouts/auth/classic";
+import LoginPage from "../pages/LoginPage";
 import NotFoundPage from "../pages/404";
 import React from "react";
 
@@ -13,7 +13,7 @@ export default function RouteManager({ routes }) {
     <HelmetProvider>
       <Routes>
         <Route path="/login" element={<LoginLayout />}>
-          <Route path={`/login`} index element={<Login />} />
+          <Route path={`/login`} index element={<LoginPage />} />
         </Route>
 
         <Route path={`/callback`} element={<Callback />} />
