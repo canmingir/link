@@ -1,15 +1,13 @@
 export * from './animate';
 export { default as Carousel } from './carousel';
-export * from './chart';
 export * from './color-utils';
 export { default as CustomBreadcrumbs } from './custom-breadcrumbs';
 export { default as CustomDateRangePicker } from './custom-date-range-picker';
 export * from './custom-dialog';
-export { default as CustomPopover } from './custom-popover';
 export { default as Editor } from './editor';
 export { default as EmptyContent } from './empty-content';
 export { default as FileThumbnail } from './file-thumbnail';
-export { default as HookForm } from './hook-form';
+export * from './hook-form';
 export { default as Iconify } from './iconify';
 export { default as Image } from './image';
 export { default as Label } from './label';
@@ -32,3 +30,7 @@ export { default as SvgColor } from './svg-color';
 export * from './table';
 export { default as TextMaxLine } from './text-max-line';
 export * from './upload';
+
+import Chart, { useChart } from './chart';
+import CustomPopover, { usePopover } from './custom-popover';
+export { Chart, useChart, CustomPopover, usePopover };
