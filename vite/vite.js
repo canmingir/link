@@ -26,7 +26,7 @@ function vite() {
           find: /^src(.+)/,
           replacement: path.join(
             process.cwd(),
-            "/node_modules/platform-npm/template/src/$1"
+            "/node_modules/platform-npm/minimal/src/$1"
           ),
         },
       ],
