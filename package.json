@@ -110,7 +110,7 @@
     "nodemon": "^3.0.1",
     "prettier": "^2.8.8",
     "storybook": "^7.0.13",
-    "vite": "^4.3.2",
+    "vite": "^4.4.12",
     "vite-plugin-svgr": "^3.2.0"
   }
 }
