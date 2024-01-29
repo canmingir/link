@@ -3,8 +3,10 @@ import ConsoleButton from "./src/widgets/ConsoleButton";
 import menuConfig from "./config.menu";
 
 const config = {
-  base: "",
+  base: "/AAA", //Optional
+  api: "http://localhost:3001", //Optional but login doesn't work without it
   login: {
+    //Mandatory
     icon: "/media/logo.png",
     largeIcon: "/media/largeLogo.png",
     name: "Gray Collar Dashboard",
@@ -17,13 +19,8 @@ const config = {
       response_type: "code",
     },
   },
-  flowise: {
-    token: "Bearer LoLQZcqQsDQgqVCEGbV4fH7CL9HLnzryWObnPYxch5o=",
-    url: "http://flowise.graycollar.ai:3000/api/v1/prediction/88666388-0cae-4735-96e9-7c15b12896df",
-  },
   settings: {
     mode: "dark", // 'light' | 'dark'
-    colorPresets: "cyan", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
   },
   ...menuConfig,
   itemsData: [
@@ -35,17 +32,17 @@ const config = {
     {
       id: 2,
       title: "Project Y",
-      icon: ":rocket:",
+      icon: "material-symbols/wine-bar",
     },
     {
       id: 3,
       title: "Deneme",
-      icon: ":box:",
+      icon: "material-symbols/wind-power-sharp",
     },
     {
       id: 4,
       title: "Fasign",
-      icon: ":box",
+      icon: "material-symbols/whatshot",
     },
   ],
 };

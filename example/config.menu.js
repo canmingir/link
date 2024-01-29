@@ -1,13 +1,12 @@
-import { Box, Button } from "@mui/material";
-
+import ActionButton from "./src/components/ActionButton";
 const menuConfig = {
   sideMenu: [
     {
-      subheader: "Anasayfa",
+      subheader: "Pages",
       items: [
         {
-          title: "Index",
-          icon: "solar:home-2-bold-duotone",
+          title: "First Page",
+          icon: "solar:fire-minimalistic-bold-duotone",
           path: "/",
         },
         {
@@ -16,24 +15,40 @@ const menuConfig = {
           path: "/main",
         },
         {
-          title: "SecondPage",
-          icon: "solar:atom-bold-duotone",
+          title: "Second Page",
+          icon: "solar:document-bold-duotone",
           path: "/secondPage",
         },
       ],
     },
-
     {
-      subheader: "management",
+      subheader: "SUBLISTS",
       items: [
         {
           title: "user",
-          path: "https://solarjs.vercel.app/components",
-          icon: "solar:home-2-bold-duotone",
+          path: "/user",
+          icon: "solar:users-group-rounded-bold-duotone",
           children: [
-            { title: "four", path: "https://solarjs.vercel.app/components" },
-            { title: "five", path: "https://solarjs.vercel.app/componentse" },
-            { title: "six", path: "https://solarjs.vercel.app/components" },
+            {
+              title: "profile",
+              path: "/user/profile",
+              icon: "solar:shield-user-bold-duotone",
+            },
+            {
+              title: "list",
+              path: "/user/list",
+              icon: "solar:list-bold-duotone",
+            },
+            {
+              title: "create",
+              path: "/user/create",
+              icon: "solar:add-circle-bold-duotone",
+            },
+            {
+              title: "delete",
+              path: "/user/delete",
+              icon: "solar:trash-bin-2-bold-duotone",
+            },
           ],
         },
       ],
@@ -83,8 +98,8 @@ const menuConfig = {
     },
   ],
 
-  actionButtons: [Button],
-  fullScreenLayout: "top",
+  actionButtons: [ActionButton],
+  fullScreenLayout: "left",
 };
 
 export default menuConfig;

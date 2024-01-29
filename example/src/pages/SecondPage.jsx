@@ -1,59 +1,32 @@
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import ItemCard from "../../../components/LargeItemCard";
+import { Typography } from "@mui/material";
 import config from "../../config";
-export default function SecondPage() {
-  const items = [
-    {
-      id: "1",
-      name: "Software Team",
-      createdAt: new Date(),
-      icon: ":box:",
-    },
-  ];
 
-  const subItem = [
-    {
-      id: "1",
-      name: "Software Team",
-      createdAt: new Date(),
-    },
-    {
-      id: "2",
-      name: "Design Team",
-      createdAt: new Date(),
-    },
-    {
-      id: "3",
-      name: "Marketing Team",
-      createdAt: new Date(),
-    },
-    {
-      id: "4",
-      name: "HR Team",
-      createdAt: new Date(),
-    },
-  ];
+export default function SecondPage() {
   return (
-    <Stack spacing={1} alignItems="center">
+    <Stack
+      spacing={1}
+      alignItems="center"
+      sx={{
+        border: "solid 0.5rem gray",
+        width: "100%",
+        height: "100vh",
+        backgroundColor: "gray",
+      }}
+    >
       <Box
-        gap={3}
-        display="grid"
-        gridTemplateColumns={{
-          xs: "repeat(1, 1fr)",
-          sm: "repeat(2, 1fr)",
-          md: "repeat(3, 1fr)",
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
         }}
       >
-        {items.map((item) => (
-          <ItemCard
-            key={item.id}
-            item={item}
-            subItem={subItem}
-            subItemName="Services"
-            base={config.base}
-          />
-        ))}
+        <Typography>
+          Page created according to Atomic Design in the project.
+        </Typography>
       </Box>
     </Stack>
   );
