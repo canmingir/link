@@ -1,11 +1,11 @@
-import { ConfigSchema } from "./configSchema.js";
-import { LoadConfig } from "../configLoader/configLoader.js";
+import { ConfigSchema } from "./ConfigSchema.js";
+import config from "../../../config.js";
 import path from "path";
 import react from "@vitejs/plugin-react";
+import { splitVendorChunkPlugin } from "vite";
 import svgr from "vite-plugin-svgr";
 
 async function vite() {
-  const config = await LoadConfig();
   return {
     base: config.base,
     plugins: [
@@ -32,6 +32,7 @@ async function vite() {
           });
         },
       },
+      splitVendorChunkPlugin(),
       react(),
       svgr(),
     ],
@@ -56,6 +57,17 @@ async function vite() {
         },
       ],
     },
+    build: {
+      rollupOptions: {
+          output:{
+              manualChunks(id) {
+                  if (id.includes('node_modules')) {
+                      return id.toString().split('node_modules/')[1].split('/')[0].toString();
+                  }
+              }
+          }
+      }
+  }
   };
 }
 
