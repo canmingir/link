@@ -12,10 +12,10 @@ import Stack from "@mui/material/Stack";
 import SvgColor from "../../../components/svg-color";
 import { alpha } from "@mui/material/styles";
 import { applyFilter } from "./utils";
+import config from "../../../../../../config";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
 import { useBoolean } from "../../../hooks/use-boolean";
-import { useConfig } from "../../../context/ConfigContext";
 import { useContext } from "../../../ContextProvider/ContextProvider";
 import { useEventListener } from "../../../hooks/use-event-listener";
 import { useResponsive } from "../../../hooks/use-responsive";
@@ -28,7 +28,7 @@ import React, { memo, useCallback, useState } from "react";
 
 function SelectBar({ selectedItem, handleItemSelect, setSelectedItem }) {
   const theme = useTheme();
-  const { itemsData } = useConfig();
+  const { itemsData } = config;
   const [state, dispatch] = useContext();
   const search = useBoolean();
 

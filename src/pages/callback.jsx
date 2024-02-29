@@ -1,9 +1,9 @@
 import Page from "../layouts/Page";
 import React from "react";
+import config from "../../../../config";
 import oauth from "../http/oauth";
 import qs from "qs";
 import { storage } from "@nucleoidjs/webstorage";
-import { useConfig } from "../context/ConfigContext";
 import { useContext } from "../ContextProvider/ContextProvider";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -13,7 +13,6 @@ function Callback() {
   const [, dispatch] = useContext();
   const location = useLocation();
   const navigate = useNavigate();
-  const config = useConfig();
 
   useEffect(() => {
     const parsedQuery = qs.parse(location.search, { ignoreQueryPrefix: true });

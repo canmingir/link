@@ -11,7 +11,7 @@ import SettingsButton from "./settings-button";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import { bgBlur } from "../../theme/css";
-import { useConfig } from "../../context/ConfigContext";
+import configMenu from "../../../../../config.menu.js";
 import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useTheme } from "@mui/material/styles";
@@ -24,7 +24,7 @@ export default function HeaderSimple({
   setSelectedItem,
 }) {
   const theme = useTheme();
-  const { topMenu } = useConfig();
+  const { topMenu } = configMenu;
   const mdUp = useResponsive("up", "md");
   const offsetTop = useOffSetTop(HEADER.H_DESKTOP);
 

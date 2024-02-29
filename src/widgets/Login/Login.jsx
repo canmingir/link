@@ -3,15 +3,14 @@ import Divider from "@mui/material/Divider";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import config from "../../../../../../config";
 import { storage } from "@nucleoidjs/webstorage";
-import { useConfig } from "../../context/ConfigContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // ----------------------------------------------------------------------
 
 export default function Auth0LoginView() {
-  const config = useConfig();
   const handleOAuthLogin = ({ authUrl, clientId, redirectUri, scope }) => {
     window.location.href = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   };

@@ -2,19 +2,16 @@ import Header from "../common/header-simple";
 import { Outlet } from "react-router";
 import PropTypes from "prop-types";
 import React from "react";
-import { useConfig } from "../../context/ConfigContext";
+import config from "../../../../../config";
 import { useContext } from "../../ContextProvider/ContextProvider";
 // ----------------------------------------------------------------------
 
 export default function SimpleLayout() {
   const [state, dispatch] = useContext();
   const [selectedItem, setSelectedItem] = React.useState();
-  const globalConfig = useConfig();
 
   React.useEffect(() => {
-    const foundItem = globalConfig.itemsData.find(
-      (item) => item.id === state.itemId
-    );
+    const foundItem = config.itemsData.find((item) => item.id === state.itemId);
 
     if (foundItem) {
       setSelectedItem(foundItem);

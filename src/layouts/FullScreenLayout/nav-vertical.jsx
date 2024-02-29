@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import Scrollbar from "../../components/scrollbar";
 import Stack from "@mui/material/Stack";
-import { useConfig } from "../../context/ConfigContext";
+import menuConfig from "../../../../../../config.menu.js";
 import { useEffect } from "react";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
@@ -22,7 +22,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
 
   const lgUp = useResponsive("up", "lg");
 
-  const { sideMenu, actionButtons } = useConfig();
+  const { sideMenu, actionButtons } = menuConfig();
 
   useEffect(() => {
     if (openNav) {

@@ -6,14 +6,14 @@ import NavToggleButton from "../common/nav-toggle-button";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import { hideScroll } from "../../theme/css";
-import { useConfig } from "../../context/ConfigContext";
+import menuConfig from "../../../../../config.menu.js";
 import { useUser } from "../../hooks/use-user";
 // ----------------------------------------------------------------------
 
 export default function NavMini({ only }) {
   const { user } = useUser();
 
-  const { sideMenu } = useConfig();
+  const { sideMenu } = menuConfig;
   return (
     <Box
       sx={{

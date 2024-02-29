@@ -7,7 +7,7 @@ import Scrollbar from "../../components/scrollbar";
 import Toolbar from "@mui/material/Toolbar";
 import { bgBlur } from "../../theme/css";
 import { memo } from "react";
-import { useConfig } from "../../context/ConfigContext";
+import menuConfig from "../../../../../config.menu.js";
 import { useTheme } from "@mui/material/styles";
 import { useUser } from "../../hooks/use-user";
 
@@ -18,7 +18,9 @@ function NavHorizontal() {
 
   const { user } = useUser();
 
-  const { sideMenu } = useConfig();
+  const { sideMenu } = menuConfig;
+  console.log(sideMenu);
+
   return (
     <AppBar
       component="div"

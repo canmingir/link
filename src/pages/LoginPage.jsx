@@ -1,14 +1,13 @@
 import LoginForm from "../widgets/LoginForm/LoginForm";
 import Page from "../layouts/Page";
 import React from "react";
+import config from "../../../../config";
 import { storage } from "@nucleoidjs/webstorage";
-import { useConfig } from "../context/ConfigContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 function LoginPage() {
   const formColor = "#a8a9ad";
   const navigate = useNavigate();
-  const config = useConfig();
 
   function token() {
     if (

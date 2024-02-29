@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Header from "./header";
 import { Outlet } from "react-router";
 import React from "react";
-import { useConfig } from "../../context/ConfigContext";
+import config from "../../../../../config.js";
 import { useContext } from "../../ContextProvider/ContextProvider";
 import { usePathname } from "../../routes/hooks";
 
@@ -13,13 +13,10 @@ export default function MainLayout() {
 
   const [state, dispatch] = useContext();
   const [selectedItem, setSelectedItem] = React.useState();
-  const globalConfig = useConfig();
   const homePage = pathname === "/";
 
   React.useEffect(() => {
-    const foundItem = globalConfig.itemsData.find(
-      (item) => item.id === state.itemId
-    );
+    const foundItem = config.itemsData.find((item) => item.id === state.itemId);
     if (foundItem) {
       setSelectedItem(foundItem);
     }
