@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import Scrollbar from "../../components/scrollbar";
 import Stack from "@mui/material/Stack";
-import { useConfig } from "../../context/ConfigContext";
+import menuConfig from "../../../../../config.menu.js";
 import { useEffect } from "react";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
@@ -22,14 +22,13 @@ export default function NavVertical({ openNav, onCloseNav }) {
 
   const lgUp = useResponsive("up", "lg");
 
-  const { sideMenu, actionButtons } = useConfig();
-
   useEffect(() => {
     if (openNav) {
       onCloseNav();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+  console.log(menuConfig.sideMenu);
 
   const renderContent = (
     <Scrollbar
@@ -44,7 +43,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
     >
       <Logo sx={{ mt: 3, ml: 4, mb: 1 }} />
       <NavSectionVertical
-        data={sideMenu}
+        data={menuConfig.sideMenu}
         slotProps={{
           currentRole: user?.role,
         }}
@@ -57,10 +56,12 @@ export default function NavVertical({ openNav, onCloseNav }) {
         sx={{ marginBottom: 3 }}
         gap={2}
       >
-        {actionButtons &&
-          actionButtons.map((Action, index) => (
+        {
+          (menuConfig.actionButtons && console.log(menuConfig.actionButtons),
+          menuConfig?.actionButtons?.map((Action, index) => (
             <Box key={index} component={Action}></Box>
-          ))}
+          )))
+        }
       </Stack>
     </Scrollbar>
   );

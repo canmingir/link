@@ -1,6 +1,6 @@
 import "./global.css";
+
 import { BrowserRouter } from "react-router-dom";
-import { ConfigProvider } from "./context/ConfigContext";
 import ContextProvider from "./ContextProvider/ContextProvider";
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
 import Loading from "./Loading/Loading";
@@ -9,46 +9,45 @@ import { SettingsDrawer } from "./components/settings";
 import { SettingsProvider } from "./components/settings";
 import { SnackbarProvider } from "notistack";
 import ThemeProvider from "./theme";
+import config from "../../../config";
 import globalConfig from "./config";
+import menuConfig from "../../../config.menu.js";
 
 import React, { useEffect } from "react";
 import { initialState, reducer } from "./context/reducer";
 
-const Platform = ({ routes, config }) => {
+const Platform = ({ routes }) => {
   useEffect(() => {
     globalConfig(config);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  console.log(menuConfig);
   return (
     <>
       <SettingsProvider
         defaultSettings={{
-          themeMode: config.settings.mode, // 'light' | 'dark'
-          themeDirection: "ltr", //  'rtl' | 'ltr'
-          themeContrast: "default", // 'default' | 'bold'
-          themeLayout: "vertical", // 'vertical' | 'horizontal' | 'mini'
-          themeColorPresets: config.settings.colorPresets, // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+          themeMode: config.settings.mode || "dark",
+          themeDirection: "ltr",
+          themeContrast: "default",
+          themeLayout: "vertical",
+          themeColorPresets: config.settings.colorPresets || "default",
           themeStretch: false,
         }}
       >
         <ThemeProvider>
-          <BrowserRouter>
-            <ConfigProvider value={config}>
-              <ContextProvider reducer={reducer} state={initialState}>
-                <SnackbarProvider
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                >
-                  <SettingsDrawer />
-                  <Loading />
-                  <GlobalSnackMessage />
-                  <RouteManager routes={routes} />
-                </SnackbarProvider>
-              </ContextProvider>
-            </ConfigProvider>
+          <BrowserRouter basename={config.base}>
+            <ContextProvider reducer={reducer} state={initialState}>
+              <SnackbarProvider
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
+                <SettingsDrawer />
+                <Loading />
+                <GlobalSnackMessage />
+                <RouteManager routes={routes} />
+              </SnackbarProvider>
+            </ContextProvider>
           </BrowserRouter>
         </ThemeProvider>
       </SettingsProvider>

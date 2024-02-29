@@ -1,7 +1,7 @@
 import NucleoidLoginForm from "../../components/NucleoidLoginForm";
 import SocialLoginButtons from "../../components/SocialLoginButtons";
 import Stack from "@mui/material/Stack";
-import { useConfig } from "../../context/ConfigContext";
+import config from "../../../../../config";
 
 import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
 import React, { useState } from "react";
@@ -12,7 +12,6 @@ const handleOAuthLogin = ({ authUrl, clientId, redirectUri, scope }) => {
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const config = useConfig();
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>

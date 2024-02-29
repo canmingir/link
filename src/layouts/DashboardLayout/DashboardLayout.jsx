@@ -7,8 +7,8 @@ import NavVertical from "./nav-vertical";
 import { Outlet } from "react-router";
 import PropTypes from "prop-types";
 import React from "react";
+import config from "../../../../../config.js";
 import { useBoolean } from "../../hooks/use-boolean";
-import { useConfig } from "../../context/ConfigContext";
 import { useContext } from "../../ContextProvider/ContextProvider";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
@@ -17,12 +17,9 @@ import { useSettingsContext } from "../../components/settings";
 export default function DashboardLayout() {
   const [state, dispatch] = useContext();
   const [selectedItem, setSelectedItem] = React.useState();
-  const globalConfig = useConfig();
 
   React.useEffect(() => {
-    const foundItem = globalConfig.itemsData.find(
-      (item) => item.id === state.itemId
-    );
+    const foundItem = config.itemsData.find((item) => item.id === state.itemId);
 
     if (foundItem) {
       setSelectedItem(foundItem);
