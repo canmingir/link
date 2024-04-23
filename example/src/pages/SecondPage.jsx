@@ -1,7 +1,9 @@
+import { Button, Typography } from "@mui/material";
+
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import { Typography } from "@mui/material";
 import config from "../../config";
+import { publish } from "@nucleoidjs/react-event";
 
 export default function SecondPage() {
   return (
@@ -24,6 +26,12 @@ export default function SecondPage() {
           height: "100%",
         }}
       >
+        <Button
+          onClick={handleClick}
+          sx={{ width: "2rem", height: "2rem", bgcolor: "red" }}
+        >
+          a
+        </Button>
         <Typography>
           Page created according to Atomic Design in the project.
         </Typography>

@@ -8,16 +8,16 @@ import { SimpleLayout } from "../src/layouts";
 
 const routes = [
   {
-    element: CompactLayout,
-    children: [{ path: "/", element: Index }],
+    element: <CompactLayout />,
+    children: [{ path: "/", element: <Index /> }],
   },
   {
-    element: FullScreenLayout,
-    children: [{ path: "/main", element: MainPage }],
+    element: <FullScreenLayout />,
+    children: [{ path: "/main", element: <MainPage /> }],
   },
   {
-    element: DashboardLayout,
-    children: [{ path: "/secondPage", element: SecondPage }],
+    element: <DashboardLayout />,
+    children: [{ path: "/secondPage", element: <SecondPage /> }],
   },
 ];
 
