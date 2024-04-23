@@ -36,7 +36,9 @@ function SelectBar() {
   const theme = useTheme();
   const { GetItems } = useProject();
   const { items, loading } = GetItems();
-  const [selectedItemId] = useStorage("itemId", 0);
+
+  const id = window.matchMedia("itemId").matches;
+  const [selectedItemId] = useStorage("itemId", id);
 
   const [selectedItem, setSelectedItem] = useState();
 
