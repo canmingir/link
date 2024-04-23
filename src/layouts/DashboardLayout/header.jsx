@@ -20,14 +20,8 @@ import { HEADER, NAV } from "../config-layout";
 
 // ----------------------------------------------------------------------
 
-export default function Header({
-  onOpenNav,
-  handleItemSelect,
-  selectedItem,
-  setSelectedItem,
-}) {
+export default function Header({ onOpenNav }) {
   const theme = useTheme();
-
   const settings = useSettingsContext();
 
   const isNavHorizontal = settings.themeLayout === "horizontal";
@@ -49,11 +43,8 @@ export default function Header({
           <SvgColor src="https://minimals.cc/assets/icons/navbar/ic_menu_item.svg" />
         </IconButton>
       )}
-      <ItemBar
-        handleItemSelect={handleItemSelect}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-      />
+      <ItemBar />
+
       <Stack
         flexGrow={1}
         direction="row"
