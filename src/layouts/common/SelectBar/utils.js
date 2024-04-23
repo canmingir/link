@@ -25,7 +25,7 @@ export function getAllItems({ data }) {
 export function applyFilter({ inputData, query }) {
   if (query) {
     inputData = inputData.filter(
-      (item) => item.title.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (item) => item.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
 

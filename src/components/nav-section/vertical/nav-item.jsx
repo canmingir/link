@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Iconify from "../../iconify";
 import Link from "@mui/material/Link";
 import ListItemButton from "@mui/material/ListItemButton";
-import PropTypes from "prop-types";
 import React from "react";
 import { RouterLink } from "../../../routes/components";
 import Tooltip from "@mui/material/Tooltip";
@@ -139,22 +138,6 @@ const NavItem = forwardRef(
     );
   }
 );
-
-NavItem.propTypes = {
-  open: PropTypes.bool,
-  active: PropTypes.bool,
-  path: PropTypes.string,
-  depth: PropTypes.number,
-  icon: PropTypes.element,
-  info: PropTypes.element,
-  title: PropTypes.string,
-  disabled: PropTypes.bool,
-  hasChild: PropTypes.bool,
-  caption: PropTypes.string,
-  externalLink: PropTypes.bool,
-  currentRole: PropTypes.string,
-  roles: PropTypes.arrayOf(PropTypes.string),
-};
 
 export default NavItem;
 

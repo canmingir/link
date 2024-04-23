@@ -18,9 +18,9 @@ export default function RouteManager({ routes }) {
 
         <Route path={`/callback`} element={<Callback />} />
         {routes.map((route, i) => (
-          <Route key={i} path="/" element={route.element()}>
+          <Route key={i} path="/" element={route.element}>
             {route.children.map((child, j) => (
-              <Route key={j} path={child.path} element={child.element()} />
+              <Route key={j} path={child.path} element={child.element} />
             ))}
           </Route>
         ))}

@@ -91,9 +91,7 @@ const menuConfig = {
   itemBar: [
     {
       itemName: "item",
-      addNewItem: function addNew() {
-        return console.log("addNewItem");
-      },
+      addNewItem: function addNew() {},
       itemsData: [{ id: 1, title: "item1", icon: ":box:" }],
     },
   ],

@@ -42,7 +42,7 @@ export default function Auth0LoginView() {
       <Divider />
       <Stack spacing={2}>
         <Button
-          fullWidth
+          fullWidth={true}
           color="primary"
           size="large"
           variant="contained"

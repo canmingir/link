@@ -11,16 +11,14 @@ import { SnackbarProvider } from "notistack";
 import ThemeProvider from "./theme";
 import config from "../../../config";
 import globalConfig from "./config";
-import menuConfig from "../../../config.menu.js";
 
 import React, { useEffect } from "react";
 import { initialState, reducer } from "./context/reducer";
 
-const Platform = ({ routes }) => {
+const Platform = ({ routes, dialogs }) => {
   useEffect(() => {
     globalConfig(config);
   }, []);
-  console.log(menuConfig);
   return (
     <>
       <SettingsProvider
@@ -42,6 +40,7 @@ const Platform = ({ routes }) => {
                   horizontal: "right",
                 }}
               >
+                {dialogs && dialogs()}
                 <SettingsDrawer />
                 <Loading />
                 <GlobalSnackMessage />

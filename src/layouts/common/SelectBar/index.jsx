@@ -12,33 +12,54 @@ import Stack from "@mui/material/Stack";
 import SvgColor from "../../../components/svg-color";
 import { alpha } from "@mui/material/styles";
 import { applyFilter } from "./utils";
-import config from "../../../../../../config";
+import config from "../../../../../../config.js";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
+import { publish } from "@nucleoidjs/react-event";
 import { useBoolean } from "../../../hooks/use-boolean";
-import { useContext } from "../../../ContextProvider/ContextProvider";
+import { useEffect } from "react";
 import { useEventListener } from "../../../hooks/use-event-listener";
+import { useNavigate } from "react-router-dom";
+import { useProject } from "../../../hooks/useItemsState.js"; // adjust the path as needed
 import { useResponsive } from "../../../hooks/use-responsive";
 import { useTheme } from "@mui/material/styles";
 
+import { Button, DialogActions } from "@mui/material";
 import Dialog, { dialogClasses } from "@mui/material/Dialog";
-import React, { memo, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
+import { storage, useStorage } from "@nucleoidjs/webstorage";
 
 // ----------------------------------------------------------------------
 
-function SelectBar({ selectedItem, handleItemSelect, setSelectedItem }) {
+function SelectBar() {
   const theme = useTheme();
-  const { itemsData } = config;
-  const [state, dispatch] = useContext();
-  const search = useBoolean();
+  const { GetItems } = useProject();
+  const { items, loading } = GetItems();
 
+  const id = window.matchMedia("itemId").matches;
+  const [selectedItemId] = useStorage("itemId", id);
+
+  const [selectedItem, setSelectedItem] = useState();
+
+  const navigate = useNavigate();
+
+  const search = useBoolean();
   const lgUp = useResponsive("up", "lg");
 
   const [searchQuery, setSearchQuery] = useState("");
 
+  useEffect(() => {
+    setSelectedItem(items.find((item) => item.id === selectedItemId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
+
+  const AddNewDialogOpen = () => {
+    publish("ADD_NEW_DIALOG_OPENED", { open: true });
+  };
+
   const handleSelect = (item) => {
-    dispatch({ type: "ITEM_SELECT", payload: item.id });
-    handleItemSelect(item);
+    storage.set("itemId", item.id);
+    publish("ITEM_SELECTED", { itemId: item.id });
     setSelectedItem(item);
     search.onFalse();
     setSearchQuery("");
@@ -56,10 +77,6 @@ function SelectBar({ selectedItem, handleItemSelect, setSelectedItem }) {
     }
   };
 
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.itemId]);
-
   useEventListener("keydown", handleKeyDown);
 
   const handleSearch = useCallback((event) => {
@@ -67,7 +84,7 @@ function SelectBar({ selectedItem, handleItemSelect, setSelectedItem }) {
   }, []);
 
   const dataFiltered = applyFilter({
-    inputData: itemsData,
+    inputData: items,
     query: searchQuery,
   });
   const notFound = searchQuery && !dataFiltered.length;
@@ -75,16 +92,20 @@ function SelectBar({ selectedItem, handleItemSelect, setSelectedItem }) {
   const renderItems = () => (
     <List disablePadding>
       {dataFiltered.map((item) => {
-        const { title, icon } = item;
+        const title = item.name;
+        const icon = item?.icon?.slice(1, -1);
         const partsTitle = parse(title, match(title, searchQuery));
         return (
           <ResultItem
             data-cy="item-select"
-            icon={icon}
+            icon={icon || "eva:question-mark-circle"}
             title={partsTitle}
             key={`${title}`}
             groupLabel={searchQuery && title}
-            onClickItem={() => handleSelect(item)}
+            onClickItem={() => {
+              handleSelect(item);
+              navigate(config.itemSelectRoute);
+            }}
           />
         );
       })}
@@ -105,7 +126,10 @@ function SelectBar({ selectedItem, handleItemSelect, setSelectedItem }) {
         }}
       >
         <SvgColor
-          src={`https://api.iconify.design/${selectedItem?.icon}.svg`}
+          src={`https://api.iconify.design/${selectedItem?.icon?.slice(
+            1,
+            -1
+          )}.svg`}
           sx={{ width: 32, height: 32 }}
         />
       </IconButton>
@@ -119,43 +143,48 @@ function SelectBar({ selectedItem, handleItemSelect, setSelectedItem }) {
             fontSize: 14,
           }}
         >
-          {selectedItem?.title}
+          {selectedItem?.name}
         </Label>
       )}
     </Stack>
   );
 
   const AddNewButton = (
-    <Stack direction="row" alignItems="center" fullWidth>
-      <Label
-        fullWidth
-        sx={{
-          width: "100%",
-          height: "3rem",
-          px: 0.75,
-          fontSize: 18,
-          color: "text.secondary",
-          "&:hover": {
-            borderRadius: 1,
-            borderColor: (theme) => theme.palette.primary.main,
-            backgroundColor: (theme) =>
-              alpha(
-                theme.palette.primary.main,
-                theme.palette.action.hoverOpacity
-              ),
-          },
-        }}
-      >
-        Add New Item
-      </Label>
-    </Stack>
+    <DialogActions disableSpacing>
+      <Button fullWidth={true} onClick={AddNewDialogOpen}>
+        <Label
+          fullWidth={true}
+          sx={{
+            width: "100%",
+            height: "3rem",
+            px: 0.75,
+            fontSize: 18,
+            color: "text.secondary",
+            "&:hover": {
+              borderRadius: 1,
+              borderColor: (theme) => theme.palette.primary.main,
+              backgroundColor: (theme) =>
+                alpha(
+                  theme.palette.primary.main,
+                  theme.palette.action.hoverOpacity
+                ),
+            },
+          }}
+        >
+          Add New Item
+        </Label>
+      </Button>
+    </DialogActions>
   );
+
+  if (loading) return <></>;
+
   return (
     <>
       {renderButton}
 
       <Dialog
-        fullWidth
+        fullWidth={true}
         maxWidth="sm"
         open={search.value}
         onClose={handleClose}
@@ -175,10 +204,10 @@ function SelectBar({ selectedItem, handleItemSelect, setSelectedItem }) {
           },
         }}
       >
-        <Box sx={{ p: 3, borderBottom: `solid 1px ${theme.palette.divider}` }}>
+        <Box sx={{ borderBottom: `solid 1px gray` }}>
           <InputBase
             data-cy="item-input"
-            fullWidth
+            fullWidth={true}
             autoFocus
             placeholder="Search..."
             value={searchQuery}
@@ -216,4 +245,4 @@ function SelectBar({ selectedItem, handleItemSelect, setSelectedItem }) {
   );
 }
 
-export default memo(SelectBar);
+export default SelectBar;

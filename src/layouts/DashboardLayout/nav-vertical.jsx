@@ -1,5 +1,7 @@
 import Box from "@mui/material/Box";
+import { Button } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
+import Iconify from "../../components/iconify/index.js";
 import Logo from "../../components/logo";
 import { NAV } from "../config-layout";
 import { NavSectionVertical } from "../../components/nav-section";
@@ -10,6 +12,8 @@ import Scrollbar from "../../components/scrollbar";
 import Stack from "@mui/material/Stack";
 import menuConfig from "../../../../../config.menu.js";
 import { useEffect } from "react";
+import { useEvent } from "@nucleoidjs/react-event";
+import { useNavigate } from "react-router-dom";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useUser } from "../../hooks/use-user";
@@ -17,18 +21,28 @@ import { useUser } from "../../hooks/use-user";
 
 export default function NavVertical({ openNav, onCloseNav }) {
   const { user } = useUser();
-
+  const navigate = useNavigate();
   const pathname = usePathname();
-
+  const [hideSubheader] = useEvent("PAGE_CHANGED", { subheader: "" });
   const lgUp = useResponsive("up", "lg");
+
+  useEffect(() => {
+    const index = menuConfig.sideMenu.findIndex(
+      (item) => item.subheader === hideSubheader.subheader
+    );
+
+    if (index !== -1) {
+      menuConfig.sideMenu.splice(index, 1);
+    }
+  }, [hideSubheader]);
 
   useEffect(() => {
     if (openNav) {
       onCloseNav();
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
-  console.log(menuConfig.sideMenu);
 
   const renderContent = (
     <Scrollbar
@@ -56,13 +70,27 @@ export default function NavVertical({ openNav, onCloseNav }) {
         sx={{ marginBottom: 3 }}
         gap={2}
       >
-        {
-          (menuConfig.actionButtons && console.log(menuConfig.actionButtons),
+        {menuConfig.actionButtons &&
           menuConfig?.actionButtons?.map((Action, index) => (
             <Box key={index} component={Action}></Box>
-          )))
-        }
+          ))}
       </Stack>
+      {menuConfig.endItem && (
+        <Button
+          fullWidth={true}
+          onClick={() => navigate(menuConfig.endItem.path)}
+        >
+          <Iconify
+            icon={menuConfig.endItem.icon}
+            sx={{
+              width: 32,
+              height: 32,
+              color: "text.secondary",
+              mx: "auto",
+            }}
+          />
+        </Button>
+      )}
     </Scrollbar>
   );
   return (

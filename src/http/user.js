@@ -1,8 +1,6 @@
 import axios from "axios";
-import globalConfig from "../config";
+import config from "../../../../config.js";
 import { storage } from "@nucleoidjs/webstorage";
-
-const config = globalConfig();
 
 const instance = axios.create({
   baseURL: config.api,
@@ -14,7 +12,7 @@ const instance = axios.create({
 });
 
 function getProjectName() {
-  const { name } = globalConfig();
+  const { name } = config;
 
   if (name) {
     return name;
