@@ -1,3 +1,4 @@
+import Button from "@mui/material/Button";
 import NavList from "./nav-list";
 import PropTypes from "prop-types";
 import React from "react";
@@ -20,18 +21,13 @@ function NavSectionHorizontal({ data, slotProps, sx, ...other }) {
       }}
       {...other}
     >
-      {data.map(
-        (group, index) => (
-          console.log(group.subheader),
-          (
-            <Group
-              key={group?.subheader || index}
-              items={group?.items}
-              slotProps={slotProps}
-            />
-          )
-        )
-      )}
+      {data.map((group, index) => (
+        <Group
+          key={group?.subheader || index}
+          items={group?.items}
+          slotProps={slotProps}
+        />
+      ))}
     </Stack>
   );
 }
