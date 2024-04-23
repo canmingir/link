@@ -42,6 +42,7 @@ function AddItemWizard({ onSubmit, items, steps, stepExp }) {
   };
 
   const handleSwitchChange = (index) => (event) => {
+    // eslint-disable-next-line no-unused-vars
     const serviceType = !event.target.checked ? "multiple" : "single";
     setNewItems((prevItems) =>
       prevItems.map((item, i) =>

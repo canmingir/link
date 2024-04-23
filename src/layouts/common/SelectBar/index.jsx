@@ -17,7 +17,6 @@ import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
 import { publish } from "@nucleoidjs/react-event";
 import { useBoolean } from "../../../hooks/use-boolean";
-import { useContext } from "../../../ContextProvider/ContextProvider";
 import { useEffect } from "react";
 import { useEventListener } from "../../../hooks/use-event-listener";
 import { useNavigate } from "react-router-dom";
@@ -51,6 +50,7 @@ function SelectBar() {
 
   useEffect(() => {
     setSelectedItem(items.find((item) => item.id === selectedItemId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   const AddNewDialogOpen = () => {
