@@ -7,30 +7,13 @@ import NavVertical from "./nav-vertical";
 import { Outlet } from "react-router";
 import PropTypes from "prop-types";
 import React from "react";
-import config from "../../../../../config.js";
 import { useBoolean } from "../../hooks/use-boolean";
-import { useContext } from "../../ContextProvider/ContextProvider";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
+
 // ----------------------------------------------------------------------
 
 export default function DashboardLayout() {
-  const [state, dispatch] = useContext();
-  const [selectedItem, setSelectedItem] = React.useState();
-
-  React.useEffect(() => {
-    const foundItem = config.itemsData.find((item) => item.id === state.itemId);
-
-    if (foundItem) {
-      setSelectedItem(foundItem);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.itemId]);
-  const handleItemSelect = (item) => {
-    dispatch({ type: "ITEM_SELECT", payload: item.id });
-  };
-
   const settings = useSettingsContext();
 
   const lgUp = useResponsive("up", "lg");
@@ -52,12 +35,7 @@ export default function DashboardLayout() {
   if (isHorizontal) {
     return (
       <>
-        <Header
-          onOpenNav={nav.onTrue}
-          handleItemSelect={handleItemSelect}
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}
-        />
+        <Header onOpenNav={nav.onTrue} />
 
         {lgUp ? renderHorizontal : renderNavVertical}
 
@@ -71,12 +49,7 @@ export default function DashboardLayout() {
   if (isMini) {
     return (
       <>
-        <Header
-          onOpenNav={nav.onTrue}
-          handleItemSelect={handleItemSelect}
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}
-        />
+        <Header onOpenNav={nav.onTrue} />
 
         <Box
           sx={{
@@ -96,12 +69,7 @@ export default function DashboardLayout() {
   }
   return (
     <>
-      <Header
-        onOpenNav={nav.onTrue}
-        handleItemSelect={handleItemSelect}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-      />
+      <Header onOpenNav={nav.onTrue} />
 
       <Box
         sx={{
