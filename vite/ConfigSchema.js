@@ -24,15 +24,9 @@ export const ConfigSchema = Joi.object({
       .optional()
       .default("default"),
   }).optional(),
-  itemsData: Joi.array()
-    .items(
-      Joi.object({
-        id: Joi.number().required(),
-        title: Joi.string().required(),
-        icon: Joi.string().required(),
-      })
-    )
-    .optional()
+  itemsPath: Joi.string().required(),
+  addNewItemButton: Joi.function().optional(),
+  itemSelectRoute: Joi.string().optional().default("/"),
 })
   .required()
   .unknown(true);
