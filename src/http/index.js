@@ -89,6 +89,8 @@ instance.interceptors.response.use(
   }
 );
 
+export const fetcher = (url) => instance.get(url).then((res) => res.data);
+
 const refreshAuthLogic = async (failedRequest) => {
   try {
     updateConfig();
