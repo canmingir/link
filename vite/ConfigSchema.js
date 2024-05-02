@@ -16,6 +16,13 @@ export const ConfigSchema = Joi.object({
       scope: Joi.string().required(),
       response_type: Joi.string().required(),
     }).optional(),
+    google: Joi.object({
+      authUrl: Joi.string().uri().optional(),
+      clientId: Joi.string().optional(),
+      redirectUri: Joi.string().uri().optional(),
+      scope: Joi.string().optional(),
+      response_type: Joi.string().optional(),
+    }).optional(),
   }).required(),
   settings: Joi.object({
     mode: Joi.string().valid("light", "dark").optional().default("dark"),
