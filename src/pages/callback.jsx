@@ -1,6 +1,7 @@
 import Page from "../layouts/Page";
 import React from "react";
 import config from "../../../../config";
+//import config from "../../example/config";
 import oauth from "../http/oauth";
 import qs from "qs";
 import { storage } from "@nucleoidjs/webstorage";
@@ -21,6 +22,7 @@ function Callback() {
     oauth
       .post("/oauth", {
         code,
+        grant_type: "authorization_code",
       })
       .then(({ data }) => {
         const accessToken = data.access_token;
