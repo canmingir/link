@@ -6,9 +6,10 @@ import config from "../../../../../config";
 import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
 import React, { useState } from "react";
 
-const handleOAuthLogin = ({ authUrl, clientId, redirectUri, scope }) => {
-  window.location.href = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
+const handleOAuthLogin = ({ authUrl, clientId, scope }) => {
+  window.location.href = `${authUrl}?client_id=${clientId}&scope=${scope}&response_type=code`;
 };
+
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
