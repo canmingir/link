@@ -6,8 +6,8 @@ import config from "../../../../../config";
 import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
 import React, { useState } from "react";
 
-const handleOAuthLogin = ({ authUrl, clientId, scope }) => {
-  window.location.href = `${authUrl}?client_id=${clientId}&scope=${scope}&response_type=code`;
+const handleOAuthLogin = ({ redirectUri, authUrl, clientId, scope }) => {
+  window.location.href = `${authUrl}?client_id=${clientId}&scope=${scope}&response_type=code&redirect_uri=${redirectUri}`;
 };
 
 function LoginForm() {
