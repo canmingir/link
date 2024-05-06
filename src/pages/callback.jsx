@@ -22,7 +22,8 @@ function Callback() {
     oauth
       .post("/oauth", {
         code,
-        redirectUri: config.redirectUri,
+        redirectUri:
+          config.login?.google.redirectUri || config.login?.github.redirectUri,
         grant_type: "authorization_code",
       })
       .then(({ data }) => {
