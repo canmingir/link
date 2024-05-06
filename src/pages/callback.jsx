@@ -19,11 +19,17 @@ function Callback() {
     const parsedQuery = qs.parse(location.search, { ignoreQueryPrefix: true });
     const { code } = parsedQuery;
 
+    let redirectUri;
+    if (config.login?.google) {
+      redirectUri = config.login.google.redirectUri;
+    } else if (config.login?.github) {
+      redirectUri = config.login.github.redirectUri;
+    }
+
     oauth
       .post("/oauth", {
         code,
-        redirectUri:
-          config.login?.google.redirectUri || config.login?.github.redirectUri,
+        redirectUri,
         grant_type: "authorization_code",
       })
       .then(({ data }) => {
