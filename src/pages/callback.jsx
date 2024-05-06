@@ -22,6 +22,7 @@ function Callback() {
     oauth
       .post("/oauth", {
         code,
+        redirectUri: config.redirectUri,
         grant_type: "authorization_code",
       })
       .then(({ data }) => {
