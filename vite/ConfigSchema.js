@@ -15,6 +15,7 @@ export const ConfigSchema = Joi.object({
       redirectUri: Joi.string().uri().required(),
       scope: Joi.string().required(),
       response_type: Joi.string().required(),
+      userUrl: Joi.string().uri().required(),
     }).optional(),
     google: Joi.object({
       authUrl: Joi.string().uri().optional(),
@@ -22,6 +23,7 @@ export const ConfigSchema = Joi.object({
       redirectUri: Joi.string().uri().optional(),
       scope: Joi.string().optional(),
       response_type: Joi.string().optional(),
+      userUrl: Joi.string().uri().required(),
     }).optional(),
   }).required(),
   settings: Joi.object({
