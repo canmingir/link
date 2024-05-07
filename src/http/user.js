@@ -32,10 +32,10 @@ instance.getUserDetails = async () => {
   //TODO: do it in a more elegant way
   let userUrl;
   let provider;
-  if (config.login?.google.userUrl) {
+  if (config.login.google) {
     userUrl = config.login.google.userUrl;
     provider = "google";
-  } else if (config.login?.github.userUrl) {
+  } else if (config.login.github) {
     userUrl = config.login.github.userUrl;
     provider = "github";
   }
