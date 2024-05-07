@@ -33,8 +33,8 @@ function Callback() {
         grant_type: "authorization_code",
       })
       .then(({ data }) => {
-        const accessToken = data.access_token;
-        const refreshToken = data.refresh_token;
+        const accessToken = data.accessToken;
+        const refreshToken = data.refreshToken;
 
         storage.set(config.name, "accessToken", accessToken);
         storage.set(config.name, "refreshToken", refreshToken);
