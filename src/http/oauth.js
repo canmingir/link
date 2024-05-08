@@ -7,7 +7,7 @@ const instance = axios.create({
   baseURL: "",
   headers: {
     common: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
     },
   },
 });
