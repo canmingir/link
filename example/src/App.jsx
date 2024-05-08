@@ -1,10 +1,9 @@
-import { Platform } from "platform";
-import config from "../config";
+import { Platform } from "platform-npm";
+import React from "react";
 import routes from "../routes";
-import theme from "./theme";
 
 function App() {
-  return <Platform routes={routes} theme={theme} config={config} />;
+  return <Platform routes={routes} />;
 }
 
 export default App;

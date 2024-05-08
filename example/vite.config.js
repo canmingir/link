@@ -1,5 +1,6 @@
-import config from "./config";
 import { defineConfig } from "vite";
-import { vite } from "../vite/vite";
+import { vite } from "platform-npm/vite";
 
-export default defineConfig(vite(config));
+export default () => {
+  return defineConfig(vite());
+};
