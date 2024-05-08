@@ -1,6 +1,7 @@
 import Page from "../layouts/Page";
 import React from "react";
 import config from "../../../../config";
+//import config from "../../example/config";
 import oauth from "../http/oauth";
 import qs from "qs";
 import { storage } from "@nucleoidjs/webstorage";
@@ -18,13 +19,22 @@ function Callback() {
     const parsedQuery = qs.parse(location.search, { ignoreQueryPrefix: true });
     const { code } = parsedQuery;
 
+    let redirectUri;
+    if (config.login?.google) {
+      redirectUri = config.login.google.redirectUri;
+    } else if (config.login?.github) {
+      redirectUri = config.login.github.redirectUri;
+    }
+
     oauth
       .post("/oauth", {
         code,
+        redirectUri,
+        grant_type: "authorization_code",
       })
       .then(({ data }) => {
-        const accessToken = data.access_token;
-        const refreshToken = data.refresh_token;
+        const accessToken = data.accessToken;
+        const refreshToken = data.refreshToken;
 
         storage.set(config.name, "accessToken", accessToken);
         storage.set(config.name, "refreshToken", refreshToken);

@@ -6,8 +6,8 @@ export function useUser() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    user.get("https://api.github.com/user").then((response) => {
-      setUserData(response.data);
+    user.getUserDetails().then((data) => {
+      setUserData(data);
     });
   }, []);
 
