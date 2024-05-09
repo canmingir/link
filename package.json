@@ -1,13 +1,17 @@
 {
-  "name": "platform",
-  "version": "0.2.1",
+  "name": "platform-npm",
+  "version": "0.3.13",
   "type": "module",
   "exports": {
     ".": "./index.js",
     "./layouts": "./src/layouts/index.js",
     "./vite": "./vite/vite.js",
     "./minimal/components": "./minimal/src/components/index.js",
-    "./platform/components": "./components/index.js"
+    "./platform/components": "./components/index.js",
+    "./platform/hooks": "./src/hooks/index.js"
+  },
+  "scripts": {
+    "dev": "cd example && rmdir /s /q node_modules\\.vite && concurrently \"npm run dev\" \"npm run server\"",
   },
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.10.1",
@@ -91,7 +95,7 @@
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^4.0.0",
     "babel-jest": "^29.5.0",
-    "concurrently": "^8.2.0",
+    "concurrently": "^8.2.2",
     "eslint": "^8.38.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-cypress": "^2.15.1",
