@@ -1,38 +1,25 @@
+import useSWR, { mutate } from "swr";
+
 import http from "../http";
-import { useState } from "react";
 
 const useEmperor = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const getEmperors = async () => {
-    setLoading(true);
-    try {
-      const res = await http.get("/emperors");
-      setData(res.data);
-      setError(null);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
+  const getEmperors = () => {
+    const { data, error } = useSWR("/emperors", http.get);
+    return { emperor: data || [], loading: !error && !data, error };
   };
 
-  const getEmperorById = async (id) => {
-    setLoading(true);
-    try {
-      const res = await http.get(`/emperors/${id}`);
-      setData(res.data);
-      setError(null);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
+  const getEmperorById = (id) => {
+    const { data, error } = useSWR(`/emperors/${id}`, http.get);
+    return { emperor: data || [], loading: !error && !data, error };
   };
 
-  return { data, loading, error, getEmperors, getEmperorById };
+  const addEmperor = async (emperor) => {
+    const { data: newEmperor } = await http.post("/emperors", emperor);
+    mutate("/emperors");
+    return newEmperor;
+  };
+
+  return { getEmperors, getEmperorById, addEmperor };
 };
 
 export default useEmperor;
