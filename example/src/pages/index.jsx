@@ -1,6 +1,19 @@
 import { Container, Typography } from "@mui/material";
 
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useStorage } from "@nucleoidjs/webstorage";
+
 const Index = () => {
+  const navigate = useNavigate();
+  const [itemId] = useStorage("itemId", null);
+
+  useEffect(() => {
+    if (itemId) {
+      navigate("/emperor");
+    }
+  }, [itemId]);
+
   return (
     <Container
       sx={{
@@ -12,7 +25,7 @@ const Index = () => {
         flexDirection: "column",
       }}
     >
-      <Typography variant="h3">Index</Typography>
+      <Typography variant="h3">Select A Emperor</Typography>
     </Container>
   );
 };
