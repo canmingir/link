@@ -2,22 +2,17 @@ const menuConfig = {
   topMenu: [],
   sideMenu: [
     {
-      subheader: "Service",
+      subheader: "SPQR",
       items: [
         {
-          title: "Service",
-          icon: "solar:code-2-bold-duotone",
-          path: "/service",
+          title: "Emperor",
+          icon: "game-icons:olive",
+          path: "/emperor",
         },
         {
-          title: "Reports",
-          icon: "solar:chart-line-duotone",
-          path: "/service/reports",
-        },
-        {
-          title: "Logs",
-          icon: "solar:course-up-bold-duotone",
-          path: "/service/logs",
+          title: "Battles",
+          icon: "pepicons-print:swords",
+          path: "/emperor/battle",
         },
       ],
     },

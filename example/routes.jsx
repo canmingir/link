@@ -4,9 +4,9 @@ import {
   FullScreenLayout,
 } from "platform-npm/layouts";
 
+import Battles from "./src/pages/Battles";
+import Emperor from "./src/pages/Emperor";
 import Index from "./src/pages/index";
-import MainPage from "./src/pages/MainPage";
-import SecondPage from "./src/pages/SecondPage";
 
 const routes = [
   {
@@ -14,12 +14,12 @@ const routes = [
     children: [{ path: "/", element: <Index /> }],
   },
   {
-    element: <FullScreenLayout />,
-    children: [{ path: "/main", element: <MainPage /> }],
+    element: <DashboardLayout />,
+    children: [{ path: "/emperor", element: <Emperor /> }],
   },
   {
-    element: <DashboardLayout />,
-    children: [{ path: "/secondPage", element: <SecondPage /> }],
+    element: <FullScreenLayout />,
+    children: [{ path: "/emperor/battle", element: <Battles /> }],
   },
 ];
 
