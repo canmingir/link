@@ -1,6 +1,4 @@
-import { Button, Container, Typography } from "@mui/material";
-
-import { Link } from "react-router-dom";
+import { Container, Typography } from "@mui/material";
 
 const Index = () => {
   return (
@@ -12,13 +10,9 @@ const Index = () => {
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
-        backgroundColor: "green",
       }}
     >
       <Typography variant="h3">Index</Typography>
-      <Button sx={{ backgroundColor: "black" }}>
-        <Link to={"/main"}>Next Page</Link>
-      </Button>
     </Container>
   );
 };
