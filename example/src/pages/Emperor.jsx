@@ -6,13 +6,11 @@ import useEmperor from "../hooks/useEmperor";
 import { useStorage } from "@nucleoidjs/webstorage";
 
 const Emperor = () => {
-  const { data: emperor, loading, error, getEmperorById } = useEmperor();
+  const { getEmperorById } = useEmperor();
   const [itemId] = useStorage("itemId", null);
 
-  useEffect(() => {
-    getEmperorById(itemId);
-  }, [itemId]);
-
+  const { emperor, loading, error } = getEmperorById(itemId);
+  console.log(emperor);
   if (loading) {
     return <>loading</>;
   }
@@ -42,14 +40,16 @@ const Emperor = () => {
         >
           <Box
             component={"img"}
-            src={emperor.portrait}
+            src={emperor.data.portrait}
             sx={{ width: "10rem", borderWidth: 2, borderRadius: "2rem" }}
           />
-          <Typography variant="h2">{emperor.name}</Typography>
-          <Typography variant="subtitle1">Reign: {emperor.reign}</Typography>
-          <Typography variant="subtitle2">Born: {emperor.born}</Typography>
+          <Typography variant="h2">{emperor.data.name}</Typography>
+          <Typography variant="subtitle1">
+            Reign: {emperor.data.reign}
+          </Typography>
+          <Typography variant="subtitle2">Born: {emperor.data.born}</Typography>
           <Stack width={"70rem"} m={2}>
-            <Typography variant="body1">{emperor.description}</Typography>
+            <Typography variant="body1">{emperor.data.description}</Typography>
           </Stack>
         </Stack>
       </Box>
