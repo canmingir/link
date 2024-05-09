@@ -21,7 +21,7 @@ const config = {
     mode: "dark", // 'light' | 'dark'
     colorPresets: "cyan", // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
   },
-  itemsPath: "/projects",
+  itemsPath: "/emperors",
 };
 
 export default config;
