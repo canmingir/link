@@ -12,6 +12,7 @@
   },
   "scripts": {
     "dev": "cd example && rmdir /s /q node_modules\\.vite && concurrently \"npm run dev\" \"npm run server\"",
+    "dev:update": "cd example && npm i platform-npm@latest"
   },
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.10.1",
