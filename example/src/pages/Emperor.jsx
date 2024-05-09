@@ -6,18 +6,20 @@ import useEmperor from "../hooks/useEmperor";
 import { useStorage } from "@nucleoidjs/webstorage";
 
 const Emperor = () => {
-  const { getEmperorById } = useEmperor();
-  const [emperor, setEmperor] = useState({});
+  const { data: emperor, loading, error, getEmperorById } = useEmperor();
   const [itemId] = useStorage("itemId", null);
 
   useEffect(() => {
-    const fetchEmperorById = async () => {
-      const data = await getEmperorById(itemId);
-      setEmperor(data);
-    };
-
-    fetchEmperorById();
+    getEmperorById(itemId);
   }, [itemId]);
+
+  if (loading) {
+    return <>loading</>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <>
