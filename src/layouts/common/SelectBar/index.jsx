@@ -151,7 +151,11 @@ function SelectBar() {
 
   const AddNewButton = (
     <DialogActions disableSpacing>
-      <Button fullWidth={true} onClick={AddNewDialogOpen}>
+      <Button
+        data-cy="add-new-item-button"
+        fullWidth={true}
+        onClick={AddNewDialogOpen}
+      >
         <Label
           fullWidth={true}
           sx={{

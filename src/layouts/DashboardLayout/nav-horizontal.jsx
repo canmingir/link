@@ -19,7 +19,6 @@ function NavHorizontal() {
   const { user } = useUser();
 
   const { sideMenu } = menuConfig;
-  console.log(sideMenu);
 
   return (
     <AppBar
