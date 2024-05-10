@@ -1,12 +1,12 @@
 const config = {
-  name: "Nucleoid.com",
+  name: "SPQR",
   base: "/",
   env: "dev",
   api: "http://localhost:3000",
   login: {
     icon: "/media/logo.png",
     largeIcon: "/media/largeLogo.png",
-    name: "Nucleoid.com",
+    name: "SPQR",
     nucleoid: {},
     github: {
       authUrl: "https://github.com/login/oauth/authorize",
