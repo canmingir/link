@@ -10,9 +10,12 @@ import {
 import React, { useState } from "react";
 import { publish, useEvent } from "@nucleoidjs/react-event";
 
+import useEmperor from "../hooks/useEmperor";
+
 function AddNewEmperor() {
   // TODO refactor this event (ADD_NEW_DIALOG_OPENED and ADD_NEW_DIALOG_CLOSED)
   const [addNewDialog] = useEvent("ADD_NEW_DIALOG_OPENED", { open: false });
+  const { addEmperor } = useEmperor();
   const [emperor, setEmperor] = useState({
     id: "",
     name: "",
@@ -32,8 +35,9 @@ function AddNewEmperor() {
   };
 
   const handleSubmit = (e) => {
+    emperor.id = 4;
     e.preventDefault();
-    console.log(emperor);
+    addEmperor(emperor);
     handleClose();
   };
 
