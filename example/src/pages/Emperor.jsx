@@ -10,7 +10,6 @@ const Emperor = () => {
   const [itemId] = useStorage("itemId", null);
 
   const { emperor, loading, error } = getEmperorById(itemId);
-  console.log(emperor);
   if (loading) {
     return <>loading</>;
   }
