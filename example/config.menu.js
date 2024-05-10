@@ -1,3 +1,5 @@
+import ActionButton from "./src/widgets/ActionButton";
+
 const menuConfig = {
   topMenu: [],
   sideMenu: [
@@ -36,7 +38,7 @@ const menuConfig = {
       linkTo: "/",
     },
   ],
-  actionButtons: [],
+  actionButtons: [ActionButton],
 };
 
 export default menuConfig;
