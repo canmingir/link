@@ -15,7 +15,7 @@ import { applyFilter } from "./utils";
 import config from "../../../../../../config.js";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
-import { publish } from "@nucleoidjs/react-event";
+import { publish } from "@nucleoidai/react-event";
 import { useBoolean } from "../../../hooks/use-boolean";
 import { useEffect } from "react";
 import { useEventListener } from "../../../hooks/use-event-listener";

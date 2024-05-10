@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
-import { publish, useEvent } from "@nucleoidjs/react-event";
+import { publish, useEvent } from "@nucleoidai/react-event";
 
 import useEmperor from "../hooks/useEmperor";
 

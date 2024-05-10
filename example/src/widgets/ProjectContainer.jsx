@@ -4,7 +4,7 @@ import AddNewEmperor from "./AddNewEmperor";
 import React from "react";
 import { useEffect } from "react";
 import useEmperor from "../hooks/useEmperor";
-import { useEvent } from "@nucleoidjs/react-event";
+import { useEvent } from "@nucleoidai/react-event";
 
 //TODO: decide name (Container or SelectBar) ?
 function ProjectContainer() {
