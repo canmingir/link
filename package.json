@@ -11,8 +11,8 @@
     "./platform/hooks": "./src/hooks/index.js"
   },
   "scripts": {
-    "dev": "cd example && rmdir /s /q node_modules\\.vite && concurrently \"npm run dev\" \"npm run server\"",
-    "dev:update": "cd example && npm i platform-npm@latest"
+    "dev": "cd project && rmdir /s /q node_modules\\.vite && concurrently \"npm run dev\" \"npm run server\"",
+    "dev:update": "cd project && npm i platform-npm@latest"
   },
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.10.1",
@@ -27,8 +27,8 @@
     "@mui/styled-engine-sc": "^5.12.0",
     "@mui/x-data-grid": "^6.18.6",
     "@mui/x-date-pickers": "^6.18.6",
+    "@nucleoidai/react-event": "^1.1.4",
     "@nucleoidjs/components": "^1.2.0",
-    "@nucleoidjs/react-event": "^1.0.15",
     "@nucleoidjs/synapses": "^1.0.8",
     "@nucleoidjs/webstorage": "^1.0.2",
     "@uidotdev/usehooks": "^2.4.1",
