@@ -54,7 +54,7 @@ function SelectBar() {
   }, [items]);
 
   const AddNewDialogOpen = () => {
-    publish("ADD_NEW_DIALOG_OPENED", { open: true });
+    publish("PLATFORM_DIALOG", { open: true });
   };
 
   const handleSelect = (item) => {
