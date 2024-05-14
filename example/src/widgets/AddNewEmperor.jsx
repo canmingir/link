@@ -13,8 +13,7 @@ import { publish, useEvent } from "@nucleoidai/react-event";
 import useEmperor from "../hooks/useEmperor";
 
 function AddNewEmperor() {
-  // TODO refactor this event (ADD_NEW_DIALOG_OPENED and ADD_NEW_DIALOG_CLOSED)
-  const [addNewDialog] = useEvent("ADD_NEW_DIALOG_OPENED", { open: false });
+  const [platformDialog] = useEvent("PLATFORM_DIALOG", { open: false });
   const { addEmperor } = useEmperor();
   const [emperor, setEmperor] = useState({
     id: "",
@@ -27,7 +26,7 @@ function AddNewEmperor() {
   });
 
   const handleClose = () => {
-    publish("ADD_NEW_DIALOG_OPENED", { open: false });
+    publish("PLATFORM_DIALOG", { open: false });
   };
 
   const handleChange = (e) => {
@@ -44,7 +43,7 @@ function AddNewEmperor() {
   return (
     <div>
       <Dialog
-        open={addNewDialog.open}
+        open={platformDialog.open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
