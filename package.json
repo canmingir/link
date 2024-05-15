@@ -1,6 +1,6 @@
 {
   "name": "platform-npm",
-  "version": "0.3.15",
+  "version": "0.3.16",
   "type": "module",
   "exports": {
     ".": "./index.js",
@@ -11,7 +11,7 @@
     "./platform/hooks": "./src/hooks/index.js"
   },
   "scripts": {
-    "dev": "cd project && rmdir /s /q node_modules\\.vite && concurrently \"npm run dev\" \"npm run server\"",
+    "dev": "cd project && concurrently \"npm run dev\" \"npm run server\"",
     "dev:update": "cd project && npm i platform-npm@latest"
   },
   "dependencies": {
