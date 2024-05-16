@@ -90,14 +90,14 @@ function SelectBar() {
   const notFound = searchQuery && !dataFiltered.length;
 
   const renderItems = () => (
-    <List disablePadding>
+    <List data-cy="item-list" disablePadding>
       {dataFiltered.map((item) => {
         const title = item.name;
         const icon = item?.icon?.slice(1, -1);
         const partsTitle = parse(title, match(title, searchQuery));
         return (
           <ResultItem
-            data-cy="item-select"
+            data-cy="item"
             icon={icon || "eva:question-mark-circle"}
             title={partsTitle}
             key={`${title}`}
@@ -114,7 +114,7 @@ function SelectBar() {
   const renderButton = (
     <Stack direction="row" alignItems="center">
       <IconButton
-        data-cy="item-open-button"
+        data-cy="open-select-bar-button"
         onClick={search.onTrue}
         sx={{
           color: "text.disabled",
@@ -188,6 +188,7 @@ function SelectBar() {
       {renderButton}
 
       <Dialog
+        data-cy="select-bar-dialog"
         fullWidth={true}
         maxWidth="sm"
         open={search.value}
