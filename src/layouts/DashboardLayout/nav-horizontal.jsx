@@ -22,6 +22,7 @@ function NavHorizontal() {
 
   return (
     <AppBar
+      data-cy="dashboard-layout-nav-horizontal"
       component="div"
       sx={{
         top: HEADER.H_DESKTOP_OFFSET,

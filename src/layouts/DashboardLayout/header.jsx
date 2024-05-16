@@ -63,6 +63,7 @@ export default function Header({ onOpenNav }) {
 
   return (
     <AppBar
+      data-cy="dashboard-layout-header"
       sx={{
         height: HEADER.H_MOBILE,
         zIndex: theme.zIndex.appBar + 1,

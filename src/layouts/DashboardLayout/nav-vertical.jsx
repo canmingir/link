@@ -95,6 +95,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
   );
   return (
     <Box
+      data-cy="nav-vertical"
       sx={{
         flexShrink: { lg: 0 },
         width: { lg: NAV.W_VERTICAL },
