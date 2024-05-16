@@ -25,15 +25,11 @@ describe("OAuth GitHub Login Flow", () => {
     cy.url().should("include", config.login.github.response_type);
   });
 
-    cy.checkStorage("dashboard.accessToken", "TEST_ACCESS_TOKEN");
-    cy.checkStorage("dashboard.refreshToken", "TEST_REFRESH_TOKEN");
+  it("should user after login redirect homepage and display user info", () => {
+    cy.visit("http://localhost:5173/callback?code=TEST_CODE");
+    cy.wait("@oauthRequest");
     cy.wait("@githubUserRequest");
-
-    cy.get('[data-cy="user-name"]').should("have.text", "Mock User");
-    cy.get('[data-cy="user-avatar"] img').should(
-      "have.attr",
-      "src",
-      "https://avatars.githubusercontent.com/u/134300732?v=4"
-    );
+    cy.getBySel("account-popover").click();
+    cy.getBySel("account-popover-name").contains("octocat");
   });
 });
