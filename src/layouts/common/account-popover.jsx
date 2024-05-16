@@ -49,6 +49,7 @@ export default function AccountPopover() {
         whileHover="hover"
         variants={varHover(1.05)}
         onClick={popover.onOpen}
+        data-cy="account-popover"
         sx={{
           width: 40,
           height: 40,
@@ -60,6 +61,7 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
+          data-cy="account-popover-avatar"
           src={userData?.avatarUrl}
           alt={userData?.name}
           sx={{
@@ -78,7 +80,7 @@ export default function AccountPopover() {
         sx={{ width: 200, p: 0 }}
       >
         <Box sx={{ p: 2, pb: 1.5 }}>
-          <Typography variant="subtitle2" noWrap>
+          <Typography data-cy="account-popover-name" variant="subtitle2" noWrap>
             {userData?.name}
           </Typography>
 
