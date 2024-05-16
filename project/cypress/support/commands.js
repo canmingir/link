@@ -30,3 +30,7 @@ Cypress.Commands.add("checkStorage", (key, expectedValue) => {
     expect(actualValue).to.eq(expectedValue);
   });
 });
+
+Cypress.Commands.add("getBySel", (selector, ...args) => {
+  return cy.get(`[data-cy=${selector}]`, ...args);
+});
