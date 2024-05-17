@@ -83,4 +83,32 @@ describe("DashboardLayout", () => {
       cy.url().should("include", config.sideMenu[0].items[0].path);
     });
   });
+
+  it("when click action button open snackbar", () => {
+    cy.visit("http://localhost:5173/emperor");
+
+    cy.get("@config").then((config) => {
+      cy.getBySel("nav-vertical")
+        .contains(config.sideMenu[0].items[0].title)
+        .click();
+      cy.contains("Talk to Emperor").click();
+      cy.contains("Emperor is busy right now").should("be.visible");
+    });
+  });
+
+  it("when click end item navigate to the correct path", () => {
+    cy.visit("http://localhost:5173/emperor");
+
+    cy.get("@config").then((config) => {
+      cy.getBySel("nav-vertical")
+        .contains(config.sideMenu[0].items[0].title)
+        .click();
+
+      cy.getBySel("end-item").click();
+
+      cy.get("@config").then((config) => {
+        cy.url().should("include", config.endItem.path);
+      });
+    });
+  });
 });
