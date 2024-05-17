@@ -108,3 +108,25 @@ describe("CompactLayout (mobile)", () => {
     cy.checkLayout("CompactLayout");
   });
 });
+
+describe("FullScreenLayout (mobile)", () => {
+  beforeEach(() => {
+    cy.viewport(375, 667);
+  });
+
+  it("should contain only mini nav ", () => {
+    cy.visit("http://localhost:5173/emperor/battle");
+    cy.checkLayout("FullScreenLayout");
+  });
+});
+
+describe("DashboardLayout (mobile)", () => {
+  beforeEach(() => {
+    cy.viewport(375, 667);
+    cy.fixture("CONFIG/MENU_CONFIG.js").as("config");
+  });
+  it("should contain header and vertical nav", () => {
+    cy.visit("http://localhost:5173/emperor");
+    cy.checkLayout("DashboardLayout");
+  });
+});
