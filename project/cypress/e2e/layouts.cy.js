@@ -129,4 +129,42 @@ describe("DashboardLayout (mobile)", () => {
     cy.visit("http://localhost:5173/emperor");
     cy.checkLayout("DashboardLayout");
   });
+  it("should include paths from config.menu in navigation", () => {
+    cy.visit("http://localhost:5173/emperor");
+
+    cy.getBySel("open-nav-button").click();
+
+    cy.get("@config").then((config) => {
+      config.sideMenu[0].items.map((item) =>
+        cy.get(".simplebar-content").contains(item.title)
+      );
+    });
+  });
+
+  it("should redirect to the correct path", () => {
+    cy.visit("http://localhost:5173/emperor");
+
+    cy.getBySel("open-nav-button").click();
+
+    cy.get("@config").then((config) => {
+      cy.get(".simplebar-content")
+        .contains(config.sideMenu[0].items[0].title)
+        .click();
+      cy.url().should("include", config.sideMenu[0].items[0].path);
+    });
+  });
+
+  it("when click action button open snackbar", () => {
+    cy.visit("http://localhost:5173/emperor");
+
+    cy.getBySel("open-nav-button").click();
+
+    cy.get("@config").then((config) => {
+      cy.get(".simplebar-content")
+        .contains(config.sideMenu[0].items[0].title)
+        .click();
+      cy.contains("Talk to Emperor").click();
+      cy.contains("Emperor is busy right now").should("be.visible");
+    });
+  });
 });
