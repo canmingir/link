@@ -46,4 +46,41 @@ describe("FullScreenLayout", () => {
     });
   });
 });
+
+describe("DashboardLayout", () => {
+  beforeEach(() => {
+    cy.fixture("CONFIG/MENU_CONFIG.js").as("config");
+    cy.viewport(1280, 720);
+  });
+
+  it("should contain header and vertical nav", () => {
+    cy.visit("http://localhost:5173/emperor");
+    cy.getBySel("header").should("not.exist");
+    cy.getBySel("dashboard-layout-header").should("be.exist");
+    cy.getBySel("dashboard-layout-nav-horizontal").should("not.exist");
+    cy.getBySel("nav-mini").should("not.exist");
+    cy.getBySel("nav-horizontal").should("not.exist");
+    cy.getBySel("nav-vertical").should("be.exist");
+  });
+
+  it("should include paths from config.menu in navigation", () => {
+    cy.visit("http://localhost:5173/emperor");
+
+    cy.get("@config").then((config) => {
+      config.sideMenu[0].items.map((item) =>
+        cy.getBySel("nav-vertical").contains(item.title)
+      );
+    });
+  });
+
+  it("should redirect to the correct path", () => {
+    cy.visit("http://localhost:5173/emperor");
+
+    cy.get("@config").then((config) => {
+      cy.getBySel("nav-vertical")
+        .contains(config.sideMenu[0].items[0].title)
+        .click();
+      cy.url().should("include", config.sideMenu[0].items[0].path);
+    });
+  });
 });
