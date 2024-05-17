@@ -24,4 +24,26 @@ describe("FullScreenLayout", () => {
     cy.getBySel("nav-horizontal").should("not.exist");
     cy.getBySel("nav-vertical").should("not.exist");
   });
+
+  it("should include paths from config.menu in navigation", () => {
+    cy.visit("http://localhost:5173/emperor/battle");
+
+    cy.get("@config").then((config) => {
+      config.sideMenu[0].items.map((item) =>
+        cy.getBySel("nav-mini").contains(item.title)
+      );
+    });
+  });
+
+  it("should redirect to the correct path", () => {
+    cy.visit("http://localhost:5173/emperor/battle");
+
+    cy.get("@config").then((config) => {
+      cy.getBySel("nav-mini")
+        .contains(config.sideMenu[0].items[0].title)
+        .click();
+      cy.url().should("include", config.sideMenu[0].items[0].path);
+    });
+  });
+});
 });
