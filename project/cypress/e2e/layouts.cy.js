@@ -1,6 +1,6 @@
 describe("CompactLayout", () => {
   it("should contain only header", () => {
-    cy.visit("http://localhost:5173");
+    cy.visit("/");
     cy.checkLayout("CompactLayout");
   });
 });
@@ -11,12 +11,12 @@ describe("FullScreenLayout", () => {
   });
 
   it("should contain only mini nav ", () => {
-    cy.visit("http://localhost:5173/emperor/battle");
+    cy.visit("/emperor/battle");
     cy.checkLayout("FullScreenLayout");
   });
 
   it("should include paths from config.menu in navigation", () => {
-    cy.visit("http://localhost:5173/emperor/battle");
+    cy.visit("/emperor/battle");
 
     cy.get("@config").then((config) => {
       config.sideMenu[0].items.map((item) =>
@@ -26,7 +26,7 @@ describe("FullScreenLayout", () => {
   });
 
   it("should redirect to the correct path", () => {
-    cy.visit("http://localhost:5173/emperor/battle");
+    cy.visit("/emperor/battle");
 
     cy.get("@config").then((config) => {
       cy.getBySel("nav-mini")
@@ -44,12 +44,12 @@ describe("DashboardLayout", () => {
   });
 
   it("should contain header and vertical nav", () => {
-    cy.visit("http://localhost:5173/emperor");
+    cy.visit("/emperor");
     cy.checkLayout("DashboardLayout");
   });
 
   it("should include paths from config.menu in navigation", () => {
-    cy.visit("http://localhost:5173/emperor");
+    cy.visit("/emperor");
 
     cy.get("@config").then((config) => {
       config.sideMenu[0].items.map((item) =>
@@ -59,7 +59,7 @@ describe("DashboardLayout", () => {
   });
 
   it("should redirect to the correct path", () => {
-    cy.visit("http://localhost:5173/emperor");
+    cy.visit("/emperor");
 
     cy.get("@config").then((config) => {
       cy.getBySel("nav-vertical")
@@ -70,7 +70,7 @@ describe("DashboardLayout", () => {
   });
 
   it("when click action button open snackbar", () => {
-    cy.visit("http://localhost:5173/emperor");
+    cy.visit("/emperor");
 
     cy.get("@config").then((config) => {
       cy.getBySel("nav-vertical")
@@ -82,7 +82,7 @@ describe("DashboardLayout", () => {
   });
 
   it("when click end item navigate to the correct path", () => {
-    cy.visit("http://localhost:5173/emperor");
+    cy.visit("/emperor");
 
     cy.get("@config").then((config) => {
       cy.getBySel("nav-vertical")
@@ -104,7 +104,7 @@ describe("CompactLayout (mobile)", () => {
   });
 
   it("should contain only header", () => {
-    cy.visit("http://localhost:5173");
+    cy.visit("/");
     cy.checkLayout("CompactLayout");
   });
 });
@@ -115,7 +115,7 @@ describe("FullScreenLayout (mobile)", () => {
   });
 
   it("should contain only mini nav ", () => {
-    cy.visit("http://localhost:5173/emperor/battle");
+    cy.visit("/emperor/battle");
     cy.checkLayout("FullScreenLayout");
   });
 });
@@ -126,11 +126,11 @@ describe("DashboardLayout (mobile)", () => {
     cy.fixture("CONFIG/MENU_CONFIG.js").as("config");
   });
   it("should contain header and vertical nav", () => {
-    cy.visit("http://localhost:5173/emperor");
+    cy.visit("/emperor");
     cy.checkLayout("DashboardLayout");
   });
   it("should include paths from config.menu in navigation", () => {
-    cy.visit("http://localhost:5173/emperor");
+    cy.visit("/emperor");
 
     cy.getBySel("open-nav-button").click();
 
@@ -142,7 +142,7 @@ describe("DashboardLayout (mobile)", () => {
   });
 
   it("should redirect to the correct path", () => {
-    cy.visit("http://localhost:5173/emperor");
+    cy.visit("/emperor");
 
     cy.getBySel("open-nav-button").click();
 
@@ -155,7 +155,7 @@ describe("DashboardLayout (mobile)", () => {
   });
 
   it("when click action button open snackbar", () => {
-    cy.visit("http://localhost:5173/emperor");
+    cy.visit("/emperor");
 
     cy.getBySel("open-nav-button").click();
 

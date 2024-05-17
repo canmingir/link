@@ -2,7 +2,7 @@ import config from "../../config.js";
 
 describe("OAuth GitHub", () => {
   it("should when press login button redirect provider url with correct params", () => {
-    cy.visit("http://localhost:5173/login");
+    cy.visit("/login");
 
     cy.get('[data-cy="github-login-button"]').click();
 
@@ -24,7 +24,7 @@ describe("OAuth GitHub", () => {
       fixture: "/OAUTH/GITHUB/user.json",
     }).as("githubUserRequest");
 
-    cy.visit("http://localhost:5173/callback?code=TEST_CODE");
+    cy.visit("/callback?code=TEST_CODE");
 
     cy.wait("@oauthRequest");
     cy.wait("@githubUserRequest");
