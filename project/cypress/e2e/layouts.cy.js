@@ -1,12 +1,7 @@
 describe("CompactLayout", () => {
   it("should contain only header", () => {
     cy.visit("http://localhost:5173");
-    cy.getBySel("header").should("be.exist");
-    cy.getBySel("dashboard-layout-header").should("not.exist");
-    cy.getBySel("dashboard-layout-nav-horizontal").should("not.exist");
-    cy.getBySel("nav-mini").should("not.exist");
-    cy.getBySel("nav-horizontal").should("not.exist");
-    cy.getBySel("nav-vertical").should("not.exist");
+    cy.checkLayout("CompactLayout");
   });
 });
 
@@ -17,12 +12,7 @@ describe("FullScreenLayout", () => {
 
   it("should contain only mini nav ", () => {
     cy.visit("http://localhost:5173/emperor/battle");
-    cy.getBySel("header").should("not.exist");
-    cy.getBySel("dashboard-layout-header").should("not.exist");
-    cy.getBySel("dashboard-layout-nav-horizontal").should("not.exist");
-    cy.getBySel("nav-mini").should("be.exist");
-    cy.getBySel("nav-horizontal").should("not.exist");
-    cy.getBySel("nav-vertical").should("not.exist");
+    cy.checkLayout("FullScreenLayout");
   });
 
   it("should include paths from config.menu in navigation", () => {
@@ -55,12 +45,7 @@ describe("DashboardLayout", () => {
 
   it("should contain header and vertical nav", () => {
     cy.visit("http://localhost:5173/emperor");
-    cy.getBySel("header").should("not.exist");
-    cy.getBySel("dashboard-layout-header").should("be.exist");
-    cy.getBySel("dashboard-layout-nav-horizontal").should("not.exist");
-    cy.getBySel("nav-mini").should("not.exist");
-    cy.getBySel("nav-horizontal").should("not.exist");
-    cy.getBySel("nav-vertical").should("be.exist");
+    cy.checkLayout("DashboardLayout");
   });
 
   it("should include paths from config.menu in navigation", () => {
@@ -120,11 +105,6 @@ describe("CompactLayout (mobile)", () => {
 
   it("should contain only header", () => {
     cy.visit("http://localhost:5173");
-    cy.getBySel("header").should("be.exist");
-    cy.getBySel("dashboard-layout-header").should("not.exist");
-    cy.getBySel("dashboard-layout-nav-horizontal").should("not.exist");
-    cy.getBySel("nav-mini").should("not.exist");
-    cy.getBySel("nav-horizontal").should("not.exist");
-    cy.getBySel("nav-vertical").should("not.exist");
+    cy.checkLayout("CompactLayout");
   });
 });
