@@ -77,6 +77,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
       </Stack>
       {menuConfig.endItem && (
         <Button
+          data-cy="end-item"
           fullWidth={true}
           onClick={() => navigate(menuConfig.endItem.path)}
         >

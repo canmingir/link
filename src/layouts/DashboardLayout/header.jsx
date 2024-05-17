@@ -39,7 +39,7 @@ export default function Header({ onOpenNav }) {
       {lgUp && isNavHorizontal && <Logo sx={{ mr: 2.5 }} />}
 
       {!lgUp && (
-        <IconButton onClick={onOpenNav}>
+        <IconButton data-cy="open-nav-button" onClick={onOpenNav}>
           <SvgColor src="https://minimals.cc/assets/icons/navbar/ic_menu_item.svg" />
         </IconButton>
       )}
