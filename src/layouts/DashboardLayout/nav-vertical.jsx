@@ -12,7 +12,7 @@ import Scrollbar from "../../components/scrollbar";
 import Stack from "@mui/material/Stack";
 import menuConfig from "../../../../../config.menu.js";
 import { useEffect } from "react";
-import { useEvent } from "@nucleoidjs/react-event";
+import { useEvent } from "@nucleoidai/react-event";
 import { useNavigate } from "react-router-dom";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";

@@ -15,7 +15,7 @@ import { applyFilter } from "./utils";
 import config from "../../../../../../config.js";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
-import { publish } from "@nucleoidjs/react-event";
+import { publish } from "@nucleoidai/react-event";
 import { useBoolean } from "../../../hooks/use-boolean";
 import { useEffect } from "react";
 import { useEventListener } from "../../../hooks/use-event-listener";
@@ -54,7 +54,7 @@ function SelectBar() {
   }, [items]);
 
   const AddNewDialogOpen = () => {
-    publish("ADD_NEW_DIALOG_OPENED", { open: true });
+    publish("PLATFORM_DIALOG", { open: true });
   };
 
   const handleSelect = (item) => {
@@ -151,7 +151,11 @@ function SelectBar() {
 
   const AddNewButton = (
     <DialogActions disableSpacing>
-      <Button fullWidth={true} onClick={AddNewDialogOpen}>
+      <Button
+        data-cy="add-new-item-button"
+        fullWidth={true}
+        onClick={AddNewDialogOpen}
+      >
         <Label
           fullWidth={true}
           sx={{
