@@ -96,7 +96,11 @@ function AddItemWizard({ onSubmit, items, steps, stepExp }) {
         </Typography>
         <Stack direction="row" alignItems="center">
           <Typography>Single</Typography>
-          <Switch defaultChecked onChange={handleSwitchChange(0)} />
+          <Switch
+            data-cy="type-switch"
+            defaultChecked
+            onChange={handleSwitchChange(0)}
+          />
           <Typography>Multiple</Typography>
         </Stack>
       </Stack>
