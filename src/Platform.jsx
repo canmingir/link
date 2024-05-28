@@ -16,7 +16,7 @@ import React, { useEffect } from "react";
 import { initialState, reducer } from "./context/reducer";
 import { publish, subscribe, useEvent } from "@nucleoidai/react-event";
 
-window.nucleoid = {
+window["@nucleoidai"] = {
   Event: { publish, subscribe, useEvent },
 };
 

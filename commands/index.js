@@ -54,3 +54,21 @@ Cypress.Commands.add("checkLayout", (layout) => {
     });
   }
 });
+
+Cypress.Commands.add("waitEvent", (eventName) => {
+  return cy.wrap(
+    new Promise((resolve) => {
+      cy.window().then((window) => {
+        const { Event } = window["@nucleoidai"];
+
+        Event.subscribe(eventName, (payload, registry) => {
+          cy.log("react-event", eventName, payload);
+          // TODO Research why registry is undefined
+          // registry.unsubscribe();
+
+          resolve();
+        });
+      });
+    })
+  );
+});
