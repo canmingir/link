@@ -1,7 +1,21 @@
+import config from "../../config";
+
 Cypress.Commands.add("checkStorage", (key, expectedValue) => {
   cy.window().should((win) => {
     const actualValue = win.localStorage.getItem(key);
     expect(actualValue).to.eq(expectedValue);
+  });
+});
+
+Cypress.Commands.add("storageSet", (key, value) => {
+  cy.window().then((win) => {
+    win.localStorage.setItem(key, JSON.stringify(value));
+  });
+});
+
+Cypress.Commands.add("storageGet", (key) => {
+  cy.window().then((win) => {
+    return JSON.parse(win.localStorage.getItem(key));
   });
 });
 
@@ -53,4 +67,39 @@ Cypress.Commands.add("checkLayout", (layout) => {
       cy.getBySel(element).should("not.exist");
     });
   }
+});
+
+Cypress.Commands.add("waitEvent", (eventName) => {
+  return cy.wrap(
+    new Promise((resolve) => {
+      cy.window().then((window) => {
+        const { Event } = window["@nucleoidai"];
+
+        Event.subscribe(eventName, (payload) => {
+          cy.log("react-event", eventName, payload);
+
+          resolve();
+        });
+      });
+    })
+  );
+});
+
+Cypress.Commands.add("checkRoute", (route) => {
+  cy.url().should("include", route);
+});
+
+Cypress.Commands.add("platformSetup", (itemId, itemFixturePath) => {
+  cy.storageSet("itemId", itemId);
+
+  cy.storageSet(`${config.name}.refreshToken`, "TEST_REFRESH_TOKEN");
+  cy.storageSet(`${config.name}.accessToken`, "TEST_ACCESS_TOKEN");
+
+  cy.intercept("GET", `https://api.github.com/user`, {
+    fixture: "github/user.get.json",
+  }).as("getUser");
+
+  cy.intercept("GET", config.itemsPath, {
+    fixture: itemFixturePath,
+  }).as("getTeams");
 });

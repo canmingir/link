@@ -1,6 +1,6 @@
 {
   "name": "platform-npm",
-  "version": "0.3.31",
+  "version": "0.3.43",
   "type": "module",
   "exports": {
     ".": "./index.js",
