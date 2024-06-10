@@ -97,3 +97,15 @@ Cypress.Commands.add("platformSetup", (itemId, itemFixturePath, config) => {
     fixture: itemFixturePath,
   }).as("getTeams");
 });
+
+Cypress.Commands.add("selectIconFromPicker", (altText) => {
+  cy.get("em-emoji-picker")
+    .shadow()
+    .within(() => {
+      cy.get("[class='category']")
+        .find("span")
+        .find("img")
+        .filter(`[alt="${altText}"]`)
+        .click();
+    });
+});
