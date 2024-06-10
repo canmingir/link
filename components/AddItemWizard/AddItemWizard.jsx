@@ -8,12 +8,12 @@ import SparkleInput from "../SparkleInput/SparkleInput";
 import StepComponent from "../StepComponent/StepComponent";
 
 import { Grid, Stack, Switch, Typography } from "@mui/material";
-import { publish, useEvent } from "@nucleoidjs/react-event";
+import { publish, useEvent } from "@nucleoidai/react-event";
 
 function AddItemWizard({ onSubmit, items, steps, stepExp }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [newItems, setNewItems] = React.useState(items);
-  const [addNewDialog] = useEvent("ADD_NEW_DIALOG_OPENED", { open: false });
+  const [platformDialog] = useEvent("PLATFORM_DIALOG", { open: false });
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -37,7 +37,7 @@ function AddItemWizard({ onSubmit, items, steps, stepExp }) {
   };
   const handleSave = () => {
     onSubmit(newItems);
-    publish("ADD_NEW_DIALOG_OPENED", { open: false });
+    publish("PLATFORM_DIALOG", { open: false });
     setActiveStep(0);
   };
 
@@ -96,7 +96,11 @@ function AddItemWizard({ onSubmit, items, steps, stepExp }) {
         </Typography>
         <Stack direction="row" alignItems="center">
           <Typography>Single</Typography>
-          <Switch defaultChecked onChange={handleSwitchChange(0)} />
+          <Switch
+            data-cy="type-switch"
+            defaultChecked
+            onChange={handleSwitchChange(0)}
+          />
           <Typography>Multiple</Typography>
         </Stack>
       </Stack>
@@ -168,7 +172,7 @@ function AddItemWizard({ onSubmit, items, steps, stepExp }) {
     <Dialog
       fullWidth={true}
       maxWidth="sm"
-      open={addNewDialog.open}
+      open={platformDialog.open}
       onClose={() => {
         publish("ADD_NEW_DIALOG_OPENED", { open: false });
         setActiveStep(0);

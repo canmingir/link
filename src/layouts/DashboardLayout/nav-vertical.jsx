@@ -77,6 +77,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
       </Stack>
       {menuConfig.endItem && (
         <Button
+          data-cy="end-item"
           fullWidth={true}
           onClick={() => navigate(menuConfig.endItem.path)}
         >
@@ -95,6 +96,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
   );
   return (
     <Box
+      data-cy="nav-vertical"
       sx={{
         flexShrink: { lg: 0 },
         width: { lg: NAV.W_VERTICAL },

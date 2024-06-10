@@ -16,6 +16,7 @@ export default function NavMini({ only }) {
   const { sideMenu } = menuConfig;
   return (
     <Box
+      data-cy="nav-mini"
       sx={{
         flexShrink: { lg: 0 },
         width: { lg: NAV.W_MINI },

@@ -14,6 +14,11 @@ import globalConfig from "./config";
 
 import React, { useEffect } from "react";
 import { initialState, reducer } from "./context/reducer";
+import { publish, subscribe, useEvent } from "@nucleoidai/react-event";
+
+window["@nucleoidai"] = {
+  Event: { publish, subscribe, useEvent },
+};
 
 const Platform = ({ routes, dialogs }) => {
   useEffect(() => {

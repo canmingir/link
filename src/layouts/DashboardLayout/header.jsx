@@ -39,7 +39,7 @@ export default function Header({ onOpenNav }) {
       {lgUp && isNavHorizontal && <Logo sx={{ mr: 2.5 }} />}
 
       {!lgUp && (
-        <IconButton onClick={onOpenNav}>
+        <IconButton data-cy="open-nav-button" onClick={onOpenNav}>
           <SvgColor src="https://minimals.cc/assets/icons/navbar/ic_menu_item.svg" />
         </IconButton>
       )}
@@ -63,6 +63,7 @@ export default function Header({ onOpenNav }) {
 
   return (
     <AppBar
+      data-cy="dashboard-layout-header"
       sx={{
         height: HEADER.H_MOBILE,
         zIndex: theme.zIndex.appBar + 1,

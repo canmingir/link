@@ -29,7 +29,7 @@ export default function HeaderSimple({
   const offsetTop = useOffSetTop(HEADER.H_DESKTOP);
 
   return (
-    <AppBar>
+    <AppBar data-cy="header">
       <Toolbar
         sx={{
           justifyContent: "space-between",

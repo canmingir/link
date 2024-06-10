@@ -18,7 +18,7 @@ function NavHorizontal() {
 
   const { sideMenu } = menuConfig;
   return (
-    <AppBar component="div">
+    <AppBar component="div" data-cy="nav-horizontal">
       <Toolbar
         sx={{
           ...bgBlur({

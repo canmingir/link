@@ -12,6 +12,7 @@ import { alpha } from "@mui/material/styles";
 export default function SelectBar({ title, icon, groupLabel, onClickItem }) {
   return (
     <ListItemButton
+      data-cy="item-button"
       onClick={onClickItem}
       sx={{
         borderWidth: 1,
