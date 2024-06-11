@@ -25,7 +25,8 @@ export const MenuConfigSchema = Joi.object({
           .required(),
       })
     )
-    .required(),
+    .optional()
+    .default([]),
   topMenu: Joi.array()
     .items(
       Joi.object({
@@ -34,7 +35,8 @@ export const MenuConfigSchema = Joi.object({
         path: Joi.string().required(),
       })
     )
-    .required(),
+    .optional()
+    .default([]),
   options: Joi.array()
     .items(
       Joi.object({
@@ -42,26 +44,17 @@ export const MenuConfigSchema = Joi.object({
         linkTo: Joi.string().required(),
       })
     )
-    .required(),
-  itemBar: Joi.array()
-    .items(
-      Joi.object({
-        itemName: Joi.string().required(),
-        addNewItem: Joi.function().required(),
-        itemsData: Joi.array()
-          .items(
-            Joi.object({
-              id: Joi.number().required(),
-              title: Joi.string().required(),
-              icon: Joi.string().required(),
-            })
-          )
-          .optional(),
-      })
-    )
-    .optional(),
+    .optional()
+    .default([]),
   actionButtons: Joi.array().items(Joi.any()).optional().default([]),
-  fullScreenLayout: Joi.string().valid("left", "right").optional(),
-})
-  .required()
-  .unknown(true);
+  fullScreenLayout: Joi.string()
+    .valid("left", "right")
+    .optional()
+    .default("left"),
+  endItem: Joi.object({
+    title: Joi.string().required(),
+    icon: Joi.string().required(),
+  })
+    .optional()
+    .default({}),
+}).required();
