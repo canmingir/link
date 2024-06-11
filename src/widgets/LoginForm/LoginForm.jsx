@@ -16,13 +16,14 @@ function LoginForm() {
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>
-      <Typography variant="h4">Sign in to Minimal</Typography>
+      <Typography variant="h4">Sign in to {config.name}</Typography>
+      {config.login.nucleoid && (
+        <Stack direction="row" spacing={0.5}>
+          <Typography variant="body2">New user?</Typography>
 
-      <Stack direction="row" spacing={0.5}>
-        <Typography variant="body2">New user?</Typography>
-
-        <MuiLink variant="subtitle2">Create an account</MuiLink>
-      </Stack>
+          <MuiLink variant="subtitle2">Create an account</MuiLink>
+        </Stack>
+      )}
     </Stack>
   );
 
@@ -57,7 +58,6 @@ function LoginForm() {
           </Divider>
         </>
       )}
-
       <SocialLoginButtons
         googleEnable={!!config.login.google}
         onGoogle={() => handleOAuthLogin({ ...config.login.google })}
