@@ -10,7 +10,7 @@ import { SettingsDrawer } from "./components/settings";
 import { SettingsProvider } from "./components/settings";
 import { SnackbarProvider } from "notistack";
 import ThemeProvider from "./theme";
-import config from "../../../config";
+import config from "./config/config";
 
 import { initialState, reducer } from "./context/reducer";
 import { publish, subscribe, useEvent } from "@nucleoidai/react-event";
@@ -19,21 +19,25 @@ window["@nucleoidai"] = {
   Event: { publish, subscribe, useEvent },
 };
 
+config.init();
+
 const Platform = ({ routes, dialogs }) => {
+  const appConfig = config.get();
+
   return (
     <>
       <SettingsProvider
         defaultSettings={{
-          themeMode: config.settings.mode || "dark",
+          themeMode: appConfig.settings.mode || "dark",
           themeDirection: "ltr",
           themeContrast: "default",
           themeLayout: "vertical",
-          themeColorPresets: config.settings.colorPresets || "default",
+          themeColorPresets: appConfig.settings.colorPresets || "default",
           themeStretch: false,
         }}
       >
         <ThemeProvider>
-          <BrowserRouter basename={config.base}>
+          <BrowserRouter basename={appConfig.base}>
             <ContextProvider reducer={reducer} state={initialState}>
               <SnackbarProvider
                 anchorOrigin={{
