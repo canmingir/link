@@ -5,6 +5,13 @@ export const ConfigSchema = Joi.object({
   base: Joi.string().optional().default(""),
   api: Joi.string().uri().optional().default(""),
   login: Joi.object({
+    page: Joi.object({
+      variant: Joi.string()
+        .valid("classic", "modern")
+        .optional()
+        .default("classic"),
+      image: Joi.string().optional().default(""),
+    }).optional(),
     icon: Joi.string().required(),
     largeIcon: Joi.string().required(),
     name: Joi.string().required(),
