@@ -55,7 +55,7 @@ export default function AuthClassicLayout({ image, title }) {
             theme.palette.background.default,
             theme.palette.mode === "light" ? 0.88 : 0.94
           ),
-          imgUrl: "/assets/background/overlay_2.jpg",
+          imgUrl: "https://minimals.cc/assets/background/overlay_2.jpg",
         }),
       }}
     >

@@ -77,7 +77,8 @@ export default function AuthModernLayout({ image }) {
           opacity: { xs: 0.24, md: 0 },
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
-          backgroundImage: "url(/assets/background/overlay_4.jpg)",
+          backgroundImage:
+            "url(https://minimals.cc/assets/background/overlay_4.jpg)",
         },
       }}
     >
