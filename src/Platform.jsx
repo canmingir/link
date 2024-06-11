@@ -4,15 +4,14 @@ import { BrowserRouter } from "react-router-dom";
 import ContextProvider from "./ContextProvider/ContextProvider";
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
 import Loading from "./Loading/Loading";
+import React from "react";
 import RouteManager from "./RouteManager/RouteManager";
 import { SettingsDrawer } from "./components/settings";
 import { SettingsProvider } from "./components/settings";
 import { SnackbarProvider } from "notistack";
 import ThemeProvider from "./theme";
 import config from "../../../config";
-import globalConfig from "./config";
 
-import React, { useEffect } from "react";
 import { initialState, reducer } from "./context/reducer";
 import { publish, subscribe, useEvent } from "@nucleoidai/react-event";
 
@@ -21,9 +20,6 @@ window["@nucleoidai"] = {
 };
 
 const Platform = ({ routes, dialogs }) => {
-  useEffect(() => {
-    globalConfig(config);
-  }, []);
   return (
     <>
       <SettingsProvider
