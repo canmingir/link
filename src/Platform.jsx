@@ -1,17 +1,18 @@
 import "./global.css";
 
-import { BrowserRouter } from "react-router-dom";
 import ContextProvider from "./ContextProvider/ContextProvider";
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
 import Loading from "./Loading/Loading";
 import React from "react";
 import RouteManager from "./RouteManager/RouteManager";
+
 import { SettingsDrawer } from "./components/settings";
 import { SettingsProvider } from "./components/settings";
 import { SnackbarProvider } from "notistack";
 import ThemeProvider from "./theme";
 import config from "./config/config";
 
+import { BrowserRouter, Navigate } from "react-router-dom";
 import { initialState, reducer } from "./context/reducer";
 import { publish, subscribe, useEvent } from "@nucleoidai/react-event";
 
@@ -22,8 +23,12 @@ window["@nucleoidai"] = {
 config.init();
 
 const Platform = ({ routes, dialogs }) => {
-  const { base, template } = config.get();
+  const [configInitError] = useEvent("CONFIG_INITIALIZE_FAILED", {
+    error: "",
+    file: "",
+  });
 
+  const { base, template } = config.get();
   return (
     <>
       <SettingsProvider
@@ -38,6 +43,9 @@ const Platform = ({ routes, dialogs }) => {
       >
         <ThemeProvider>
           <BrowserRouter basename={base}>
+            {configInitError && (
+              <Navigate to="/config-error" state={configInitError} />
+            )}
             <ContextProvider reducer={reducer} state={initialState}>
               <SnackbarProvider
                 anchorOrigin={{
