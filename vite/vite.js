@@ -1,9 +1,9 @@
-import config from "../src/config/config.js";
+import { ConfigSchema } from "../src/config/ConfigSchema.js";
+import config from "../../../config.js";
 import path from "path";
 import react from "@vitejs/plugin-react";
 import { splitVendorChunkPlugin } from "vite";
 import svgr from "vite-plugin-svgr";
-
 async function vite() {
   let base;
   return {
@@ -11,8 +11,9 @@ async function vite() {
       {
         name: "joi-error",
         configureServer(server) {
-          server.middlewares.use((req, res, next) => {
-            const { value, error } = config.vite();
+          server.middlewares.use(async (req, res, next) => {
+            const { value, error } = ConfigSchema.validate(config);
+
             if (error) {
               res.statusCode = 500;
               res.end(error.stack);
