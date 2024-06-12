@@ -41,6 +41,13 @@ const config = {
     return { error, value };
   },
   get: function () {
+    const config = {
+      ..._mainConfig,
+      menu: _menuConfig,
+      template: _templateConfig,
+    };
+
+    return config;
   },
 };
 
