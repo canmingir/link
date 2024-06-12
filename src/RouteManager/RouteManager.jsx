@@ -11,10 +11,11 @@ import modernLoginLayout from "../layouts/auth/modern";
 import { Route, Routes } from "react-router-dom";
 
 export default function RouteManager({ routes }) {
-  const { image, variant } = config.get().template;
+  const { image, variant } = config.get().template.login;
 
   const LoginElement =
     variant === "classic" ? classicLoginLayout : modernLoginLayout;
+
   return (
     <HelmetProvider>
       <Routes>
