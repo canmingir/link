@@ -1,5 +1,6 @@
 import Callback from "../pages/Callback";
 import CompactLayout from "../layouts/CompactLayout";
+import ConfigError from "../pages/ConfigError";
 import { HelmetProvider } from "react-helmet-async";
 import LoginPage from "../pages/LoginPage";
 import NotFoundPage from "../pages/404";
@@ -34,6 +35,7 @@ export default function RouteManager({ routes }) {
         <Route path="*" element={<CompactLayout />}>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
+        <Route path="/config-error" element={<ConfigError />} />
       </Routes>
     </HelmetProvider>
   );
