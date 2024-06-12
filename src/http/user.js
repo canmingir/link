@@ -3,7 +3,6 @@ import config from "../config/config.js";
 import { storage } from "@nucleoidjs/webstorage";
 
 const instance = axios.create({
-  baseURL: config.api,
   headers: {
     common: {
       "Content-Type": "application/json",

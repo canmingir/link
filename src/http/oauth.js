@@ -2,6 +2,7 @@ import axios from "axios";
 import axiosRetry from "axios-retry";
 import config from "../config/config.js";
 import qs from "qs";
+import { subscribe } from "@nucleoidai/react-event";
 
 const instance = axios.create({
   baseURL: "",
@@ -12,23 +13,11 @@ const instance = axios.create({
   },
 });
 
-axiosRetry(instance, { retries: 3 });
-
-function updateBaseURL() {
-  const { api } = config.get();
-
-  if (api) {
-    instance.defaults.baseURL = config.api;
-  }
-}
-
-instance.interceptors.request.use((request) => {
-  updateBaseURL();
-
-  request.baseURL = instance.defaults.baseURL;
-
-  return request;
+subscribe("CONFIG_INITIALIZED", () => {
+  instance.defaults.baseURL = config.get().api;
 });
+
+axiosRetry(instance, { retries: 3 });
 
 instance.interceptors.response.use(
   (response) => {

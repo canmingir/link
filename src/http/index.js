@@ -2,18 +2,12 @@ import axios from "axios";
 import config from "../config/config";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 import oauth from "./oauth";
-import { publish } from "@nucleoidjs/synapses";
 import { storage } from "@nucleoidjs/webstorage";
 
-//config.get();
-
-function updateConfig() {
-  const appConfig = config.get();
-  instance.defaults.baseURL = appConfig.api;
-}
+import { publish, subscribe } from "@nucleoidai/react-event";
 
 const instance = axios.create({
-  baseURL: config.api,
+  baseURL: "",
   headers: {
     common: {
       "Content-Type": "application/json",
@@ -21,8 +15,11 @@ const instance = axios.create({
   },
 });
 
+subscribe("CONFIG_INITIALIZED", () => {
+  instance.defaults.baseURL = config.get().api;
+});
+
 instance.interceptors.request.use((request) => {
-  config.get();
   publish("LOADED", { loading: true });
   const accessToken = storage.get(config.name, "accessToken");
   request.headers["Authorization"] = `Bearer ${accessToken}`;
@@ -93,7 +90,6 @@ export const fetcher = (url) => instance.get(url).then((res) => res.data);
 
 const refreshAuthLogic = async (failedRequest) => {
   try {
-    updateConfig();
     const { data } = await oauth.post("/oauth", {
       refresh_token: storage.get(config.name, "refreshToken"),
     });
