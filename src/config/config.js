@@ -1,23 +1,22 @@
 import { ConfigSchema } from "./ConfigSchema.js";
 import { MenuConfigSchema } from "./MenuConfigSchema.js";
 import { TemplateConfigSchema } from "./TemplateConfigSchema.js";
+import configMain from "../../../../config.js";
+import configMenu from "../../../../config.menu.js";
+import configTemplate from "../../../../config.template.js";
 
 let _mainConfig = {};
 let _menuConfig = {};
 let _templateConfig = {};
 
 const config = {
-  init: async function () {
-    const configMenu = await import("../../../../config.menu.js");
-    const configTemplate = await import("../../../../config.template.js");
-    const configMain = await import("../../../../config.js");
-
+  init: function () {
     const { value: mainConfig, error: errorConfig } =
-      await ConfigSchema.validate(configMain.default);
+      ConfigSchema.validate(configMain);
     const { value: menuConfig, error: errorMenu } =
-      await MenuConfigSchema.validate(configMenu.default);
+      MenuConfigSchema.validate(configMenu);
     const { value: templateConfig, error: errorTemplate } =
-      await TemplateConfigSchema.validate(configTemplate.default);
+      TemplateConfigSchema.validate(configTemplate);
 
     if (errorConfig || errorMenu || errorTemplate) {
       throw errorConfig || errorMenu || errorTemplate;
@@ -34,11 +33,6 @@ const config = {
     };
 
     return config;
-  },
-  vite: async function () {
-    const mainConfig = await import("../../../../config.js");
-    const { value, error } = ConfigSchema.validate(mainConfig.default);
-    return { error, value };
   },
   get: function () {
     const config = {
