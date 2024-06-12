@@ -1,6 +1,8 @@
-import { ConfigSchema } from "./ConfigSchema.js";
-import { MenuConfigSchema } from "./MenuConfigSchema.js";
-import { TemplateConfigSchema } from "./TemplateConfigSchema.js";
+import {
+  ConfigSchema,
+  MenuConfigSchema,
+  TemplateConfigSchema,
+} from "./schemas.js";
 import configMain from "../../../../config.js";
 import configMenu from "../../../../config.menu.js";
 import configTemplate from "../../../../config.template.js";
