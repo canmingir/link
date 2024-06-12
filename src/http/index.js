@@ -1,15 +1,15 @@
 import axios from "axios";
+import config from "../config/config";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
-import globalConfig from "../config";
 import oauth from "./oauth";
 import { publish } from "@nucleoidjs/synapses";
 import { storage } from "@nucleoidjs/webstorage";
 
-const config = globalConfig();
+//config.get();
 
 function updateConfig() {
-  const config = globalConfig();
-  instance.defaults.baseURL = config.api;
+  const appConfig = config.get();
+  instance.defaults.baseURL = appConfig.api;
 }
 
 const instance = axios.create({
@@ -22,7 +22,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((request) => {
-  globalConfig();
+  config.get();
   publish("LOADED", { loading: true });
   const accessToken = storage.get(config.name, "accessToken");
   request.headers["Authorization"] = `Bearer ${accessToken}`;

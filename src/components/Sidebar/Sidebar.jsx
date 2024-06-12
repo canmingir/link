@@ -6,18 +6,15 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import React from "react";
 import styles from "./styles";
-import { useConfig } from "../../context/ConfigContext";
 
 const Sidebar = ({ routes, isCollapsed, currentPage }) => {
   const drawerWidth = isCollapsed ? 75 : 280;
   // TODO : responsive sidebar
   // const matches = useMediaQuery("(min-width:600px)");
-  const globalConfig = useConfig();
   return (
     <>
       <Box
         sx={{
-          backgroundColor: globalConfig.topMenuColor,
           top: 0,
           left: 0,
           height: "4rem",

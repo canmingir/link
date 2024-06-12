@@ -12,7 +12,7 @@ import Stack from "@mui/material/Stack";
 import SvgColor from "../../../components/svg-color";
 import { alpha } from "@mui/material/styles";
 import { applyFilter } from "./utils";
-import config from "../../../../../../config.js";
+import config from "../../../config/config.js";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
 import { publish } from "@nucleoidai/react-event";
@@ -29,9 +29,8 @@ import Dialog, { dialogClasses } from "@mui/material/Dialog";
 import React, { useCallback, useState } from "react";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 
-// ----------------------------------------------------------------------
-
 function SelectBar() {
+  const { itemSelectRoute } = config.get();
   const theme = useTheme();
   const { GetItems } = useProject();
   const { items, loading } = GetItems();
@@ -104,7 +103,7 @@ function SelectBar() {
             groupLabel={searchQuery && title}
             onClickItem={() => {
               handleSelect(item);
-              navigate(config.itemSelectRoute);
+              navigate(itemSelectRoute);
             }}
           />
         );

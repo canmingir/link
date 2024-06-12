@@ -2,8 +2,8 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import React from "react";
+import config from "../../config/config";
 import styles from "./styles";
-import { useConfig } from "../../context/ConfigContext";
 import { useContext } from "../../ContextProvider/ContextProvider";
 import { useNavigate } from "react-router";
 
@@ -35,7 +35,7 @@ function TopNavBar({
   userData,
 }) {
   const [anchorElItem, setAnchorElItem] = React.useState(null);
-  const globalConfig = useConfig();
+  const { largeIcon } = config.get().template.login;
   const handleOpenItemMenu = (event) => {
     setAnchorElItem(event.currentTarget);
   };
@@ -80,7 +80,7 @@ function TopNavBar({
       <Toolbar disableGutters sx={styles.toolBar}>
         <Box
           component="img"
-          src={globalConfig.login.largeIcon}
+          src={largeIcon}
           onClick={() => navigate("/")}
           sx={{ cursor: "pointer" }}
         />

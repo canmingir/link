@@ -22,22 +22,22 @@ window["@nucleoidai"] = {
 config.init();
 
 const Platform = ({ routes, dialogs }) => {
-  const appConfig = config.get();
+  const { base, template } = config.get();
 
   return (
     <>
       <SettingsProvider
         defaultSettings={{
-          themeMode: appConfig.settings.mode || "dark",
+          themeMode: template.theme.mode || "dark",
           themeDirection: "ltr",
           themeContrast: "default",
           themeLayout: "vertical",
-          themeColorPresets: appConfig.settings.colorPresets || "default",
+          themeColorPresets: template.theme.colorPresets || "default",
           themeStretch: false,
         }}
       >
         <ThemeProvider>
-          <BrowserRouter basename={appConfig.base}>
+          <BrowserRouter basename={base}>
             <ContextProvider reducer={reducer} state={initialState}>
               <SnackbarProvider
                 anchorOrigin={{

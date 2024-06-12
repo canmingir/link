@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import Scrollbar from "../../components/scrollbar";
 import Stack from "@mui/material/Stack";
-import menuConfig from "../../../../../config.menu.js";
+import config from "../../config/config";
 import { useEffect } from "react";
 import { useEvent } from "@nucleoidai/react-event";
 import { useNavigate } from "react-router-dom";
@@ -24,15 +24,16 @@ export default function NavVertical({ openNav, onCloseNav }) {
   const navigate = useNavigate();
   const pathname = usePathname();
   const [hideSubheader] = useEvent("PAGE_CHANGED", { subheader: "" });
+  const { sideMenu, actionButtons, endItem } = config.get().menu;
   const lgUp = useResponsive("up", "lg");
 
   useEffect(() => {
-    const index = menuConfig.sideMenu.findIndex(
+    const index = sideMenu.findIndex(
       (item) => item.subheader === hideSubheader.subheader
     );
 
     if (index !== -1) {
-      menuConfig.sideMenu.splice(index, 1);
+      sideMenu.splice(index, 1);
     }
   }, [hideSubheader]);
 
@@ -57,7 +58,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
     >
       <Logo sx={{ mt: 3, ml: 4, mb: 1 }} />
       <NavSectionVertical
-        data={menuConfig.sideMenu}
+        data={sideMenu}
         slotProps={{
           currentRole: user?.role,
         }}
@@ -70,19 +71,19 @@ export default function NavVertical({ openNav, onCloseNav }) {
         sx={{ marginBottom: 3 }}
         gap={2}
       >
-        {menuConfig.actionButtons &&
-          menuConfig?.actionButtons?.map((Action, index) => (
+        {actionButtons &&
+          actionButtons?.map((Action, index) => (
             <Box key={index} component={Action}></Box>
           ))}
       </Stack>
-      {menuConfig.endItem && (
+      {endItem && (
         <Button
           data-cy="end-item"
           fullWidth={true}
-          onClick={() => navigate(menuConfig.endItem.path)}
+          onClick={() => navigate(endItem.path)}
         >
           <Iconify
-            icon={menuConfig.endItem.icon}
+            icon={endItem.icon}
             sx={{
               width: 32,
               height: 32,

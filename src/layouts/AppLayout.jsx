@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import MiniTopBar from "../components/MiniTopBar";
 import Sidebar from "../components/Sidebar";
 import TopNavBar from "../components/TopNavBar";
-import { useConfig } from "../context/ConfigContext";
+import config from "../config/config";
 import { useContext } from "../ContextProvider/ContextProvider";
 import user from "../http/user";
 

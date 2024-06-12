@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export const TemplateConfig = Joi.object({
+export const TemplateConfigSchema = Joi.object({
   login: Joi.object({
     variant: Joi.string()
       .valid("classic", "modern")

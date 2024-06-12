@@ -3,14 +3,16 @@ import Link from "@mui/material/Link";
 import PropTypes from "prop-types";
 import React from "react";
 import { RouterLink } from "../../routes/components";
-import config from "../../../../../config";
+import config from "../../config/config";
 // ----------------------------------------------------------------------
 
 const Logo = ({ disabledLink = false, sx }) => {
+  const { icon } = config.get().template.login;
+
   const logo = (
     <Box
       component="img"
-      src={config.logo || "https://cdn.nucleoid.com/media/icon.png"}
+      src={icon}
       sx={{ width: 40, height: 40, cursor: "pointer", ...sx }}
     />
   );

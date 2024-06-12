@@ -1,19 +1,17 @@
 import LoginForm from "../widgets/LoginForm/LoginForm";
 import Page from "../layouts/Page";
 import React from "react";
-import config from "../../../../config";
+import config from "../config/config";
 import { storage } from "@nucleoidjs/webstorage";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 function LoginPage() {
+  const { name, template } = config.get();
   const formColor = "#a8a9ad";
   const navigate = useNavigate();
 
   function token() {
-    if (
-      storage.get(config.name, "refreshToken") &&
-      storage.get(config.name, "accessToken")
-    ) {
+    if (storage.get(name, "refreshToken") && storage.get(name, "accessToken")) {
       return true;
     } else {
       return false;
@@ -28,12 +26,8 @@ function LoginPage() {
   }, [navigate]);
 
   return (
-    <Page title={`Sign in to ${config.name}`}>
-      <LoginForm
-        icon={config.login.icon}
-        name={config.login.name}
-        formColor={formColor}
-      />
+    <Page title={`Sign in to ${name}`}>
+      <LoginForm icon={template.login.icon} name={name} formColor={formColor} />
     </Page>
   );
 }

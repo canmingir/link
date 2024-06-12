@@ -1,6 +1,6 @@
 import axios from "axios";
 import axiosRetry from "axios-retry";
-import globalConfig from "../config";
+import config from "../config/config.js";
 import qs from "qs";
 
 const instance = axios.create({
@@ -15,9 +15,9 @@ const instance = axios.create({
 axiosRetry(instance, { retries: 3 });
 
 function updateBaseURL() {
-  const config = globalConfig();
+  const { api } = config.get();
 
-  if (config.api) {
+  if (api) {
     instance.defaults.baseURL = config.api;
   }
 }

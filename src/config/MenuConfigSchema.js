@@ -54,6 +54,7 @@ export const MenuConfigSchema = Joi.object({
   endItem: Joi.object({
     title: Joi.string().required(),
     icon: Joi.string().required(),
+    path: Joi.string().required(),
   })
     .optional()
     .default({}),
