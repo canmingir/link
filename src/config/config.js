@@ -18,12 +18,11 @@ const config = {
       MenuConfigSchema.validate(configMenu);
     const { value: templateConfig, error: errorTemplate } =
       TemplateConfigSchema.validate(configTemplate);
-
     if (errorConfig || errorMenu || errorTemplate) {
       publish("CONFIG_INITIALIZE_FAILED", {
-        error: errorConfig.stack || errorMenu.stack || errorTemplate.stack,
+        error: errorConfig?.stack || errorMenu?.stack || errorTemplate?.stack,
+        file: errorMenu ? "config.menu.js" : "config.template.js",
       });
-      throw errorConfig || errorMenu || errorTemplate;
     }
 
     _mainConfig = mainConfig;
