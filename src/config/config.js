@@ -4,6 +4,7 @@ import { TemplateConfigSchema } from "./TemplateConfigSchema.js";
 import configMain from "../../../../config.js";
 import configMenu from "../../../../config.menu.js";
 import configTemplate from "../../../../config.template.js";
+import { publish } from "@nucleoidai/react-event";
 
 let _mainConfig = {};
 let _menuConfig = {};
@@ -19,6 +20,9 @@ const config = {
       TemplateConfigSchema.validate(configTemplate);
 
     if (errorConfig || errorMenu || errorTemplate) {
+      publish("CONFIG_INITIALIZE_FAILED", {
+        error: errorConfig.stack || errorMenu.stack || errorTemplate.stack,
+      });
       throw errorConfig || errorMenu || errorTemplate;
     }
 
@@ -26,13 +30,7 @@ const config = {
     _menuConfig = menuConfig;
     _templateConfig = templateConfig;
 
-    const config = {
-      ..._mainConfig,
-      menu: _menuConfig,
-      template: _templateConfig,
-    };
-
-    return config;
+    publish("CONFIG_INITIALIZED", mainConfig);
   },
   get: function () {
     const config = {
