@@ -14,7 +14,7 @@ import {
 
 const ConfigErrorDialog = () => {
   const location = useLocation();
-  console.log(location.state);
+
   const { error, file } = location.state || { error: "", file: "" };
 
   return (
