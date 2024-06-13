@@ -7,16 +7,12 @@ import { storage } from "@nucleoidjs/webstorage";
 import { publish, subscribe } from "@nucleoidai/react-event";
 
 const instance = axios.create({
-  baseURL: "",
+  baseURL: config.get().api,
   headers: {
     common: {
       "Content-Type": "application/json",
     },
   },
-});
-
-subscribe("CONFIG_INITIALIZED", () => {
-  instance.defaults.baseURL = config.get().api;
 });
 
 instance.interceptors.request.use((request) => {
