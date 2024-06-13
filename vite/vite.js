@@ -4,30 +4,19 @@ import path from "path";
 import react from "@vitejs/plugin-react";
 import { splitVendorChunkPlugin } from "vite";
 import svgr from "vite-plugin-svgr";
-async function vite() {
-  let base;
-  return {
-    plugins: [
-      {
-        name: "joi-error",
-        configureServer(server) {
-          server.middlewares.use(async (req, res, next) => {
-            const { value, error } = ConfigSchema.validate(config);
 
-            if (error) {
-              res.statusCode = 500;
-              res.end(error.stack);
-            } else {
-              base = value.base;
-              next();
-            }
-          });
-        },
-      },
-      splitVendorChunkPlugin(),
-      react(),
-      svgr(),
-    ],
+const { value, error } = ConfigSchema.validate(config);
+
+if (error) {
+  console.error(error.stack);
+  process.exit(-1);
+}
+
+async function vite() {
+  const base = value.base;
+
+  return {
+    plugins: [splitVendorChunkPlugin(), react(), svgr()],
     base,
     optimizeDeps: {
       esbuildOptions: {
