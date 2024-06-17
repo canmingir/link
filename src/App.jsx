@@ -20,7 +20,7 @@ window["@nucleoidai"] = {
   Event: { publish, subscribe, useEvent },
 };
 
-const Platform = ({ routes, dialogs }) => {
+const Platform = ({ routes }) => {
   const [configInitError] = useEvent("CONFIG_INITIALIZE_FAILED", {
     error: "",
     file: "",
@@ -51,7 +51,6 @@ const Platform = ({ routes, dialogs }) => {
                   horizontal: "right",
                 }}
               >
-                {dialogs && dialogs()}
                 <SettingsDrawer />
                 <Loading />
                 <GlobalSnackMessage />

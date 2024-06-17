@@ -6,13 +6,13 @@ import ReactDOM from "react-dom/client";
 import routes from "../../../routes";
 
 const Platform = {
-  init: function (dialogs = {}) {
+  init: function () {
     config.init();
 
     oauth.defaults.baseURL = config.get().api;
     ReactDOM.createRoot(document.getElementById("root")).render(
       <React.StrictMode>
-        <App routes={routes} dialogs={dialogs} />
+        <App routes={routes} />
       </React.StrictMode>
     );
   },
