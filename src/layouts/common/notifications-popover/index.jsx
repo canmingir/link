@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import Iconify from "../../../components/iconify";
+import Iconify from "../../../components/Iconfiy";
 import Label from "../../../components/label";
 import React from "react";
 import Stack from "@mui/material/Stack";

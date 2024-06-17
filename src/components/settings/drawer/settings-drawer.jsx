@@ -3,7 +3,7 @@ import BaseOptions from "./base-option";
 import Divider from "@mui/material/Divider";
 import FullScreenOption from "./fullscreen-option";
 import IconButton from "@mui/material/IconButton";
-import Iconify from "../../iconify";
+import Iconify from "../../Iconify";
 import LayoutOptions from "./layout-options";
 import PresetsOptions from "./presets-options";
 import React from "react";

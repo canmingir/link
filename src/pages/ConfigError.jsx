@@ -1,4 +1,4 @@
-import Iconify from "../components/iconify";
+import Iconify from "../components/Iconfiy";
 import React from "react";
 import { useLocation } from "react-router-dom";
 

@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import Iconify from "../../../components/iconify";
+import Iconify from "../../../components/Iconfiy";
 import InputAdornment from "@mui/material/InputAdornment";
 import InputBase from "@mui/material/InputBase";
 import Label from "../../../components/label";

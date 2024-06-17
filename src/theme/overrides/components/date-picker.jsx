@@ -1,4 +1,4 @@
-import Iconify from "../../../components/iconify";
+import Iconify from "../../../components/Iconfiy";
 import React from "react";
 import { buttonClasses } from "@mui/material/Button";
 

@@ -1,5 +1,5 @@
 import IconButton from "@mui/material/IconButton";
-import Iconify from "../../components/iconify";
+import Iconify from "../../components/Iconify";
 import { NAV } from "../config-layout";
 import PropTypes from "prop-types";
 import React from "react";
