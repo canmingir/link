@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import CardActionArea from "@mui/material/CardActionArea";
-import Iconify from "../../../../components/Iconfiy";
+import Iconify from "../../../../components/Iconify";
 import Link from "@mui/material/Link";
 import ListItemButton from "@mui/material/ListItemButton";
 import PropTypes from "prop-types";

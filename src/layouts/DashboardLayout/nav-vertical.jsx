@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
-import Iconify from "../../components/Iconfiy";
+import Iconify from "../../components/Iconify";
 import Logo from "../../components/logo";
 import { NAV } from "../config-layout";
 import { NavSectionVertical } from "../../components/nav-section";
