@@ -28,13 +28,9 @@ export default function RouteManager({ routes }) {
         {routes.map((route, i) => (
           <Route key={i} path="/" element={route.container}>
             {route.childs.map((child, j) => (
-              <Route key={j} path="/" element={child.element}>
-                {child.children.map((subChild, k) => (
-                  <Route
-                    key={k}
-                    path={subChild.path}
-                    element={subChild.element}
-                  />
+              <Route key={j} path="/" element={child.layout}>
+                {child.pages.map((page, k) => (
+                  <Route key={k} path={page.path} element={page.element} />
                 ))}
               </Route>
             ))}
