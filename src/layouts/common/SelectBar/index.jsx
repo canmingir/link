@@ -180,7 +180,8 @@ function SelectBar() {
     </DialogActions>
   );
 
-  if (loading) return <></>;
+  //if (loading) return <></>;
+  // TODO add this when project hooks are ready
 
   return (
     <>
