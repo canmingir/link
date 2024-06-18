@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 // ----------------------------------------------------------------------
 
 export default function Auth0LoginView() {
-  const { name, oauth } = config.get();
+  const { name, oauth } = config();
 
   const handleOAuthLogin = ({ authUrl, clientId, redirectUri, scope }) => {
     window.location.href = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;

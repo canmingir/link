@@ -7,7 +7,7 @@ import config from "../../config/config";
 // ----------------------------------------------------------------------
 
 const Logo = ({ disabledLink = false, sx }) => {
-  const { icon } = config.get().template.login;
+  const { icon } = config().template.login;
 
   const logo = (
     <Box

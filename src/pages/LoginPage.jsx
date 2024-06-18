@@ -6,7 +6,7 @@ import { storage } from "@nucleoidjs/webstorage";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 function LoginPage() {
-  const { name, template } = config.get();
+  const { name, template } = config();
   const formColor = "#a8a9ad";
   const navigate = useNavigate();
 

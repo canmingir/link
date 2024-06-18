@@ -19,7 +19,7 @@ import CustomPopover, { usePopover } from "../../components/custom-popover";
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const { options } = config.get().menu;
+  const { options } = config().menu;
   const router = useRouter();
   const [, dispatch] = useContext();
   const { userData } = useUser();

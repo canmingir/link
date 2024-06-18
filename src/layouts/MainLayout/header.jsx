@@ -26,7 +26,7 @@ export default function Header({
   selectedItem,
   setSelectedItem,
 }) {
-  const { topMenu } = config.get().menu;
+  const { topMenu } = config().menu;
   const theme = useTheme();
 
   const mdUp = useResponsive("up", "md");

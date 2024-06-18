@@ -30,7 +30,7 @@ import React, { useCallback, useState } from "react";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 
 function SelectBar() {
-  const { itemSelectRoute } = config.get();
+  const { itemSelectRoute } = config();
   const theme = useTheme();
   const { GetItems } = useProject();
   //eslint-disable-next-line
@@ -97,7 +97,6 @@ function SelectBar() {
         const partsTitle = parse(title, match(title, searchQuery));
         return (
           <ResultItem
-            data-cy="item"
             icon={icon || "eva:question-mark-circle"}
             title={partsTitle}
             key={`${title}`}

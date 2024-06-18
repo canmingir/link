@@ -9,7 +9,7 @@ import config from "../../config/config";
 
 export default function FullScreenLayout() {
   //TODO get fullScreenLayout from props ?
-  const { fullScreenLayout } = config.get().menu;
+  const { fullScreenLayout } = config().menu;
   const renderNavMini = <NavMini only={true} />;
   const renderHorizontal = <NavHorizontal />;
 

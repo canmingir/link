@@ -5,7 +5,7 @@ import styles from "./styles";
 import { AppBar, Box, Slide, Toolbar } from "@mui/material";
 
 function MiniTopBar() {
-  const { icon } = config.get().template.login;
+  const { icon } = config().template.login;
   return (
     <Slide in={true} direction="right" timeout={500}>
       <AppBar position="absolute" sx={styles.appBar} variant="dense">

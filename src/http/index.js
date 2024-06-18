@@ -7,7 +7,7 @@ import { storage } from "@nucleoidjs/webstorage";
 import { publish, subscribe } from "@nucleoidai/react-event";
 
 const instance = axios.create({
-  baseURL: config.get().api,
+  baseURL: config().api,
   headers: {
     common: {
       "Content-Type": "application/json",

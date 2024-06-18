@@ -11,7 +11,7 @@ const instance = axios.create({
 });
 
 function getProjectName() {
-  const { name } = config.get();
+  const { name } = config();
 
   if (name) {
     return name;
@@ -28,7 +28,7 @@ instance.interceptors.request.use(async (request) => {
 
 instance.getUserDetails = async () => {
   const refreshToken = await storage.get(getProjectName(), "refreshToken");
-  const { google, github } = config.get().oauth;
+  const { google, github } = config().oauth;
   //TODO: do it in a more elegant way
   let userUrl;
   let provider;

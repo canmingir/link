@@ -12,7 +12,7 @@ import { useUser } from "../../hooks/use-user";
 export default function NavMini({ only }) {
   const { user } = useUser();
 
-  const { sideMenu } = config.get().menu;
+  const { sideMenu } = config().menu;
   return (
     <Box
       data-cy="nav-mini"

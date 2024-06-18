@@ -11,7 +11,7 @@ const handleOAuthLogin = ({ redirectUri, authUrl, clientId, scope }) => {
 };
 
 function LoginForm() {
-  const { name, oauth } = config.get();
+  const { name, oauth } = config();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

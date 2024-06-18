@@ -12,7 +12,7 @@ import config from "../config/config";
 import modernLoginLayout from "../layouts/auth/modern";
 
 export default function RouteManager({ routes }) {
-  const { image, variant } = config.get().template.login;
+  const { image, variant } = config().template.login;
 
   const LoginElement =
     variant === "classic" ? classicLoginLayout : modernLoginLayout;

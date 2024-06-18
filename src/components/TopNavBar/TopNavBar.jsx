@@ -35,7 +35,7 @@ function TopNavBar({
   userData,
 }) {
   const [anchorElItem, setAnchorElItem] = React.useState(null);
-  const { largeIcon } = config.get().template.login;
+  const { largeIcon } = config().template.login;
   const handleOpenItemMenu = (event) => {
     setAnchorElItem(event.currentTarget);
   };

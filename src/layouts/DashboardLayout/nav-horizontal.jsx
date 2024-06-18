@@ -18,7 +18,7 @@ function NavHorizontal() {
 
   const { user } = useUser();
 
-  const { sideMenu } = config.get().menu;
+  const { sideMenu } = config().menu;
 
   return (
     <AppBar

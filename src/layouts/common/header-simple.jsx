@@ -23,7 +23,7 @@ export default function HeaderSimple({
   selectedItem,
   setSelectedItem,
 }) {
-  const { menu } = config.get();
+  const { menu } = config()
   const theme = useTheme();
   const { topMenu } = menu;
   const mdUp = useResponsive("up", "md");

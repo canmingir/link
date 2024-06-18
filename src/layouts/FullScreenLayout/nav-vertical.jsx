@@ -22,7 +22,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
 
   const lgUp = useResponsive("up", "lg");
 
-  const { sideMenu, actionButtons } = config.get().menu;
+  const { sideMenu, actionButtons } = config().menu;
 
   useEffect(() => {
     if (openNav) {
