@@ -12,36 +12,36 @@ let _mainConfig = {};
 let _menuConfig = {};
 let _templateConfig = {};
 
-const config = {
-  init: function () {
-    const { value: mainConfig, error: errorConfig } =
-      ConfigSchema.validate(configMain);
-    const { value: menuConfig, error: errorMenu } =
-      MenuConfigSchema.validate(configMenu);
-    const { value: templateConfig, error: errorTemplate } =
-      TemplateConfigSchema.validate(configTemplate);
-    if (errorConfig || errorMenu || errorTemplate) {
-      publish("CONFIG_INITIALIZE_FAILED", {
-        error: errorConfig?.stack || errorMenu?.stack || errorTemplate?.stack,
-        file: errorMenu ? "config.menu.js" : "config.template.js",
-      });
-    }
+function init() {
+  const { value: mainConfig, error: errorConfig } =
+    ConfigSchema.validate(configMain);
+  const { value: menuConfig, error: errorMenu } =
+    MenuConfigSchema.validate(configMenu);
+  const { value: templateConfig, error: errorTemplate } =
+    TemplateConfigSchema.validate(configTemplate);
+  if (errorConfig || errorMenu || errorTemplate) {
+    publish("CONFIG_INITIALIZE_FAILED", {
+      error: errorConfig?.stack || errorMenu?.stack || errorTemplate?.stack,
+      file: errorMenu ? "config.menu.js" : "config.template.js",
+    });
+  }
 
-    _mainConfig = mainConfig;
-    _menuConfig = menuConfig;
-    _templateConfig = templateConfig;
+  _mainConfig = mainConfig;
+  _menuConfig = menuConfig;
+  _templateConfig = templateConfig;
 
-    publish("CONFIG_INITIALIZED", mainConfig);
-  },
-  get: function () {
-    const config = {
-      ..._mainConfig,
-      menu: _menuConfig,
-      template: _templateConfig,
-    };
+  publish("CONFIG_INITIALIZED", mainConfig);
+}
 
-    return config;
-  },
-};
+function config() {
+  const config = {
+    ..._mainConfig,
+    menu: _menuConfig,
+    template: _templateConfig,
+  };
+
+  return config;
+}
 
 export default config;
+export { init };
