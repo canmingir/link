@@ -1,4 +1,3 @@
-import config from "../../config";
 
 Cypress.Commands.add("checkStorage", (key, expectedValue) => {
   cy.window().should((win) => {
@@ -89,7 +88,7 @@ Cypress.Commands.add("checkRoute", (route) => {
   cy.url().should("include", route);
 });
 
-Cypress.Commands.add("platformSetup", (itemId, itemFixturePath) => {
+Cypress.Commands.add("platformSetup", (itemId, itemFixturePath,config,templateConfig) => {
   cy.storageSet("itemId", itemId);
 
   cy.storageSet(`${config.name}.refreshToken`, "TEST_REFRESH_TOKEN");
@@ -99,7 +98,7 @@ Cypress.Commands.add("platformSetup", (itemId, itemFixturePath) => {
     fixture: "github/user.get.json",
   }).as("getUser");
 
-  cy.intercept("GET", config.itemsPath, {
+  cy.intercept("GET", templateConfig.itemsPath, {
     fixture: itemFixturePath,
   }).as("getTeams");
 });

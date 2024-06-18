@@ -33,6 +33,7 @@ function SelectBar() {
   const { itemSelectRoute } = config.get();
   const theme = useTheme();
   const { GetItems } = useProject();
+  //eslint-disable-next-line
   const { items, loading } = GetItems();
 
   const id = window.matchMedia("itemId").matches;
