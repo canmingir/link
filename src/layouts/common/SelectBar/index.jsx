@@ -30,7 +30,7 @@ import React, { useCallback, useState } from "react";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 
 function SelectBar() {
-  const { itemSelectRoute } = config();
+  const { itemsPath } = config().template;
   const theme = useTheme();
   const { GetItems } = useProject();
   //eslint-disable-next-line
@@ -103,7 +103,7 @@ function SelectBar() {
             groupLabel={searchQuery && title}
             onClickItem={() => {
               handleSelect(item);
-              navigate(itemSelectRoute);
+              navigate(`${itemsPath}/${item.id}`, { replace: true });
             }}
           />
         );
