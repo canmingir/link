@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import Iconify from "../../iconify";
+import Iconify from "../../Iconify";
 import Link from "@mui/material/Link";
 import ListItemButton from "@mui/material/ListItemButton";
 import PropTypes from "prop-types";

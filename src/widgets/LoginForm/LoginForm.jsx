@@ -1,7 +1,7 @@
 import NucleoidLoginForm from "../../components/NucleoidLoginForm";
 import SocialLoginButtons from "../../components/SocialLoginButtons";
 import Stack from "@mui/material/Stack";
-import config from "../../../../../config";
+import config from "../../config/config";
 
 import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
 import React, { useState } from "react";
@@ -11,13 +11,15 @@ const handleOAuthLogin = ({ redirectUri, authUrl, clientId, scope }) => {
 };
 
 function LoginForm() {
+  const { name, oauth } = config();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>
-      <Typography variant="h4">Sign in to {config.name}</Typography>
-      {config.login.nucleoid && (
+      <Typography variant="h4">Sign in to {name}</Typography>
+      {oauth.nucleoid && (
         <Stack direction="row" spacing={0.5}>
           <Typography variant="body2">New user?</Typography>
 
@@ -29,7 +31,7 @@ function LoginForm() {
 
   const renderForm = (
     <>
-      {!!config.login.nucleoid && (
+      {!!oauth.nucleoid && (
         <>
           <NucleoidLoginForm
             email={email}
@@ -59,12 +61,12 @@ function LoginForm() {
         </>
       )}
       <SocialLoginButtons
-        googleEnable={!!config.login.google}
-        onGoogle={() => handleOAuthLogin({ ...config.login.google })}
-        githubEnable={!!config.login.github}
-        onGithub={() => handleOAuthLogin({ ...config.login.github })}
-        linkedinEnable={!!config.login.linkedin}
-        onLinkedin={() => handleOAuthLogin({ ...config.login.linkedin })}
+        googleEnable={!!oauth.google}
+        onGoogle={() => handleOAuthLogin({ ...oauth.google })}
+        githubEnable={!!oauth.github}
+        onGithub={() => handleOAuthLogin({ ...oauth.github })}
+        linkedinEnable={!!oauth.linkedin}
+        onLinkedin={() => handleOAuthLogin({ ...oauth.linkedin })}
       />
     </>
   );

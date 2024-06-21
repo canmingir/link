@@ -1,41 +1,23 @@
-import { ConfigSchema } from "./ConfigSchema.js";
+import { ConfigSchema } from "../src/config/schemas.js";
 import config from "../../../config.js";
 import path from "path";
 import react from "@vitejs/plugin-react";
 import { splitVendorChunkPlugin } from "vite";
 import svgr from "vite-plugin-svgr";
 
-async function vite() {
-  return {
-    base: config.base,
-    plugins: [
-      {
-        name: "joi-error",
-        configureServer(server) {
-          server.middlewares.use((req, res, next) => {
-            const { error } = ConfigSchema.validate(config);
+const { value, error } = ConfigSchema.validate(config);
 
-            if (!config) {
-              server.config.logger.error(`Config.js not found`);
-              res.statusCode = 500;
-              res.end(`Config.js not found`);
-            } else if (error) {
-              server.config.logger.error(
-                `Config validation error: ${error.stack}`,
-                { tag: "joi-error" }
-              );
-              res.statusCode = 500;
-              res.end(`Config validation error: ${error.stack}`);
-            } else {
-              next();
-            }
-          });
-        },
-      },
-      splitVendorChunkPlugin(),
-      react(),
-      svgr(),
-    ],
+if (error) {
+  console.error(error.stack);
+  process.exit(-1);
+}
+
+async function vite() {
+  const base = value.base;
+
+  return {
+    plugins: [splitVendorChunkPlugin(), react(), svgr()],
+    base,
     optimizeDeps: {
       esbuildOptions: {
         jsx: "automatic",

@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import Iconify from "../../components/iconify";
+import Iconify from "../../components/Iconify";
 import PropTypes from "prop-types";
 import React from "react";
 import { motion } from "framer-motion";

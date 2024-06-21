@@ -1,5 +1,5 @@
 import IconButton from "@mui/material/IconButton";
-import Iconify from "../iconify";
+import Iconify from "../Iconify";
 import PropTypes from "prop-types";
 import { bgBlur } from "../../theme/css";
 import { useTheme } from "@mui/material/styles";

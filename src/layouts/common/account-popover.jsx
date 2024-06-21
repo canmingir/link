@@ -7,7 +7,7 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { alpha } from "@mui/material/styles";
-import menuConfig from "../../../../../config.menu.js";
+import config from "../../config/config";
 import { motion } from "framer-motion";
 import { useContext } from "../../ContextProvider/ContextProvider";
 import { useRouter } from "../../routes/hooks";
@@ -19,11 +19,11 @@ import CustomPopover, { usePopover } from "../../components/custom-popover";
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const { options } = config().menu;
   const router = useRouter();
   const [, dispatch] = useContext();
   const { userData } = useUser();
 
-  const { options } = menuConfig;
   const popover = usePopover();
 
   const handleLogout = async () => {

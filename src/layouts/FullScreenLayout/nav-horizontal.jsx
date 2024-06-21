@@ -4,8 +4,8 @@ import { NavSectionHorizontal } from "../../components/nav-section";
 import React from "react";
 import Toolbar from "@mui/material/Toolbar";
 import { bgBlur } from "../../theme/css";
+import config from "../../config/config";
 import { memo } from "react";
-import menuConfig from "../../../../../config.menu.js";
 import { useTheme } from "@mui/material/styles";
 import { useUser } from "../../hooks/use-user";
 
@@ -16,7 +16,7 @@ function NavHorizontal() {
 
   const { user } = useUser();
 
-  const { sideMenu } = menuConfig;
+  const { sideMenu } = config().menu;
   return (
     <AppBar component="div" data-cy="nav-horizontal">
       <Toolbar

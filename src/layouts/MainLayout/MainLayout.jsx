@@ -14,7 +14,7 @@ export default function MainLayout() {
   const [state, dispatch] = useContext();
   const [selectedItem, setSelectedItem] = React.useState();
   const homePage = pathname === "/";
-
+  // TODO config.itemsData is not defined ??
   React.useEffect(() => {
     const foundItem = config.itemsData.find((item) => item.id === state.itemId);
     if (foundItem) {

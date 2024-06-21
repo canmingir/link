@@ -85,18 +85,21 @@ Cypress.Commands.add("checkRoute", (route) => {
   cy.url().should("include", route);
 });
 
-Cypress.Commands.add("platformSetup", (itemId, itemFixturePath, config) => {
-  cy.storageSet("itemId", itemId);
+Cypress.Commands.add(
+  "platformSetup",
+  (itemId, itemFixturePath, config, templateConfig) => {
+    cy.storageSet("itemId", itemId);
 
-  cy.storageSet(`${config.name}.refreshToken`, "TEST_REFRESH_TOKEN");
-  cy.storageSet(`${config.name}.accessToken`, "TEST_ACCESS_TOKEN");
+    cy.storageSet(`${config.name}.refreshToken`, "TEST_REFRESH_TOKEN");
+    cy.storageSet(`${config.name}.accessToken`, "TEST_ACCESS_TOKEN");
 
-  cy.intercept("GET", `https://api.github.com/user`, user).as("getUser");
+    cy.intercept("GET", `https://api.github.com/user`, user).as("getUser");
 
-  cy.intercept("GET", config.itemsPath, {
-    fixture: itemFixturePath,
-  }).as("getTeams");
-});
+    cy.intercept("GET", templateConfig.itemsPath, {
+      fixture: itemFixturePath,
+    }).as("getTeams");
+  }
+);
 
 Cypress.Commands.add("selectIconFromPicker", (altText) => {
   cy.get("em-emoji-picker")

@@ -5,15 +5,14 @@ import { NavSectionMini } from "../../components/nav-section";
 import NavToggleButton from "../common/nav-toggle-button";
 import React from "react";
 import Stack from "@mui/material/Stack";
+import config from "../../config/config";
 import { hideScroll } from "../../theme/css";
-import menuConfig from "../../../../../config.menu.js";
 import { useUser } from "../../hooks/use-user";
-// ----------------------------------------------------------------------
 
 export default function NavMini({ only }) {
   const { user } = useUser();
 
-  const { sideMenu } = menuConfig;
+  const { sideMenu } = config().menu;
   return (
     <Box
       data-cy="nav-mini"

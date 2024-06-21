@@ -4,12 +4,12 @@ import NavMini from "../DashboardLayout/nav-mini";
 import { Outlet } from "react-router";
 import React from "react";
 import Stack from "@mui/material/Stack";
-import config from "../../../../../config";
+import config from "../../config/config";
 // ----------------------------------------------------------------------
 
 export default function FullScreenLayout() {
-  const { fullScreenLayout } = config;
-
+  //TODO get fullScreenLayout from props ?
+  const { fullScreenLayout } = config().menu;
   const renderNavMini = <NavMini only={true} />;
   const renderHorizontal = <NavHorizontal />;
 

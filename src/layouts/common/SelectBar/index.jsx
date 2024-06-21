@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import Iconify from "../../../components/iconify";
+import Iconify from "../../../components/Iconify";
 import InputAdornment from "@mui/material/InputAdornment";
 import InputBase from "@mui/material/InputBase";
 import Label from "../../../components/label";
@@ -12,7 +12,7 @@ import Stack from "@mui/material/Stack";
 import SvgColor from "../../../components/svg-color";
 import { alpha } from "@mui/material/styles";
 import { applyFilter } from "./utils";
-import config from "../../../../../../config.js";
+import config from "../../../config/config.js";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
 import { publish } from "@nucleoidai/react-event";
@@ -29,11 +29,11 @@ import Dialog, { dialogClasses } from "@mui/material/Dialog";
 import React, { useCallback, useState } from "react";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 
-// ----------------------------------------------------------------------
-
 function SelectBar() {
+  const { itemsPath } = config().template;
   const theme = useTheme();
   const { GetItems } = useProject();
+  //eslint-disable-next-line
   const { items, loading } = GetItems();
 
   const id = window.matchMedia("itemId").matches;
@@ -97,14 +97,13 @@ function SelectBar() {
         const partsTitle = parse(title, match(title, searchQuery));
         return (
           <ResultItem
-            data-cy="item"
             icon={icon || "eva:question-mark-circle"}
             title={partsTitle}
             key={`${title}`}
             groupLabel={searchQuery && title}
             onClickItem={() => {
               handleSelect(item);
-              navigate(config.itemSelectRoute);
+              navigate(`${itemsPath}/${item.id}`, { replace: true });
             }}
           />
         );
@@ -181,7 +180,8 @@ function SelectBar() {
     </DialogActions>
   );
 
-  if (loading) return <></>;
+  //if (loading) return <></>;
+  // TODO add this when project hooks are ready
 
   return (
     <>

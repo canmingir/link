@@ -1,13 +1,13 @@
-import globalConfig from "../config";
+import config from "../config/config";
 import jwtDecode from "jwt-decode";
 import { storage } from "@nucleoidjs/webstorage";
 
-const config = globalConfig();
+const { name } = config();
 
 let login = true;
 const itemId = storage.get("itemId");
 try {
-  const token = storage.get(config.name, "accessToken");
+  const token = storage.get(name, "accessToken");
   const decodedToken = jwtDecode(token);
 
   if (decodedToken.exp * 1000 < Date.now()) {

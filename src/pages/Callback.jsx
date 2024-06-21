@@ -1,7 +1,6 @@
 import Page from "../layouts/Page";
 import React from "react";
-import config from "../../../../config";
-//import config from "../../example/config";
+import config from "../config/config";
 import oauth from "../http/oauth";
 import qs from "qs";
 import { storage } from "@nucleoidjs/webstorage";
@@ -11,6 +10,8 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function Callback() {
+  const { oauth: appConfig, name } = config();
+  const { google, github } = appConfig;
   const [, dispatch] = useContext();
   const location = useLocation();
   const navigate = useNavigate();
@@ -20,10 +21,10 @@ function Callback() {
     const { code } = parsedQuery;
 
     let redirectUri;
-    if (config.login?.google) {
-      redirectUri = config.login.google.redirectUri;
-    } else if (config.login?.github) {
-      redirectUri = config.login.github.redirectUri;
+    if (google) {
+      redirectUri = google.redirectUri;
+    } else if (github) {
+      redirectUri = github.redirectUri;
     }
 
     oauth
@@ -36,8 +37,8 @@ function Callback() {
         const accessToken = data.accessToken;
         const refreshToken = data.refreshToken;
 
-        storage.set(config.name, "accessToken", accessToken);
-        storage.set(config.name, "refreshToken", refreshToken);
+        storage.set(name, "accessToken", accessToken);
+        storage.set(name, "refreshToken", refreshToken);
         dispatch({ type: "LOGIN" });
         navigate("/");
       })
@@ -47,9 +48,7 @@ function Callback() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search, navigate]);
 
-  return (
-    <Page title={config ? `${config.name} - Callback` : "Callback"}></Page>
-  );
+  return <Page title={`${name} - Callback`}></Page>;
 }
 
 export default Callback;
