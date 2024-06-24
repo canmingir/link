@@ -95,7 +95,7 @@ Cypress.Commands.add(
 
     cy.intercept("GET", `https://api.github.com/user`, user).as("getUser");
 
-    cy.intercept("GET", templateConfig.itemsPath, {
+    cy.intercept("GET", templateConfig.projectBar.path, {
       fixture: itemFixturePath,
     }).as("getTeams");
   }

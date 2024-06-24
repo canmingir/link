@@ -110,5 +110,7 @@ export const TemplateConfigSchema = Joi.object({
   })
     .optional()
     .default({ mode: "dark", colorPresets: "cyan" }),
-  itemsPath: Joi.string().required(),
+  projectBar: Joi.object({
+    path: Joi.string().required(),
+  }).required(),
 });

@@ -98,7 +98,7 @@ Cypress.Commands.add("platformSetup", (itemId, itemFixturePath,config,templateCo
     fixture: "github/user.get.json",
   }).as("getUser");
 
-  cy.intercept("GET", templateConfig.itemsPath, {
+  cy.intercept("GET", templateConfig.projectBar.path, {
     fixture: itemFixturePath,
   }).as("getTeams");
 });
