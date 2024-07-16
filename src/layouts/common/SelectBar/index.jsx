@@ -115,7 +115,7 @@ function SelectBar() {
             groupLabel={searchQuery && title}
             onClickItem={() => {
               handleSelect(item);
-              navigate(`${path}/${item.id}`, { replace: true });
+              navigate(`${path}`, { replace: true });
             }}
           />
         );
