@@ -131,6 +131,7 @@ function ProjectBar() {
       })}
     </List>
   );
+
   const renderButton = (
     <Stack direction="row" alignItems="center">
       <IconButton
@@ -141,29 +142,35 @@ function ProjectBar() {
           typography: "subtitle2",
           "& .svg-color": {
             background: (theme) =>
-              `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
+              selectedProject
+                ? `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`
+                : "gray",
           },
         }}
       >
         <SvgColor
-          src={`https://api.iconify.design/${selectedProject?.icon?.slice(
-            1,
-            -1
-          )}.svg`}
+          src={
+            selectedProject
+              ? `https://api.iconify.design/${selectedProject?.icon?.slice(
+                  1,
+                  -1
+                )}.svg`
+              : "https://api.iconify.design/ph:circle-duotone.svg"
+          }
           sx={{ width: 32, height: 32 }}
         />
       </IconButton>
 
       {lgUp && (
         <Label
-          color="primary"
+          color={selectedProject ? "primary" : "default"}
           onClick={search.onTrue}
           sx={{
             px: 0.75,
             fontSize: 14,
           }}
         >
-          {selectedProject?.name}
+          {selectedProject ? selectedProject.name : "Select Project"}
         </Label>
       )}
     </Stack>
