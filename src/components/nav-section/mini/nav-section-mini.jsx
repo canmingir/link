@@ -1,5 +1,4 @@
 import NavList from "./nav-list";
-import PropTypes from "prop-types";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import { memo } from "react";
@@ -25,11 +24,6 @@ function NavSectionMini({ data, slotProps, ...other }) {
   );
 }
 
-NavSectionMini.propTypes = {
-  data: PropTypes.array,
-  slotProps: PropTypes.object,
-};
-
 export default memo(NavSectionMini);
 
 // ----------------------------------------------------------------------
@@ -43,8 +37,3 @@ function Group({ items, slotProps }) {
     </>
   );
 }
-
-Group.propTypes = {
-  items: PropTypes.array,
-  slotProps: PropTypes.object,
-};

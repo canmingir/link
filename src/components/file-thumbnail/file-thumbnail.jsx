@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import DownloadButton from "./download-button";
-import PropTypes from "prop-types";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 
@@ -73,12 +72,3 @@ export default function FileThumbnail({
     </>
   );
 }
-
-FileThumbnail.propTypes = {
-  file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  imageView: PropTypes.bool,
-  imgSx: PropTypes.object,
-  onDownload: PropTypes.func,
-  sx: PropTypes.object,
-  tooltip: PropTypes.bool,
-};

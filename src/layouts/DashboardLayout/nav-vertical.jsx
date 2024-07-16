@@ -6,7 +6,6 @@ import Logo from "../../components/logo";
 import { NAV } from "../config-layout";
 import { NavSectionVertical } from "../../components/nav-section";
 import NavToggleButton from "../common/nav-toggle-button";
-import PropTypes from "prop-types";
 import React from "react";
 import Scrollbar from "../../components/scrollbar";
 import Stack from "@mui/material/Stack";
@@ -132,8 +131,3 @@ export default function NavVertical({ openNav, onCloseNav }) {
     </Box>
   );
 }
-
-NavVertical.propTypes = {
-  openNav: PropTypes.bool,
-  onCloseNav: PropTypes.func,
-};

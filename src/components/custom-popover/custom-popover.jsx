@@ -1,5 +1,4 @@
 import Popover from "@mui/material/Popover";
-import PropTypes from "prop-types";
 import React from "react";
 import { StyledArrow } from "./styles";
 import { getPosition } from "./utils";
@@ -47,25 +46,3 @@ export default function CustomPopover({
     </Popover>
   );
 }
-
-CustomPopover.propTypes = {
-  sx: PropTypes.object,
-  open: PropTypes.object,
-  children: PropTypes.node,
-  hiddenArrow: PropTypes.bool,
-  disabledArrow: PropTypes.bool,
-  arrow: PropTypes.oneOf([
-    "top-left",
-    "top-center",
-    "top-right",
-    "bottom-left",
-    "bottom-center",
-    "bottom-right",
-    "left-top",
-    "left-center",
-    "left-bottom",
-    "right-top",
-    "right-center",
-    "right-bottom",
-  ]),
-};

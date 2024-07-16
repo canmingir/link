@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Logo from "../../components/logo";
 import { Outlet } from "react-router";
-import PropTypes from "prop-types";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import { useResponsive } from "../../hooks/use-responsive";
@@ -88,8 +87,3 @@ export default function AuthModernLayout({ image }) {
     </Stack>
   );
 }
-
-AuthModernLayout.propTypes = {
-  children: PropTypes.node,
-  image: PropTypes.string,
-};

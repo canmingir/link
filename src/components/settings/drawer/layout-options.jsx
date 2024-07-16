@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
-import PropTypes from "prop-types";
 import React from "react";
 import Stack from "@mui/material/Stack";
 
@@ -145,9 +144,3 @@ export default function LayoutOptions({ options, value, onChange }) {
     </Stack>
   );
 }
-
-LayoutOptions.propTypes = {
-  onChange: PropTypes.func,
-  options: PropTypes.array,
-  value: PropTypes.string,
-};

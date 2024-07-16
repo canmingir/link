@@ -4,7 +4,6 @@ import IconButton from "@mui/material/IconButton";
 import ItemBar from "../common/ProjectBar";
 import Logo from "../../components/logo";
 import NotificationsPopover from "../common/notifications-popover";
-import PropTypes from "prop-types";
 import React from "react";
 import SettingsButton from "../common/settings-button";
 import Stack from "@mui/material/Stack";
@@ -102,7 +101,3 @@ export default function Header({ onOpenNav }) {
     </AppBar>
   );
 }
-
-Header.propTypes = {
-  onOpenNav: PropTypes.func,
-};

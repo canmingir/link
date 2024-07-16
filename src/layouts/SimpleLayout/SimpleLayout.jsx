@@ -1,6 +1,5 @@
 import Header from "../common/header-simple";
 import { Outlet } from "react-router";
-import PropTypes from "prop-types";
 import React from "react";
 import config from "../../../../../config";
 import { useContext } from "../../ContextProvider/ContextProvider";
@@ -35,7 +34,3 @@ export default function SimpleLayout() {
     </>
   );
 }
-
-SimpleLayout.propTypes = {
-  children: PropTypes.node,
-};

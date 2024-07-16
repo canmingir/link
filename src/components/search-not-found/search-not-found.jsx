@@ -1,5 +1,4 @@
 import Paper from "@mui/material/Paper";
-import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 
 // ----------------------------------------------------------------------
@@ -30,8 +29,3 @@ export default function SearchNotFound({ query, sx, ...other }) {
     </Typography>
   );
 }
-
-SearchNotFound.propTypes = {
-  query: PropTypes.string,
-  sx: PropTypes.object,
-};

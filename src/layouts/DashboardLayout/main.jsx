@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import PropTypes from "prop-types";
 import React from "react";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
@@ -63,8 +62,3 @@ export default function Main({ children, sx, ...other }) {
     </Box>
   );
 }
-
-Main.propTypes = {
-  children: PropTypes.node,
-  sx: PropTypes.object,
-};

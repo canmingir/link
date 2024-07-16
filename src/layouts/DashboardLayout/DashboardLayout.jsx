@@ -5,7 +5,6 @@ import NavHorizontal from "./nav-horizontal";
 import NavMini from "./nav-mini";
 import NavVertical from "./nav-vertical";
 import { Outlet } from "react-router";
-import PropTypes from "prop-types";
 import React from "react";
 import { useBoolean } from "../../hooks/use-boolean";
 import { useResponsive } from "../../hooks/use-responsive";
@@ -86,7 +85,3 @@ export default function DashboardLayout() {
     </>
   );
 }
-
-DashboardLayout.propTypes = {
-  children: PropTypes.node,
-};

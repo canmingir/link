@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import PropTypes from "prop-types";
 import React from "react";
 import { motion } from "framer-motion";
 import { useResponsive } from "../../hooks/use-responsive";
@@ -31,8 +30,3 @@ export default function MotionViewport({
     </Box>
   );
 }
-
-MotionViewport.propTypes = {
-  children: PropTypes.node,
-  disableAnimatedMobile: PropTypes.bool,
-};

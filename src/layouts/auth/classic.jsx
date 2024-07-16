@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import Logo from "../../components/logo";
 import { Outlet } from "react-router";
-import PropTypes from "prop-types";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -94,9 +93,3 @@ export default function AuthClassicLayout({ image, title }) {
     </Stack>
   );
 }
-
-AuthClassicLayout.propTypes = {
-  children: PropTypes.node,
-  image: PropTypes.string,
-  title: PropTypes.string,
-};

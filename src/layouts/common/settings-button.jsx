@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Iconify from "../../components/Iconify";
-import PropTypes from "prop-types";
 import React from "react";
 import { motion } from "framer-motion";
 import { useSettingsContext } from "../../components/settings";
@@ -56,7 +55,3 @@ export default function SettingsButton({ sx }) {
     </Badge>
   );
 }
-
-SettingsButton.propTypes = {
-  sx: PropTypes.object,
-};

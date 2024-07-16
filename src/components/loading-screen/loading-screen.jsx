@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
-import PropTypes from "prop-types";
 import React from "react";
 
 // ----------------------------------------------------------------------
@@ -24,7 +23,3 @@ export default function LoadingScreen({ sx, ...other }) {
     </Box>
   );
 }
-
-LoadingScreen.propTypes = {
-  sx: PropTypes.object,
-};

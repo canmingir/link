@@ -1,6 +1,5 @@
 import NavItem from "./nav-item";
 import Popover from "@mui/material/Popover";
-import PropTypes from "prop-types";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import { useActiveLink } from "../../../routes/hooks";
@@ -103,12 +102,6 @@ export default function NavList({ data, depth, slotProps }) {
   );
 }
 
-NavList.propTypes = {
-  data: PropTypes.object,
-  depth: PropTypes.number,
-  slotProps: PropTypes.object,
-};
-
 // ----------------------------------------------------------------------
 
 function NavSubList({ data, depth, slotProps }) {
@@ -125,9 +118,3 @@ function NavSubList({ data, depth, slotProps }) {
     </Stack>
   );
 }
-
-NavSubList.propTypes = {
-  data: PropTypes.array,
-  depth: PropTypes.number,
-  slotProps: PropTypes.object,
-};

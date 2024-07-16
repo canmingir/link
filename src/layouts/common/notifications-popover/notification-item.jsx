@@ -6,7 +6,6 @@ import Label from "../../../components/label";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import PropTypes from "prop-types";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -235,10 +234,6 @@ export default function NotificationItem({ notification }) {
     </ListItemButton>
   );
 }
-
-NotificationItem.propTypes = {
-  notification: PropTypes.object,
-};
 
 // ----------------------------------------------------------------------
 

@@ -1,5 +1,4 @@
 import ButtonBase from "@mui/material/ButtonBase";
-import PropTypes from "prop-types";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import SvgColor from "../../svg-color";
@@ -53,10 +52,3 @@ export default function BaseOptions({ icons, options, value, onChange }) {
     </Stack>
   );
 }
-
-BaseOptions.propTypes = {
-  icons: PropTypes.arrayOf(PropTypes.string),
-  onChange: PropTypes.func,
-  options: PropTypes.array,
-  value: PropTypes.string,
-};

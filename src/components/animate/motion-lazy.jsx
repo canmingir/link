@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React from "react";
 
 import { LazyMotion, domMax, motion } from "framer-motion";
@@ -12,7 +11,3 @@ export function MotionLazy({ children }) {
     </LazyMotion>
   );
 }
-
-MotionLazy.propTypes = {
-  children: PropTypes.node,
-};

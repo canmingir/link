@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
-import PropTypes from "prop-types";
 import React from "react";
 import { RouterLink } from "../../routes/components";
 import config from "../../config/config";
@@ -26,11 +25,6 @@ const Logo = ({ disabledLink = false, sx }) => {
       {logo}
     </Link>
   );
-};
-
-Logo.propTypes = {
-  disabledLink: PropTypes.bool,
-  sx: PropTypes.object,
 };
 
 export default Logo;

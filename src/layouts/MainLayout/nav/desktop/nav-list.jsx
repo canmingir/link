@@ -3,7 +3,6 @@ import { HEADER } from "../../../config-layout";
 import ListSubheader from "@mui/material/ListSubheader";
 import Paper from "@mui/material/Paper";
 import Portal from "@mui/material/Portal";
-import PropTypes from "prop-types";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import { paper } from "../../../../theme/css";
@@ -94,14 +93,6 @@ export default function NavList({ data }) {
   );
 }
 
-NavList.propTypes = {
-  data: PropTypes.shape({
-    path: PropTypes.string,
-    title: PropTypes.string,
-    children: PropTypes.array,
-  }),
-};
-
 // ----------------------------------------------------------------------
 
 function NavSubList({ data, subheader, sx, ...other }) {
@@ -152,9 +143,3 @@ function NavSubList({ data, subheader, sx, ...other }) {
     </Stack>
   );
 }
-
-NavSubList.propTypes = {
-  data: PropTypes.array,
-  subheader: PropTypes.string,
-  sx: PropTypes.object,
-};
