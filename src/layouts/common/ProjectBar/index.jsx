@@ -184,7 +184,6 @@ function ProjectBar() {
         onClick={AddNewDialogOpen}
       >
         <Label
-          fullWidth={true}
           sx={{
             width: "100%",
             height: "3rem",
