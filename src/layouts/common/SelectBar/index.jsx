@@ -62,6 +62,14 @@ function SelectBar() {
   };
 
   const handleSelect = (item) => {
+    const refreshToken = storage.get(name, "refreshToken");
+    oauth
+      .post("/oauth", { appId, refreshToken, projectId: item.id })
+      .then(({ data }) => {
+        const { refreshToken, accessToken } = data;
+        storage.set(name, "accessToken", accessToken);
+        storage.set(name, "refreshToken", refreshToken);
+      });
     storage.set("itemId", item.id);
     publish("ITEM_SELECTED", { itemId: item.id });
     setSelectedItem(item);
