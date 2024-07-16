@@ -14,13 +14,14 @@ import { alpha } from "@mui/material/styles";
 import { applyFilter } from "./utils";
 import config from "../../../config/config.js";
 import match from "autosuggest-highlight/match";
+import oauth from "../../../http/oauth.js";
 import parse from "autosuggest-highlight/parse";
 import { publish } from "@nucleoidai/react-event";
 import { useBoolean } from "../../../hooks/use-boolean";
 import { useEffect } from "react";
 import { useEventListener } from "../../../hooks/use-event-listener";
 import { useNavigate } from "react-router-dom";
-import { useProject } from "../../../hooks/useItemsState.js"; // adjust the path as needed
+import useProjects from "../../../hooks/useProjects.js";
 import { useResponsive } from "../../../hooks/use-responsive";
 import { useTheme } from "@mui/material/styles";
 
@@ -31,10 +32,13 @@ import { storage, useStorage } from "@nucleoidjs/webstorage";
 
 function SelectBar() {
   const { path } = config().template.projectBar;
+  const { id: appId, name } = config();
   const theme = useTheme();
-  const { GetItems } = useProject();
-  //eslint-disable-next-line
-  const { items, loading } = GetItems();
+  const { projects, getProjects } = useProjects();
+
+  useEffect(() => {
+    getProjects();
+  }, []);
 
   const id = window.matchMedia("itemId").matches;
   const [selectedItemId] = useStorage("itemId", id);
@@ -49,9 +53,9 @@ function SelectBar() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    setSelectedItem(items.find((item) => item.id === selectedItemId));
+    setSelectedItem(projects.find((project) => project.id === selectedItemId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items]);
+  }, [projects]);
 
   const AddNewDialogOpen = () => {
     publish("PLATFORM_DIALOG", { open: true });
@@ -84,7 +88,7 @@ function SelectBar() {
   }, []);
 
   const dataFiltered = applyFilter({
-    inputData: items,
+    inputData: projects,
     query: searchQuery,
   });
   const notFound = searchQuery && !dataFiltered.length;
@@ -179,9 +183,6 @@ function SelectBar() {
       </Button>
     </DialogActions>
   );
-
-  //if (loading) return <></>;
-  // TODO add this when project hooks are ready
 
   return (
     <>
