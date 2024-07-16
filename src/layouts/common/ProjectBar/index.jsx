@@ -142,7 +142,7 @@ function ProjectBar() {
           typography: "subtitle2",
           "& .svg-color": {
             background: (theme) =>
-              selectedProject
+              selectedProjectId
                 ? `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`
                 : "gray",
           },
@@ -150,7 +150,7 @@ function ProjectBar() {
       >
         <SvgColor
           src={
-            selectedProject
+            selectedProjectId
               ? `https://api.iconify.design/${selectedProject?.icon?.slice(
                   1,
                   -1
@@ -163,7 +163,7 @@ function ProjectBar() {
 
       {lgUp && (
         <Label
-          color={selectedProject ? "primary" : "default"}
+          color={selectedProjectId ? "primary" : "default"}
           onClick={search.onTrue}
           sx={{
             px: 0.75,
