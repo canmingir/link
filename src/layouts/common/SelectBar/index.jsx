@@ -218,7 +218,7 @@ function SelectBar() {
           },
         }}
       >
-        <Box sx={{ borderBottom: `solid 1px gray` }}>
+        <Box sx={{ p: 3, borderBottom: `solid 1px gray` }}>
           <InputBase
             data-cy="item-input"
             fullWidth={true}
