@@ -1,28 +1,28 @@
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import Iconify from "../../../components/Iconify";
+import Iconify from "../../../components/Iconify/index.js";
 import InputAdornment from "@mui/material/InputAdornment";
 import InputBase from "@mui/material/InputBase";
-import Label from "../../../components/label";
+import Label from "../../../components/label/index.js";
 import List from "@mui/material/List";
-import ResultItem from "./result-item";
-import Scrollbar from "../../../components/scrollbar";
-import SearchNotFound from "../../../components/search-not-found";
+import ResultItem from "./result-item.jsx";
+import Scrollbar from "../../../components/scrollbar/index.js";
+import SearchNotFound from "../../../components/search-not-found/index.js";
 import Stack from "@mui/material/Stack";
-import SvgColor from "../../../components/svg-color";
+import SvgColor from "../../../components/svg-color/index.js";
 import { alpha } from "@mui/material/styles";
-import { applyFilter } from "./utils";
+import { applyFilter } from "./utils.js";
 import config from "../../../config/config.js";
 import match from "autosuggest-highlight/match";
 import oauth from "../../../http/oauth.js";
 import parse from "autosuggest-highlight/parse";
 import { publish } from "@nucleoidai/react-event";
-import { useBoolean } from "../../../hooks/use-boolean";
+import { useBoolean } from "../../../hooks/use-boolean.js";
 import { useEffect } from "react";
-import { useEventListener } from "../../../hooks/use-event-listener";
+import { useEventListener } from "../../../hooks/use-event-listener.js";
 import { useNavigate } from "react-router-dom";
 import useProjects from "../../../hooks/useProjects.js";
-import { useResponsive } from "../../../hooks/use-responsive";
+import { useResponsive } from "../../../hooks/use-responsive.js";
 import { useTheme } from "@mui/material/styles";
 
 import { Button, DialogActions } from "@mui/material";
@@ -30,7 +30,7 @@ import Dialog, { dialogClasses } from "@mui/material/Dialog";
 import React, { useCallback, useState } from "react";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 
-function SelectBar() {
+function ProjectBar() {
   const { path } = config().template.projectBar;
   const { id: appId, name } = config();
   const theme = useTheme();
@@ -40,10 +40,10 @@ function SelectBar() {
     getProjects();
   }, []);
 
-  const id = window.matchMedia("itemId").matches;
-  const [selectedItemId] = useStorage("itemId", id);
+  const id = window.matchMedia("projectId").matches;
+  const [selectedProjectId] = useStorage("projectId", id);
 
-  const [selectedItem, setSelectedItem] = useState();
+  const [selectedProject, setSelectedProject] = useState();
 
   const navigate = useNavigate();
 
@@ -53,7 +53,9 @@ function SelectBar() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    setSelectedItem(projects.find((project) => project.id === selectedItemId));
+    setSelectedProject(
+      projects.find((project) => project.id === selectedProjectId)
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projects]);
 
@@ -61,18 +63,25 @@ function SelectBar() {
     publish("PLATFORM_DIALOG", { open: true });
   };
 
-  const handleSelect = (item) => {
+  const handleSelect = (project) => {
+    const { id: projectId } = project;
+
     const refreshToken = storage.get(name, "refreshToken");
+
     oauth
-      .post("/oauth", { appId, refreshToken, projectId: item.id })
+      .post("/oauth", { appId, refreshToken, projectId })
       .then(({ data }) => {
         const { refreshToken, accessToken } = data;
         storage.set(name, "accessToken", accessToken);
         storage.set(name, "refreshToken", refreshToken);
       });
-    storage.set("itemId", item.id);
-    publish("ITEM_SELECTED", { itemId: item.id });
-    setSelectedItem(item);
+
+    storage.set("projectId", projectId);
+
+    publish("PROJECT_SELECTED", { projectId });
+
+    setSelectedProject(project);
+
     search.onFalse();
     setSearchQuery("");
   };
@@ -137,7 +146,7 @@ function SelectBar() {
         }}
       >
         <SvgColor
-          src={`https://api.iconify.design/${selectedItem?.icon?.slice(
+          src={`https://api.iconify.design/${selectedProject?.icon?.slice(
             1,
             -1
           )}.svg`}
@@ -154,7 +163,7 @@ function SelectBar() {
             fontSize: 14,
           }}
         >
-          {selectedItem?.name}
+          {selectedProject?.name}
         </Label>
       )}
     </Stack>
@@ -259,4 +268,4 @@ function SelectBar() {
   );
 }
 
-export default SelectBar;
+export default ProjectBar;

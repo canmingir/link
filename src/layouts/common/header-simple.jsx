@@ -2,7 +2,7 @@ import AccountPopover from "../common/account-popover";
 import AppBar from "@mui/material/AppBar";
 import { HEADER } from "../config-layout";
 import HeaderShadow from "./header-shadow";
-import ItemBar from "../common/SelectBar";
+import ItemBar from "../common/ProjectBar";
 import Logo from "../../components/logo";
 import NavDesktop from "../MainLayout/nav/desktop";
 import NotificationsPopover from "../common/notifications-popover";
@@ -23,7 +23,7 @@ export default function HeaderSimple({
   selectedItem,
   setSelectedItem,
 }) {
-  const { menu } = config()
+  const { menu } = config();
   const theme = useTheme();
   const { topMenu } = menu;
   const mdUp = useResponsive("up", "md");
