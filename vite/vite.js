@@ -34,7 +34,7 @@ async function vite() {
           find: /^src(.+)/,
           replacement: path.join(
             process.cwd(),
-            "/node_modules/platform-npm/minimal/src/$1"
+            "/node_modules/@nucleoidai/platform/minimal/src/$1"
           ),
         },
       ],
