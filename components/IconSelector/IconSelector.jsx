@@ -5,7 +5,7 @@ import Picker from "@emoji-mart/react";
 import React from "react";
 
 import { Dialog, Stack } from "@mui/material";
-import { Iconify, SvgColor } from "platform-npm/minimal/components";
+import { Iconify, SvgColor } from "@nucleoidai/platform/minimal/components";
 
 export default function IconSelector({
   handleEmojiSelect,

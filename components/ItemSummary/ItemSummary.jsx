@@ -1,6 +1,6 @@
 import DialogContentText from "@mui/material/DialogContentText";
 import Grid from "@mui/material/Grid";
-import { SvgColor } from "platform-npm/minimal/components";
+import { SvgColor } from "@nucleoidai/platform/minimal/components";
 
 import {
   Card,
