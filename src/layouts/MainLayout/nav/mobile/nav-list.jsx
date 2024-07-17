@@ -1,7 +1,6 @@
 import Collapse from "@mui/material/Collapse";
 import { NavItem } from "./nav-item";
 import { NavSectionVertical } from "../../../../components/nav-section";
-import PropTypes from "prop-types";
 import React from "react";
 import { listItemButtonClasses } from "@mui/material/ListItemButton";
 import { stackClasses } from "@mui/material/Stack";
@@ -71,12 +70,3 @@ export default function NavList({ data }) {
     </>
   );
 }
-
-NavList.propTypes = {
-  data: PropTypes.shape({
-    title: PropTypes.string,
-    path: PropTypes.string,
-    icon: PropTypes.element,
-    children: PropTypes.array,
-  }),
-};

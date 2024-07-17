@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
-import PropTypes from "prop-types";
 import React from "react";
 import { alpha } from "@mui/material/styles";
 import { presetOptions } from "../../../theme/options/presets";
@@ -54,7 +53,3 @@ export default function PresetsOptions({ value, onChange }) {
     </Box>
   );
 }
-PresetsOptions.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-};

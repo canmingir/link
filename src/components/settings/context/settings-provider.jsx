@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React from "react";
 import { SettingsContext } from "./settings-context";
 import isEqual from "lodash/isEqual";
@@ -51,8 +50,3 @@ export function SettingsProvider({ children, defaultSettings }) {
     </SettingsContext.Provider>
   );
 }
-
-SettingsProvider.propTypes = {
-  children: PropTypes.node,
-  defaultSettings: PropTypes.object,
-};

@@ -1,7 +1,6 @@
 import Collapse from "@mui/material/Collapse";
 import ListSubheader from "@mui/material/ListSubheader";
 import NavList from "./nav-list";
-import PropTypes from "prop-types";
 import React from "react";
 import Stack from "@mui/material/Stack";
 
@@ -25,11 +24,6 @@ function NavSectionVertical({ data, slotProps, ...other }) {
     </>
   );
 }
-
-NavSectionVertical.propTypes = {
-  data: PropTypes.array,
-  slotProps: PropTypes.object,
-};
 
 export default memo(NavSectionVertical);
 
@@ -82,9 +76,3 @@ function Group({ subheader, items, slotProps }) {
     </Stack>
   );
 }
-
-Group.propTypes = {
-  items: PropTypes.array,
-  subheader: PropTypes.string,
-  slotProps: PropTypes.object,
-};

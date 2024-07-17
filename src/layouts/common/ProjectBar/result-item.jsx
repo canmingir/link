@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Label from "../../../components/label";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import PropTypes from "prop-types";
 import React from "react";
 import { Stack } from "@mui/material";
 import SvgColor from "../../../components/svg-color";
@@ -67,10 +66,3 @@ export default function SelectBar({ title, icon, groupLabel, onClickItem }) {
     </ListItemButton>
   );
 }
-
-SelectBar.propTypes = {
-  groupLabel: PropTypes.string,
-  onClickItem: PropTypes.func,
-  icon: PropTypes.string,
-  title: PropTypes.array,
-};

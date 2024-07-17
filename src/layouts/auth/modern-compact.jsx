@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Header from "../common/header-sim";
 import { Outlet } from "react-router";
-import PropTypes from "prop-types";
 import React from "react";
 
 // ----------------------------------------------------------------------
@@ -50,7 +49,3 @@ export default function AuthModernCompactLayout() {
     </>
   );
 }
-
-AuthModernCompactLayout.propTypes = {
-  children: PropTypes.node,
-};

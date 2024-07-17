@@ -1,6 +1,5 @@
 import Collapse from "@mui/material/Collapse";
 import NavItem from "./nav-item";
-import PropTypes from "prop-types";
 import React from "react";
 import { useActiveLink } from "../../../routes/hooks";
 import { usePathname } from "../../../routes/hooks";
@@ -60,11 +59,6 @@ export default function NavList({ data, depth }) {
   );
 }
 
-NavList.propTypes = {
-  data: PropTypes.object,
-  depth: PropTypes.number,
-};
-
 // ----------------------------------------------------------------------
 
 function NavSubList({ data, depth }) {
@@ -76,8 +70,3 @@ function NavSubList({ data, depth }) {
     </>
   );
 }
-
-NavSubList.propTypes = {
-  data: PropTypes.array,
-  depth: PropTypes.number,
-};

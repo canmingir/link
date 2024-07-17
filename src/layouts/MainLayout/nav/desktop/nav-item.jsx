@@ -3,7 +3,6 @@ import CardActionArea from "@mui/material/CardActionArea";
 import Iconify from "../../../../components/Iconify";
 import Link from "@mui/material/Link";
 import ListItemButton from "@mui/material/ListItemButton";
-import PropTypes from "prop-types";
 import React from "react";
 import { RouterLink } from "../../../../routes/components";
 import { forwardRef } from "react";
@@ -64,16 +63,6 @@ export const NavItem = forwardRef(
     );
   }
 );
-
-NavItem.propTypes = {
-  title: PropTypes.string,
-  path: PropTypes.string,
-  open: PropTypes.bool,
-  active: PropTypes.bool,
-  subItem: PropTypes.bool,
-  hasChild: PropTypes.bool,
-  externalLink: PropTypes.bool,
-};
 
 // ----------------------------------------------------------------------
 
@@ -195,8 +184,3 @@ export function NavItemDashboard({ path, sx, ...other }) {
     </Link>
   );
 }
-
-NavItemDashboard.propTypes = {
-  path: PropTypes.string,
-  sx: PropTypes.object,
-};

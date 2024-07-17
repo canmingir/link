@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import PropTypes from "prop-types";
 import React from "react";
 import { memo } from "react";
 
@@ -28,9 +27,5 @@ function AvatarShape({ sx, ...other }) {
     </Box>
   );
 }
-
-AvatarShape.propTypes = {
-  sx: PropTypes.object,
-};
 
 export default memo(AvatarShape);

@@ -1,5 +1,4 @@
 import { CacheProvider } from "@emotion/react";
-import PropTypes from "prop-types";
 import React from "react";
 import createCache from "@emotion/cache";
 import rtlPlugin from "stylis-plugin-rtl";
@@ -25,8 +24,3 @@ export default function RTL({ children, themeDirection }) {
 
   return <>{children}</>;
 }
-
-RTL.propTypes = {
-  children: PropTypes.node,
-  themeDirection: PropTypes.oneOf(["rtl", "ltr"]),
-};

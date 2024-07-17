@@ -1,7 +1,6 @@
 "use client";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import PropTypes from "prop-types";
 import RTL from "./options/right-to-left";
 import { componentsOverrides } from "./overrides";
 import { createContrast } from "./options/contrast";
@@ -61,7 +60,3 @@ export default function ThemeProvider({ children }) {
     </MuiThemeProvider>
   );
 }
-
-ThemeProvider.propTypes = {
-  children: PropTypes.node,
-};

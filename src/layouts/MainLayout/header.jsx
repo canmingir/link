@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { HEADER } from "../config-layout";
 import HeaderShadow from "../common/header-shadow";
-import ItemBar from "../common/SelectBar";
+import ItemBar from "../common/ProjectBar";
 import Logo from "../../components/logo";
 import NavDesktop from "./nav/desktop";
 import NavMobile from "./nav/mobile";

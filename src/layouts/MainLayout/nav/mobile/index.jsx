@@ -2,7 +2,6 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Logo from "../../../../components/logo";
 import NavList from "./nav-list";
-import PropTypes from "prop-types";
 import React from "react";
 import Scrollbar from "../../../../components/scrollbar";
 import SvgColor from "../../../../components/svg-color";
@@ -59,7 +58,3 @@ export default function NavMobile({ data }) {
     </>
   );
 }
-
-NavMobile.propTypes = {
-  data: PropTypes.array,
-};

@@ -11,7 +11,7 @@ const fetcher = (url) => instance.get(url).then((res) => res.data);
 
 export const useProject = () => {
   const GetItems = () => {
-    const path = templateConfig.itemsPath;
+    const path = templateConfig.projectBar.path;
     const { data, error } = useSWR(path, fetcher);
     console.log("data", data);
     return { items: data || [], loading: !error && !data };

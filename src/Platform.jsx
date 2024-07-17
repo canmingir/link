@@ -1,11 +1,4 @@
-import { init } from "./config/config";
-init();
-
 import "./global.css";
-
-import { BrowserRouter, Navigate } from "react-router-dom";
-import { initialState, reducer } from "./context/reducer";
-import { publish, subscribe, useEvent } from "@nucleoidai/react-event";
 
 import ContextProvider from "./ContextProvider/ContextProvider";
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
@@ -16,8 +9,16 @@ import { SettingsDrawer } from "./components/settings";
 import { SettingsProvider } from "./components/settings";
 import { SnackbarProvider } from "notistack";
 import ThemeProvider from "./theme";
-import oauth from "./http/oauth";
 import config from "./config/config";
+import http from "./http";
+import { init } from "./config/config";
+import oauth from "./http/oauth";
+
+import { BrowserRouter, Navigate } from "react-router-dom";
+import { initialState, reducer } from "./context/reducer";
+import { publish, subscribe, useEvent } from "@nucleoidai/react-event";
+
+init();
 
 window["@nucleoidai"] = {
   Event: { publish, subscribe, useEvent },
@@ -27,6 +28,7 @@ setTimeout(() => {
   const { api } = config();
 
   oauth.defaults.baseURL = api;
+  http.defaults.baseURL = api;
 }, 0);
 
 const Platform = ({ routes }) => {

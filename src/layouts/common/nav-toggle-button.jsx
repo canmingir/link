@@ -1,7 +1,6 @@
 import IconButton from "@mui/material/IconButton";
 import Iconify from "../../components/Iconify";
 import { NAV } from "../config-layout";
-import PropTypes from "prop-types";
 import React from "react";
 import { bgBlur } from "../../theme/css";
 import { useResponsive } from "../../hooks/use-responsive";
@@ -56,7 +55,3 @@ export default function NavToggleButton({ sx, ...other }) {
     </IconButton>
   );
 }
-
-NavToggleButton.propTypes = {
-  sx: PropTypes.object,
-};

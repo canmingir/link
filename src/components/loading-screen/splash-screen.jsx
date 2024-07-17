@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Logo from "../logo";
-import PropTypes from "prop-types";
 import React from "react";
 import { alpha } from "@mui/material/styles";
 import { m } from "framer-motion";
@@ -96,7 +95,3 @@ export default function SplashScreen({ sx, ...other }) {
     </Box>
   );
 }
-
-SplashScreen.propTypes = {
-  sx: PropTypes.object,
-};

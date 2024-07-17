@@ -1,6 +1,5 @@
 import IconButton from "@mui/material/IconButton";
 import Iconify from "../Iconify";
-import PropTypes from "prop-types";
 import { bgBlur } from "../../theme/css";
 import { useTheme } from "@mui/material/styles";
 
@@ -40,7 +39,3 @@ export default function DownloadButton({ onDownload }) {
     </IconButton>
   );
 }
-
-DownloadButton.propTypes = {
-  onDownload: PropTypes.func,
-};

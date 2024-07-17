@@ -1,5 +1,4 @@
 import NavList from "./nav-list";
-import PropTypes from "prop-types";
 import React from "react";
 import Stack from "@mui/material/Stack";
 
@@ -19,7 +18,3 @@ export default function NavDesktop({ data }) {
     </Stack>
   );
 }
-
-NavDesktop.propTypes = {
-  data: PropTypes.array,
-};

@@ -1,6 +1,7 @@
 import Joi from "joi";
 
 export const ConfigSchema = Joi.object({
+  id: Joi.string().uuid().required(),
   name: Joi.string().required(),
   base: Joi.string().required(),
   api: Joi.string().uri().required(),
@@ -110,5 +111,7 @@ export const TemplateConfigSchema = Joi.object({
   })
     .optional()
     .default({ mode: "dark", colorPresets: "cyan" }),
-  itemsPath: Joi.string().required(),
+  projectBar: Joi.object({
+    path: Joi.string().required(),
+  }).required(),
 });

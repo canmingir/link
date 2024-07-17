@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import PropTypes from "prop-types";
 import React from "react";
 import { StyledLabel } from "./styles";
 import { forwardRef } from "react";
@@ -50,22 +49,5 @@ const Label = forwardRef(
     );
   }
 );
-
-Label.propTypes = {
-  children: PropTypes.node,
-  endIcon: PropTypes.object,
-  startIcon: PropTypes.object,
-  sx: PropTypes.object,
-  variant: PropTypes.oneOf(["filled", "outlined", "ghost", "soft"]),
-  color: PropTypes.oneOf([
-    "default",
-    "primary",
-    "secondary",
-    "info",
-    "success",
-    "warning",
-    "error",
-  ]),
-};
 
 export default Label;
