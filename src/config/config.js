@@ -3,9 +3,9 @@ import {
   MenuConfigSchema,
   TemplateConfigSchema,
 } from "./schemas.js";
-import configMain from "../../../../config.js";
-import configMenu from "../../../../config.menu.js";
-import configTemplate from "../../../../config.template.js";
+import configMain from "../../../../../config.js";
+import configMenu from "../../../../../config.menu.js";
+import configTemplate from "../../../../../config.template.js";
 import { publish } from "@nucleoidai/react-event";
 
 let _mainConfig = {};

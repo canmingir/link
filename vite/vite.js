@@ -1,5 +1,5 @@
 import { ConfigSchema } from "../src/config/schemas.js";
-import config from "../../../config.js";
+import config from "../../../../config.js";
 import path from "path";
 import react from "@vitejs/plugin-react";
 import { splitVendorChunkPlugin } from "vite";

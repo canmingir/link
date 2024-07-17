@@ -1,9 +1,8 @@
 import Header from "../common/header-simple";
 import { Outlet } from "react-router";
 import React from "react";
-import config from "../../../../../config";
+import config from "../../../../../../config";
 import { useContext } from "../../ContextProvider/ContextProvider";
-// ----------------------------------------------------------------------
 
 export default function SimpleLayout() {
   const [state, dispatch] = useContext();

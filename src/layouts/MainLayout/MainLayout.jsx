@@ -2,11 +2,9 @@ import Box from "@mui/material/Box";
 import Header from "./header";
 import { Outlet } from "react-router";
 import React from "react";
-import config from "../../../../../config.js";
+import config from "../../../../../../config.js";
 import { useContext } from "../../ContextProvider/ContextProvider";
 import { usePathname } from "../../routes/hooks";
-
-// ----------------------------------------------------------------------
 
 export default function MainLayout() {
   const pathname = usePathname();
