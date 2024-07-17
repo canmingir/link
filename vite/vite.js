@@ -22,7 +22,7 @@ async function vite() {
       esbuildOptions: {
         jsx: "automatic",
       },
-      include: ["@mui/material", "platform-npm"],
+      include: ["@mui/material", "@nucleoidai/platform"],
     },
     resolve: {
       alias: [
