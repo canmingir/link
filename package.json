@@ -14,7 +14,8 @@
   },
   "scripts": {
     "dev": "cd project && concurrently \"npm run dev\" \"npm run server\"",
-    "dev:update": "cd project && npm i @nucleoidai/platform@latest"
+    "dev:update": "cd project && npm i @nucleoidai/platform@latest",
+    "test": "exit 0"
   },
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.10.1",
