@@ -1,5 +1,5 @@
 import config from "../config/config";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { storage } from "@nucleoidjs/webstorage";
 
 const { name } = config();
