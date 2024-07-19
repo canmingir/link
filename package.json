@@ -38,6 +38,7 @@
     "highlight.js": "^11.10.0",
     "joi": "^17.13.3",
     "jwt-decode": "^4.0.0",
+    "mapbox-gl": "^2.15.0",
     "mui-one-time-password-input": "^2.0.3",
     "notistack": "^3.0.1",
     "nprogress": "^0.2.0",
