@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function Callback() {
-  const { oauth: appConfig, name, id } = config();
+  const { oauth: appConfig, name, appId } = config();
   const { google, github } = appConfig;
   const [, dispatch] = useContext();
   const location = useLocation();
@@ -29,7 +29,7 @@ function Callback() {
 
     oauth
       .post("/oauth", {
-        appId: id,
+        appId,
         code,
         redirectUri,
         grant_type: "authorization_code",
