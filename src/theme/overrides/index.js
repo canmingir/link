@@ -45,9 +45,20 @@ import { typography } from "./components/typography";
 
 // ----------------------------------------------------------------------
 
+let variants;
+
+try {
+  variants = require("../../../../../../src/theme.js").variants;
+  console.log("[PL] Variants Loaded");
+} catch (error) {
+  variants = () => ({});
+}
+
 export function componentsOverrides(theme) {
   const components = merge(
     defaultProps(theme),
+    //
+    variants(theme),
     //
     fab(theme),
     tabs(theme),

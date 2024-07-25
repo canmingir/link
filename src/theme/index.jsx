@@ -18,6 +18,14 @@ import {
 } from "@mui/material/styles";
 import React, { useMemo } from "react";
 
+let customPalette;
+
+try {
+  customPalette = require("../../../../../src/theme.js").palette;
+} catch (error) {
+  customPalette = () => ({});
+}
+
 export default function ThemeProvider({ children }) {
   const settings = useSettingsContext();
   const contrast = createContrast(settings.themeContrast, settings.themeMode);
@@ -26,7 +34,9 @@ export default function ThemeProvider({ children }) {
   const memoizedValue = useMemo(
     () => ({
       palette: {
-        ...palette(settings.themeMode),
+        ...(customPalette
+          ? customPalette(settings.themeMode)
+          : palette(settings.themeMode)),
         ...presets.palette,
         ...contrast.palette,
       },
@@ -49,6 +59,7 @@ export default function ThemeProvider({ children }) {
   );
 
   const theme = createTheme(memoizedValue);
+
   theme.components = merge(componentsOverrides(theme), contrast.components);
 
   return (
