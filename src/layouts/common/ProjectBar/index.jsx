@@ -32,7 +32,7 @@ import { storage, useStorage } from "@nucleoidjs/webstorage";
 
 function ProjectBar() {
   const { path } = config().template.projectBar;
-  const { id: appId, name } = config();
+  const { appId, name } = config();
   const theme = useTheme();
   const { projects, getProjects } = useProjects();
 
