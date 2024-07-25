@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 export const ConfigSchema = Joi.object({
-  id: Joi.string().uuid().required(),
+  appId: Joi.string().uuid().required(),
   name: Joi.string().required(),
   base: Joi.string().required(),
   api: Joi.string().uri().required(),
