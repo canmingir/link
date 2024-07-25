@@ -13,7 +13,7 @@ export const useProject = () => {
   const GetItems = () => {
     const path = templateConfig.projectBar.path;
     const { data, error } = useSWR(path, fetcher);
-    console.log("data", data);
+
     return { items: data || [], loading: !error && !data };
   };
 

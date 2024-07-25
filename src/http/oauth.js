@@ -1,4 +1,3 @@
-console.log("i am oauth.js");
 import axios from "axios";
 import axiosRetry from "axios-retry";
 import config from "../config/config.js";

@@ -62,8 +62,6 @@ export default function ThemeProvider({ children }) {
 
   theme.components = merge(componentsOverrides(theme), contrast.components);
 
-  console.log(theme.components);
-
   return (
     <MuiThemeProvider theme={theme}>
       <RTL themeDirection={settings.themeDirection}>
