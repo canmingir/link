@@ -45,7 +45,9 @@ import { treeView } from "./components/tree-view";
 import { typography } from "./components/typography";
 
 export function componentsOverrides(theme) {
-  const { theme: configTheme } = config().template;
+  const {
+    template: { theme: configTheme },
+  } = config();
 
   const components = merge(
     defaultProps(theme),
