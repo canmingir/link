@@ -103,6 +103,7 @@ export const TemplateConfigSchema = Joi.object({
       .default("https://cdn.nucleoid.com/media/icon.png"),
   }).required(),
   theme: Joi.object({
+    variants: Joi.function().optional(),
     mode: Joi.string().valid("light", "dark").optional().default("dark"),
     colorPresets: Joi.string()
       .valid("default", "cyan", "purple", "blue", "orange", "red")
