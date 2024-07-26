@@ -26,11 +26,9 @@ export default function ThemeProvider({ children }) {
   const memoizedValue = useMemo(
     () => ({
       palette: {
-        palette: {
-          ...palette(settings.themeMode),
-          ...presets.palette,
-          ...contrast.palette,
-        },
+        ...palette(settings.themeMode),
+        ...presets.palette,
+        ...contrast.palette,
       },
       customShadows: {
         ...customShadows(settings.themeMode),
