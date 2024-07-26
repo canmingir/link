@@ -43,18 +43,19 @@ import { tooltip } from "./components/tooltip";
 import { treeView } from "./components/tree-view";
 import { typography } from "./components/typography";
 
-// ----------------------------------------------------------------------
 
-let variants;
-
-try {
-  variants = require("../../../../../../src/theme.js").variants;
-  console.log("[PL] Variants Loaded");
-} catch (error) {
-  variants = () => ({});
-}
 
 export function componentsOverrides(theme) {
+  let variants;
+
+  try {
+    variants = require("../../../../../../src/theme.js").variants;
+    console.log("[PL] Custom variants loaded");
+  } catch (error) {
+    console.log("[PL] Custom variants ignored");
+    variants = () => ({});
+  }
+
   const components = merge(
     defaultProps(theme),
     //
