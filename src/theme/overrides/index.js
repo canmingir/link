@@ -11,6 +11,7 @@ import { buttonGroup } from "./components/button-group";
 import { card } from "./components/card";
 import { checkbox } from "./components/checkbox";
 import { chip } from "./components/chip";
+import config from "../../config/config";
 import { cssBaseline } from "./components/css-baseline";
 import { dataGrid } from "./components/data-grid";
 import { datePicker } from "./components/date-picker";
@@ -43,23 +44,15 @@ import { tooltip } from "./components/tooltip";
 import { treeView } from "./components/tree-view";
 import { typography } from "./components/typography";
 
-
-
 export function componentsOverrides(theme) {
-  let variants;
-
-  try {
-    variants = require("../../../../../../src/theme.js").variants;
-    console.log("[PL] Custom variants loaded");
-  } catch (error) {
-    console.log("[PL] Custom variants ignored");
-    variants = () => ({});
-  }
+  const {
+    template: { theme: configTheme },
+  } = config();
 
   const components = merge(
     defaultProps(theme),
     //
-    variants(theme),
+    configTheme?.variants(theme),
     //
     fab(theme),
     tabs(theme),
