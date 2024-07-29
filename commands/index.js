@@ -86,7 +86,7 @@ Cypress.Commands.add("checkRoute", (route) => {
 });
 
 Cypress.Commands.add("platformSetup", (itemId, itemFixturePath, config) => {
-  cy.storageSet("itemId", itemId);
+  cy.storageSet("projectId", itemId);
 
   cy.storageSet(`${config.name}.refreshToken`, "TEST_REFRESH_TOKEN");
   cy.storageSet(`${config.name}.accessToken`, "TEST_ACCESS_TOKEN");
