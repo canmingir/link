@@ -14,10 +14,17 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((request) => {
-  publish("LOADED", { loading: true });
   const { name } = config();
   const accessToken = storage.get(name, "accessToken");
+
+  if (!accessToken) {
+    window.location.href = "/login";
+  }
+
   request.headers["Authorization"] = `Bearer ${accessToken}`;
+
+  publish("LOADED", { loading: true });
+
   return request;
 });
 
