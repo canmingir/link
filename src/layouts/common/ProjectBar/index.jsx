@@ -31,7 +31,7 @@ import React, { useCallback, useState } from "react";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 
 function ProjectBar() {
-  const { path } = config().template.projectBar;
+  const { label } = config().template.projectBar;
   const { appId, name } = config();
   const theme = useTheme();
   const { projects, getProjects } = useProjects();
@@ -51,6 +51,12 @@ function ProjectBar() {
   const lgUp = useResponsive("up", "lg");
 
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    if (!selectedProjectId) {
+      search.onTrue();
+    }
+  }, []);
 
   useEffect(() => {
     setSelectedProject(
@@ -124,7 +130,7 @@ function ProjectBar() {
             groupLabel={searchQuery && title}
             onClickItem={() => {
               handleSelect(item);
-              navigate(`${path}`, { replace: true });
+              navigate(`/`, { replace: true });
             }}
           />
         );
@@ -201,7 +207,7 @@ function ProjectBar() {
             },
           }}
         >
-          Add New Item
+          Add New {label}
         </Label>
       </Button>
     </DialogActions>
@@ -216,7 +222,7 @@ function ProjectBar() {
         fullWidth={true}
         maxWidth="sm"
         open={search.value}
-        onClose={handleClose}
+        onClose={selectedProjectId && handleClose}
         transitionDuration={{
           enter: theme.transitions.duration.shortest,
           exit: 0,
