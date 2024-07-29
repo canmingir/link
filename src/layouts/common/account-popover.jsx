@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import { alpha } from "@mui/material/styles";
 import config from "../../config/config";
 import { motion } from "framer-motion";
-import { useContext } from "../../ContextProvider/ContextProvider";
+import { storage } from "@nucleoidjs/webstorage";
 import { useRouter } from "../../routes/hooks";
 import { useUser } from "../../hooks/use-user";
 import { varHover } from "../../components/animate";
@@ -19,16 +19,17 @@ import CustomPopover, { usePopover } from "../../components/custom-popover";
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const { name } = config();
   const { options } = config().menu;
   const router = useRouter();
-  const [, dispatch] = useContext();
   const { userData } = useUser();
 
   const popover = usePopover();
 
   const handleLogout = async () => {
     try {
-      dispatch({ type: "LOGOUT" });
+      storage.remove(name, "accessToken");
+      storage.remove(name, "refreshToken");
       popover.onClose();
       router.replace("/login");
     } catch (error) {
