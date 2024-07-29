@@ -31,7 +31,7 @@ import React, { useCallback, useState } from "react";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 
 function ProjectBar() {
-  const { path } = config().template.projectBar;
+  const { path, label } = config().template.projectBar;
   const { appId, name } = config();
   const theme = useTheme();
   const { projects, getProjects } = useProjects();
@@ -207,7 +207,7 @@ function ProjectBar() {
             },
           }}
         >
-          Add New Project
+          Add New {label}
         </Label>
       </Button>
     </DialogActions>
