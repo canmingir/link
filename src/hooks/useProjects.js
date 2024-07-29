@@ -1,16 +1,14 @@
-import config from "../config/config";
 import http from "../http";
 import useApi from "./useApi";
 
 import { useCallback, useState } from "react";
 
 function useProjects() {
-  const { path } = config().template.projectBar;
   const [projects, setProjects] = useState([]);
   const { loading, error, handleResponse } = useApi();
 
   const getProjects = useCallback(() => {
-    handleResponse(http.get(path), (response) => {
+    handleResponse(http.get("/projects"), (response) => {
       setProjects(response.data);
     });
   }, []);
