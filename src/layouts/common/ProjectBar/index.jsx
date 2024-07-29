@@ -53,6 +53,12 @@ function ProjectBar() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
+    if (!selectedProjectId) {
+      search.onTrue();
+    }
+  }, []);
+
+  useEffect(() => {
     setSelectedProject(
       projects.find((project) => project.id === selectedProjectId)
     );
@@ -82,7 +88,7 @@ function ProjectBar() {
 
     setSelectedProject(project);
 
-    search.onFalse();
+    selectedProjectId && search.onFalse();
     setSearchQuery("");
   };
 
@@ -201,7 +207,7 @@ function ProjectBar() {
             },
           }}
         >
-          Add New Item
+          Add New Project
         </Label>
       </Button>
     </DialogActions>
@@ -216,7 +222,7 @@ function ProjectBar() {
         fullWidth={true}
         maxWidth="sm"
         open={search.value}
-        onClose={handleClose}
+        onClose={selectedProjectId && handleClose}
         transitionDuration={{
           enter: theme.transitions.duration.shortest,
           exit: 0,
