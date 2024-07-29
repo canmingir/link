@@ -31,7 +31,7 @@ import React, { useCallback, useState } from "react";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 
 function ProjectBar() {
-  const { path, label } = config().template.projectBar;
+  const { label } = config().template.projectBar;
   const { appId, name } = config();
   const theme = useTheme();
   const { projects, getProjects } = useProjects();
@@ -88,7 +88,7 @@ function ProjectBar() {
 
     setSelectedProject(project);
 
-    selectedProjectId && search.onFalse();
+    search.onFalse();
     setSearchQuery("");
   };
 
@@ -130,7 +130,7 @@ function ProjectBar() {
             groupLabel={searchQuery && title}
             onClickItem={() => {
               handleSelect(item);
-              navigate(`${path}`, { replace: true });
+              navigate(`/`, { replace: true });
             }}
           />
         );
