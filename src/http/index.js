@@ -14,11 +14,11 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((request) => {
-  const { name } = config();
+  const { name, base } = config();
   const accessToken = storage.get(name, "accessToken");
 
   if (!accessToken) {
-    window.location.href = "/login";
+    window.location.href = base === "/" ? "/login" : `${base}/login`;
   }
 
   request.headers["Authorization"] = `Bearer ${accessToken}`;
