@@ -27,8 +27,11 @@ function Callback() {
       redirectUri = github.redirectUri;
     }
 
+    const projectId = storage.get("projectId");
+
     oauth
       .post("/oauth", {
+        ...(projectId && { projectId }),
         appId,
         code,
         redirectUri,
