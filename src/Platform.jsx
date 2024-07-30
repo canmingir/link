@@ -2,7 +2,6 @@ import "./global.css";
 
 import ContextProvider from "./ContextProvider/ContextProvider";
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
-import Loading from "./Loading/Loading";
 import React from "react";
 import RouteManager from "./RouteManager/RouteManager";
 import { SettingsDrawer } from "./components/settings";
@@ -63,7 +62,6 @@ const Platform = ({ routes }) => {
                 }}
               >
                 <SettingsDrawer />
-                <Loading />
                 <GlobalSnackMessage />
                 <RouteManager routes={routes} />
               </SnackbarProvider>
