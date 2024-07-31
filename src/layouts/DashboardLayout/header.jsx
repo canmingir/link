@@ -1,6 +1,7 @@
 import AccountPopover from "../common/account-popover";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
+import Iconify from "../../../minimal/src/components/iconify";
 import ItemBar from "../common/ProjectBar";
 import Logo from "../../components/logo";
 import NotificationsPopover from "../common/notifications-popover";
@@ -39,7 +40,7 @@ export default function Header({ onOpenNav }) {
 
       {!lgUp && (
         <IconButton data-cy="open-nav-button" onClick={onOpenNav}>
-          <SvgColor src="https://minimals.cc/assets/icons/navbar/ic_menu_item.svg" />
+          <Iconify icon="mingcute:menu-fill" sx={{ width: 28, height: 28 }} />
         </IconButton>
       )}
       <ItemBar />
