@@ -22,7 +22,6 @@ import { useEffect } from "react";
 import { useEventListener } from "../../../hooks/use-event-listener.js";
 import { useNavigate } from "react-router-dom";
 import useProjects from "../../../hooks/useProjects.js";
-import { useResponsive } from "../../../hooks/use-responsive.js";
 import { useTheme } from "@mui/material/styles";
 
 import { Button, DialogActions } from "@mui/material";
@@ -48,7 +47,6 @@ function ProjectBar() {
   const navigate = useNavigate();
 
   const search = useBoolean();
-  const lgUp = useResponsive("up", "lg");
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -167,18 +165,16 @@ function ProjectBar() {
         />
       </IconButton>
 
-      {lgUp && (
-        <Label
-          color={selectedProjectId ? "primary" : "default"}
-          onClick={search.onTrue}
-          sx={{
-            px: 0.75,
-            fontSize: 14,
-          }}
-        >
-          {selectedProject ? selectedProject.name : "Select Project"}
-        </Label>
-      )}
+      <Label
+        color={selectedProjectId ? "primary" : "default"}
+        onClick={search.onTrue}
+        sx={{
+          px: 0.75,
+          fontSize: 14,
+        }}
+      >
+        {selectedProject ? selectedProject.name : "Select Project"}
+      </Label>
     </Stack>
   );
 
