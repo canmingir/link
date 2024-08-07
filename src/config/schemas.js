@@ -77,13 +77,6 @@ export const MenuConfigSchema = Joi.object({
     .valid("left", "right")
     .optional()
     .default("left"),
-  endItem: Joi.object({
-    title: Joi.string().required(),
-    icon: Joi.string().required(),
-    path: Joi.string().required(),
-  })
-    .optional()
-    .default({}),
 }).required();
 
 export const TemplateConfigSchema = Joi.object({

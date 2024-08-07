@@ -23,7 +23,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
   const pathname = usePathname();
   const [openSettings, setOpenSettings] = useState(false);
   const [hideSubheader] = useEvent("PAGE_CHANGED", { subheader: "" });
-  const { sideMenu, actionButtons, endItem } = config().menu;
+  const { sideMenu, actionButtons } = config().menu;
   const lgUp = useResponsive("up", "lg");
 
   useEffect(() => {
