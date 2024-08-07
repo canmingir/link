@@ -10,18 +10,18 @@ import React from "react";
 import Scrollbar from "../../components/scrollbar";
 import Stack from "@mui/material/Stack";
 import config from "../../config/config";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useEvent } from "@nucleoidai/react-event";
-import { useNavigate } from "react-router-dom";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useUser } from "../../hooks/use-user";
+import SettingsDialog from "../../widgets/SettingsDialog";
 // ----------------------------------------------------------------------
 
 export default function NavVertical({ openNav, onCloseNav }) {
   const { user } = useUser();
-  const navigate = useNavigate();
   const pathname = usePathname();
+  const [openSettings, setOpenSettings] = useState(false);
   const [hideSubheader] = useEvent("PAGE_CHANGED", { subheader: "" });
   const { sideMenu, actionButtons, endItem } = config().menu;
   const lgUp = useResponsive("up", "lg");
@@ -43,6 +43,10 @@ export default function NavVertical({ openNav, onCloseNav }) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  const handleCloseSettings = () => {
+    setOpenSettings(false);
+  };
 
   const renderContent = (
     <Scrollbar
@@ -75,23 +79,23 @@ export default function NavVertical({ openNav, onCloseNav }) {
             <Box key={index} component={Action}></Box>
           ))}
       </Stack>
-      {endItem && (
-        <Button
-          data-cy="end-item"
-          fullWidth={true}
-          onClick={() => navigate(endItem.path)}
-        >
-          <Iconify
-            icon={endItem.icon}
-            sx={{
-              width: 32,
-              height: 32,
-              color: "text.secondary",
-              mx: "auto",
-            }}
-          />
-        </Button>
-      )}
+
+      <Button
+        data-cy="end-item"
+        fullWidth={true}
+        onClick={() => setOpenSettings(true)}
+      >
+        <Iconify
+          icon={"ic:baseline-settings"}
+          sx={{
+            width: 32,
+            height: 32,
+            color: "text.secondary",
+            mx: "auto",
+          }}
+        />
+      </Button>
+      <SettingsDialog open={openSettings} handleClose={handleCloseSettings} />
     </Scrollbar>
   );
   return (
