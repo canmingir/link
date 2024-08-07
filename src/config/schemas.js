@@ -117,4 +117,17 @@ export const TemplateConfigSchema = Joi.object({
   })
     .optional()
     .default({ label: "Project" }),
+  settings: Joi.object({
+    tabs: Joi.array()
+      .items(
+        Joi.object({
+          label: Joi.string().required(),
+          panel: Joi.any().required(),
+        })
+      )
+      .optional()
+      .default([]),
+  })
+    .optional()
+    .default({ tabs: [] }),
 });

@@ -22,7 +22,7 @@ export default function AccountPopover() {
   const { name } = config();
   const { options } = config().menu;
   const router = useRouter();
-  const { userData } = useUser();
+  const { user } = useUser();
 
   const popover = usePopover();
 
@@ -63,15 +63,15 @@ export default function AccountPopover() {
       >
         <Avatar
           data-cy="account-popover-avatar"
-          src={userData?.avatarUrl}
-          alt={userData?.name}
+          src={user?.avatarUrl}
+          alt={user?.name}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {userData?.name.charAt(0).toUpperCase()}
+          {user?.name.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
@@ -82,11 +82,11 @@ export default function AccountPopover() {
       >
         <Box sx={{ p: 2, pb: 1.5 }}>
           <Typography data-cy="account-popover-name" variant="subtitle2" noWrap>
-            {userData?.name}
+            {user?.name}
           </Typography>
 
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {userData?.email}
+            {user?.email}
           </Typography>
         </Box>
 
