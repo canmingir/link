@@ -134,7 +134,7 @@ function SettingsDialog({ handleClose, open }) {
       open={open}
       fullWidth
       maxWidth={"md"}
-      onClose={(event) => (event.key === "Escape" ? handleClose() : null)}
+      onClose={() => handleClose()}
       sx={{ bgcolor: "custom.darkDialogBg", zIndex: 2147483647 }}
       PaperProps={{
         style: {
