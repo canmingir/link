@@ -118,7 +118,7 @@ const SettingsDialogTabs = ({ tabs }) => {
           </TabPanel>
           {tabs?.map((tab, index) => (
             <TabPanel key={tab.label} value={value} index={index + 1}>
-              <tab.child />
+              <tab.panel />
             </TabPanel>
           ))}
         </Box>

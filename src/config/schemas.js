@@ -122,7 +122,7 @@ export const TemplateConfigSchema = Joi.object({
       .items(
         Joi.object({
           label: Joi.string().required(),
-          child: Joi.any().required(),
+          panel: Joi.any().required(),
         })
       )
       .optional()
