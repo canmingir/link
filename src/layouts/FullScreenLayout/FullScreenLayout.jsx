@@ -1,17 +1,47 @@
 import Box from "@mui/material/Box";
 import NavHorizontal from "./nav-horizontal";
 import NavMini from "../DashboardLayout/nav-mini";
+import NavVertical from "./nav-vertical";
 import { Outlet } from "react-router";
-import React from "react";
 import Stack from "@mui/material/Stack";
 import config from "../../config/config";
+import { useEvent } from "@nucleoidai/react-event";
+import { useResponsive } from "../../hooks/use-responsive";
+
+import React, { useEffect, useState } from "react";
+
 // ----------------------------------------------------------------------
 
 export default function FullScreenLayout() {
-  //TODO get fullScreenLayout from props ?
   const { fullScreenLayout } = config().menu;
+
   const renderNavMini = <NavMini only={true} />;
   const renderHorizontal = <NavHorizontal />;
+
+  const lgUp = useResponsive("up", "lg");
+
+  const [nav, setNav] = useState(false);
+
+  const [openNav] = useEvent("PLATFORM_NAV_OPENED", { layout: null });
+  const [closeNav] = useEvent("PLATFORM_NAV_CLOSED", { layout: null });
+
+  console.log(openNav, closeNav);
+
+  useEffect(() => {
+    if (openNav.layout === "fullScreen") {
+      setNav(true);
+    }
+  }, [openNav]);
+
+  useEffect(() => {
+    if (closeNav.layout === "fullScreen") {
+      setNav(false);
+    }
+  }, [closeNav]);
+
+  const renderNavVertical = (
+    <NavVertical openNav={nav} onCloseNav={() => setNav(false)} />
+  );
 
   const render = () => {
     switch (fullScreenLayout) {
@@ -26,7 +56,6 @@ export default function FullScreenLayout() {
         return (
           <>
             {renderNavMini}
-
             <Outlet />
           </>
         );
@@ -58,7 +87,14 @@ export default function FullScreenLayout() {
           flexDirection: { xs: "column", lg: "row" },
         }}
       >
-        {render()}
+        {lgUp ? (
+          render()
+        ) : (
+          <>
+            {renderNavVertical}
+            <Outlet />
+          </>
+        )}
       </Box>
     </>
   );
