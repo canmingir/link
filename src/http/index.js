@@ -1,9 +1,8 @@
 import axios from "axios";
 import config from "../config/config";
 import oauth from "./oauth";
-import { storage } from "@nucleoidjs/webstorage";
-
 import { publish } from "@nucleoidai/react-event";
+import { storage } from "@nucleoidjs/webstorage";
 
 const instance = axios.create({
   headers: {
@@ -38,7 +37,7 @@ instance.interceptors.response.use(
   },
   async (error) => {
     publish("LOADED", { loading: false });
-    const statusCode = error.response.status;
+    const statusCode = error.response?.status;
     switch (statusCode) {
       case 400:
         publish("GLOBAL_MESSAGE_POSTED", {
@@ -55,12 +54,11 @@ instance.interceptors.response.use(
         });
         break;
       case 401:
-        !refreshAuthLogic &&
-          publish("GLOBAL_MESSAGE_POSTED", {
-            status: true,
-            message: "UNAUTHORIZED",
-            severity: "warning",
-          });
+        publish("GLOBAL_MESSAGE_POSTED", {
+          status: true,
+          message: "UNAUTHORIZED",
+          severity: "warning",
+        });
         break;
       case 404:
         publish("GLOBAL_MESSAGE_POSTED", {
@@ -79,7 +77,7 @@ instance.interceptors.response.use(
       case 502:
         publish("GLOBAL_MESSAGE_POSTED", {
           status: true,
-          message: "BAD GATEAWAY",
+          message: "BAD GATEWAY",
           severity: "warning",
         });
         break;
@@ -92,19 +90,31 @@ export const fetcher = (url) => instance.get(url).then((res) => res.data);
 
 const refreshAuthLogic = async (failedRequest) => {
   try {
+    const { name, appId } = config();
+
+    const projectId = storage.get("projectId");
+
     const { data } = await oauth.post("/oauth", {
-      refresh_token: storage.get(config.name, "refreshToken"),
+      refreshToken: storage.get(name, "refreshToken"),
+      appId,
+      projectId,
     });
-    const accessToken = data.access_token;
+
+    const accessToken = data.accessToken;
+
     failedRequest.response.config.headers["Authorization"] =
       "Bearer " + accessToken;
-    storage.set(config.name, "accessToken", accessToken);
+
+    storage.set(name, "accessToken", accessToken);
     return Promise.resolve();
   } catch (error) {
-    storage.remove("accessToken");
-    storage.remove("refreshToken");
-    window.location.href = `${config.base}/login`;
-    return false;
+    const { name, base } = config();
+
+    storage.remove(name, "accessToken");
+    storage.remove(name, "refreshToken");
+
+    window.location.href = `${window.location.origin}${base}/login`;
+    return Promise.reject(error);
   }
 };
 
