@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosAuthRefresh from "axios-auth-refresh";
 import config from "../config/config";
 import oauth from "./oauth";
 import { publish } from "@nucleoidai/react-event";
@@ -117,5 +118,7 @@ const refreshAuthLogic = async (failedRequest) => {
     return Promise.reject(error);
   }
 };
+
+axiosAuthRefresh.default(instance, refreshAuthLogic);
 
 export default instance;
