@@ -82,6 +82,13 @@ instance.interceptors.response.use(
           severity: "warning",
         });
         break;
+      default:
+        publish("GLOBAL_MESSAGE_POSTED", {
+          status: true,
+          message: "NETWORK ERROR",
+          severity: "warning",
+        });
+        break;
     }
     return Promise.reject(error);
   }
