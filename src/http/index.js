@@ -1,6 +1,6 @@
 import axios from "axios";
-import axiosAuthRefresh from "axios-auth-refresh";
 import config from "../config/config";
+import createAuthRefreshInterceptor  from 'axios-auth-refresh';
 import oauth from "./oauth";
 import { publish } from "@nucleoidai/react-event";
 import { storage } from "@nucleoidjs/webstorage";
@@ -126,6 +126,13 @@ const refreshAuthLogic = async (failedRequest) => {
   }
 };
 
-axiosAuthRefresh.default(instance, refreshAuthLogic);
+
+const refreshInterceptor = typeof createAuthRefreshInterceptor === 'function' 
+  ? createAuthRefreshInterceptor 
+  : createAuthRefreshInterceptor.default;
+
+refreshInterceptor(instance, refreshAuthLogic, {
+  statusCodes: [401, 403]
+});
 
 export default instance;
