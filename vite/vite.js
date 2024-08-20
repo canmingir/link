@@ -22,7 +22,7 @@ async function vite() {
       esbuildOptions: {
         jsx: "automatic",
       },
-      include: ["@mui/material", "@nucleoidai/platform"],
+      include: ["@mui/material", "@nucleoidai/platform", "axios-auth-refresh"],
     },
     resolve: {
       alias: [
