@@ -1,6 +1,7 @@
 import axios from "axios";
 import config from "../config/config";
-import createAuthRefreshInterceptor  from 'axios-auth-refresh';
+import createAuthRefreshInterceptor from "axios-auth-refresh";
+import { jwtDecode } from "jwt-decode";
 import oauth from "./oauth";
 import { publish } from "@nucleoidai/react-event";
 import { storage } from "@nucleoidjs/webstorage";
@@ -54,13 +55,6 @@ instance.interceptors.response.use(
           severity: "warning",
         });
         break;
-      case 401:
-        publish("GLOBAL_MESSAGE_POSTED", {
-          status: true,
-          message: "UNAUTHORIZED",
-          severity: "warning",
-        });
-        break;
       case 404:
         publish("GLOBAL_MESSAGE_POSTED", {
           status: true,
@@ -79,13 +73,6 @@ instance.interceptors.response.use(
         publish("GLOBAL_MESSAGE_POSTED", {
           status: true,
           message: "BAD GATEWAY",
-          severity: "warning",
-        });
-        break;
-      default:
-        publish("GLOBAL_MESSAGE_POSTED", {
-          status: true,
-          message: "NETWORK ERROR",
           severity: "warning",
         });
         break;
@@ -126,13 +113,40 @@ const refreshAuthLogic = async (failedRequest) => {
   }
 };
 
-
-const refreshInterceptor = typeof createAuthRefreshInterceptor === 'function' 
-  ? createAuthRefreshInterceptor 
-  : createAuthRefreshInterceptor.default;
+const refreshInterceptor =
+  typeof createAuthRefreshInterceptor === "function"
+    ? createAuthRefreshInterceptor
+    : createAuthRefreshInterceptor.default;
 
 refreshInterceptor(instance, refreshAuthLogic, {
-  statusCodes: [401, 403]
+  statusCodes: [401, 403],
+  shouldRefresh: () => {
+    const { name, base } = config();
+    const token = storage.get(name, "accessToken");
+
+    if (!token) {
+      window.location.href = `${window.location.origin}${base}/login`;
+      return false;
+    }
+
+    try {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp * 1000 < Date.now()) {
+        return true;
+      } else {
+        publish("GLOBAL_MESSAGE_POSTED", {
+          status: true,
+          message: "UNAUTHORIZED",
+          severity: "warning",
+        });
+      }
+    } catch (err) {
+      window.location.href = `${window.location.origin}${base}/login`;
+      return false;
+    }
+
+    return false;
+  },
 });
 
 export default instance;
