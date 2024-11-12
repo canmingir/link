@@ -2,7 +2,7 @@ import {
   CompactLayout,
   DashboardLayout,
   FullScreenLayout,
-} from "platform-npm/layouts";
+} from "@nucleoidai/platform/layouts";
 
 import Battles from "./src/pages/Battles";
 import Emperor from "./src/pages/Emperor";
