@@ -13,7 +13,13 @@
     "cypress:run": "cypress run"
   },
   "dependencies": {
-    "@mui/material": "^5.14.10",
+    "@emotion/css": "^11.11.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.16.4",
+    "@mui/material": "^5.16.4",
+    "@mui/styled-engine-sc": "^5.14.12",
+    "@nucleoidai/platform": "^1.0.29",
     "@nucleoidai/react-event": "^1.1.4",
     "@nucleoidjs/webstorage": "^1.0.5",
     "axios": "^1.6.8",
@@ -25,6 +31,7 @@
     "platform-npm": "^0.3.25",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "styled-components": "^5.3.10",
     "swr": "^2.2.5"
   },
   "devDependencies": {
