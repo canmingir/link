@@ -2,13 +2,12 @@ import AccountPopover from "../common/account-popover";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Iconify from "../../../minimal/src/components/iconify";
-import ItemBar from "../common/ProjectBar";
 import Logo from "../../components/logo";
 import NotificationsPopover from "../common/notifications-popover";
+import ProjectBar from "../common/ProjectBar";
 import React from "react";
 import SettingsButton from "../common/settings-button";
 import Stack from "@mui/material/Stack";
-import SvgColor from "../../components/svg-color";
 import Toolbar from "@mui/material/Toolbar";
 import { bgBlur } from "../../theme/css";
 import { useOffSetTop } from "../../hooks/use-off-set-top";
@@ -43,7 +42,7 @@ export default function Header({ onOpenNav }) {
           <Iconify icon="mingcute:menu-fill" sx={{ width: 28, height: 28 }} />
         </IconButton>
       )}
-      <ItemBar />
+      <ProjectBar />
 
       <Stack
         flexGrow={1}

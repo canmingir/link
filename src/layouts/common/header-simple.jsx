@@ -2,10 +2,10 @@ import AccountPopover from "../common/account-popover";
 import AppBar from "@mui/material/AppBar";
 import { HEADER } from "../config-layout";
 import HeaderShadow from "./header-shadow";
-import ItemBar from "../common/ProjectBar";
 import Logo from "../../components/logo";
 import NavDesktop from "../MainLayout/nav/desktop";
 import NotificationsPopover from "../common/notifications-popover";
+import ProjectBar from "../common/ProjectBar";
 import React from "react";
 import SettingsButton from "./settings-button";
 import Stack from "@mui/material/Stack";
@@ -54,7 +54,7 @@ export default function HeaderSimple({
       >
         <Stack direction="row" alignItems="center" spacing={5}>
           <Logo />
-          <ItemBar
+          <ProjectBar
             handleItemSelect={handleItemSelect}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
