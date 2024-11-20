@@ -4,11 +4,11 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { HEADER } from "../config-layout";
 import HeaderShadow from "../common/header-shadow";
-import ItemBar from "../common/ProjectBar";
 import Logo from "../../components/logo";
 import NavDesktop from "./nav/desktop";
 import NavMobile from "./nav/mobile";
 import NotificationsPopover from "../common/notifications-popover";
+import ProjectBar from "../common/ProjectBar";
 import React from "react";
 import SettingsButton from "../common/settings-button";
 import Stack from "@mui/material/Stack";
@@ -57,7 +57,7 @@ export default function Header({
         <Container sx={{ height: 1, display: "flex", alignItems: "center" }}>
           <Logo sx={{ marginRight: 10 }} />
 
-          <ItemBar
+          <ProjectBar
             handleItemSelect={handleItemSelect}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}

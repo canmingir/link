@@ -8,7 +8,7 @@ import SvgColor from "../../../components/svg-color";
 import { alpha } from "@mui/material/styles";
 // ----------------------------------------------------------------------
 
-export default function SelectBar({ title, icon, groupLabel, onClickItem }) {
+export default function ResultItem({ title, icon, groupLabel, onClickItem }) {
   return (
     <ListItemButton
       data-cy="item-button"
