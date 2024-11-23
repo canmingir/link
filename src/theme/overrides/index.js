@@ -45,14 +45,12 @@ import { treeView } from "./components/tree-view";
 import { typography } from "./components/typography";
 
 export function componentsOverrides(theme) {
-  const {
-    template: { theme: configTheme },
-  } = config();
+  const { theme: configTheme } = config().template;
 
   const components = merge(
     defaultProps(theme),
     //
-    configTheme?.variants(theme),
+    configTheme?.variants && configTheme?.variants(theme),
     //
     fab(theme),
     tabs(theme),
