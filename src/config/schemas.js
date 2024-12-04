@@ -23,7 +23,7 @@ export const ConfigSchema = Joi.object({
       response_type: Joi.string().required(),
       userUrl: Joi.string().uri().required(),
     }).optional(),
-  }).required(),
+  }).optional(),
 }).required();
 
 export const MenuConfigSchema = Joi.object({
@@ -94,7 +94,7 @@ export const TemplateConfigSchema = Joi.object({
     largeIcon: Joi.string()
       .optional()
       .default("https://cdn.nucleoid.com/media/icon.png"),
-  }).required(),
+  }).optional(),
   theme: Joi.object({
     variants: Joi.function().optional(),
     mode: Joi.string().valid("light", "dark").optional().default("dark"),
@@ -107,7 +107,7 @@ export const TemplateConfigSchema = Joi.object({
     .default({ mode: "dark", colorPresets: "cyan" }),
   projectBar: Joi.object({
     label: Joi.string().optional().default("Project"),
-  })
+  }).optional(),
     .optional()
     .default({ label: "Project" }),
   settings: Joi.object({
