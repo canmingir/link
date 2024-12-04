@@ -119,9 +119,11 @@ function ProjectBar() {
       {dataFiltered.map((item) => {
         const title = item.name;
         const icon = item?.icon?.slice(1, -1);
+        const organizationName = item.organization.name;
         const partsTitle = parse(title, match(title, searchQuery));
         return (
           <ResultItem
+            name={organizationName}
             icon={icon || "eva:question-mark-circle"}
             title={partsTitle}
             key={`${title}`}
