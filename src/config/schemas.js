@@ -88,9 +88,6 @@ export const TemplateConfigSchema = Joi.object({
     image: Joi.string()
       .optional()
       .default("https://minimals.cc/assets/background/overlay_3.jpg"),
-    icon: Joi.string()
-      .optional()
-      .default("https://cdn.nucleoid.com/media/icon.png"),
     largeIcon: Joi.string()
       .optional()
       .default("https://cdn.nucleoid.com/media/icon.png"),
@@ -108,8 +105,9 @@ export const TemplateConfigSchema = Joi.object({
   projectBar: Joi.object({
     label: Joi.string().optional().default("Project"),
   }).optional(),
+  icon: Joi.string()
     .optional()
-    .default({ label: "Project" }),
+    .default("https://cdn.nucleoid.com/media/icon.png"),
   settings: Joi.object({
     tabs: Joi.array()
       .items(
