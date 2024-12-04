@@ -21,16 +21,14 @@ import { useTheme } from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 
-export default function Header({
-  handleItemSelect,
-  selectedItem,
-  setSelectedItem,
-}) {
+export default function Header() {
   const { topMenu } = config().menu;
+  const projectBar = config().template?.projectBar;
   const theme = useTheme();
 
   const mdUp = useResponsive("up", "md");
   const offsetTop = useOffSetTop(HEADER.H_DESKTOP);
+
   return (
     <AppBar>
       <Toolbar
@@ -56,12 +54,7 @@ export default function Header({
       >
         <Container sx={{ height: 1, display: "flex", alignItems: "center" }}>
           <Logo sx={{ marginRight: 10 }} />
-
-          <ProjectBar
-            handleItemSelect={handleItemSelect}
-            selectedItem={selectedItem}
-            setSelectedItem={setSelectedItem}
-          />
+          {projectBar && <ProjectBar />}
           <Box sx={{ flexGrow: 1 }} />
 
           {mdUp && <NavDesktop data={topMenu} />}
