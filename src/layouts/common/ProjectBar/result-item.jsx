@@ -8,7 +8,13 @@ import SvgColor from "../../../components/svg-color";
 import { alpha } from "@mui/material/styles";
 // ----------------------------------------------------------------------
 
-export default function ResultItem({ title, icon, groupLabel, onClickItem }) {
+export default function ResultItem({
+  title,
+  icon,
+  groupLabel,
+  onClickItem,
+  name,
+}) {
   return (
     <ListItemButton
       data-cy="item-button"
@@ -62,6 +68,7 @@ export default function ResultItem({ title, icon, groupLabel, onClickItem }) {
           </Box>
         ))}
       />
+      <Label>{name}</Label>
       {groupLabel && <Label color="info">{groupLabel}</Label>}
     </ListItemButton>
   );
