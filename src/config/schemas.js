@@ -91,6 +91,9 @@ export const TemplateConfigSchema = Joi.object({
     largeIcon: Joi.string()
       .optional()
       .default("https://cdn.nucleoid.com/media/icon.png"),
+    icon: Joi.string()
+      .optional()
+      .default("https://cdn.nucleoid.com/media/icon.png"),
   }).optional(),
   theme: Joi.object({
     variants: Joi.function().optional(),
