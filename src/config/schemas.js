@@ -5,25 +5,6 @@ export const ConfigSchema = Joi.object({
   name: Joi.string().required(),
   base: Joi.string().required(),
   api: Joi.string().uri().required(),
-  oauth: Joi.object({
-    nucleoid: Joi.object().optional(),
-    github: Joi.object({
-      authUrl: Joi.string().uri().required(),
-      clientId: Joi.string().required(),
-      redirectUri: Joi.string().uri().required(),
-      scope: Joi.string().required(),
-      response_type: Joi.string().required(),
-      userUrl: Joi.string().uri().required(),
-    }).optional(),
-    google: Joi.object({
-      authUrl: Joi.string().uri().required(),
-      clientId: Joi.string().required(),
-      redirectUri: Joi.string().uri().required(),
-      scope: Joi.string().required(),
-      response_type: Joi.string().required(),
-      userUrl: Joi.string().uri().required(),
-    }).optional(),
-  }).optional(),
 }).required();
 
 export const MenuConfigSchema = Joi.object({
@@ -79,7 +60,26 @@ export const MenuConfigSchema = Joi.object({
     .default("left"),
 }).required();
 
-export const TemplateConfigSchema = Joi.object({
+export const LoginConfigSchema = Joi.object({
+  oauth: Joi.object({
+    nucleoid: Joi.object().optional(),
+    github: Joi.object({
+      authUrl: Joi.string().uri().required(),
+      clientId: Joi.string().required(),
+      redirectUri: Joi.string().uri().required(),
+      scope: Joi.string().required(),
+      response_type: Joi.string().required(),
+      userUrl: Joi.string().uri().required(),
+    }).optional(),
+    google: Joi.object({
+      authUrl: Joi.string().uri().required(),
+      clientId: Joi.string().required(),
+      redirectUri: Joi.string().uri().required(),
+      scope: Joi.string().required(),
+      response_type: Joi.string().required(),
+      userUrl: Joi.string().uri().required(),
+    }).optional(),
+  }).required(),
   login: Joi.object({
     variant: Joi.string()
       .valid("classic", "modern")
@@ -92,6 +92,9 @@ export const TemplateConfigSchema = Joi.object({
       .optional()
       .default("https://cdn.nucleoid.com/media/icon.png"),
   }).optional(),
+}).optional();
+
+export const TemplateConfigSchema = Joi.object({
   theme: Joi.object({
     variants: Joi.function().optional(),
     mode: Joi.string().valid("light", "dark").optional().default("dark"),
