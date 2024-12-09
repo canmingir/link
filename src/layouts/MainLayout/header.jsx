@@ -24,6 +24,7 @@ import { useTheme } from "@mui/material/styles";
 export default function Header() {
   const { topMenu } = config().menu;
   const projectBar = config().template?.projectBar;
+  const isLoginConfigured = config().oauth && config().template?.login;
   const theme = useTheme();
 
   const mdUp = useResponsive("up", "md");
@@ -67,7 +68,7 @@ export default function Header() {
 
             <SettingsButton />
 
-            <AccountPopover />
+            {isLoginConfigured && <AccountPopover />}
 
             {!mdUp && <NavMobile data={topMenu} />}
           </Stack>
