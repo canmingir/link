@@ -1,5 +1,3 @@
-import { Route, Routes } from "react-router-dom";
-
 import Callback from "../pages/Callback";
 import CompactLayout from "../layouts/CompactLayout";
 import ConfigError from "../pages/ConfigError";
@@ -11,10 +9,12 @@ import classicLoginLayout from "../layouts/auth/classic";
 import config from "../config/config";
 import modernLoginLayout from "../layouts/auth/modern";
 
+import { Route, Routes } from "react-router-dom";
+
 export default function RouteManager({ routes }) {
   const loginConfig = config().template?.login;
 
-  const isLoginConfigured = config().oauth && loginConfig;
+  const isLoginConfigured = config().project && loginConfig;
 
   const LoginLayout =
     loginConfig?.variant === "classic" ? classicLoginLayout : modernLoginLayout;

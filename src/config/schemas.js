@@ -5,7 +5,7 @@ export const ConfigSchema = Joi.object({
   name: Joi.string().required(),
   base: Joi.string().required(),
   api: Joi.string().uri().required(),
-  oauth: Joi.object({
+  project: Joi.object({
     nucleoid: Joi.object().optional(),
     github: Joi.object({
       authUrl: Joi.string().uri().required(),

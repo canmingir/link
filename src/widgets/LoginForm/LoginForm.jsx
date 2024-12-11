@@ -11,7 +11,7 @@ const handleOAuthLogin = ({ redirectUri, authUrl, clientId, scope }) => {
 };
 
 function LoginForm() {
-  const { name, oauth } = config();
+  const { name, project } = config();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +19,7 @@ function LoginForm() {
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>
       <Typography variant="h4">Sign in to {name}</Typography>
-      {oauth.nucleoid && (
+      {project.nucleoid && (
         <Stack direction="row" spacing={0.5}>
           <Typography variant="body2">New user?</Typography>
 
@@ -31,7 +31,7 @@ function LoginForm() {
 
   const renderForm = (
     <>
-      {!!oauth.nucleoid && (
+      {!!project.nucleoid && (
         <>
           <NucleoidLoginForm
             email={email}
@@ -61,12 +61,12 @@ function LoginForm() {
         </>
       )}
       <SocialLoginButtons
-        googleEnable={!!oauth.google}
-        onGoogle={() => handleOAuthLogin({ ...oauth.google })}
-        githubEnable={!!oauth.github}
-        onGithub={() => handleOAuthLogin({ ...oauth.github })}
-        linkedinEnable={!!oauth.linkedin}
-        onLinkedin={() => handleOAuthLogin({ ...oauth.linkedin })}
+        googleEnable={!!project.google}
+        onGoogle={() => handleOAuthLogin({ ...project.google })}
+        githubEnable={!!project.github}
+        onGithub={() => handleOAuthLogin({ ...project.github })}
+        linkedinEnable={!!project.linkedin}
+        onLinkedin={() => handleOAuthLogin({ ...project.linkedin })}
       />
     </>
   );
