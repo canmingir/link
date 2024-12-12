@@ -5,7 +5,7 @@ export const ConfigSchema = Joi.object({
   name: Joi.string().required(),
   base: Joi.string().required(),
   api: Joi.string().uri().required(),
-  oauth: Joi.object({
+  project: Joi.object({
     nucleoid: Joi.object().optional(),
     github: Joi.object({
       authUrl: Joi.string().uri().required(),
@@ -23,7 +23,7 @@ export const ConfigSchema = Joi.object({
       response_type: Joi.string().required(),
       userUrl: Joi.string().uri().required(),
     }).optional(),
-  }).required(),
+  }).optional(),
 }).required();
 
 export const MenuConfigSchema = Joi.object({
@@ -88,13 +88,13 @@ export const TemplateConfigSchema = Joi.object({
     image: Joi.string()
       .optional()
       .default("https://minimals.cc/assets/background/overlay_3.jpg"),
-    icon: Joi.string()
-      .optional()
-      .default("https://cdn.nucleoid.com/media/icon.png"),
     largeIcon: Joi.string()
       .optional()
       .default("https://cdn.nucleoid.com/media/icon.png"),
-  }).required(),
+    icon: Joi.string()
+      .optional()
+      .default("https://cdn.nucleoid.com/media/icon.png"),
+  }).optional(),
   theme: Joi.object({
     variants: Joi.function().optional(),
     mode: Joi.string().valid("light", "dark").optional().default("dark"),
@@ -107,9 +107,10 @@ export const TemplateConfigSchema = Joi.object({
     .default({ mode: "dark", colorPresets: "cyan" }),
   projectBar: Joi.object({
     label: Joi.string().optional().default("Project"),
-  })
+  }).optional(),
+  icon: Joi.string()
     .optional()
-    .default({ label: "Project" }),
+    .default("https://cdn.nucleoid.com/media/icon.png"),
   settings: Joi.object({
     tabs: Joi.array()
       .items(

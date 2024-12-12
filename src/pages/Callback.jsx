@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function Callback() {
-  const { oauth: appConfig, name, appId } = config();
+  const { project: appConfig, name, appId } = config();
   const { google, github } = appConfig;
   const [, dispatch] = useContext();
   const location = useLocation();

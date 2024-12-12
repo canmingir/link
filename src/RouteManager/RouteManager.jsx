@@ -1,5 +1,3 @@
-import { Route, Routes } from "react-router-dom";
-
 import Callback from "../pages/Callback";
 import CompactLayout from "../layouts/CompactLayout";
 import ConfigError from "../pages/ConfigError";
@@ -11,20 +9,31 @@ import classicLoginLayout from "../layouts/auth/classic";
 import config from "../config/config";
 import modernLoginLayout from "../layouts/auth/modern";
 
-export default function RouteManager({ routes }) {
-  const { image, variant } = config().template.login;
+import { Route, Routes } from "react-router-dom";
 
-  const LoginElement =
-    variant === "classic" ? classicLoginLayout : modernLoginLayout;
+export default function RouteManager({ routes }) {
+  const loginConfig = config().template?.login;
+
+  const isLoginConfigured = config().project && loginConfig;
+
+  const LoginLayout =
+    loginConfig?.variant === "classic" ? classicLoginLayout : modernLoginLayout;
 
   return (
     <HelmetProvider>
       <Routes>
-        <Route path="/login" element={<LoginElement image={image} />}>
-          <Route path={`/login`} index element={<LoginPage />} />
-        </Route>
+        {isLoginConfigured && (
+          <>
+            <Route
+              path="/login"
+              element={<LoginLayout image={loginConfig.image} />}
+            >
+              <Route index element={<LoginPage />} />
+            </Route>
+            <Route path="/callback" element={<Callback />} />
+          </>
+        )}
 
-        <Route path={`/callback`} element={<Callback />} />
         {routes.map((route, i) => (
           <Route key={i} path="/" element={route.container}>
             {route.childs.map((child, j) => (
@@ -36,6 +45,7 @@ export default function RouteManager({ routes }) {
             ))}
           </Route>
         ))}
+
         <Route path="*" element={<CompactLayout />}>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
