@@ -30,7 +30,7 @@ import React, { useCallback, useState } from "react";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 
 function ProjectBar() {
-  const { label } = config().template.projectBar;
+  const label = config().template.projectBar.label;
   const { appId, name } = config();
   const theme = useTheme();
   const { projects, getProjects } = useProjects();
