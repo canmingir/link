@@ -1,7 +1,7 @@
 import { Alert, Avatar, Box, Snackbar } from "@mui/material";
 import React, { useState } from "react";
 
-import { Label } from "platform-npm/minimal/components";
+import { Label } from "@nucleoidai/platform/minimal/components";
 
 export default function ActionButton() {
   const [open, setOpen] = useState(false);

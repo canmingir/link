@@ -19,11 +19,6 @@ const menuConfig = {
       ],
     },
   ],
-  endItem: {
-    title: "Project Settings",
-    icon: "ic:baseline-settings",
-    path: "/settings",
-  },
   options: [
     {
       label: "Home",
