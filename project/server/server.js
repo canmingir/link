@@ -1,36 +1,81 @@
 const jsonServer = require("json-server");
 const cors = require("cors");
 
+const jwt = require("jsonwebtoken");
+const axios = require("axios");
+
+const { mockPermission, config ,JWT_SECRET,OAUTH_CLIENT_SECRET} = require("./oauthMock");
+
 const server = jsonServer.create();
 const router = jsonServer.router("mock.json");
 const middlewares = jsonServer.defaults();
 
-// Add middlewares
+server.use(jsonServer.bodyParser);
 server.use(middlewares);
 server.use(cors());
 
-// Add authentication middleware
-server.use((req, res, next) => {
-  // Check for authorization header
-  const authHeader = req.headers.authorization;
 
-  if (!authHeader) {
-    return res.status(401).json({ error: "Authorization header required" });
+server.post("/oauth", async (req, res) => {
+  let { appId, projectId, code, refreshToken, redirectUri } = req.body;
+   
+  if (!code && !refreshToken) {
+    return res.status(400).send("Missing OAuth Code and Refresh Token");
+  }
+  if (code && redirectUri) {
+    const params = new URLSearchParams();
+    params.append("client_id", config.project.oauth.clientId);
+    params.append("client_secret", OAUTH_CLIENT_SECRET);
+    params.append("code", code);
+    params.append("redirect_uri", redirectUri);
+    params.append("grant_type", "authorization_code");
+
+    const { data } = await axios.post(
+      config.project.oauth.tokenUrl,
+      params.toString(),
+      {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      }
+    );
+
+    console.log(data);  
+
+    const urlParams = new URLSearchParams(data);
+
+    if (urlParams.get("error")) {
+      throw new Error(urlParams.get("error_description"));
+    }
+
+    refreshToken = urlParams.get("access_token");
   }
 
-  // Basic validation - you might want to add more robust token validation
-  if (!authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Invalid authorization format" });
+  const { userId, role, organizationId } = mockPermission;
+
+  let accessToken;
+
+  if (projectId) {
+    accessToken = jwt.sign(
+      {
+        sub: userId,
+        iss: "nuc",
+        aud: projectId,
+        oid: organizationId,
+        aid: appId,
+        rls: role,
+      },
+      JWT_SECRET,
+      { expiresIn: "12h" }
+    );
+  } else {
+    accessToken = jwt.sign(
+      { sub: userId, iss: "nuc", aid: appId },
+      JWT_SECRET,
+      {
+        expiresIn: "12h",
+      }
+    );
   }
 
-  // Add a simple token validation
-  const token = authHeader.split(" ")[1];
-  if (token !== "test-token") {
-    // You can change this to any token value you want to use
-    return res.status(401).json({ error: "Invalid token" });
-  }
-
-  next();
+  res.status(200).json({ accessToken, refreshToken });
 });
 
 server.use(router);
