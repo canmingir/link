@@ -1,25 +1,21 @@
-import useSWR, { mutate } from "swr";
+import { useEffect, useState } from "react";
 
-import http from "../http";
+import axios from "axios";
+import config from "../../config";
 
-const useEmperor = () => {
-  const getEmperors = () => {
-    const { data, error } = useSWR("/emperors", http.get);
-    return { emperor: data || [], loading: !error && !data, error };
+const useEmperor = (id) => {
+  const [emperor, setEmperor] = useState([]);
+
+  useEffect(() => {
+    getEmperorById(id);
+  }, []);
+
+  const getEmperorById = async (id) => {
+    const response = await axios.get(`${config.api}/emperors/${id}`);
+    setEmperor(response.data);
   };
 
-  const getEmperorById = (id) => {
-    const { data, error } = useSWR(`/emperors/${id}`, http.get);
-    return { emperor: data || [], loading: !error && !data, error };
-  };
-
-  const addEmperor = async (emperor) => {
-    const { data: newEmperor } = await http.post("/emperors", emperor);
-    mutate("/emperors");
-    return newEmperor;
-  };
-
-  return { getEmperors, getEmperorById, addEmperor };
+  return { emperor };
 };
 
 export default useEmperor;
