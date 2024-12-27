@@ -4,7 +4,12 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
 
-const { mockPermission, config ,JWT_SECRET,OAUTH_CLIENT_SECRET} = require("./oauthMock");
+const {
+  mockPermission,
+  config,
+  JWT_SECRET,
+  OAUTH_CLIENT_SECRET,
+} = require("./oauthMock");
 
 const server = jsonServer.create();
 const router = jsonServer.router("mock.json");
@@ -14,10 +19,8 @@ server.use(jsonServer.bodyParser);
 server.use(middlewares);
 server.use(cors());
 
-
 server.post("/oauth", async (req, res) => {
   let { appId, projectId, code, refreshToken, redirectUri } = req.body;
-   
   if (!code && !refreshToken) {
     return res.status(400).send("Missing OAuth Code and Refresh Token");
   }
@@ -37,7 +40,7 @@ server.post("/oauth", async (req, res) => {
       }
     );
 
-    console.log(data);  
+    console.log(data);
 
     const urlParams = new URLSearchParams(data);
 
@@ -76,6 +79,10 @@ server.post("/oauth", async (req, res) => {
   }
 
   res.status(200).json({ accessToken, refreshToken });
+});
+
+server.get("/emperors", (req, res) => {
+  res.jsonp(router.db.get("emperors").value());
 });
 
 server.use(router);
