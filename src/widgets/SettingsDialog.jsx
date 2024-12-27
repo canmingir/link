@@ -1,18 +1,22 @@
+import { Iconify } from "@nucleoidai/platform/minimal/components";
 import config from "../config/config";
 import { useEvent } from "@nucleoidai/react-event";
-import { useState } from "react";
+import useSettings from "../hooks/useSettings";
 import { useUser } from "../hooks/use-user";
 
 import {
   Avatar,
   Box,
+  FormControl,
   Grow,
   IconButton,
+  InputLabel,
   List,
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
+  NativeSelect,
   Stack,
   Tab,
   Tabs,
@@ -20,8 +24,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
-import { Iconify } from "@nucleoidai/platform/minimal/components";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function a11yProps(index) {
   return {
@@ -33,20 +36,7 @@ function a11yProps(index) {
 const TabPanel = (props) => {
   const { children, value, index } = props;
 
-  return (
-    <>
-      {value === index && (
-        <Box
-          sx={{
-            pl: 2,
-            pr: 1,
-          }}
-        >
-          {children}
-        </Box>
-      )}
-    </>
-  );
+  return <>{value === index && <Box sx={{ pl: 2, pr: 1 }}>{children}</Box>}</>;
 };
 
 const SettingsDialogTabs = ({ tabs }) => {
@@ -99,16 +89,19 @@ const SettingsDialogTabs = ({ tabs }) => {
             label={"Permissions"}
             sx={{ "& label": { color: "custom.grey" } }}
             {...a11yProps(0)}
-          >
-            <Permission />
-          </Tab>
+          />
+          <Tab
+            label={"Settings"}
+            sx={{ "& label": { color: "custom.grey" } }}
+            {...a11yProps(1)}
+          />
           {tabs?.map((tab, index) => (
             <Tab
               key={tab.label}
               iconPosition="start"
               label={tab.label}
               sx={{ "& label": { color: "custom.grey" } }}
-              {...a11yProps(index)}
+              {...a11yProps(index + 2)}
             />
           ))}
         </Tabs>
@@ -116,8 +109,11 @@ const SettingsDialogTabs = ({ tabs }) => {
           <TabPanel value={value} index={0}>
             <Permission />
           </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Settings />
+          </TabPanel>
           {tabs?.map((tab, index) => (
-            <TabPanel key={tab.label} value={value} index={index + 1}>
+            <TabPanel key={tab.label} value={value} index={index + 2}>
               <tab.panel />
             </TabPanel>
           ))}
@@ -144,6 +140,9 @@ function SettingsDialog({ handleClose, open }) {
       }}
     >
       <DialogContent>
+        <Typography variant="h5" sx={{ my: 2 }}>
+          Settings
+        </Typography>
         <SettingsDialogTabs tabs={settings.tabs} />
       </DialogContent>
       <DialogActions
@@ -178,76 +177,111 @@ const Permission = () => {
   }, [event, event2]);
 
   return (
-    <Stack direction="row" spacing={2} p={3}>
-      <Stack sx={{ width: 1 }}>
-        <Typography variant="h6" my={1}>
-          Users
-        </Typography>
-        <List
-          subheader={"Users with access to the project"}
-          sx={{
-            minHeight: "400px",
-            width: 1,
-          }}
-        >
-          {users?.map((user) => (
-            <ListItem
-              key={user.id}
-              sx={{
-                backgroundColor: "background.neutral",
-                border: "0.2px dashed grey",
-                borderRadius: 1,
-                m: 1,
-                ":hover": { backgroundColor: "background.paper" },
-              }}
-            >
-              <ListItemAvatar>
-                <Avatar src={user.avatar_url} />
-              </ListItemAvatar>
-              <ListItemText>{user.name}</ListItemText>
-              <ListItemSecondaryAction>
-                <IconButton>
-                  <Iconify
-                    onClick={async () => {
-                      await deletePermission(user.id);
-                    }}
-                    icon="solar:trash-bin-minimalistic-bold-duotone"
-                    color="error.light"
-                  />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-          {newUserId !== null && (
-            <Grow in={true}>
-              <div>
-                <TextField
-                  label="User ID"
-                  value={newUserId}
-                  onChange={(e) => setNewUserId(e.target.value)}
-                  sx={{ width: 1, m: 1 }}
-                />
-              </div>
-            </Grow>
-          )}
-          <Button
-            variant="contained"
-            size="medium"
-            sx={{ width: 1, m: 1 }}
-            onClick={async () => {
-              if (newUserId) {
-                console.log("user added" + newUserId);
-                await createPermission(newUserId);
-                setNewUserId(null);
-              } else {
-                setNewUserId("");
-              }
+    <Stack direction="column" spacing={2} p={2}>
+      <Typography variant="h6">Users</Typography>
+      <Typography variant="subtitle2" color="text.secondary">
+        Users with access to the project.
+      </Typography>
+      <List>
+        {users?.map((user) => (
+          <ListItem
+            key={user.id}
+            sx={{
+              backgroundColor: "background.paper",
+              boxShadow: 1,
+              borderRadius: 1,
+              m: 1,
+              p: 2,
+              ":hover": { boxShadow: 3 },
+              transition: "all 0.2s ease-in-out",
             }}
           >
-            Add User
-          </Button>
-        </List>
-      </Stack>
+            <ListItemAvatar>
+              <Avatar src={user.avatar_url} alt={user.name} />
+            </ListItemAvatar>
+            <ListItemText primary={user.name} />
+            <ListItemSecondaryAction>
+              <IconButton
+                onClick={async () => {
+                  await deletePermission(user.id);
+                }}
+                sx={{ color: "error.main" }}
+              >
+                <Iconify icon="solar:trash-bin-minimalistic-bold-duotone" />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        ))}
+        {newUserId !== null && (
+          <Grow in={true}>
+            <TextField
+              label="User ID"
+              value={newUserId}
+              onChange={(e) => setNewUserId(e.target.value)}
+              sx={{ width: "calc(100% - 16px)", m: 1 }}
+            />
+          </Grow>
+        )}
+      </List>
+      <Button
+        variant="contained"
+        size="medium"
+        fullWidth
+        sx={{
+          backgroundColor: "primary.main",
+          ":hover": { backgroundColor: "primary.dark" },
+        }}
+        onClick={async () => {
+          if (newUserId) {
+            await createPermission(newUserId);
+            setNewUserId(null);
+          } else {
+            setNewUserId("");
+          }
+        }}
+      >
+        {newUserId ? "Add User" : "Enter User ID"}
+      </Button>
+    </Stack>
+  );
+};
+
+const Settings = () => {
+  const { settings } = useSettings();
+
+  return (
+    <Stack direction="column" spacing={2} p={2}>
+      <Typography variant="h6">Settings</Typography>
+      <Typography variant="subtitle2" color="text.secondary">
+        Configure your application settings.
+      </Typography>
+      <List>
+        <ListItem
+          sx={{
+            backgroundColor: "background.paper",
+            boxShadow: 1,
+            borderRadius: 1,
+            m: 1,
+            p: 2,
+            ":hover": { boxShadow: 3 },
+            transition: "all 0.2s ease-in-out",
+          }}
+        >
+          <FormControl fullWidth>
+            <InputLabel variant="standard">Time Zone</InputLabel>
+            <NativeSelect defaultValue="">
+              <option value="" disabled>
+                Select Time Zone
+              </option>
+              {settings.map((setting) => (
+                <option key={setting.id} value={setting.settings.timeZone}>
+                  {setting.settings.timeZone}
+                </option>
+              ))}
+            </NativeSelect>
+          </FormControl>
+        </ListItem>
+      </List>
     </Stack>
   );
 };

@@ -117,9 +117,9 @@ function ProjectBar() {
   const renderItems = () => (
     <List data-cy="item-list" disablePadding>
       {dataFiltered.map((item) => {
-        const title = item.name;
+        const title = item?.name;
         const icon = item?.icon?.slice(1, -1);
-        const organizationName = item.organization.name;
+        const organizationName = item?.organization?.name;
         const partsTitle = parse(title, match(title, searchQuery));
         return (
           <ResultItem
