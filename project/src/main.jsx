@@ -1,9 +1,10 @@
-import App from "./App.jsx";
+import { Platform } from "@nucleoidai/platform";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import routes from "../routes";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <Platform routes={routes} />
   </React.StrictMode>
 );
