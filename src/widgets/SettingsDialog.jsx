@@ -247,7 +247,21 @@ const Permission = () => {
 };
 
 const Settings = () => {
-  const { settings } = useSettings();
+  const projectId = localStorage.getItem("projectId");
+  const { settings, updateSettings } = useSettings(projectId);
+
+  const timeZones = [
+    "Asia/Kolkata",
+    "Asia/Dubai",
+    "America/New_York",
+    "America/Los_Angeles",
+    "Europe/London",
+  ];
+
+  const handleChange = (event) => {
+    const newTimeZone = event.target.value;
+    updateSettings(projectId, { timeZone: newTimeZone });
+  };
 
   return (
     <Stack direction="column" spacing={2} p={2}>
@@ -269,13 +283,16 @@ const Settings = () => {
         >
           <FormControl fullWidth>
             <InputLabel variant="standard">Time Zone</InputLabel>
-            <NativeSelect defaultValue="">
+            <NativeSelect
+              defaultValue={settings[0]?.settings.timeZone || ""}
+              onChange={(event) => handleChange(event)}
+            >
               <option value="" disabled>
-                Select Time Zone
+                {settings[0]?.settings.timeZone || "Select Time Zone"}
               </option>
-              {settings.map((setting) => (
-                <option key={setting.id} value={setting.settings.timeZone}>
-                  {setting.settings.timeZone}
+              {timeZones.map((time, index) => (
+                <option key={index} value={time}>
+                  {time}
                 </option>
               ))}
             </NativeSelect>
