@@ -18,6 +18,9 @@ export default function AuthModernLayout({ image }) {
         mx: "auto",
         maxWidth: 480,
         px: { xs: 2, md: 8 },
+        height: "100vh",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Logo
@@ -48,12 +51,13 @@ export default function AuthModernLayout({ image }) {
         alt="auth"
         src={image || "/assets/background/overlay_3.jpg"}
         sx={{
-          top: 16,
-          left: 16,
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
           objectFit: "cover",
           position: "absolute",
-          width: "calc(100% - 32px)",
-          height: "calc(100% - 32px)",
+          width: "calc(60% - 32px)",
+          height: "calc(60% - 32px)",
         }}
       />
     </Stack>
