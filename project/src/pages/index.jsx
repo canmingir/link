@@ -6,7 +6,7 @@ import { useStorage } from "@nucleoidjs/webstorage";
 
 const Index = () => {
   const navigate = useNavigate();
-  const [itemId] = useStorage("itemId", null);
+  const [itemId] = useStorage("projectId", null);
 
   useEffect(() => {
     if (itemId) {
@@ -25,7 +25,7 @@ const Index = () => {
         flexDirection: "column",
       }}
     >
-      <Typography variant="h3">Select A Emperor</Typography>
+      <Typography variant="h3">Select An Emperor</Typography>
     </Container>
   );
 };

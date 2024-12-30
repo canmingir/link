@@ -8,6 +8,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "plugin:cypress/recommended",
   ],
+  ignores:["server"],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parserOptions: { ecmaVersion: "latest", sourceType: "module" },
   settings: { react: { version: "18.2" } },
