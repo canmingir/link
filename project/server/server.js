@@ -85,6 +85,41 @@ server.get("/emperors", (req, res) => {
   res.jsonp(router.db.get("emperors").value());
 });
 
+server.patch("/projects/:id/settings", async (req, res) => {
+  const projectId = req.params.id;
+  const newSettings = req.body.settings;
+
+  const existingSettings = router.db
+    .get("settings")
+    .find({ projectId })
+    .value();
+
+  let updatedSettings;
+
+  if (existingSettings) {
+    updatedSettings = router.db
+      .get("settings")
+      .find({ projectId })
+      .assign({
+        projectId,
+        settings: {
+          ...existingSettings.settings,
+          ...newSettings,
+        },
+      })
+      .write();
+  } else {
+    updatedSettings = router.db
+      .get("settings")
+      .push({
+        projectId,
+        settings: { ...newSettings },
+      })
+      .write();
+  }
+  res.jsonp(updatedSettings);
+});
+
 server.use(router);
 
 server.listen(3000, () => {
