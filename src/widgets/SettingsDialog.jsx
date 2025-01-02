@@ -260,7 +260,7 @@ const Settings = () => {
 
   const handleChange = (event) => {
     const newTimeZone = event.target.value;
-    updateSettings(projectId, { timeZone: newTimeZone });
+    updateSettings(projectId, newTimeZone);
   };
 
   return (
@@ -284,11 +284,11 @@ const Settings = () => {
           <FormControl fullWidth>
             <InputLabel variant="standard">Time Zone</InputLabel>
             <NativeSelect
-              defaultValue={settings[0]?.settings.timeZone || ""}
+              defaultValue={settings.timeZone || ""}
               onChange={(event) => handleChange(event)}
             >
               <option value="" disabled>
-                {settings[0]?.settings.timeZone || "Select Time Zone"}
+                {settings.timeZone || "Select Time Zone"}
               </option>
               {timeZones.map((time, index) => (
                 <option key={index} value={time}>
