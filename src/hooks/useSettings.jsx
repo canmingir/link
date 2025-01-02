@@ -5,7 +5,9 @@ import { publish, useEvent } from "@nucleoidai/react-event";
 import { useCallback, useEffect, useState } from "react";
 
 function useSettings(id) {
-  const [settings, setSettings] = useState([]);
+  const [settings, setSettings] = useState({
+    timeZone: "",
+  });
   const { loading, error, handleResponse } = useApi();
   const [settingUpdated] = useEvent("SETTING_UPDATED", null);
 
@@ -25,9 +27,11 @@ function useSettings(id) {
   );
 
   const updateSettings = useCallback(
-    (id, newSettings) => {
+    (id, newTimeZone) => {
       handleResponse(
-        http.patch(`/projects/${id}/settings`, { settings: newSettings }),
+        http.patch(`/projects/${id}/settings`, {
+          timeZone: newTimeZone,
+        }),
         () => {
           publish("SETTING_UPDATED", { id });
         }
