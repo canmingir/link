@@ -3,9 +3,12 @@ import Label from "../../../components/label";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import React from "react";
-import { Stack } from "@mui/material";
 import SvgColor from "../../../components/svg-color";
 import { alpha } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
+
+import { Stack, Typography, useMediaQuery } from "@mui/material";
+
 // ----------------------------------------------------------------------
 
 export default function ResultItem({
@@ -15,6 +18,53 @@ export default function ResultItem({
   onClickItem,
   name,
 }) {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down(435));
+
+  const renderTitle = () => {
+    if (isSmallScreen) {
+      const firstTwoWords = title
+        .map((part) => part.text)
+        .join(" ")
+        .split(" ")
+        .slice(0, 2)
+        .join(" ");
+      return (
+        <Box
+          component="span"
+          sx={{
+            color: "text.primary",
+            typography: "subtitle2",
+            textTransform: "capitalize",
+          }}
+        >
+          {firstTwoWords}
+        </Box>
+      );
+    } else {
+      return title.map((part, index) => (
+        <Box
+          key={index}
+          component="span"
+          sx={{
+            color: part.highlight ? "primary.main" : "text.primary",
+          }}
+        >
+          {part.text}
+        </Box>
+      ));
+    }
+  };
+
+  const renderName = () => {
+    if (isSmallScreen) {
+      const firstTwoWords = name.split(" ").slice(0, 2).join(" ");
+      return firstTwoWords;
+    } else {
+      return name;
+    }
+  };
+
   return (
     <ListItemButton
       data-cy="item-button"
@@ -55,20 +105,19 @@ export default function ResultItem({
           typography: "subtitle2",
           sx: { textTransform: "capitalize" },
         }}
-        secondaryTypographyProps={{ typFography: "caption" }}
-        primary={title.map((part, index) => (
-          <Box
-            key={index}
-            component="span"
-            sx={{
-              color: part.highlight ? "primary.main" : "text.primary",
-            }}
-          >
-            {part.text}
-          </Box>
-        ))}
+        secondaryTypographyProps={{ typography: "caption" }}
+        primary={renderTitle()}
       />
-      <Label>{name}</Label>
+      <Label
+        sx={{
+          display: "block",
+          whiteSpace: "normal",
+          wordWrap: "break-word",
+          height: "auto",
+        }}
+      >
+        <Typography variant="caption">{renderName()}</Typography>
+      </Label>
       {groupLabel && <Label color="info">{groupLabel}</Label>}
     </ListItemButton>
   );
