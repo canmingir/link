@@ -22,17 +22,18 @@ import { useEffect } from "react";
 import { useEventListener } from "../../../hooks/use-event-listener";
 import { useNavigate } from "react-router-dom";
 import useProjects from "../../../hooks/useProjects";
-import { useTheme } from "@mui/material/styles";
 
 import { Button, DialogActions } from "@mui/material";
 import Dialog, { dialogClasses } from "@mui/material/Dialog";
 import React, { useCallback, useState } from "react";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 function ProjectBar() {
   const label = config().template?.projectBar?.label;
   const { appId, name } = config();
   const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down(435));
   const { projects, getProjects } = useProjects();
 
   useEffect(() => {
@@ -139,7 +140,12 @@ function ProjectBar() {
   );
 
   const renderButton = (
-    <Stack direction="row" alignItems="center">
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent={"flex-start"}
+      sx={{ width: "100%" }}
+    >
       <IconButton
         data-cy="open-select-bar-button"
         onClick={search.onTrue}
@@ -167,16 +173,31 @@ function ProjectBar() {
         />
       </IconButton>
 
-      <Label
-        color={selectedProjectId ? "primary" : "default"}
-        onClick={search.onTrue}
-        sx={{
-          px: 0.75,
-          fontSize: 14,
-        }}
-      >
-        {selectedProject ? selectedProject.name : "Select Project"}
-      </Label>
+      {!isSmallScreen && (
+        <Label
+          color={selectedProjectId ? "primary" : "default"}
+          onClick={search.onTrue}
+          sx={{
+            px: 0.75,
+            fontSize: 14,
+          }}
+        >
+          {selectedProject ? selectedProject.name : "Select Project"}
+        </Label>
+      )}
+
+      {isSmallScreen && selectedProject && (
+        <Label
+          color="primary"
+          onClick={search.onTrue}
+          sx={{
+            px: 0.75,
+            fontSize: 14,
+          }}
+        >
+          {selectedProject.name.split(" ").slice(0, 2).join(" ")}
+        </Label>
+      )}
     </Stack>
   );
 
