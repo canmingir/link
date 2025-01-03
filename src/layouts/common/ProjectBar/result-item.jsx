@@ -9,8 +9,6 @@ import { useTheme } from "@mui/material/styles";
 
 import { Stack, Typography, useMediaQuery } from "@mui/material";
 
-// ----------------------------------------------------------------------
-
 export default function ResultItem({
   title,
   icon,
@@ -21,103 +19,71 @@ export default function ResultItem({
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(435));
 
-  const renderTitle = () => {
-    if (isSmallScreen) {
-      const firstTwoWords = title
+  const displayTitle = isSmallScreen
+    ? title
         .map((part) => part.text)
         .join(" ")
         .split(" ")
         .slice(0, 2)
-        .join(" ");
-      return (
-        <Box
-          component="span"
-          sx={{
-            color: "text.primary",
-            typography: "subtitle2",
-            textTransform: "capitalize",
-          }}
-        >
-          {firstTwoWords}
-        </Box>
-      );
-    } else {
-      return title.map((part, index) => (
+        .join(" ")
+    : title.map((part, index) => (
         <Box
           key={index}
           component="span"
-          sx={{
-            color: part.highlight ? "primary.main" : "text.primary",
-          }}
+          sx={{ color: part.highlight ? "primary.main" : "text.primary" }}
         >
           {part.text}
         </Box>
       ));
-    }
-  };
 
-  const renderName = () => {
-    if (isSmallScreen) {
-      const firstTwoWords = name.split(" ").slice(0, 2).join(" ");
-      return firstTwoWords;
-    } else {
-      return name;
-    }
-  };
+  const displayName = isSmallScreen
+    ? name.split(" ").slice(0, 2).join(" ")
+    : name;
 
   return (
     <ListItemButton
       data-cy="item-button"
       onClick={onClickItem}
       sx={{
-        borderWidth: 1,
-        borderStyle: "dashed",
-        borderColor: "transparent",
-        borderBottomColor: (theme) => theme.palette.divider,
+        borderBottom: `1px dashed ${theme.palette.divider}`,
         "&:hover": {
           borderRadius: 1,
-          borderColor: (theme) => theme.palette.primary.main,
-          backgroundColor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.hoverOpacity
-            ),
+          borderColor: "primary.main",
+          backgroundColor: alpha(
+            theme.palette.primary.main,
+            theme.palette.action.hoverOpacity
+          ),
+          borderStyle: "dashed",
+          borderWidth: 1,
         },
       }}
     >
-      <Stack
-        sx={{
-          color: "text.disabled",
-          typography: "subtitle2",
-          "& .svg-color": {
-            background: (theme) =>
-              `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
-          },
-        }}
-      >
+      <Stack>
         <SvgColor
           src={`https://api.iconify.design/${icon}.svg`}
-          sx={{ width: 32, height: 32, mx: 2 }}
+          sx={{
+            width: 32,
+            height: 32,
+            mx: 2,
+            background: `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
+          }}
         />
       </Stack>
+
       <ListItemText
-        primaryTypographyProps={{
-          typography: "subtitle2",
-          sx: { textTransform: "capitalize" },
-        }}
-        secondaryTypographyProps={{ typography: "caption" }}
-        primary={renderTitle()}
+        primary={
+          <Typography variant="subtitle2" sx={{ textTransform: "capitalize" }}>
+            {displayTitle}
+          </Typography>
+        }
       />
+
       <Label
-        sx={{
-          display: "block",
-          whiteSpace: "normal",
-          wordWrap: "break-word",
-          height: "auto",
-        }}
+        sx={{ height: "auto", whiteSpace: "normal", wordWrap: "break-word" }}
       >
-        <Typography variant="caption">{renderName()}</Typography>
+        <Typography variant="caption">{displayName}</Typography>
       </Label>
+
       {groupLabel && <Label color="info">{groupLabel}</Label>}
     </ListItemButton>
   );
