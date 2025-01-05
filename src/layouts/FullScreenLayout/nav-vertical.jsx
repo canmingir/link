@@ -1,17 +1,22 @@
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
+import Iconify from "../../components/Iconify";
 import Logo from "../../components/logo";
 import { NAV } from "../config-layout";
 import { NavSectionVertical } from "../../components/nav-section";
 import NavToggleButton from "../common/nav-toggle-button";
-import React from "react";
 import Scrollbar from "../../components/scrollbar";
+import SettingsDialog from "../../widgets/SettingsDialog";
 import Stack from "@mui/material/Stack";
 import config from "../../config/config";
 import { useEffect } from "react";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useUser } from "../../hooks/use-user";
+
+import React, { useState } from "react";
+
 // ----------------------------------------------------------------------
 
 export default function NavVertical({ openNav, onCloseNav }) {
@@ -22,6 +27,12 @@ export default function NavVertical({ openNav, onCloseNav }) {
   const lgUp = useResponsive("up", "lg");
 
   const { sideMenu, actionButtons } = config().menu;
+
+  const [openSettings, setOpenSettings] = useState(false);
+
+  const handleCloseSettings = () => {
+    setOpenSettings(false);
+  };
 
   useEffect(() => {
     if (openNav) {
@@ -53,16 +64,39 @@ export default function NavVertical({ openNav, onCloseNav }) {
         direction={"column"}
         alignItems={"center"}
         justifyItems={"center"}
-        sx={{ marginBottom: 3 }}
+        sx={{
+          marginBottom: lgUp ? 3 : 0,
+          position: lgUp ? "static" : "fixed",
+          bottom: lgUp ? "auto" : 66,
+          width: "100%",
+        }}
         gap={2}
       >
         {actionButtons &&
           actionButtons.map((Action, index) => (
             <Box key={index} component={Action}></Box>
           ))}
+        <Button
+          onClick={() => setOpenSettings(true)}
+          sx={{
+            position: lgUp ? "static" : "fixed",
+            bottom: lgUp ? "auto" : 16,
+            width: "100%",
+          }}
+        >
+          <Iconify
+            icon={"ic:baseline-settings"}
+            sx={{
+              width: 32,
+              height: 32,
+              color: "text.secondary",
+            }}
+          />
+        </Button>
       </Stack>
     </Scrollbar>
   );
+
   return (
     <Box
       sx={{
@@ -96,6 +130,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
           {renderContent}
         </Drawer>
       )}
+      <SettingsDialog open={openSettings} handleClose={handleCloseSettings} />
     </Box>
   );
 }
