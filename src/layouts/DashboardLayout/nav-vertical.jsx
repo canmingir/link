@@ -8,14 +8,16 @@ import { NavSectionVertical } from "../../components/nav-section";
 import NavToggleButton from "../common/nav-toggle-button";
 import React from "react";
 import Scrollbar from "../../components/scrollbar";
+import SettingsDialog from "../../widgets/SettingsDialog";
 import Stack from "@mui/material/Stack";
 import config from "../../config/config";
-import { useEffect, useState } from "react";
 import { useEvent } from "@nucleoidai/react-event";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useUser } from "../../hooks/use-user";
-import SettingsDialog from "../../widgets/SettingsDialog";
+
+import { useEffect, useState } from "react";
+
 // ----------------------------------------------------------------------
 
 export default function NavVertical({ openNav, onCloseNav }) {
@@ -71,7 +73,12 @@ export default function NavVertical({ openNav, onCloseNav }) {
         direction={"column"}
         alignItems={"center"}
         justifyItems={"center"}
-        sx={{ marginBottom: 3 }}
+        sx={{
+          marginBottom: lgUp ? 3 : 0,
+          position: lgUp ? "static" : "fixed",
+          bottom: lgUp ? "auto" : 66,
+          width: "100%",
+        }}
         gap={2}
       >
         {actionButtons &&
@@ -84,6 +91,11 @@ export default function NavVertical({ openNav, onCloseNav }) {
         data-cy="end-item"
         fullWidth={true}
         onClick={() => setOpenSettings(true)}
+        sx={{
+          position: lgUp ? "static" : "fixed",
+          bottom: lgUp ? "auto" : 16,
+          width: "100%",
+        }}
       >
         <Iconify
           icon={"ic:baseline-settings"}
