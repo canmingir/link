@@ -282,7 +282,9 @@ const Settings = () => {
           }}
         >
           <FormControl fullWidth>
-            <InputLabel variant="standard">Time Zone</InputLabel>
+            <InputLabel variant="standard" shrink>
+              Time Zone
+            </InputLabel>
             <NativeSelect
               defaultValue={settings.timeZone || ""}
               onChange={(event) => handleChange(event)}
