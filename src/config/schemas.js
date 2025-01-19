@@ -3,6 +3,7 @@ import Joi from "joi";
 export const ConfigSchema = Joi.object({
   appId: Joi.string().uuid().required(),
   name: Joi.string().required(),
+  beta: Joi.boolean().optional(),
   base: Joi.string().required(),
   api: Joi.string().uri().required(),
   project: Joi.object({
