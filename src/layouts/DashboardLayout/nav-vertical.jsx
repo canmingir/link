@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import Iconify from "../../components/Iconify";
 import Logo from "../../components/logo";
@@ -11,11 +10,13 @@ import Scrollbar from "../../components/scrollbar";
 import SettingsDialog from "../../widgets/SettingsDialog";
 import Stack from "@mui/material/Stack";
 import config from "../../config/config";
+import styles from "../../components/logo/styles";
 import { useEvent } from "@nucleoidai/react-event";
 import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useUser } from "../../hooks/use-user";
 
+import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 // ----------------------------------------------------------------------
@@ -27,6 +28,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
   const [hideSubheader] = useEvent("PAGE_CHANGED", { subheader: "" });
   const { sideMenu, actionButtons } = config().menu;
   const lgUp = useResponsive("up", "lg");
+  const { beta, name } = config();
 
   useEffect(() => {
     const index = sideMenu.findIndex(
@@ -61,7 +63,54 @@ export default function NavVertical({ openNav, onCloseNav }) {
         },
       }}
     >
-      <Logo sx={{ mt: 3, ml: 4, mb: 1 }} />
+      {beta ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            ml: 1,
+            mt: 3,
+          }}
+        >
+          <Logo sx={{ ml: 4, mb: 1 }} />
+          <Typography
+            sx={{
+              ml: 1,
+            }}
+          >
+            {name}
+          </Typography>
+          <Typography
+            sx={{
+              ...styles.neon,
+              position: "relative",
+              bottom: -10,
+              ml: 1,
+              fontSize: 12,
+            }}
+          >
+            Beta
+          </Typography>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            ml: 1,
+            mt: 3,
+          }}
+        >
+          <Logo sx={{ ml: 4, mb: 1 }} />
+          <Typography
+            sx={{
+              ml: 1,
+            }}
+          >
+            {name}
+          </Typography>
+        </Box>
+      )}
       <NavSectionVertical
         data={sideMenu}
         slotProps={{
