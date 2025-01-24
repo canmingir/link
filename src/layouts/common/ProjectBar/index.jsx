@@ -180,6 +180,7 @@ function ProjectBar() {
           sx={{
             px: 0.75,
             fontSize: 14,
+            cursor: "pointer",
           }}
         >
           {selectedProject ? selectedProject.name : "Select Project"}
@@ -193,6 +194,7 @@ function ProjectBar() {
           sx={{
             px: 0.75,
             fontSize: 14,
+            cursor: "pointer",
           }}
         >
           {selectedProject.name.split(" ").slice(0, 2).join(" ")}
