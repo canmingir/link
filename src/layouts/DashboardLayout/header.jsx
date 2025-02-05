@@ -65,7 +65,7 @@ export default function Header({ onOpenNav }) {
       data-cy="dashboard-layout-header"
       sx={{
         height: HEADER.H_MOBILE,
-        zIndex: theme.zIndex.appBar + 1,
+        zIndex: 0,
         ...bgBlur({
           color: theme.palette.background.default,
         }),
