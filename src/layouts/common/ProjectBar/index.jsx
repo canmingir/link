@@ -34,7 +34,7 @@ function ProjectBar() {
   const { appId, name } = config();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(435));
-  const {loading, projects, getProjects } = useProjects();
+  const { loading, projects, getProjects } = useProjects();
 
   useEffect(() => {
     getProjects();
@@ -58,7 +58,7 @@ function ProjectBar() {
   }, []);
 
   useEffect(() => {
-    if(projects?.length === 0 && !loading){
+    if (projects?.length === 0 && !loading) {
       publish("PLATFORM", "PROJECT_DIALOG", {
         open: true,
       });
@@ -74,8 +74,8 @@ function ProjectBar() {
 
   const AddNewDialogOpen = () => {
     publish("PLATFORM", "PROJECT_DIALOG", {
-    open: true,
-  });
+      open: true,
+    });
   };
 
   const handleSelect = (project) => {
