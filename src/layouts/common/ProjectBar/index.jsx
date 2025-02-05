@@ -34,7 +34,7 @@ function ProjectBar() {
   const { appId, name } = config();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(435));
-  const { projects, getProjects } = useProjects();
+  const {loading, projects, getProjects } = useProjects();
 
   useEffect(() => {
     getProjects();
@@ -52,10 +52,18 @@ function ProjectBar() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    if (!selectedProjectId) {
+    if (!selectedProjectId && projects?.length > 0) {
       search.onTrue();
     }
   }, []);
+
+  useEffect(() => {
+    if(projects?.length === 0 && !loading){
+      publish("PLATFORM", "PROJECT_DIALOG", {
+        open: true,
+      });
+    }
+  }, [projects]);
 
   useEffect(() => {
     setSelectedProject(
@@ -65,7 +73,9 @@ function ProjectBar() {
   }, [projects]);
 
   const AddNewDialogOpen = () => {
-    publish("PLATFORM_DIALOG", { open: true });
+    publish("PLATFORM", "PROJECT_DIALOG", {
+    open: true,
+  });
   };
 
   const handleSelect = (project) => {
