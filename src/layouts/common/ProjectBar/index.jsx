@@ -59,7 +59,7 @@ function ProjectBar() {
 
   useEffect(() => {
     if (projects?.length === 0 && !loading) {
-      publish("PLATFORM", "PROJECT_DIALOG", {
+      publish("PLATFORM", "PROJECT_BAR_DIALOG", {
         open: true,
       });
     }
@@ -73,7 +73,7 @@ function ProjectBar() {
   }, [projects]);
 
   const AddNewDialogOpen = () => {
-    publish("PLATFORM", "PROJECT_DIALOG", {
+    publish("PLATFORM", "PROJECT_BAR_DIALOG", {
       open: true,
     });
   };
