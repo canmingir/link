@@ -16,7 +16,6 @@ import config from "../../../config/config.js";
 import match from "autosuggest-highlight/match";
 import oauth from "../../../http/oauth.js";
 import parse from "autosuggest-highlight/parse";
-import { publish } from "@nucleoidai/react-event";
 import { useBoolean } from "../../../hooks/use-boolean.js";
 import { useEffect } from "react";
 import { useEventListener } from "../../../hooks/use-event-listener";
@@ -26,6 +25,7 @@ import useProjects from "../../../hooks/useProjects";
 import { Button, DialogActions } from "@mui/material";
 import Dialog, { dialogClasses } from "@mui/material/Dialog";
 import React, { useCallback, useState } from "react";
+import { publish, useEvent } from "@nucleoidai/react-event";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 import { useMediaQuery, useTheme } from "@mui/material";
 
@@ -35,10 +35,13 @@ function ProjectBar() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(435));
   const { loading, projects, getProjects } = useProjects();
+  
+  const [projectCreated] = useEvent("PROJECT_CREATED", { project: null });
+
 
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [projectCreated]);
 
   const id = window.matchMedia("projectId").matches;
   const [selectedProjectId] = useStorage("projectId", id);
@@ -55,7 +58,7 @@ function ProjectBar() {
     if (!selectedProjectId && projects?.length > 0) {
       search.onTrue();
     }
-  }, []);
+  }, [projects]);
 
   useEffect(() => {
     if (projects?.length === 0 && !loading) {
@@ -64,6 +67,12 @@ function ProjectBar() {
       });
     }
   }, [projects]);
+
+  useEffect(() => { 
+    if (projectCreated.project) {
+     handleSelect(projectCreated.project);
+    }
+  }, [projectCreated]);
 
   useEffect(() => {
     setSelectedProject(
