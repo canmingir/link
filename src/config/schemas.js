@@ -6,6 +6,10 @@ export const ConfigSchema = Joi.object({
   beta: Joi.boolean().optional(),
   base: Joi.string().required(),
   api: Joi.string().uri().required(),
+  socket: Joi.object({
+    host: Joi.string().uri().required(),
+    path: Joi.string().required(),
+  }).optional(),
   project: Joi.object({
     nucleoid: Joi.object().optional(),
     github: Joi.object({
