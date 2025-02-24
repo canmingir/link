@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Iconify from "../../components/Iconify";
+import { Link } from "react-router-dom";
 import Logo from "../../components/logo";
 import { NAV } from "../config-layout";
 import { NavSectionVertical } from "../../components/nav-section";
@@ -73,13 +74,15 @@ export default function NavVertical({ openNav, onCloseNav }) {
           }}
         >
           <Logo sx={{ ml: 4, mb: 1 }} />
-          <Typography
-            sx={{
-              ml: 1,
-            }}
-          >
-            {name}
-          </Typography>
+          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+            <Typography
+              sx={{
+                ml: 1,
+              }}
+            >
+              {name}
+            </Typography>
+          </Link>
           <Typography
             sx={{
               ...styles.neon,
