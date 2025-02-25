@@ -2,34 +2,21 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Iconify from "../../components/Iconify";
 import React from "react";
+import SettingsDialog from "../../widgets/SettingsDialog";
 import { motion } from "framer-motion";
-import { useSettingsContext } from "../../components/settings";
 import { varHover } from "../../components/animate";
-
-import Badge, { badgeClasses } from "@mui/material/Badge";
 
 // ----------------------------------------------------------------------
 
 export default function SettingsButton({ sx }) {
-  const settings = useSettingsContext();
+  const [settingsOpen, setSettingsOpen] = React.useState(false);
 
   return (
-    <Badge
-      color="info"
-      variant="dot"
-      invisible={!settings.canReset}
-      sx={{
-        [`& .${badgeClasses.badge}`]: {
-          top: 8,
-          right: 8,
-        },
-        ...sx,
-      }}
-    >
+    <>
       <Box
         component={motion.div}
         animate={{
-          rotate: [0, settings.open ? 0 : 360],
+          rotate: [0, settingsOpen ? 0 : 360],
         }}
         transition={{
           duration: 12,
@@ -43,7 +30,7 @@ export default function SettingsButton({ sx }) {
           whileHover="hover"
           variants={varHover(1.05)}
           aria-label="settings"
-          onClick={settings.onToggle}
+          onClick={() => setSettingsOpen(true)}
           sx={{
             width: 40,
             height: 40,
@@ -52,6 +39,10 @@ export default function SettingsButton({ sx }) {
           <Iconify icon="solar:settings-bold-duotone" width={24} />
         </IconButton>
       </Box>
-    </Badge>
+      <SettingsDialog
+        open={settingsOpen}
+        handleClose={() => setSettingsOpen(false)}
+      />
+    </>
   );
 }
