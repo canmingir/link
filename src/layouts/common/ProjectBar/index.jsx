@@ -35,11 +35,12 @@ function ProjectBar() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(435));
   const { loading, projects, getProjects } = useProjects();
-  
+
   const [projectCreated] = useEvent("PROJECT_CREATED", { project: null });
 
-
   useEffect(() => {
+    console.log("ProjectBar useEffect", projectCreated);
+
     getProjects();
   }, [projectCreated]);
 
@@ -68,9 +69,9 @@ function ProjectBar() {
     }
   }, [projects]);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (projectCreated.project) {
-     handleSelect(projectCreated.project);
+      handleSelect(projectCreated.project);
     }
   }, [projectCreated]);
 
@@ -98,16 +99,16 @@ function ProjectBar() {
         const { refreshToken, accessToken } = data;
         storage.set(name, "accessToken", accessToken);
         storage.set(name, "refreshToken", refreshToken);
+        storage.set("projectId", projectId);
+      })
+      .finally(() => {
+        setSelectedProject(project);
+
+        publish("PROJECT_SELECTED", { projectId });
+
+        search.onFalse();
+        setSearchQuery("");
       });
-
-    storage.set("projectId", projectId);
-
-    publish("PROJECT_SELECTED", { projectId });
-
-    setSelectedProject(project);
-
-    search.onFalse();
-    setSearchQuery("");
   };
 
   const handleClose = useCallback(() => {
