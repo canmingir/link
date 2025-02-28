@@ -1,4 +1,5 @@
 import { ConfigSchema } from "../src/config/schemas.js";
+import checker from "vite-plugin-checker";
 import config from "../../../../config.js";
 import path from "path";
 import react from "@vitejs/plugin-react";
@@ -16,7 +17,20 @@ async function vite() {
   const base = value.base;
 
   return {
-    plugins: [splitVendorChunkPlugin(), react(), svgr()],
+    plugins: [
+      splitVendorChunkPlugin(),
+      react(),
+      svgr(),
+      checker({
+        eslint: {
+          lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}"',
+        },
+        overlay: {
+          position: "tl",
+          initialIsOpen: false,
+        },
+      }),
+    ],
     base,
     optimizeDeps: {
       esbuildOptions: {
