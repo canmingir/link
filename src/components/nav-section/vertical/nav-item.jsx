@@ -75,7 +75,7 @@ const NavItem = forwardRef(
             {external && (
               <Iconify
                 icon="mdi:external-link"
-                width={16}
+                width={22}
                 style={{ marginLeft: 4 }}
               />
             )}
