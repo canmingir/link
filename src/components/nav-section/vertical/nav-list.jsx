@@ -41,6 +41,7 @@ export default function NavList({ data, depth }) {
         roles={data?.roles}
         caption={data?.caption}
         disabled={data?.disabled}
+        external={data?.external}
         //
         depth={depth}
         hasChild={!!data?.children}
