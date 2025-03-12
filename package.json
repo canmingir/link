@@ -30,7 +30,7 @@
     "@nucleoidai/react-event": "^1.1.9",
     "@nucleoidjs/webstorage": "^1.0.5",
     "autosuggest-highlight": "^3.3.4",
-    "axios": "^1.7.7",
+    "axios": "^1.8.3",
     "axios-auth-refresh": "^3.3.6",
     "axios-retry": "^4.4.1",
     "date-fns": "^3.6.0",
