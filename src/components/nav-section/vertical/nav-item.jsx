@@ -21,6 +21,7 @@ const NavItem = forwardRef(
       disabled,
       caption,
       roles,
+      external,
       //
       open,
       depth,
@@ -59,11 +60,25 @@ const NavItem = forwardRef(
         )}
 
         {title && (
-          <Box component="span" sx={{ flex: "1 1 auto", minWidth: 0 }}>
+          <Box
+            component="span"
+            sx={{
+              flex: "1 1 auto",
+              minWidth: 0,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <Box component="span" className="label">
               {title}
             </Box>
-
+            {external && (
+              <Iconify
+                icon="mdi:external-link"
+                width={22}
+                style={{ marginLeft: 4 }}
+              />
+            )}
             {caption && (
               <Tooltip title={caption} placement="top-start">
                 <Box component="span" className="caption">

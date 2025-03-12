@@ -42,12 +42,14 @@ export const MenuConfigSchema = Joi.object({
               title: Joi.string().required(),
               icon: Joi.string().required(),
               path: Joi.string().required(),
+              external: Joi.boolean().optional().default(false),
               children: Joi.array()
                 .items(
                   Joi.object({
                     title: Joi.string().required(),
                     path: Joi.string().required(),
                     icon: Joi.string().required(),
+                    external: Joi.boolean().optional().default(false),
                   })
                 )
                 .optional(),
