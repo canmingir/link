@@ -48,6 +48,13 @@ instance.interceptors.response.use(
           severity: "warning",
         });
         break;
+      case 401:
+        publish("GLOBAL_MESSAGE_POSTED", {
+          status: true,
+          message: "UNAUTHORIZED",
+          severity: "warning",
+        });
+        break;
       case 403:
         publish("GLOBAL_MESSAGE_POSTED", {
           status: true,
@@ -131,21 +138,11 @@ refreshInterceptor(instance, refreshAuthLogic, {
 
     try {
       const decodedToken = jwtDecode(token);
-      if (decodedToken.exp * 1000 < Date.now()) {
-        return true;
-      } else {
-        publish("GLOBAL_MESSAGE_POSTED", {
-          status: true,
-          message: "UNAUTHORIZED",
-          severity: "warning",
-        });
-      }
+      return decodedToken.exp * 1000 < Date.now();
     } catch (err) {
       window.location.href = `${window.location.origin}${base}/login`;
       return false;
     }
-
-    return false;
   },
 });
 
