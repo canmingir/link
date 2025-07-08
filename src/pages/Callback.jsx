@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 
 function Callback() {
   const { project: appConfig, name, appId } = config();
+  const projectBar = config().template?.projectBar;
+
   const { google, github } = appConfig;
   const [, dispatch] = useContext();
   const location = useLocation();
@@ -27,7 +29,13 @@ function Callback() {
       redirectUri = github.redirectUri;
     }
 
-    const projectId = storage.get("projectId");
+    const projectId = projectBar
+      ? storage.get("projectId")
+      : "05708cf7-b9bf-4209-95fe-68d9138d2032";
+
+    if (projectBar) {
+      storage.set("projectId", "05708cf7-b9bf-4209-95fe-68d9138d2032");
+    }
 
     oauth
       .post("/oauth", {
