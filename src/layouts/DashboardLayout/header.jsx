@@ -10,6 +10,7 @@ import SettingsButton from "../common/settings-button";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import { bgBlur } from "../../theme/css";
+import config from "../../config/config";
 import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
@@ -22,6 +23,8 @@ import { HEADER, NAV } from "../config-layout";
 export default function Header({ onOpenNav }) {
   const theme = useTheme();
   const settings = useSettingsContext();
+
+  const projectBar = config().template?.projectBar;
 
   const isNavHorizontal = settings.themeLayout === "horizontal";
 
@@ -42,7 +45,7 @@ export default function Header({ onOpenNav }) {
           <Iconify icon="mingcute:menu-fill" sx={{ width: 28, height: 28 }} />
         </IconButton>
       )}
-      <ProjectBar />
+      {projectBar && <ProjectBar />}
 
       <Stack
         flexGrow={1}
