@@ -1,4 +1,0 @@
-- [ ] Add or change tests
-- [ ] Test with large screens
-- [ ] Test with small screens
-- [ ] Documentation
