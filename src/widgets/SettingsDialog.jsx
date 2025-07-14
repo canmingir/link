@@ -1,4 +1,4 @@
-import { Iconify } from "@nucleoidai/platform/minimal/components";
+import Iconify from "../../minimal/src/components/iconify";
 import config from "../config/config";
 import { useEvent } from "@nucleoidai/react-event";
 import useSettings from "../hooks/useSettings";
