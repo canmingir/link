@@ -24,6 +24,7 @@ export default function AuthModernLayout({ image }) {
       }}
     >
       <Logo
+        maxSize={200}
         sx={{
           mt: { xs: 2, md: 8 },
           mb: { xs: 10, md: 8 },
