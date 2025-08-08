@@ -10,7 +10,8 @@
     "./platform/components": "./components/index.js",
     "./platform/hooks": "./src/hooks/index.js",
     "./platform/cypress": "./cypress/cypress.js",
-    "./platform/commands": "./commands/index.js"
+    "./platform/commands": "./commands/index.js",
+    "./platform/http": "./src/http/index.js"
   },
   "scripts": {
     "dev": "cd project && concurrently \"npm run dev\" \"npm run server\"",
