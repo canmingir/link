@@ -29,12 +29,15 @@ function Callback() {
       redirectUri = github.redirectUri;
     }
 
-    const projectId = projectBar
-      ? storage.get("projectId")
-      : "05708cf7-b9bf-4209-95fe-68d9138d2032";
+    let projectId;
+
+    const defaultProjectId = "05708cf7-b9bf-4209-95fe-68d9138d2032";
 
     if (projectBar) {
-      storage.set("projectId", "05708cf7-b9bf-4209-95fe-68d9138d2032");
+      projectId = storage.get("projectId");
+    } else {
+      projectId = defaultProjectId;
+      storage.set("projectId", projectId);
     }
 
     oauth
