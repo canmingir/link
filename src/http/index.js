@@ -19,7 +19,7 @@ instance.interceptors.request.use((request) => {
   const accessToken = storage.get(name, "accessToken");
 
   if (!accessToken) {
-    window.location.href = base === "/" ? "/login" : `${base}/login`;
+    window.location.href = base === "/" ? "login" : `${base}/login`;
   }
 
   request.headers["Authorization"] = `Bearer ${accessToken}`;
