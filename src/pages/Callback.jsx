@@ -5,32 +5,69 @@ import oauth from "../http/oauth";
 import qs from "qs";
 import { storage } from "@nucleoidjs/webstorage";
 import { useContext } from "../ContextProvider/ContextProvider";
-import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
+import { useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Callback() {
   const { project: appConfig, name, appId } = config();
   const projectBar = config().template?.projectBar;
 
-  const { google, github } = appConfig;
+  const { google, github, linkedin } = appConfig;
   const [, dispatch] = useContext();
   const location = useLocation();
   const navigate = useNavigate();
+  const { provider } = useParams();
+
+  const hasProcessed = useRef(false);
 
   useEffect(() => {
-    const parsedQuery = qs.parse(location.search, { ignoreQueryPrefix: true });
-    const { code } = parsedQuery;
+    if (hasProcessed.current) {
+      return;
+    }
 
+    const parsedQuery = qs.parse(location.search, { ignoreQueryPrefix: true });
+    const { code, error, error_description, state } = parsedQuery;
+
+    if (error) {
+      console.error("OAuth error:", error, error_description);
+      navigate(
+        "/login?error=" + encodeURIComponent(error_description || error)
+      );
+      return;
+    }
+
+    if (!code) {
+      console.error("No authorization code received");
+      navigate(
+        "/login?error=" + encodeURIComponent("No authorization code received")
+      );
+      return;
+    }
+    hasProcessed.current = true;
+
+    storage.remove(name, "accessToken");
+    storage.remove(name, "refreshToken");
+    storage.remove(name, "provider");
+    storage.remove(name, "userInfo");
+
+    let finalProvider = provider;
     let redirectUri;
-    if (google) {
-      redirectUri = google.redirectUri;
-    } else if (github) {
+
+    if (finalProvider === "github" && github) {
       redirectUri = github.redirectUri;
+    } else if (finalProvider === "linkedin" && linkedin) {
+      redirectUri = linkedin.redirectUri;
+    } else if (finalProvider === "google" && google) {
+      redirectUri = google.redirectUri;
+    } else {
+      console.error("Could not determine OAuth provider or redirect URI");
+      navigate("/login?error=" + encodeURIComponent("Invalid OAuth provider"));
+      return;
     }
 
     let projectId;
-
     const defaultProjectId = "05708cf7-b9bf-4209-95fe-68d9138d2032";
 
     if (projectBar) {
@@ -46,21 +83,41 @@ function Callback() {
         appId,
         code,
         redirectUri,
+        provider: finalProvider,
         grant_type: "authorization_code",
       })
       .then(({ data }) => {
         const accessToken = data.accessToken;
         const refreshToken = data.refreshToken;
+        const userInfo = data.user;
 
         storage.set(name, "accessToken", accessToken);
         storage.set(name, "refreshToken", refreshToken);
-        dispatch({ type: "LOGIN" });
+        storage.set(name, "provider", finalProvider);
+        storage.set(name, "userInfo", userInfo);
+
+        dispatch({ type: "LOGIN", payload: { user: userInfo } });
+
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        );
+
         navigate("/");
       })
       .catch((error) => {
-        console.debug(error);
+        console.error("OAuth error:", error);
+        hasProcessed.current = false;
+
+        const errorMessage =
+          error.response?.data?.message ||
+          error.response?.data ||
+          error.message ||
+          "Authentication failed";
+
+        navigate("/login?error=" + encodeURIComponent(errorMessage));
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search, navigate]);
 
   return <Page title={`${name} - Callback`}></Page>;
