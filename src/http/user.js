@@ -13,7 +13,6 @@ const instance = axios.create({
 
 function getProjectName() {
   const { name } = config();
-
   if (name) {
     return name;
   }
@@ -28,42 +27,12 @@ instance.interceptors.request.use(async (request) => {
 });
 
 instance.getUserDetails = async () => {
-  const refreshToken = await storage.get(getProjectName(), "refreshToken");
-  const { google, github } = config().project;
-  //TODO: do it in a more elegant way
-  let userUrl;
-  let provider;
-  if (google) {
-    userUrl = google.userUrl;
-    provider = "google";
-  } else if (github) {
-    userUrl = github.userUrl;
-    provider = "github";
-  }
+  const userInfo = await storage.get(getProjectName(), "userInfo");
 
-  if (refreshToken) {
-    try {
-      const response = await axios.get(userUrl, {
-        headers: {
-          Authorization: `Bearer ${refreshToken}`,
-        },
-      });
-      if (provider === "github") {
-        return {
-          name: response.data.login,
-          avatarUrl: response.data.avatar_url,
-        };
-      } else if (provider === "google") {
-        return {
-          name: response.data.name,
-          avatarUrl: response.data.picture,
-        };
-      }
-    } catch (error) {
-      console.error("Failed to fetch user details:", error);
-      throw error;
-    }
+  if (userInfo) {
+    return userInfo;
   }
+  console.log("No user info found in storage");
   return null;
 };
 
