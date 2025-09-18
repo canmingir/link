@@ -30,6 +30,7 @@ export default function RouteManager({ routes }) {
             >
               <Route index element={<LoginPage />} />
             </Route>
+            <Route path="/callback/:provider" element={<Callback />} />
             <Route path="/callback" element={<Callback />} />
           </>
         )}
