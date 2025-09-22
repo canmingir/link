@@ -27,13 +27,30 @@ instance.interceptors.request.use(async (request) => {
 });
 
 instance.getUserDetails = async () => {
-  const userInfo = await storage.get(getProjectName(), "userInfo");
+  try {
+    const refreshToken = await storage.get(getProjectName(), "refreshToken");
+    if (!refreshToken) {
+      console.log("No refresh token found");
+      return null;
+    }
 
-  if (userInfo) {
-    return userInfo;
+    const response = await http.get("/oauth/user", {
+      headers: {
+        'X-Refresh-Token': refreshToken
+      }
+    });
+    
+    if (response.data && response.data.user) {
+      return response.data.user;
+    }
+    
+    console.log("No user data received from server");
+    return null;
+    
+  } catch (error) {
+    console.error("Error fetching user details from server:", error);
+    return null;
   }
-  console.log("No user info found in storage");
-  return null;
 };
 
 instance.getPermittedUsers = async () => {

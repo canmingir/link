@@ -47,11 +47,6 @@ function Callback() {
     }
     hasProcessed.current = true;
 
-    storage.remove(name, "accessToken");
-    storage.remove(name, "refreshToken");
-    storage.remove(name, "provider");
-    storage.remove(name, "userInfo");
-
     let finalProvider = provider;
     let redirectUri;
 
@@ -94,7 +89,6 @@ function Callback() {
         storage.set(name, "accessToken", accessToken);
         storage.set(name, "refreshToken", refreshToken);
         storage.set(name, "provider", finalProvider);
-        storage.set(name, "userInfo", userInfo);
 
         dispatch({ type: "LOGIN", payload: { user: userInfo } });
 
