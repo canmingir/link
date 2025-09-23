@@ -47,20 +47,21 @@ function Callback() {
     }
     hasProcessed.current = true;
 
-    let finalProvider = provider;
-    let redirectUri;
+    const providerConfigs = {
+      github: github,
+      linkedin: linkedin,
+      google: google,
+    };
 
-    if (finalProvider === "github" && github) {
-      redirectUri = github.redirectUri;
-    } else if (finalProvider === "linkedin" && linkedin) {
-      redirectUri = linkedin.redirectUri;
-    } else if (finalProvider === "google" && google) {
-      redirectUri = google.redirectUri;
-    } else {
+    const providerConfig = providerConfigs[provider];
+
+    if (!providerConfig) {
       console.error("Could not determine OAuth provider or redirect URI");
       navigate("/login?error=" + encodeURIComponent("Invalid OAuth provider"));
       return;
     }
+
+    const redirectUri = providerConfig.redirectUri;
 
     let projectId;
     const defaultProjectId = "05708cf7-b9bf-4209-95fe-68d9138d2032";
@@ -78,7 +79,7 @@ function Callback() {
         appId,
         code,
         redirectUri,
-        provider: finalProvider,
+        provider: provider,
         grant_type: "authorization_code",
       })
       .then(({ data }) => {
@@ -88,7 +89,7 @@ function Callback() {
 
         storage.set(name, "accessToken", accessToken);
         storage.set(name, "refreshToken", refreshToken);
-        storage.set(name, "provider", finalProvider);
+        storage.set(name, "provider", provider);
 
         dispatch({ type: "LOGIN", payload: { user: userInfo } });
 
