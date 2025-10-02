@@ -6,8 +6,7 @@
     ".": "./index.js",
     "./layouts": "./src/layouts/index.js",
     "./vite": "./vite/vite.js",
-    "./minimal/components": "./minimal/src/components/index.js",
-    "./platform/components": "./components/index.js",
+    "./platform/components": "./src/lib/index.js",
     "./platform/hooks": "./src/hooks/index.js",
     "./platform/cypress": "./cypress/cypress.js",
     "./platform/commands": "./commands/index.js",
@@ -16,9 +15,10 @@
   "scripts": {
     "dev": "cd project && concurrently \"npm run dev\" \"npm run server\"",
     "dev:update": "cd project && npm i @nucleoidai/platform@latest",
-    "test": "exit 0"
+    "test": "exit 0",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "cypress": "cypress open --browser chrome"
   },
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.10.1",
@@ -37,6 +37,7 @@
     "axios": "^1.10.0",
     "axios-auth-refresh": "^3.3.6",
     "axios-retry": "^4.4.1",
+    "cypress": "^15.3.0",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.3.6",
     "highlight.js": "^11.10.0",
