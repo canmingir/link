@@ -1,4 +1,4 @@
-import { SvgColor } from "../SvgColor";
+import SvgColor from "../SvgColor";
 
 import {
   Card,
