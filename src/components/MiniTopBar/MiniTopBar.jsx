@@ -8,7 +8,12 @@ function MiniTopBar() {
   const { icon } = config().template.login;
   return (
     <Slide in={true} direction="right" timeout={500}>
-      <AppBar position="absolute" sx={styles.appBar} variant="dense">
+      <AppBar
+        position="absolute"
+        sx={styles.appBar}
+        variant="dense"
+        data-testid="mini-topbar"
+      >
         <Toolbar>
           <Box component="img" src={icon} sx={styles.logo} />
         </Toolbar>

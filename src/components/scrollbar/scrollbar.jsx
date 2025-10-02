@@ -4,8 +4,6 @@ import { forwardRef } from "react";
 
 import { StyledRootScrollbar, StyledScrollbar } from "./styles";
 
-// ----------------------------------------------------------------------
-
 const Scrollbar = forwardRef(({ children, sx, ...other }, ref) => {
   const userAgent =
     typeof navigator === "undefined" ? "SSR" : navigator.userAgent;

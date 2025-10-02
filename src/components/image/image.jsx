@@ -6,8 +6,6 @@ import { getRatio } from "./utils";
 
 import { alpha, useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 const Image = forwardRef(
   (
     {

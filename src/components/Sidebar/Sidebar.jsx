@@ -9,8 +9,7 @@ import styles from "./styles";
 
 const Sidebar = ({ routes, isCollapsed, currentPage }) => {
   const drawerWidth = isCollapsed ? 75 : 280;
-  // TODO : responsive sidebar
-  // const matches = useMediaQuery("(min-width:600px)");
+
   return (
     <>
       <Box
@@ -27,6 +26,7 @@ const Sidebar = ({ routes, isCollapsed, currentPage }) => {
         anchor="left"
         variant="persistent"
         open={true}
+        data-testid="sidebar"
         sx={{
           width: drawerWidth,
           "& .MuiDrawer-paper": {

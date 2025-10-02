@@ -9,8 +9,6 @@ import { forwardRef } from "react";
 
 import { alpha, styled } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 const NavItem = forwardRef(
   (
     {
@@ -109,7 +107,6 @@ const NavItem = forwardRef(
       </StyledNavItem>
     );
 
-    // Hidden item by role
     if (roles && !roles.includes(`${currentRole}`)) {
       return null;
     }
@@ -155,8 +152,6 @@ const NavItem = forwardRef(
 );
 
 export default NavItem;
-
-// ----------------------------------------------------------------------
 
 const StyledNavItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== "active",
@@ -212,7 +207,6 @@ const StyledNavItem = styled(ListItemButton, {
   };
 
   return {
-    // Root item
     ...(!subItem && {
       ...baseStyles.item,
       minHeight: 44,
@@ -250,7 +244,6 @@ const StyledNavItem = styled(ListItemButton, {
       }),
     }),
 
-    // Sub item
     ...(subItem && {
       ...baseStyles.item,
       minHeight: 36,
@@ -294,7 +287,6 @@ const StyledNavItem = styled(ListItemButton, {
       }),
     }),
 
-    // Deep sub item
     ...(deepSubItem && {
       paddingLeft: `${theme.spacing(Number(depth))} !important`,
     }),

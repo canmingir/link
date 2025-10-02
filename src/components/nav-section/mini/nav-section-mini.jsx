@@ -3,8 +3,6 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import { memo } from "react";
 
-// ----------------------------------------------------------------------
-
 function NavSectionMini({ data, slotProps, ...other }) {
   return (
     <Stack
@@ -25,8 +23,6 @@ function NavSectionMini({ data, slotProps, ...other }) {
 }
 
 export default memo(NavSectionMini);
-
-// ----------------------------------------------------------------------
 
 function Group({ items, slotProps }) {
   return (

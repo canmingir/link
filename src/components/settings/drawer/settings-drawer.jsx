@@ -18,8 +18,6 @@ import { useTheme } from "@mui/material/styles";
 
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
 
-// ----------------------------------------------------------------------
-
 export default function SettingsDrawer() {
   const theme = useTheme();
 

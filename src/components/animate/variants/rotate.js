@@ -1,7 +1,5 @@
 import { varTranEnter, varTranExit } from "./transition";
 
-// ----------------------------------------------------------------------
-
 export const varRotate = (props) => {
   const durationIn = props?.durationIn;
   const durationOut = props?.durationOut;
@@ -9,7 +7,6 @@ export const varRotate = (props) => {
   const easeOut = props?.easeOut;
 
   return {
-    // IN
     in: {
       initial: { opacity: 0, rotate: -360 },
       animate: {
@@ -24,7 +21,6 @@ export const varRotate = (props) => {
       },
     },
 
-    // OUT
     out: {
       initial: { opacity: 1, rotate: 0 },
       animate: {

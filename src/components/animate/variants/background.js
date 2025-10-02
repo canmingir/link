@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export const varBgColor = (props) => {
   const colors = props?.colors || ["#19dcea", "#b22cff"];
   const duration = props?.duration || 5;
@@ -12,8 +10,6 @@ export const varBgColor = (props) => {
     },
   };
 };
-
-// ----------------------------------------------------------------------
 
 export const varBgKenburns = (props) => {
   const duration = props?.duration || 5;
@@ -56,8 +52,6 @@ export const varBgKenburns = (props) => {
     },
   };
 };
-
-// ----------------------------------------------------------------------
 
 export const varBgPan = (props) => {
   const colors = props?.colors || ["#ee7752", "#e73c7e", "#23a6d5", "#23d5ab"];

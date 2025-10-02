@@ -6,8 +6,6 @@ import { m } from "framer-motion";
 
 import { useEffect, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 export default function SplashScreen({ sx, ...other }) {
   const [mounted, setMounted] = useState(false);
 

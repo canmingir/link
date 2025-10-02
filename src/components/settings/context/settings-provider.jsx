@@ -5,8 +5,6 @@ import { useLocalStorage } from "../../../hooks/use-local-storage";
 
 import { useCallback, useMemo, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 const STORAGE_KEY = "settings";
 
 export function SettingsProvider({ children, defaultSettings }) {
@@ -17,7 +15,6 @@ export function SettingsProvider({ children, defaultSettings }) {
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  // Drawer
   const onToggleDrawer = useCallback(() => {
     setOpenDrawer((prev) => !prev);
   }, []);
@@ -32,11 +29,8 @@ export function SettingsProvider({ children, defaultSettings }) {
     () => ({
       ...state,
       onUpdate: update,
-      // Direction
-      // Reset
       canReset,
       onReset: reset,
-      // Drawer
       open: openDrawer,
       onToggle: onToggleDrawer,
       onClose: onCloseDrawer,

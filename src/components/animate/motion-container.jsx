@@ -3,8 +3,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import { varContainer } from "./variants";
 
-// ----------------------------------------------------------------------
-
 export default function MotionContainer({
   animate,
   action = false,

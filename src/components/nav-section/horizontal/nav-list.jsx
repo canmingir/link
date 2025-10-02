@@ -7,8 +7,6 @@ import { usePathname } from "../../../routes/hooks";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 export default function NavList({ data, depth, slotProps }) {
   const navRef = useRef(null);
 
@@ -41,7 +39,6 @@ export default function NavList({ data, depth, slotProps }) {
         open={openMenu}
         onMouseEnter={handleOpenMenu}
         onMouseLeave={handleCloseMenu}
-        //
         title={data.title}
         path={data.path}
         icon={data.icon}
@@ -49,12 +46,10 @@ export default function NavList({ data, depth, slotProps }) {
         roles={data.roles}
         caption={data.caption}
         disabled={data.disabled}
-        //
         depth={depth}
         hasChild={!!data.children}
         externalLink={data.path?.includes("http")}
         currentRole={slotProps?.currentRole}
-        //
         active={active}
         className={active ? "active" : ""}
         sx={depth === 1 ? slotProps?.rootItem : slotProps?.subItem}
@@ -101,8 +96,6 @@ export default function NavList({ data, depth, slotProps }) {
     </>
   );
 }
-
-// ----------------------------------------------------------------------
 
 function NavSubList({ data, depth, slotProps }) {
   return (

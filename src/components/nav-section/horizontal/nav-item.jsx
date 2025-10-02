@@ -7,7 +7,6 @@ import { RouterLink } from "../../../routes/components";
 import Tooltip from "@mui/material/Tooltip";
 import { forwardRef } from "react";
 import { styled } from "@mui/material/styles";
-// ----------------------------------------------------------------------
 
 const NavItem = forwardRef(
   (
@@ -79,7 +78,6 @@ const NavItem = forwardRef(
       </StyledNavItem>
     );
 
-    // Hidden item by role
     if (roles && !roles.includes(`${currentRole}`)) {
       return null;
     }
@@ -122,8 +120,6 @@ const NavItem = forwardRef(
 
 export default NavItem;
 
-// ----------------------------------------------------------------------
-
 const StyledNavItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== "active",
 })(({ active, open, depth, theme }) => {
@@ -161,7 +157,6 @@ const StyledNavItem = styled(ListItemButton, {
   };
 
   return {
-    // Root item
     ...(!subItem && {
       ...baseStyles.item,
       minHeight: 32,
@@ -194,7 +189,6 @@ const StyledNavItem = styled(ListItemButton, {
       }),
     }),
 
-    // Sub item
     ...(subItem && {
       ...baseStyles.item,
       minHeight: 34,

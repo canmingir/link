@@ -4,8 +4,6 @@ import { StyledLabel } from "./styles";
 import { forwardRef } from "react";
 import { useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 const Label = forwardRef(
   (
     {

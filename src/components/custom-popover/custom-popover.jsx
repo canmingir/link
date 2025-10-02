@@ -4,8 +4,6 @@ import { StyledArrow } from "./styles";
 import { getPosition } from "./utils";
 import { menuItemClasses } from "@mui/material/MenuItem";
 
-// ----------------------------------------------------------------------
-
 export default function CustomPopover({
   open,
   children,
