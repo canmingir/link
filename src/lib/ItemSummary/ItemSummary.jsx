@@ -1,6 +1,6 @@
 import DialogContentText from "@mui/material/DialogContentText";
 import Grid from "@mui/material/Grid";
-import { SvgColor } from "../SvgColor";
+import SvgColor from "../SvgColor";
 
 import {
   Card,
