@@ -2,8 +2,6 @@ import React from "react";
 
 import { LazyMotion, domMax, motion } from "framer-motion";
 
-// ----------------------------------------------------------------------
-
 export function MotionLazy({ children }) {
   return (
     <LazyMotion strict features={domMax}>

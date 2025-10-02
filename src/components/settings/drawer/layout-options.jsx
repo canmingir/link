@@ -5,8 +5,6 @@ import Stack from "@mui/material/Stack";
 
 import { alpha, useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export default function LayoutOptions({ options, value, onChange }) {
   const theme = useTheme();
   const renderNav = (option, selected) => {

@@ -5,8 +5,6 @@ import Tooltip from "@mui/material/Tooltip";
 
 import { fileData, fileFormat, fileThumb } from "./utils";
 
-// ----------------------------------------------------------------------
-
 export default function FileThumbnail({
   file,
   tooltip,

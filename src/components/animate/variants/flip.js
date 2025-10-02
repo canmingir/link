@@ -1,7 +1,5 @@
 import { varTranEnter, varTranExit } from "./transition";
 
-// ----------------------------------------------------------------------
-
 export const varFlip = (props) => {
   const durationIn = props?.durationIn;
   const durationOut = props?.durationOut;
@@ -9,7 +7,6 @@ export const varFlip = (props) => {
   const easeOut = props?.easeOut;
 
   return {
-    // IN
     inX: {
       initial: { rotateX: -180, opacity: 0 },
       animate: {
@@ -37,7 +34,6 @@ export const varFlip = (props) => {
       },
     },
 
-    // OUT
     outX: {
       initial: { rotateX: 0, opacity: 1 },
       animate: {

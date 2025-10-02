@@ -3,8 +3,6 @@ import Iconify from "../Iconify";
 import { bgBlur } from "../../theme/css";
 import { useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export default function DownloadButton({ onDownload }) {
   const theme = useTheme();
 

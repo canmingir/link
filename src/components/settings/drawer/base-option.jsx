@@ -4,8 +4,6 @@ import Stack from "@mui/material/Stack";
 import SvgColor from "../../svg-color";
 import { alpha } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export default function BaseOptions({ icons, options, value, onChange }) {
   return (
     <Stack direction="row" spacing={2}>

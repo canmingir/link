@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import { useResponsive } from "../../hooks/use-responsive";
 import { varContainer } from "./variants";
 
-// ----------------------------------------------------------------------
-
 export default function MotionViewport({
   children,
   disableAnimatedMobile = true,

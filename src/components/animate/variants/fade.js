@@ -1,7 +1,5 @@
 import { varTranEnter, varTranExit } from "./transition";
 
-// ----------------------------------------------------------------------
-
 export const varFade = (props) => {
   const distance = props?.distance || 120;
   const durationIn = props?.durationIn;
@@ -10,7 +8,6 @@ export const varFade = (props) => {
   const easeOut = props?.easeOut;
 
   return {
-    // IN
     in: {
       initial: { opacity: 0 },
       animate: { opacity: 1, transition: varTranEnter },
@@ -69,7 +66,6 @@ export const varFade = (props) => {
       },
     },
 
-    // OUT
     out: {
       initial: { opacity: 1 },
       animate: { opacity: 0, transition: varTranEnter({ durationIn, easeIn }) },

@@ -2,8 +2,6 @@ import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import React from "react";
 
-// ----------------------------------------------------------------------
-
 export default function LoadingScreen({ sx, ...other }) {
   return (
     <Box

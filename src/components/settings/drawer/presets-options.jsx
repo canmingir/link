@@ -4,8 +4,6 @@ import React from "react";
 import { alpha } from "@mui/material/styles";
 import { presetOptions } from "../../../theme/options/presets";
 
-// ----------------------------------------------------------------------
-
 export default function PresetsOptions({ value, onChange }) {
   return (
     <Box

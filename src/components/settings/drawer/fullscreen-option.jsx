@@ -6,8 +6,6 @@ import { alpha } from "@mui/material/styles";
 
 import { useCallback, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 export default function FullScreenOption() {
   const [fullscreen, setFullscreen] = useState(false);
 

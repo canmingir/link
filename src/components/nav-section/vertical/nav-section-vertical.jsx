@@ -6,8 +6,6 @@ import Stack from "@mui/material/Stack";
 
 import { memo, useCallback, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 function NavSectionVertical({ data, slotProps, ...other }) {
   return (
     <>
@@ -26,8 +24,6 @@ function NavSectionVertical({ data, slotProps, ...other }) {
 }
 
 export default memo(NavSectionVertical);
-
-// ----------------------------------------------------------------------
 
 function Group({ subheader, items, slotProps }) {
   const [open, setOpen] = useState(true);

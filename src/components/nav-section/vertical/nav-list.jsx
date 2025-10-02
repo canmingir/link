@@ -6,8 +6,6 @@ import { usePathname } from "../../../routes/hooks";
 
 import { useCallback, useEffect, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 export default function NavList({ data, depth }) {
   const pathname = usePathname();
   const active = useActiveLink(data.path, !!data.children);
@@ -33,7 +31,6 @@ export default function NavList({ data, depth }) {
       <NavItem
         open={openMenu}
         onClick={handleToggleMenu}
-        //
         title={data?.title}
         path={data?.path}
         icon={data?.icon}
@@ -42,11 +39,9 @@ export default function NavList({ data, depth }) {
         caption={data?.caption}
         disabled={data?.disabled}
         external={data?.external}
-        //
         depth={depth}
         hasChild={!!data?.children}
         externalLink={data?.path?.includes("http")}
-        //
         active={active}
         className={active ? "active" : ""}
       />
@@ -59,8 +54,6 @@ export default function NavList({ data, depth }) {
     </>
   );
 }
-
-// ----------------------------------------------------------------------
 
 function NavSubList({ data, depth }) {
   return (
