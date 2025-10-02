@@ -1,7 +1,6 @@
 import Iconify from "../components/Iconify";
 import Label from "../components/label";
 import React from "react";
-import { fn } from "@storybook/test";
 
 export default {
   title: "Components/Label",
@@ -46,7 +45,7 @@ export default {
       description: "MUI sx prop for custom styling",
     },
   },
-  args: { onClick: fn() },
+  args: { onClick: () => {} },
 };
 
 export const Default = {
