@@ -1,6 +1,6 @@
 import Iconify from "../components/Iconify";
 import React from "react";
-import { fn } from "@storybook/test";
+
 export default {
   title: "Components/Iconify",
   component: Iconify,
@@ -22,7 +22,7 @@ export default {
       description: "MUI sx prop for styling",
     },
   },
-  args: { onClick: fn() },
+  args: { onClick: () => {} },
 };
 
 export const Default = {

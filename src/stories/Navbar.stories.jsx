@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import { BrowserRouter } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import React from "react";
-import { fn } from "@storybook/test";
 
 import {
   NavSectionHorizontal,
@@ -242,7 +241,7 @@ All components support:
       description: "Additional props for customizing appearance",
     },
   },
-  args: { onClick: fn() },
+  args: { onClick: () => {} },
 };
 
 export const VerticalDefault = {
