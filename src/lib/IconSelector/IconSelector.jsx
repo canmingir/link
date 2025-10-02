@@ -1,11 +1,12 @@
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
+import { Iconify } from "../Iconify";
 import Icons from "../lib/Icons";
 import Picker from "@emoji-mart/react";
 import React from "react";
+import { SvgColor } from "../SvgColor";
 
 import { Dialog, Stack } from "@mui/material";
-import { Iconify, SvgColor } from "@nucleoidai/platform/minimal/components";
 
 export default function IconSelector({
   handleEmojiSelect,

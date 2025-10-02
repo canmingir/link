@@ -1,4 +1,4 @@
-import { SvgColor } from "@nucleoidai/platform/minimal/components";
+import { SvgColor } from "../SvgColor";
 
 import {
   Card,
