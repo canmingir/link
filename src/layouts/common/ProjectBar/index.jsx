@@ -1,3 +1,10 @@
+import { Button, DialogActions } from "@mui/material";
+import Dialog, { dialogClasses } from "@mui/material/Dialog";
+import React, { useCallback, useState } from "react";
+import { publish, useEvent } from "@nucleoidai/react-event";
+import { storage, useStorage } from "@nucleoidjs/webstorage";
+import { useMediaQuery, useTheme } from "@mui/material";
+
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Iconify from "../../../components/Iconify";
@@ -21,13 +28,6 @@ import { useEffect } from "react";
 import { useEventListener } from "../../../hooks/use-event-listener";
 import { useNavigate } from "react-router-dom";
 import useProjects from "../../../hooks/useProjects";
-
-import { Button, DialogActions } from "@mui/material";
-import Dialog, { dialogClasses } from "@mui/material/Dialog";
-import React, { useCallback, useState } from "react";
-import { publish, useEvent } from "@nucleoidai/react-event";
-import { storage, useStorage } from "@nucleoidjs/webstorage";
-import { useMediaQuery, useTheme } from "@mui/material";
 
 function ProjectBar() {
   const label = config().template?.projectBar?.label;
@@ -92,9 +92,10 @@ function ProjectBar() {
     const { id: projectId } = project;
 
     const refreshToken = storage.get(name, "refreshToken");
+    const provider = storage.get(name, "provider");
 
     oauth
-      .post("/oauth", { appId, refreshToken, projectId })
+      .post("/oauth", { appId, refreshToken, projectId, provider })
       .then(({ data }) => {
         const { refreshToken, accessToken } = data;
         storage.set(name, "accessToken", accessToken);

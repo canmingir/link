@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import PropTypes from "prop-types";
-import { RouterLink } from "../../routes/components/router-link";
+import RouterLink from "../../routes/components/router-link";
 
 export default function BreadcrumbsLink({ link, activeLast, disabled }) {
   const styles = {
