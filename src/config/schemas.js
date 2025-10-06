@@ -28,6 +28,14 @@ export const ConfigSchema = Joi.object({
       response_type: Joi.string().required(),
       userUrl: Joi.string().uri().required(),
     }).optional(),
+    linkedin: Joi.object({
+      authUrl: Joi.string().uri().required(),
+      clientId: Joi.string().required(),
+      redirectUri: Joi.string().uri().required(),
+      scope: Joi.string().required(),
+      response_type: Joi.string().required(),
+      userUrl: Joi.string().uri().required(),
+    }).optional(),
   }).optional(),
 }).required();
 

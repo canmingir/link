@@ -13,7 +13,6 @@ const instance = axios.create({
 
 function getProjectName() {
   const { name } = config();
-
   if (name) {
     return name;
   }
@@ -28,43 +27,30 @@ instance.interceptors.request.use(async (request) => {
 });
 
 instance.getUserDetails = async () => {
-  const refreshToken = await storage.get(getProjectName(), "refreshToken");
-  const { google, github } = config().project;
-  //TODO: do it in a more elegant way
-  let userUrl;
-  let provider;
-  if (google) {
-    userUrl = google.userUrl;
-    provider = "google";
-  } else if (github) {
-    userUrl = github.userUrl;
-    provider = "github";
-  }
-
-  if (refreshToken) {
-    try {
-      const response = await axios.get(userUrl, {
-        headers: {
-          Authorization: `Bearer ${refreshToken}`,
-        },
-      });
-      if (provider === "github") {
-        return {
-          name: response.data.login,
-          avatarUrl: response.data.avatar_url,
-        };
-      } else if (provider === "google") {
-        return {
-          name: response.data.name,
-          avatarUrl: response.data.picture,
-        };
-      }
-    } catch (error) {
-      console.error("Failed to fetch user details:", error);
-      throw error;
+  try {
+    const refreshToken = await storage.get(getProjectName(), "refreshToken");
+    if (!refreshToken) {
+      console.log("No refresh token found");
+      return null;
     }
+
+    const response = await http.get("/oauth/user", {
+      headers: {
+        'X-Refresh-Token': refreshToken
+      }
+    });
+    
+    if (response.data && response.data.user) {
+      return response.data.user;
+    }
+    
+    console.log("No user data received from server");
+    return null;
+    
+  } catch (error) {
+    console.error("Error fetching user details from server:", error);
+    return null;
   }
-  return null;
 };
 
 instance.getPermittedUsers = async () => {
