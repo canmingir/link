@@ -48,9 +48,9 @@ function Callback() {
     hasProcessed.current = true;
 
     const providerConfigs = {
-      github: github,
-      linkedin: linkedin,
-      google: google,
+      github,
+      linkedin,
+      google,
     };
 
     const providerConfig = providerConfigs[provider];
