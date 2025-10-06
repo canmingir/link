@@ -103,8 +103,6 @@ function Callback() {
       })
       .catch((error) => {
         console.error("OAuth error:", error);
-        hasProcessed.current = false;
-
         const errorMessage =
           error.response?.data?.message ||
           error.response?.data ||
