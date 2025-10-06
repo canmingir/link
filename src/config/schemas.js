@@ -35,7 +35,7 @@ export const ConfigSchema = Joi.object({
       scope: Joi.string().required(),
       response_type: Joi.string().required(),
       userUrl: Joi.string().uri().required(),
-    }),
+    }).optional(),
   }).optional(),
 }).required();
 
