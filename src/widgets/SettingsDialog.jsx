@@ -1,9 +1,3 @@
-import Iconify from "../../minimal/src/components/iconify";
-import config from "../config/config";
-import { useEvent } from "@nucleoidai/react-event";
-import useSettings from "../hooks/useSettings";
-import { useUser } from "../hooks/use-user";
-
 import {
   Avatar,
   Box,
@@ -25,6 +19,12 @@ import {
 } from "@mui/material";
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
 import React, { useEffect, useState } from "react";
+
+import Iconify from "../components/Iconify";
+import config from "../config/config";
+import { useEvent } from "@nucleoidai/react-event";
+import useSettings from "../hooks/useSettings";
+import { useUser } from "../hooks/use-user";
 
 function a11yProps(index) {
   return {
