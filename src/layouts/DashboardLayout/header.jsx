@@ -1,7 +1,9 @@
+import { HEADER, NAV } from "../config-layout";
+
 import AccountPopover from "../common/account-popover";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
-import Iconify from "../../../minimal/src/components/iconify";
+import Iconify from "../../components/Iconify";
 import Logo from "../../components/logo";
 import NotificationsPopover from "../common/notifications-popover";
 import ProjectBar from "../common/ProjectBar";
@@ -15,10 +17,6 @@ import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
 import { useTheme } from "@mui/material/styles";
-
-import { HEADER, NAV } from "../config-layout";
-
-// ----------------------------------------------------------------------
 
 export default function Header({ onOpenNav }) {
   const theme = useTheme();

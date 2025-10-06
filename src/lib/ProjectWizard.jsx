@@ -1,13 +1,13 @@
+import { useEffect, useState } from "react";
+
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import ItemSummary from "../ItemSummary/ItemSummary";
+import ItemSummary from "./ItemSummary/ItemSummary";
 import React from "react";
-import SelectAvatar from "../IconSelector/IconSelector";
-import SparkleInput from "../SparkleInput/SparkleInput";
-import StepComponent from "../StepComponent/StepComponent";
-
-import { useEffect, useState } from "react";
+import SelectAvatar from "./IconSelector/IconSelector";
+import SparkleInput from "./SparkleInput/SparkleInput";
+import StepComponent from "./StepComponent/StepComponent";
 
 function ProjectWizard({
   itemProperties,
