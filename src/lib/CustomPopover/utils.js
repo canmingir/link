@@ -74,6 +74,7 @@ export function getPosition(arrow) {
       break;
     case "right-center":
       props = {
+        style: {},
         anchorOrigin: { vertical: "center", horizontal: "left" },
         transformOrigin: { vertical: "center", horizontal: "right" },
       };
