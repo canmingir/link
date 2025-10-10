@@ -1,3 +1,5 @@
+import { Route, Routes } from "react-router-dom";
+
 import Callback from "../pages/Callback";
 import CompactLayout from "../layouts/CompactLayout";
 import ConfigError from "../pages/ConfigError";
@@ -8,8 +10,6 @@ import React from "react";
 import classicLoginLayout from "../layouts/auth/classic";
 import config from "../config/config";
 import modernLoginLayout from "../layouts/auth/modern";
-
-import { Route, Routes } from "react-router-dom";
 
 export default function RouteManager({ routes }) {
   const loginConfig = config().template?.login;
@@ -30,7 +30,6 @@ export default function RouteManager({ routes }) {
             >
               <Route index element={<LoginPage />} />
             </Route>
-            <Route path="/callback/:provider" element={<Callback />} />
             <Route path="/callback" element={<Callback />} />
           </>
         )}
