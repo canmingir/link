@@ -13,12 +13,11 @@ import { useNavigate } from "react-router-dom";
 function Callback() {
   const { project: appConfig, name, appId } = config();
   const projectBar = config().template?.projectBar;
-  const { github, linkedin, google } = appConfig;
+
+  const { google, github, linkedin } = appConfig;
   const [, dispatch] = useContext();
   const location = useLocation();
   const navigate = useNavigate();
-  const provider = storage.get("provider");
-
   const hasProcessed = useRef(false);
 
   useEffect(() => {
@@ -28,6 +27,14 @@ function Callback() {
 
     const parsedQuery = qs.parse(location.search, { ignoreQueryPrefix: true });
     const { code, error, error_description, state } = parsedQuery;
+
+    let provider;
+    let stateData = {};
+
+    if (state) {
+      stateData = JSON.parse(decodeURIComponent(state));
+      provider = stateData.provider;
+    }
 
     if (error) {
       console.error("OAuth error:", error, error_description);

@@ -5,16 +5,16 @@ import NucleoidLoginForm from "../../components/NucleoidLoginForm";
 import SocialLoginButtons from "../../components/SocialLoginButtons";
 import Stack from "@mui/material/Stack";
 import config from "../../config/config";
-import { storage } from "@nucleoidjs/webstorage";
 
 const handleOAuthLogin = (
   { redirectUri, authUrl, clientId, scope },
   provider
 ) => {
-  if (provider) {
-    storage.set("provider", provider);
-  }
-  window.location.href = `${authUrl}?client_id=${clientId}&scope=${scope}&response_type=code&redirect_uri=${redirectUri}`;
+  const state = JSON.stringify({
+    provider: provider,
+  });
+  const encodedState = encodeURIComponent(state);
+  window.location.href = `${authUrl}?client_id=${clientId}&scope=${scope}&response_type=code&redirect_uri=${redirectUri}&state=${encodedState}`;
 };
 
 function LoginForm() {
