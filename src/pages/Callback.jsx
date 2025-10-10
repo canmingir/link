@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 import Page from "../layouts/Page";
 import React from "react";
 import config from "../config/config";
@@ -6,9 +8,7 @@ import qs from "qs";
 import { storage } from "@nucleoidjs/webstorage";
 import { useContext } from "../ContextProvider/ContextProvider";
 import { useLocation } from "react-router-dom";
-
-import { useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Callback() {
   const { project: appConfig, name, appId } = config();
@@ -18,8 +18,6 @@ function Callback() {
   const [, dispatch] = useContext();
   const location = useLocation();
   const navigate = useNavigate();
-  const { provider } = useParams();
-
   const hasProcessed = useRef(false);
 
   useEffect(() => {
@@ -29,6 +27,14 @@ function Callback() {
 
     const parsedQuery = qs.parse(location.search, { ignoreQueryPrefix: true });
     const { code, error, error_description, state } = parsedQuery;
+
+    let provider;
+    let stateData = {};
+
+    if (state) {
+      stateData = JSON.parse(decodeURIComponent(state));
+      provider = stateData.provider;
+    }
 
     if (error) {
       console.error("OAuth error:", error, error_description);
@@ -89,7 +95,6 @@ function Callback() {
 
         storage.set(name, "accessToken", accessToken);
         storage.set(name, "refreshToken", refreshToken);
-        storage.set(name, "provider", provider);
 
         dispatch({ type: "LOGIN", payload: { user: userInfo } });
 

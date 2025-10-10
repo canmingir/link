@@ -1,13 +1,20 @@
+import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
+import React, { useState } from "react";
+
 import NucleoidLoginForm from "../../components/NucleoidLoginForm";
 import SocialLoginButtons from "../../components/SocialLoginButtons";
 import Stack from "@mui/material/Stack";
 import config from "../../config/config";
 
-import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
-import React, { useState } from "react";
-
-const handleOAuthLogin = ({ redirectUri, authUrl, clientId, scope }) => {
-  window.location.href = `${authUrl}?client_id=${clientId}&scope=${scope}&response_type=code&redirect_uri=${redirectUri}`;
+const handleOAuthLogin = (
+  { redirectUri, authUrl, clientId, scope },
+  provider
+) => {
+  const state = JSON.stringify({
+    provider: provider,
+  });
+  const encodedState = encodeURIComponent(state);
+  window.location.href = `${authUrl}?client_id=${clientId}&scope=${scope}&response_type=code&redirect_uri=${redirectUri}&state=${encodedState}`;
 };
 
 function LoginForm() {
@@ -62,11 +69,11 @@ function LoginForm() {
       )}
       <SocialLoginButtons
         googleEnable={!!project.google}
-        onGoogle={() => handleOAuthLogin({ ...project.google })}
+        onGoogle={() => handleOAuthLogin({ ...project.google }, "google")}
         githubEnable={!!project.github}
-        onGithub={() => handleOAuthLogin({ ...project.github })}
+        onGithub={() => handleOAuthLogin({ ...project.github }, "github")}
         linkedinEnable={!!project.linkedin}
-        onLinkedin={() => handleOAuthLogin({ ...project.linkedin })}
+        onLinkedin={() => handleOAuthLogin({ ...project.linkedin }, "linkedin")}
       />
     </>
   );
