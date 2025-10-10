@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 import Page from "../layouts/Page";
 import React from "react";
 import config from "../config/config";
@@ -6,19 +8,16 @@ import qs from "qs";
 import { storage } from "@nucleoidjs/webstorage";
 import { useContext } from "../ContextProvider/ContextProvider";
 import { useLocation } from "react-router-dom";
-
-import { useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Callback() {
   const { project: appConfig, name, appId } = config();
   const projectBar = config().template?.projectBar;
-
-  const { google, github, linkedin } = appConfig;
+  const { github, linkedin, google } = appConfig;
   const [, dispatch] = useContext();
   const location = useLocation();
   const navigate = useNavigate();
-  const { provider } = useParams();
+  const provider = storage.get("provider");
 
   const hasProcessed = useRef(false);
 
@@ -89,7 +88,6 @@ function Callback() {
 
         storage.set(name, "accessToken", accessToken);
         storage.set(name, "refreshToken", refreshToken);
-        storage.set(name, "provider", provider);
 
         dispatch({ type: "LOGIN", payload: { user: userInfo } });
 
