@@ -95,6 +95,8 @@ function Callback() {
 
         storage.set(name, "accessToken", accessToken);
         storage.set(name, "refreshToken", refreshToken);
+        // TODO - update provider info
+        storage.set(name, "provider", provider);
 
         dispatch({ type: "LOGIN", payload: { user: userInfo } });
 
