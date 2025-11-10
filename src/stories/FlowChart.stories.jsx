@@ -1,14 +1,7 @@
 import { FlowChart } from "../lib/FlowChart";
 import React from "react";
 
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Typography,
-} from "@mui/material";
+import { Box, CardContent, Chip, Typography } from "@mui/material";
 
 export default {
   title: "Components/FlowChart",
@@ -22,32 +15,21 @@ export default {
       control: "object",
       description: "Tree structure with id and children properties",
     },
-    renderNode: {
-      control: false,
-      description: "Function that renders each node",
+    style: {
+      control: "function",
+      description:
+        "Styling options for lines and spacing between nodes. Can also be a function that returns styles based on node data.",
     },
-    lineColor: {
-      control: "color",
-      description: "Color of connecting lines",
-    },
-    lineWidth: {
+    type: {
       control: "text",
-      description: "Width of connecting lines",
-    },
-    lineStyle: {
-      control: "select",
-      options: ["solid", "dashed", "dotted"],
-      description: "Style of connecting lines",
-    },
-    gap: {
-      control: "text",
-      description: "Space between nodes",
+      description: "Type of the flow chart, affecting default styles.",
     },
   },
 };
 
 export const SimpleTextNodes = {
   args: {
+    type: "default",
     data: {
       id: "root",
       label: "Start",
@@ -56,27 +38,18 @@ export const SimpleTextNodes = {
         { id: "step2", label: "Step 2", children: [] },
       ],
     },
-    renderNode: (node) => (
-      <Box
-        sx={{
-          padding: "12px 20px",
-          backgroundColor: "#f5f5f5",
-          borderRadius: "8px",
-          border: "2px solid #e0e0e0",
-        }}
-      >
-        {node.label}
-      </Box>
-    ),
-    lineColor: "#4CAF50",
-    lineWidth: "2px",
-    lineStyle: "dashed",
-    gap: "40px",
+    style: {
+      lineColor: "#4CAF50",
+      lineWidth: "2px",
+      lineStyle: "dashed",
+      gap: "30px",
+    },
   },
 };
 
 export const CardNodes = {
   args: {
+    type: "default",
     data: {
       id: "1",
       title: "Project Alpha",
@@ -99,27 +72,12 @@ export const CardNodes = {
         },
       ],
     },
-    renderNode: (node) => (
-      <Card sx={{ width: 200, boxShadow: 2 }}>
-        <CardContent>
-          <Typography variant="h6" sx={{ mb: 1 }}>
-            {node.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-            {node.description}
-          </Typography>
-          <Chip
-            label={node.status}
-            size="small"
-            color={node.status === "completed" ? "success" : "primary"}
-          />
-        </CardContent>
-      </Card>
-    ),
-    lineColor: "#2196F3",
-    lineWidth: "2px",
-    lineStyle: "solid",
-    gap: "50px",
+    style: {
+      lineColor: "#2196F3",
+      lineWidth: "2px",
+      lineStyle: "solid",
+      gap: "50px",
+    },
   },
 };
 
@@ -151,32 +109,12 @@ export const OrganizationalChart = {
     return (
       <FlowChart
         data={orgData}
-        renderNode={(node) => (
-          <Card sx={{ width: 180 }}>
-            <CardContent sx={{ textAlign: "center" }}>
-              <Avatar
-                sx={{
-                  width: 50,
-                  height: 50,
-                  margin: "0 auto 8px",
-                  bgcolor: "primary.main",
-                }}
-              >
-                {node.name.charAt(0)}
-              </Avatar>
-              <Typography variant="h6" sx={{ fontSize: 14 }}>
-                {node.name}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {node.role}
-              </Typography>
-            </CardContent>
-          </Card>
-        )}
-        lineColor="#1976d2"
-        lineWidth="3px"
-        lineStyle="solid"
-        gap="60px"
+        style={{
+          lineColor: "#1976d2",
+          lineWidth: "3px",
+          lineStyle: "solid",
+          gap: "60px",
+        }}
       />
     );
   },
@@ -228,27 +166,13 @@ export const DecisionTree = {
     return (
       <FlowChart
         data={decisionData}
-        renderNode={(node) => {
-          const style = getNodeStyle(node.type);
-          return (
-            <Box
-              sx={{
-                padding: "12px 20px",
-                backgroundColor: style.bg,
-                border: `2px solid ${style.border}`,
-                borderRadius: style.shape,
-                minWidth: "100px",
-                textAlign: "center",
-              }}
-            >
-              {node.label}
-            </Box>
-          );
-        }}
-        lineColor="#757575"
-        lineWidth="2px"
-        lineStyle="dashed"
-        gap="60px"
+        style={(node) => ({
+          ...getNodeStyle(node.type),
+          lineColor: "#757575",
+          lineStyle: "dashed",
+          lineWidth: "2px",
+          gap: "60px",
+        })}
       />
     );
   },
@@ -283,21 +207,93 @@ export const DeepHierarchy = {
         },
       ],
     },
-    renderNode: (node) => (
-      <Box
-        sx={{
-          padding: "10px 16px",
-          backgroundColor: "#fff",
-          border: "2px solid #2196F3",
-          borderRadius: "6px",
+    style: {
+      lineColor: "#2196F3",
+      lineWidth: "2px",
+      lineStyle: "solid",
+      gap: "50px",
+    },
+  },
+};
+
+export const TaskFlow = {
+  render: () => {
+    const steps = [
+      {
+        id: "773b051a-326a-4140-98c4-d63df8aba39f",
+        action: "PLATFORM:scrape_website",
+        parameters: {
+          url: "https://nucleoid.com/domain-ownership.html",
+        },
+        result:
+          '\n        URL: https://nucleoid.com/domain-ownership.html\n        Title: \n        Content: This domain "nucleoid.com" is owned by Can Mingir for Nucleoid Ltd. Co. Contact: canmingir@nucleoid.com Phone: (914) 525-5929 Address: 2972 Webb Bridge Rd, Alpharetta, GA 30009, United States\n      ',
+        comment: "Scrape the website to extract the list of emails",
+        status: "COMPLETED",
+        taskId: "6ce93ce9-d923-46ba-b8a9-1a4cea50ca07",
+        createdAt: "2025-11-10T13:09:53.188Z",
+      },
+      {
+        id: "e6b12140-f922-4fa5-9e9d-e3064909716c",
+        action: "PLATFORM:llm",
+        parameters: {
+          message:
+            'Extract the email addresses from the scraped website content:\n\nThis domain "nucleoid.com" is owned by Can Mingir for Nucleoid Ltd. Co. Contact: canmingir@nucleoid.com Phone: (914) 525-5929 Address: 2972 Webb Bridge Rd, Alpharetta, GA 30009, United States',
+        },
+        result: '["canmingir@nucleoid.com"]',
+        comment: "Extract the email addresses from the scraped website content",
+        status: "COMPLETED",
+        taskId: "6ce93ce9-d923-46ba-b8a9-1a4cea50ca07",
+        createdAt: "2025-11-10T13:09:59.261Z",
+      },
+      {
+        id: "05fba361-4071-4db7-88e8-4f1b6fabddba",
+        action: "PLATFORM:complete",
+        parameters: {},
+        result: "Task completed successfully",
+        comment:
+          "Task completed after extracting email addresses from the website",
+        status: "COMPLETED",
+        taskId: "6ce93ce9-d923-46ba-b8a9-1a4cea50ca07",
+        createdAt: "2025-11-10T13:10:02.653Z",
+      },
+    ];
+
+    const sortedSteps = [...steps].sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
+
+    const root = {
+      ...sortedSteps[0],
+      id: `node-0`,
+      children: [],
+    };
+
+    let currentNode = root;
+    for (let i = 1; i < sortedSteps.length; i++) {
+      const newNode = {
+        ...sortedSteps[i],
+        id: `node-${i}`,
+        children: [],
+      };
+      currentNode.children = [newNode];
+      currentNode = newNode;
+    }
+
+    return (
+      <FlowChart
+        type="task"
+        data={root}
+        style={{
+          lineColor: "#9C27B0",
+          lineWidth: "2px",
+          lineStyle: "dotted",
+          gap: "40px",
+          visible: true,
+          delay: 0,
+          isLoading: false,
         }}
-      >
-        {node.label}
-      </Box>
-    ),
-    lineColor: "#2196F3",
-    lineWidth: "2px",
-    lineStyle: "solid",
-    gap: "50px",
+      />
+    );
   },
 };
