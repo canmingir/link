@@ -1,8 +1,6 @@
 import { FlowChart } from "../lib/FlowChart";
 import React from "react";
 
-import { Box, CardContent, Chip, Typography } from "@mui/material";
-
 export default {
   title: "Components/FlowChart",
   component: FlowChart,
@@ -17,12 +15,18 @@ export default {
     },
     style: {
       control: "function",
-      description:
-        "Styling options for lines and spacing between nodes. Can also be a function that returns styles based on node data.",
+      description: "Styling options for lines and spacing between nodes.",
     },
     type: {
       control: "text",
       description: "Type of the flow chart, affecting default styles.",
+    },
+    variant: {
+      control: {
+        type: "select",
+        options: ["simple", "card", "pill", "decision"],
+      },
+      description: "Visual variant of the flow chart nodes.",
     },
   },
 };
@@ -38,11 +42,9 @@ export const SimpleTextNodes = {
         { id: "step2", label: "Step 2", children: [] },
       ],
     },
+    variant: "simple",
     style: {
-      lineColor: "#4CAF50",
-      lineWidth: "2px",
-      lineStyle: "dashed",
-      gap: "30px",
+      border: "normal",
     },
   },
 };
@@ -72,11 +74,12 @@ export const CardNodes = {
         },
       ],
     },
+    variant: "card",
     style: {
-      lineColor: "#2196F3",
-      lineWidth: "2px",
-      lineStyle: "solid",
-      gap: "50px",
+      border: "light",
+      size: "small",
+      shadow: "heavy",
+      shape: "square",
     },
   },
 };
@@ -106,17 +109,7 @@ export const OrganizationalChart = {
       ],
     };
 
-    return (
-      <FlowChart
-        data={orgData}
-        style={{
-          lineColor: "#1976d2",
-          lineWidth: "3px",
-          lineStyle: "solid",
-          gap: "60px",
-        }}
-      />
-    );
+    return <FlowChart data={orgData} variant="pill" />;
   },
 };
 
@@ -153,28 +146,7 @@ export const DecisionTree = {
       ],
     };
 
-    const getNodeStyle = (type) => {
-      const styles = {
-        start: { bg: "#E8F5E9", border: "#4CAF50", shape: "8px" },
-        decision: { bg: "#FFF3E0", border: "#FF9800", shape: "50%" },
-        process: { bg: "#E3F2FD", border: "#2196F3", shape: "8px" },
-        end: { bg: "#FFEBEE", border: "#F44336", shape: "8px" },
-      };
-      return styles[type] || styles.process;
-    };
-
-    return (
-      <FlowChart
-        data={decisionData}
-        style={(node) => ({
-          ...getNodeStyle(node.type),
-          lineColor: "#757575",
-          lineStyle: "dashed",
-          lineWidth: "2px",
-          gap: "60px",
-        })}
-      />
-    );
+    return <FlowChart data={decisionData} variant="decision" />;
   },
 };
 
@@ -207,12 +179,7 @@ export const DeepHierarchy = {
         },
       ],
     },
-    style: {
-      lineColor: "#2196F3",
-      lineWidth: "2px",
-      lineStyle: "solid",
-      gap: "50px",
-    },
+    variant: "simple",
   },
 };
 
@@ -284,11 +251,8 @@ export const TaskFlow = {
       <FlowChart
         type="task"
         data={root}
+        variant="pill"
         style={{
-          lineColor: "#9C27B0",
-          lineWidth: "2px",
-          lineStyle: "dotted",
-          gap: "40px",
           visible: true,
           delay: 0,
           isLoading: false,
