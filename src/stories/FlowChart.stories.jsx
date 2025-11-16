@@ -1,6 +1,72 @@
 import { FlowChart } from "../lib/FlowChart";
 import React from "react";
 
+const treeToLinked = (tree) => {
+  if (!tree) return { nodes: {}, roots: [] };
+
+  const nodes = {};
+  const roots = [];
+
+  const walk = (node, parentId = null) => {
+    if (!node || !node.id) return;
+
+    const { children, ...rest } = node;
+    if (!nodes[node.id]) {
+      nodes[node.id] = { ...rest, id: node.id };
+    }
+
+    const kids = Array.isArray(children) ? children : [];
+    const nextIds = kids.map((c) => c.id).filter(Boolean);
+
+    if (nextIds.length === 1) {
+      nodes[node.id].next = nextIds[0];
+    } else if (nextIds.length > 1) {
+      nodes[node.id].next = nextIds;
+    }
+
+    if (parentId) {
+      nodes[node.id].previous = parentId;
+    } else if (!roots.includes(node.id)) {
+      roots.push(node.id);
+    }
+
+    kids.forEach((child) => walk(child, node.id));
+  };
+
+  walk(tree);
+  return { nodes, roots };
+};
+
+const arrayToLinked = (arr) => {
+  const a = Array.isArray(arr) ? [...arr] : [];
+  if (!a.length) return { nodes: {}, roots: [] };
+
+  a.sort((x, y) => {
+    const dx = x?.createdAt ? new Date(x.createdAt).getTime() : 0;
+    const dy = y?.createdAt ? new Date(y.createdAt).getTime() : 0;
+    return dx - dy;
+  });
+
+  const nodes = {};
+  const ids = [];
+
+  for (let i = 0; i < a.length; i++) {
+    const id = a[i]?.id ?? `auto-${i}`;
+    ids.push(id);
+    nodes[id] = { ...(a[i] || {}), id };
+  }
+
+  for (let i = 0; i < ids.length; i++) {
+    const cur = ids[i];
+    const prev = ids[i - 1];
+    const nxt = ids[i + 1];
+    if (prev) nodes[cur].previous = prev;
+    if (nxt) nodes[cur].next = nxt;
+  }
+
+  return { nodes, roots: [ids[0]] };
+};
+
 export default {
   title: "Components/FlowChart",
   component: FlowChart,
@@ -11,15 +77,17 @@ export default {
   argTypes: {
     data: {
       control: "object",
-      description: "Tree structure with id and children properties",
+      description:
+        "Linked graph data: { nodes: { [id]: { id, next?, previous?, ... } }, roots?: string[] }",
     },
     style: {
-      control: "function",
-      description: "Styling options for lines and spacing between nodes.",
+      control: "object",
+      description:
+        "Styling tokens or a style object; can also be a function (node) => tokens.",
     },
     type: {
       control: "text",
-      description: "Type of the flow chart, affecting default styles.",
+      description: 'Type of the flow chart, e.g. "default" or "task".',
     },
     variant: {
       control: {
@@ -31,49 +99,50 @@ export default {
   },
 };
 
+const simpleTree = {
+  id: "root",
+  label: "Start",
+  children: [
+    { id: "step1", label: "Step 1", children: [] },
+    { id: "step2", label: "Step 2", children: [] },
+  ],
+};
+
 export const SimpleTextNodes = {
   args: {
     type: "default",
-    data: {
-      id: "root",
-      label: "Start",
-      children: [
-        { id: "step1", label: "Step 1", children: [] },
-        { id: "step2", label: "Step 2", children: [] },
-      ],
-    },
+    data: treeToLinked(simpleTree),
     variant: "simple",
-    style: {
-      border: "normal",
-    },
   },
+};
+
+const cardTree = {
+  id: "1",
+  title: "Project Alpha",
+  description: "Main project",
+  status: "active",
+  children: [
+    {
+      id: "2",
+      title: "Task 1",
+      description: "First task",
+      status: "completed",
+      children: [],
+    },
+    {
+      id: "3",
+      title: "Task 2",
+      description: "Second task",
+      status: "in-progress",
+      children: [],
+    },
+  ],
 };
 
 export const CardNodes = {
   args: {
     type: "default",
-    data: {
-      id: "1",
-      title: "Project Alpha",
-      description: "Main project",
-      status: "active",
-      children: [
-        {
-          id: "2",
-          title: "Task 1",
-          description: "First task",
-          status: "completed",
-          children: [],
-        },
-        {
-          id: "3",
-          title: "Task 2",
-          description: "Second task",
-          status: "in-progress",
-          children: [],
-        },
-      ],
-    },
+    data: treeToLinked(cardTree),
     variant: "card",
     style: {
       border: "light",
@@ -86,7 +155,7 @@ export const CardNodes = {
 
 export const OrganizationalChart = {
   render: () => {
-    const orgData = {
+    const orgTree = {
       id: "ceo",
       name: "John Doe",
       role: "CEO",
@@ -109,13 +178,15 @@ export const OrganizationalChart = {
       ],
     };
 
-    return <FlowChart data={orgData} variant="pill" />;
+    const data = treeToLinked(orgTree);
+
+    return <FlowChart data={data} variant="pill" />;
   },
 };
 
 export const DecisionTree = {
   render: () => {
-    const decisionData = {
+    const decisionTree = {
       id: "start",
       label: "Start Process",
       type: "start",
@@ -146,46 +217,58 @@ export const DecisionTree = {
       ],
     };
 
-    return <FlowChart data={decisionData} variant="decision" />;
+    const data = treeToLinked(decisionTree);
+
+    return (
+      <FlowChart
+        data={data}
+        variant="decision"
+        style={{ connectorType: "curved" }}
+      />
+    );
   },
+};
+
+const deepTree = {
+  id: "root",
+  label: "Root",
+  children: [
+    {
+      id: "branch1",
+      label: "Branch 1",
+      children: [
+        {
+          id: "leaf1-1",
+          label: "Leaf 1.1",
+          children: [{ id: "leaf1-1-1", label: "Leaf 1.1.1", children: [] }],
+        },
+      ],
+    },
+    {
+      id: "branch2",
+      label: "Branch 2",
+      children: [
+        { id: "leaf2-1", label: "Leaf 2.1", children: [] },
+        { id: "leaf2-2", label: "Leaf 2.2", children: [] },
+      ],
+    },
+  ],
 };
 
 export const DeepHierarchy = {
   args: {
-    data: {
-      id: "root",
-      label: "Root",
-      children: [
-        {
-          id: "branch1",
-          label: "Branch 1",
-          children: [
-            {
-              id: "leaf1-1",
-              label: "Leaf 1.1",
-              children: [
-                { id: "leaf1-1-1", label: "Leaf 1.1.1", children: [] },
-              ],
-            },
-          ],
-        },
-        {
-          id: "branch2",
-          label: "Branch 2",
-          children: [
-            { id: "leaf2-1", label: "Leaf 2.1", children: [] },
-            { id: "leaf2-2", label: "Leaf 2.2", children: [] },
-          ],
-        },
-      ],
-    },
+    type: "default",
+    data: treeToLinked(deepTree),
     variant: "simple",
+    style: {
+      connectorType: "curved",
+    },
   },
 };
 
 export const TaskFlow = {
   render: () => {
-    const steps = [
+    const timeline = [
       {
         id: "773b051a-326a-4140-98c4-d63df8aba39f",
         action: "PLATFORM:scrape_website",
@@ -225,37 +308,18 @@ export const TaskFlow = {
       },
     ];
 
-    const sortedSteps = [...steps].sort(
-      (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-    );
-
-    const root = {
-      ...sortedSteps[0],
-      id: `node-0`,
-      children: [],
-    };
-
-    let currentNode = root;
-    for (let i = 1; i < sortedSteps.length; i++) {
-      const newNode = {
-        ...sortedSteps[i],
-        id: `node-${i}`,
-        children: [],
-      };
-      currentNode.children = [newNode];
-      currentNode = newNode;
-    }
+    const data = arrayToLinked(timeline);
 
     return (
       <FlowChart
         type="task"
-        data={root}
+        data={data}
         variant="pill"
         style={{
           visible: true,
           delay: 0,
           isLoading: false,
+          connectorType: "curved",
         }}
       />
     );
