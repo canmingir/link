@@ -1,4 +1,5 @@
 import ConnectorSVG from "./ConnectorSvg";
+import DraggableNode from "./DraggableNode";
 import NodeBox from "./NodeBox";
 
 import { Box, Card, Typography } from "@mui/material";
@@ -33,6 +34,7 @@ const FlowNode = ({ node, type, variant, style }) => {
     lineWidth = baseStyle.lineWidth,
     lineStyle = baseStyle.lineStyle,
     gap = baseStyle.gap,
+    levelGap = baseStyle.levelGap ?? 2.5,
     visible = true,
     delay = 0,
     isLoading = false,
@@ -54,6 +56,9 @@ const FlowNode = ({ node, type, variant, style }) => {
   const parentRef = useRef(null);
   const childRefs = useRef({});
   const [childElList, setChildElList] = useState([]);
+
+  const [connectorTick, setConnectorTick] = useState(0);
+  const notifyDrag = () => setConnectorTick((t) => t + 1);
 
   useLayoutEffect(() => {
     const els = (node.children || [])
@@ -245,29 +250,25 @@ const FlowNode = ({ node, type, variant, style }) => {
             strokeWidth={strokeWidth}
             lineStyle={dashStyle}
             connectorType={connectorType}
+            tick={connectorTick}
           />
 
           <Box
             sx={{
               display: "flex",
               flexDirection: "row",
-              gap,
-              marginTop: 2.5,
+              columnGap: gap,
+              marginTop: levelGap,
               position: "relative",
               alignItems: "flex-start",
               justifyContent: "center",
             }}
           >
             {node.children.map((child) => (
-              <Box
+              <DraggableNode
                 key={child.id}
-                ref={(el) => (childRefs.current[child.id] = el)}
-                sx={{
-                  display: "inline-flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  position: "relative",
-                }}
+                registerRef={(el) => (childRefs.current[child.id] = el)}
+                onDrag={notifyDrag}
               >
                 <FlowNode
                   node={child}
@@ -275,7 +276,7 @@ const FlowNode = ({ node, type, variant, style }) => {
                   variant={variant}
                   style={style}
                 />
-              </Box>
+              </DraggableNode>
             ))}
           </Box>
         </>
