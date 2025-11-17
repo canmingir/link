@@ -12,7 +12,11 @@ const NodeBox = ({ nodeData, visible, delay, isLoading }) => {
       LLM: "mdi:robot",
       DEFAULT: "mdi:cube-outline",
     };
-    return iconMap[action] || iconMap.DEFAULT;
+    // Normalize action: extract after colon and uppercase
+    const normalizedAction = action && typeof action === "string"
+      ? action.split(":").pop().toUpperCase()
+      : "";
+    return iconMap[normalizedAction] || iconMap.DEFAULT;
   };
 
   if (isLoading) {
