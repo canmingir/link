@@ -8,6 +8,7 @@ const ConnectorSVG = ({
   strokeWidth,
   lineStyle,
   connectorType = "default",
+  tick = 0,
 }) => {
   const [dims, setDims] = useState(null);
   const [points, setPoints] = useState({
@@ -51,7 +52,7 @@ const ConnectorSVG = ({
 
     update();
     return () => ro.disconnect();
-  }, [containerEl, parentEl, childEls]);
+  }, [containerEl, parentEl, childEls, tick]);
 
   if (!dims || !points.parent || !points.children.length) return null;
 
@@ -64,7 +65,7 @@ const ConnectorSVG = ({
 
   const onlyOne = points.children.length === 1;
 
-  if (connectorType === "curved") {
+  if (connectorType === "curved" || connectorType === "n8n") {
     const createN8nPath = (from, to) => {
       const v = Math.max(32, Math.abs(to.y - from.y) * 0.35);
       const h = Math.max(24, Math.abs(to.x - from.x) * 0.35);
