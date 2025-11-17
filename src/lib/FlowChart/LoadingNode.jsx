@@ -1,4 +1,5 @@
 import AnimatedNode from "./AnimatedNode";
+import React from "react";
 
 import { Card, CircularProgress, Typography } from "@mui/material";
 

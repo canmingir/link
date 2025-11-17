@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 const DraggableNode = ({ children, registerRef, onDrag }) => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
