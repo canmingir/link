@@ -156,31 +156,40 @@ export const CardNodes = {
 export const OrganizationalChart = {
   render: () => {
     const orgTree = {
-      id: "ceo",
-      name: "John Doe",
-      role: "CEO",
-      children: [
+      id: "add6dfa4-45ba-4da2-bc5c-5a529610b52f",
+      name: "Rebellion Coffee Shop Team",
+      icon: ":ph:coffee-bean-duotone:",
+      description: null,
+      type: null,
+      organizationId: "dfb990bb-81dd-4584-82ce-050eb8f6a12f",
+      coach: "Elijah",
+      colleagues: [
         {
-          id: "cto",
-          name: "Jane Smith",
-          role: "CTO",
-          children: [
-            { id: "dev1", name: "Dev Lead", role: "Development", children: [] },
-            { id: "qa1", name: "QA Lead", role: "QA", children: [] },
-          ],
+          id: "00db1bd4-4829-40f2-8b99-d2e42342157e",
+          name: "Ava",
+          avatar: ":1:",
+          character: "Funny, friendly, and a coffee lover",
+          title: "Barista",
+          role: "Barista Expert",
+          teamId: "add6dfa4-45ba-4da2-bc5c-5a529610b52f",
+          aiEngineId: "289a3c9a-f23b-421a-ac6e-f14052a2d57c",
         },
         {
-          id: "cfo",
-          name: "Bob Johnson",
-          role: "CFO",
-          children: [],
+          id: "ef906c5d-cafe-4518-9edc-b80c605df58e",
+          name: "Taylor",
+          title: "Customer Service Representative",
+          avatar: ":2:",
+          character: "Friendly, helpful, and a team player",
+          role: "Customer Service Representative",
+          teamId: "e6d4744d-a11b-4c75-acad-e24a02903729",
+          aiEngineId: "289a3c9a-f23b-421a-ac6e-f14052a2d57c",
         },
       ],
     };
 
     const data = treeToLinked(orgTree);
 
-    return <FlowChart data={data} variant="pill" />;
+    return <FlowChart type="teamChart" data={data} variant="simple" />;
   },
 };
 
@@ -260,9 +269,6 @@ export const DeepHierarchy = {
     type: "default",
     data: treeToLinked(deepTree),
     variant: "simple",
-    style: {
-      connectorType: "curved",
-    },
   },
 };
 
