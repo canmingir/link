@@ -1,5 +1,5 @@
 import AnimatedNode from "./AnimatedNode";
-import Iconify from "../../components/Iconify";
+import Iconify from "../../../components/Iconify";
 import LoadingNode from "./LoadingNode";
 import React from "react";
 
@@ -13,9 +13,10 @@ const NodeBox = ({ nodeData, visible, delay, isLoading }) => {
       DEFAULT: "mdi:cube-outline",
     };
     // Normalize action: extract after colon and uppercase
-    const normalizedAction = action && typeof action === "string"
-      ? action.split(":").pop().toUpperCase()
-      : "";
+    const normalizedAction =
+      action && typeof action === "string"
+        ? action.split(":").pop().toUpperCase()
+        : "";
     return iconMap[normalizedAction] || iconMap.DEFAULT;
   };
 
