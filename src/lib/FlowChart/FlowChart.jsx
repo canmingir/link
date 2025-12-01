@@ -1,7 +1,7 @@
 import FlowNode from "./FlowNode";
 
 import React, { useMemo } from "react";
-import { assertLinkedGraph, buildTreeFromLinked } from "./graph";
+import { assertLinkedGraph, buildTreeFromLinked } from "./taskChart/graph";
 
 export const FlowChart = ({
   type = "default",

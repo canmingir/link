@@ -1,6 +1,7 @@
-import ConnectorSVG from "./ConnectorSvg";
-import DraggableNode from "./DraggableNode";
-import NodeBox from "./NodeBox";
+import ConnectorSVG from "./taskChart/ConnectorSvg";
+import DraggableNode from "./taskChart/DraggableNode";
+import NodeBox from "./taskChart/NodeBox";
+import TeamWithColleagues from "./teamChart/TeamWithColleagues";
 
 import { Box, Card, Typography } from "@mui/material";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -9,7 +10,7 @@ import {
   getBaseStyleForVariant,
   getDecisionNodeStyle,
   toPxNumber,
-} from "./styles";
+} from "./taskChart/styles";
 
 const FlowNode = ({ node, type, variant, style }) => {
   const baseStyle = getBaseStyleForVariant(variant);
@@ -17,17 +18,38 @@ const FlowNode = ({ node, type, variant, style }) => {
 
   const resolveStyle = (n) => {
     let merged = { ...baseStyle };
-    if (variant === "decision")
+    if (variant === "decision") {
       merged = { ...merged, ...getDecisionNodeStyle(n.type) };
-    if (typeof style === "function")
+    }
+    if (typeof style === "function") {
       merged = { ...merged, ...(style(n) || {}) };
-    else if (style && typeof style === "object")
+    } else if (style && typeof style === "object") {
       merged = { ...merged, ...style };
+    }
     return merged;
   };
 
   const rawNodeStyle = resolveStyle(node);
-  const nodeStyle = applySemanticTokens(rawNodeStyle, baseStyle);
+  let nodeStyle = applySemanticTokens(rawNodeStyle, baseStyle);
+
+  const isTask = type === "task";
+  const isTeamChart = type === "teamChart";
+
+  if (isTeamChart) {
+    nodeStyle = {
+      ...nodeStyle,
+      lineColor: nodeStyle.teamLineColor ?? nodeStyle.lineColor ?? "#D0D7E2",
+      lineWidth: nodeStyle.teamLineWidth ?? nodeStyle.lineWidth ?? 1.5,
+      lineStyle: nodeStyle.teamLineStyle ?? nodeStyle.lineStyle ?? "solid",
+      connectorType:
+        nodeStyle.teamConnectorType ?? // most specific
+        nodeStyle.connectorType ?? // generic connectorType from props
+        baseStyle.connectorType ?? // style defaults
+        "default", // final fallback
+      gap: nodeStyle.teamGap ?? nodeStyle.gap ?? 6,
+      levelGap: nodeStyle.teamLevelGap ?? nodeStyle.levelGap ?? 4,
+    };
+  }
 
   const {
     lineColor = baseStyle.lineColor,
@@ -215,8 +237,6 @@ const FlowNode = ({ node, type, variant, style }) => {
     );
   };
 
-  const isTask = type === "task";
-
   return (
     <Box
       ref={containerRef}
@@ -234,6 +254,17 @@ const FlowNode = ({ node, type, variant, style }) => {
             visible={visible}
             delay={delay}
             isLoading={isLoading}
+          />
+        ) : isTeamChart ? (
+          <TeamWithColleagues
+            data={node}
+            sx={nodeSx}
+            connectorStyle={{
+              lineColor,
+              lineWidth: strokeWidth,
+              lineStyle: dashStyle,
+              connectorType,
+            }}
           />
         ) : (
           renderCard()
