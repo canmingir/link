@@ -44,16 +44,6 @@ function TeamNode({ node, sx }) {
         },
       }}
     >
-      <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "50%",
-          zIndex: 0,
-        }}
-      />
 
       <Stack spacing={2} sx={{ position: "relative", zIndex: 1 }}>
         <Stack
