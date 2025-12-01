@@ -30,7 +30,8 @@ export function buildTreeFromLinked(rootId, nodesById) {
   const seen = new Set();
 
   const cloneNode = (node) => {
-    const { next, previous, children, ...rest } = node || {};
+    if (!node) return null;
+    const { next, previous, children, ...rest } = node;
     return { ...rest, id: node.id, previous, next, children: [] };
   };
 
