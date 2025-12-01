@@ -291,10 +291,8 @@ function TeamWithColleagues({
                                 color="default"
                                 size="small"
                                 onClick={() => {
-                                  const firstResponsibility =
-                                    colleagueResponsibilities[0];
-                                  if (firstResponsibility) {
-                                    handleDrawerOpen(firstResponsibility);
+                                  if (responsibility) {
+                                    handleDrawerOpen(responsibility);
                                   }
                                 }}
                                 sx={{
