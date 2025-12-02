@@ -1,13 +1,14 @@
 import FlowNode from "./FlowNode";
 
 import React, { useMemo } from "react";
-import { assertLinkedGraph, buildTreeFromLinked } from "./taskChart/graph";
+import { assertLinkedGraph, buildTreeFromLinked } from "./graph";
 
 export const FlowChart = ({
   type = "default",
   data,
   variant = "simple",
   style,
+  pluginResolver,
 }) => {
   const { nodesById, roots } = useMemo(() => assertLinkedGraph(data), [data]);
 
@@ -32,7 +33,13 @@ export const FlowChart = ({
   }, [nodesById, roots]);
 
   return (
-    <FlowNode node={treeData} type={type} variant={variant} style={style} />
+    <FlowNode
+      node={treeData}
+      type={type}
+      variant={variant}
+      style={style}
+      pluginResolver={pluginResolver}
+    />
   );
 };
 
