@@ -38,24 +38,19 @@ const FlowNode = ({ node, type, variant, style, pluginResolver }) => {
     }
   }
 
-  const mergedStyleForPlugin = {
-    ...baseStyle,
-    ...variantTokens,
-    ...styleTokens,
-  };
-
   let pluginTokens = {};
   if (plugin && typeof plugin.resolveStyle === "function") {
     pluginTokens =
       plugin.resolveStyle({
         node,
-        baseStyle,
-        mergedStyle: mergedStyleForPlugin,
+        style: styleTokens,
       }) || {};
   }
 
   const rawNodeStyle = {
-    ...mergedStyleForPlugin,
+    ...baseStyle,
+    ...variantTokens,
+    ...styleTokens,
     ...pluginTokens,
   };
 

@@ -4,7 +4,6 @@ import React, { useMemo } from "react";
 import { assertLinkedGraph, buildTreeFromLinked } from "./graph";
 
 export const FlowChart = ({
-  type = "default",
   data,
   variant = "simple",
   style,
@@ -35,7 +34,6 @@ export const FlowChart = ({
   return (
     <FlowNode
       node={treeData}
-      type={type}
       variant={variant}
       style={style}
       pluginResolver={pluginResolver}
