@@ -76,7 +76,7 @@ const getIcon = (node) => {
   return "mdi:cube-outline";
 };
 
-const ResponsibilityNodeLayout = ({ node, nodeStyle }) => {
+const InfoNode = ({ node, nodeStyle }) => {
   const [animated, setAnimated] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -131,4 +131,4 @@ const ResponsibilityNodeLayout = ({ node, nodeStyle }) => {
   );
 };
 
-export default ResponsibilityNodeLayout;
+export default InfoNode;

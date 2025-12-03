@@ -3,7 +3,7 @@ import React from "react";
 
 import { Card, CircularProgress, Typography } from "@mui/material";
 
-const TaskLoadingLayout = ({ visible, delay }) => (
+const LoadingNode = ({ visible, delay }) => (
   <AnimatedNode visible={visible} delay={delay}>
     <Card
       sx={{
@@ -34,4 +34,4 @@ const TaskLoadingLayout = ({ visible, delay }) => (
   </AnimatedNode>
 );
 
-export default TaskLoadingLayout;
+export default LoadingNode;

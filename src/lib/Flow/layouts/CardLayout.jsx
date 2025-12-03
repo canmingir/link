@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Card, Stack } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
 
-export function MediaAvatarCardLayout({
+export function MediaAvatarCard({
   sx,
   leftContent,
   rightContent,
@@ -96,7 +96,7 @@ export function MediaAvatarCardLayout({
   );
 }
 
-export function GradientHeaderCardLayout({
+export function HeaderCard({
   sx,
   header,
   children,
@@ -156,7 +156,7 @@ export function GradientHeaderCardLayout({
   );
 }
 
-export function SideStripeCardLayout({
+export function SideStripeCard({
   sx,
   stripeContent,
   mainContent,

@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState } from "react";
 
-const ConnectorSVG = ({
+const DynamicConnector = ({
   containerEl,
   parentEl,
   childEls,
@@ -169,4 +169,4 @@ const ConnectorSVG = ({
   );
 };
 
-export default ConnectorSVG;
+export default DynamicConnector;

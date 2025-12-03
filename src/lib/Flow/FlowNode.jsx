@@ -1,6 +1,6 @@
-import ConnectorSVG from "./ConnectorSvg";
 import DraggableNode from "./DraggableNode";
-import { getContentParts } from "./shared";
+import DynamicConnector from "./DynamicConnector";
+import { getContentParts } from "./flowUtils";
 
 import { Box, Card, Typography } from "@mui/material";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -223,7 +223,7 @@ const FlowNode = ({ node, type, variant, style, pluginResolver }) => {
 
       {hasChildren && (
         <>
-          <ConnectorSVG
+          <DynamicConnector
             containerEl={containerRef.current}
             parentEl={parentRef.current}
             childEls={childElList}

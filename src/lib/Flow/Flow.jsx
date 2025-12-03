@@ -3,12 +3,7 @@ import FlowNode from "./FlowNode";
 import React, { useMemo } from "react";
 import { assertLinkedGraph, buildTreeFromLinked } from "./graph";
 
-export const FlowChart = ({
-  data,
-  variant = "simple",
-  style,
-  pluginResolver,
-}) => {
+export const Flow = ({ data, variant = "simple", style, pluginResolver }) => {
   const { nodesById, roots } = useMemo(() => assertLinkedGraph(data), [data]);
 
   const treeData = useMemo(() => {
