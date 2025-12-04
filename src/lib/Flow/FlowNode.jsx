@@ -11,7 +11,7 @@ import {
   toPxNumber,
 } from "./styles";
 
-const FlowNode = ({ node, type, variant, style, pluginResolver }) => {
+const FlowNode = ({ node, type, variant, style, plugin }) => {
   const baseStyle = getBaseStyleForVariant(variant);
   const hasChildren = Array.isArray(node.children) && node.children.length > 0;
 
@@ -25,23 +25,23 @@ const FlowNode = ({ node, type, variant, style, pluginResolver }) => {
     styleTokens = style;
   }
 
-  let plugin = null;
-  if (pluginResolver) {
-    if (typeof pluginResolver === "function") {
-      plugin = pluginResolver(type, node);
+  let plugins = null;
+  if (plugin) {
+    if (typeof plugin === "function") {
+      plugin = plugin(type, node);
     } else if (
-      typeof pluginResolver === "object" &&
-      (typeof pluginResolver.renderNode === "function" ||
-        typeof pluginResolver.resolveStyle === "function")
+      typeof plugin === "object" &&
+      (typeof plugin.renderNode === "function" ||
+        typeof plugin.resolveStyle === "function")
     ) {
-      plugin = pluginResolver;
+      plugins = plugin;
     }
   }
 
   let pluginTokens = {};
-  if (plugin && typeof plugin.resolveStyle === "function") {
+  if (plugins && typeof plugins.resolveStyle === "function") {
     pluginTokens =
-      plugin.resolveStyle({
+      plugins.resolveStyle({
         node,
         style: styleTokens,
       }) || {};
@@ -256,7 +256,7 @@ const FlowNode = ({ node, type, variant, style, pluginResolver }) => {
                   type={type}
                   variant={variant}
                   style={style}
-                  pluginResolver={pluginResolver}
+                  plugin={plugin}
                 />
               </DraggableNode>
             ))}
