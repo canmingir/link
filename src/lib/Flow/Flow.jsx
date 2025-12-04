@@ -31,4 +31,4 @@ export const Flow = ({ data, variant = "simple", style, plugin }) => {
   );
 };
 
-export default FlowChart;
+export default Flow;
