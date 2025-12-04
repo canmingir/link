@@ -5,67 +5,111 @@ import { alpha, styled } from "@mui/material/styles";
 
 const ANIMATION_DELAY_MS = 200;
 
-const MainContainer = styled("div")(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  color: "#ffffff",
-  borderRadius: "16px",
-  padding: "16px 20px",
-  border: "1px solid rgba(255, 255, 255, 0.2)",
-  backdropFilter: "blur(10px)",
-  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-  cursor: "pointer",
-  position: "relative",
-  overflow: "hidden",
-  minWidth: "120px",
-  minHeight: "120px",
-  maxWidth: "160px",
-  maxHeight: "160px",
-  background: `linear-gradient(135deg, ${alpha(
-    theme.palette.secondary.light,
-    0.2
-  )}, ${alpha(theme.palette.primary.main, 0.3)})`,
-  boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+const MainContainer = styled("div", {
+  shouldForwardProp: (prop) => prop !== "$style",
+})(({ theme, $style = {} }) => {
+  const {
+    minWidth = 120,
+    minHeight = 120,
+    maxWidth = 160,
+    maxHeight = 160,
+    borderRadius = 16,
+    borderColor = "rgba(255, 255, 255, 0.2)",
+    bgFrom,
+    bgTo,
+  } = $style;
 
-  '&[data-hovered="true"]': {
-    background: `linear-gradient(135deg, ${alpha(
-      theme.palette.primary.main,
-      0.3
-    )}, ${alpha(theme.palette.secondary.light, 0.2)})`,
-    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
-  },
-}));
+  const defaultFrom = alpha(theme.palette.secondary.light, 0.2);
+  const defaultTo = alpha(theme.palette.primary.main, 0.3);
 
-const IconContainer = styled("div")({
-  backgroundColor: "rgba(255, 255, 255, 0.1)",
-  borderRadius: "12px",
-  padding: "8px",
-  marginBottom: "12px",
-  transition: "all 0.4s ease",
-  backdropFilter: "blur(5px)",
-  border: "1px solid rgba(255, 255, 255, 0.3)",
+  const hoveredFrom = alpha(theme.palette.primary.main, 0.3);
+  const hoveredTo = alpha(theme.palette.secondary.light, 0.2);
 
-  '[data-hovered="true"] &': {
-    backgroundColor: "rgba(255, 255, 255, 0.15)",
-  },
+  return {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    color: "#ffffff",
+    borderRadius,
+    padding: "16px 20px",
+    border: `1px solid ${borderColor}`,
+    backdropFilter: "blur(10px)",
+    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+    cursor: "pointer",
+    position: "relative",
+    overflow: "hidden",
+    minWidth,
+    minHeight,
+    maxWidth,
+    maxHeight,
+    background: `linear-gradient(135deg, ${bgFrom || defaultFrom}, ${
+      bgTo || defaultTo
+    })`,
+    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+
+    '&[data-hovered="true"]': {
+      background: `linear-gradient(135deg, ${bgTo || hoveredFrom}, ${
+        bgFrom || hoveredTo
+      })`,
+      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+    },
+  };
 });
 
-const LabelText = styled("div")({
-  fontWeight: "600",
-  fontSize: "13px",
-  letterSpacing: "0.5px",
-  textAlign: "center",
-  transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-  textShadow: "none",
-  lineHeight: "1.4",
-  opacity: 0,
-  transform: "translateY(10px)",
+const IconContainer = styled("div", {
+  shouldForwardProp: (prop) => prop !== "$style",
+})(({ $style = {} }) => {
+  const {
+    bg = "rgba(255, 255, 255, 0.1)",
+    hoverBg = "rgba(255, 255, 255, 0.15)",
+    borderRadius = 12,
+    padding = 8,
+    borderColor = "rgba(255, 255, 255, 0.3)",
+    marginBottom = 12,
+  } = $style;
 
-  '&[data-animated="true"]': {
-    opacity: 1,
-    transform: "translateY(0)",
-  },
+  return {
+    backgroundColor: bg,
+    borderRadius,
+    padding,
+    marginBottom,
+    transition: "all 0.4s ease",
+    backdropFilter: "blur(5px)",
+    border: `1px solid ${borderColor}`,
+
+    '[data-hovered="true"] &': {
+      backgroundColor: hoverBg,
+    },
+  };
+});
+
+const LabelText = styled("div", {
+  shouldForwardProp: (prop) => prop !== "$style",
+})(({ $style = {} }) => {
+  const {
+    color = "#ffffff",
+    fontWeight = 600,
+    fontSize = 13,
+    letterSpacing = 0.5,
+  } = $style;
+
+  return {
+    fontWeight,
+    fontSize,
+    letterSpacing: `${letterSpacing}px`,
+    textAlign: "center",
+    transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+    textShadow: "none",
+    lineHeight: "1.4",
+    opacity: 0,
+    transform: "translateY(10px)",
+    color,
+
+    '&[data-animated="true"]': {
+      opacity: 1,
+      transform: "translateY(0)",
+    },
+  };
 });
 
 const getIcon = (node) => {
@@ -76,7 +120,7 @@ const getIcon = (node) => {
   return "mdi:cube-outline";
 };
 
-const InfoNode = ({ node, nodeStyle }) => {
+const InfoNode = ({ node, nodeStyle = {} }) => {
   const [animated, setAnimated] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -99,6 +143,22 @@ const InfoNode = ({ node, nodeStyle }) => {
     bgTo: nodeStyle.bgTo,
   };
 
+  const iconContainerStyle = {
+    bg: nodeStyle.iconBg,
+    hoverBg: nodeStyle.iconHoverBg,
+    borderRadius: nodeStyle.iconRadius,
+    padding: nodeStyle.iconPadding,
+    borderColor: nodeStyle.iconBorderColor,
+    marginBottom: nodeStyle.iconMarginBottom,
+  };
+
+  const labelStyle = {
+    color: nodeStyle.labelColor,
+    fontSize: nodeStyle.labelFontSize,
+    fontWeight: nodeStyle.labelFontWeight,
+    letterSpacing: nodeStyle.labelLetterSpacing,
+  };
+
   const icon = getIcon(node);
 
   return (
@@ -108,7 +168,7 @@ const InfoNode = ({ node, nodeStyle }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <IconContainer>
+      <IconContainer $style={iconContainerStyle}>
         <Iconify
           icon={icon}
           width={28}
@@ -121,12 +181,14 @@ const InfoNode = ({ node, nodeStyle }) => {
                 : "rotate(0deg) scale(1)"
               : "rotate(-90deg) scale(0.8)",
             filter: "none",
-            color: "#ffffff",
+            color: nodeStyle.iconColor || "#ffffff",
           }}
         />
       </IconContainer>
 
-      <LabelText data-animated={animated}>{label}</LabelText>
+      <LabelText data-animated={animated} $style={labelStyle}>
+        {label}
+      </LabelText>
     </MainContainer>
   );
 };
