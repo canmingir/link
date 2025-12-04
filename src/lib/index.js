@@ -28,6 +28,7 @@ export {
   HeaderCard,
   MediaAvatarCard,
   SideStripeCard,
+  AvatarRoleCard,
 } from "./Flow/layouts/CardLayout";
 
 export { default as ActionNode } from "./Flow/layouts/ActionNode";

@@ -246,3 +246,68 @@ export function SideStripeCard({
     </Box>
   );
 }
+
+export function AvatarRoleCard({
+  sx,
+  leftContent,
+  topRightContent,
+  bottomContent,
+}) {
+  const theme = useTheme();
+
+  return (
+    <Card
+      sx={{
+        p: 2.5,
+        width: 230,
+        height: 120,
+        borderRadius: 2,
+        position: "relative",
+        backgroundColor: theme.palette.background.paper,
+        transition: "all 0.3s ease-in-out",
+        "&:hover": {
+          transform: "translateY(-4px)",
+          boxShadow: theme.shadows[8],
+          "&:before": {
+            height: "100%",
+          },
+        },
+        "&:before": {
+          content: '""',
+          width: "100%",
+          height: "40%",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          background: `linear-gradient(135deg, ${alpha(
+            theme.palette.secondary.light,
+            0.2
+          )}, ${alpha(theme.palette.primary.main, 0.3)})`,
+          borderRadius: "8px 8px 0 0",
+          transition: "height 0.3s ease-in-out",
+        },
+        ...sx,
+      }}
+    >
+      <Stack
+        spacing={1}
+        sx={{
+          height: "100%",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          {leftContent}
+          {topRightContent}
+        </Stack>
+
+        {bottomContent && <Stack spacing={0.5}>{bottomContent}</Stack>}
+      </Stack>
+    </Card>
+  );
+}
