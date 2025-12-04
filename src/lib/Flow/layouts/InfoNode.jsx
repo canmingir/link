@@ -144,19 +144,19 @@ const InfoNode = ({ node, nodeStyle = {} }) => {
   };
 
   const iconContainerStyle = {
-    bg: nodeStyle.iconBg,
-    hoverBg: nodeStyle.iconHoverBg,
-    borderRadius: nodeStyle.iconRadius,
-    padding: nodeStyle.iconPadding,
-    borderColor: nodeStyle.iconBorderColor,
-    marginBottom: nodeStyle.iconMarginBottom,
+    iconBg: nodeStyle.iconBg,
+    iconHoverBg: nodeStyle.iconHoverBg,
+    iconBorderRadius: nodeStyle.iconRadius,
+    iconPadding: nodeStyle.iconPadding,
+    iconBorderColor: nodeStyle.iconBorderColor,
+    iconMarginBottom: nodeStyle.iconMarginBottom,
   };
 
   const labelStyle = {
-    color: nodeStyle.labelColor,
-    fontSize: nodeStyle.labelFontSize,
-    fontWeight: nodeStyle.labelFontWeight,
-    letterSpacing: nodeStyle.labelLetterSpacing,
+    labelColor: nodeStyle.labelColor,
+    labelFontSize: nodeStyle.labelFontSize,
+    labelFontWeight: nodeStyle.labelFontWeight,
+    labelLetterSpacing: nodeStyle.labelLetterSpacing,
   };
 
   const icon = getIcon(node);
