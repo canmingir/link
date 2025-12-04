@@ -29,17 +29,6 @@ export const getBaseStyleForVariant = (v) => {
         hoverBg: "rgba(156, 39, 176, 0.16)",
         borderColor: "#9C27B0",
       };
-    case "decision":
-      return {
-        lineColor: "#757575",
-        lineWidth: "2px",
-        lineStyle: "dashed",
-        gap: 60,
-        shape: 8,
-        bg: "background.paper",
-        hoverBg: "grey.100",
-        borderColor: "#757575",
-      };
     case "simple":
     default:
       return {

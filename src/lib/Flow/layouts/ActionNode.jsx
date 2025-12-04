@@ -1,7 +1,7 @@
 import AnimatedNode from "./AnimatedNode";
 import { Iconify } from "@canmingir/link/platform/components";
+import LoadingNode from "./LoadingNode";
 import React from "react";
-import TaskLoadingLayout from "./LoadingNode";
 
 import { Card, Tooltip, Typography } from "@mui/material";
 
@@ -24,7 +24,7 @@ const getIconForAction = (action) => {
 
 const ActionNode = ({ visible, delay, isLoading, action, status, tooltip }) => {
   if (isLoading) {
-    return <TaskLoadingLayout visible={visible} delay={delay} />;
+    return <LoadingNode visible={visible} delay={delay} />;
   }
 
   const card = (
