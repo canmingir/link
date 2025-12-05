@@ -5,24 +5,15 @@ import React from "react";
 
 import { Card, Tooltip, Typography } from "@mui/material";
 
-const getIconForAction = (action) => {
-  if (!action) return "mdi:cube-outline";
-
-  const normalized = String(action).toUpperCase();
-
-  if (normalized.includes("SCRAPE")) return "mdi:web";
-  if (normalized.includes("LLM")) return "mdi:robot";
-
-  const iconMap = {
-    SCRAPE_WEBSITE: "mdi:web",
-    LLM: "mdi:robot",
-    DEFAULT: "mdi:cube-outline",
-  };
-
-  return iconMap[normalized] || iconMap.DEFAULT;
-};
-
-const ActionNode = ({ visible, delay, isLoading, action, status, tooltip }) => {
+const ActionNode = ({
+  visible,
+  delay,
+  isLoading,
+  action,
+  status,
+  tooltip,
+  icon,
+}) => {
   if (isLoading) {
     return <LoadingNode visible={visible} delay={delay} />;
   }
@@ -48,7 +39,7 @@ const ActionNode = ({ visible, delay, isLoading, action, status, tooltip }) => {
           },
         }}
       >
-        <Iconify icon={getIconForAction(action)} width={24} height={24} />
+        <Iconify icon={icon} width={24} height={24} />
         <Typography
           variant="caption"
           sx={{
