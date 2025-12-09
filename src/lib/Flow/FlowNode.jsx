@@ -31,17 +31,17 @@ const FlowNode = ({ node, type, variant, style, plugin }) => {
       plugin = plugin(type, node);
     } else if (
       typeof plugin === "object" &&
-      (typeof plugin.renderNode === "function" ||
-        typeof plugin.resolveStyle === "function")
+      (typeof plugin.pluginNode === "function" ||
+        typeof plugin.pluginStyle === "function")
     ) {
       plugins = plugin;
     }
   }
 
   let pluginTokens = {};
-  if (plugins && typeof plugins.resolveStyle === "function") {
+  if (plugins && typeof plugins.pluginStyle === "function") {
     pluginTokens =
-      plugins.resolveStyle({
+      plugins.pluginStyle({
         node,
         style: styleTokens,
       }) || {};
@@ -194,8 +194,8 @@ const FlowNode = ({ node, type, variant, style, plugin }) => {
   };
 
   const renderContent = () => {
-    if (plugin && typeof plugin.renderNode === "function") {
-      return plugin.renderNode({
+    if (plugin && typeof plugin.pluginNode === "function") {
+      return plugin.pluginNode({
         node,
         title,
         subtitle,
