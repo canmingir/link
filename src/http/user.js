@@ -13,15 +13,8 @@ const instance = axios.create({
   },
 });
 
-function getProjectName() {
-  const { name } = config();
-  if (name) {
-    return name;
-  }
-}
-
 instance.interceptors.request.use(async (request) => {
-  const refreshToken = await storage.get(getProjectName(), "refreshToken");
+  const refreshToken = await storage.get("link", "refreshToken");
   if (refreshToken) {
     request.headers["Authorization"] = `Bearer ${refreshToken}`;
   }
@@ -30,15 +23,14 @@ instance.interceptors.request.use(async (request) => {
 
 instance.getUserDetails = async () => {
   try {
-    const projectName = getProjectName();
-    const refreshToken = await storage.get(projectName, "refreshToken");
+    const refreshToken = await storage.get("link", "refreshToken");
 
     if (!refreshToken) {
       console.log("No refresh token found");
       return null;
     }
 
-    let accessToken = await storage.get(projectName, "accessToken");
+    let accessToken = await storage.get("link", "accessToken");
 
     if (!accessToken) {
       console.log("No access token found");
@@ -65,7 +57,7 @@ instance.getUserDetails = async () => {
         });
 
         accessToken = data.accessToken;
-        storage.set(projectName, "accessToken", accessToken);
+        storage.set("link", "accessToken", accessToken);
         console.log(
           "Access token refreshed successfully, now fetching user details"
         );
@@ -95,7 +87,7 @@ instance.getUserDetails = async () => {
 
 instance.getPermittedUsers = async () => {
   const userIds = [];
-  const refreshToken = await storage.get(getProjectName(), "refreshToken");
+  const refreshToken = await storage.get("link", "refreshToken");
   const response = await http.get("/permissions");
 
   response.data.forEach((permission) => {

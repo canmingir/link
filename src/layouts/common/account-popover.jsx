@@ -19,7 +19,6 @@ import CustomPopover, { usePopover } from "../../components/custom-popover";
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const { name } = config();
   const { options } = config().menu;
   const router = useRouter();
   const { user } = useUser();
@@ -28,8 +27,8 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
-      storage.remove(name, "accessToken");
-      storage.remove(name, "refreshToken");
+      storage.remove("link", "accessToken");
+      storage.remove("link", "refreshToken");
       popover.onClose();
       router.replace("/login");
     } catch (error) {

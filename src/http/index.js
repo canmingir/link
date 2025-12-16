@@ -15,8 +15,8 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((request) => {
-  const { name, base } = config();
-  const accessToken = storage.get(name, "accessToken");
+  const { base } = config();
+  const accessToken = storage.get("link", "accessToken");
 
   if (!accessToken) {
     window.location.href = base === "/" ? "/login" : `${base}/login`;
@@ -85,7 +85,7 @@ export const fetcher = (url) => instance.get(url).then((res) => res.data);
 
 const refreshAuthLogic = async (failedRequest) => {
   try {
-    const { name, appId } = config();
+    const { appId } = config();
 
     const projectId = storage.get("projectId");
 
@@ -95,7 +95,7 @@ const refreshAuthLogic = async (failedRequest) => {
     const provider = decoded.provider;
 
     const { data } = await oauth.post("/oauth", {
-      refreshToken: storage.get(name, "refreshToken"),
+      refreshToken: storage.get("link", "refreshToken"),
       appId,
       projectId,
       provider,
@@ -106,13 +106,13 @@ const refreshAuthLogic = async (failedRequest) => {
     failedRequest.response.config.headers["Authorization"] =
       "Bearer " + accessToken;
 
-    storage.set(name, "accessToken", accessToken);
+    storage.set("link", "accessToken", accessToken);
     return Promise.resolve();
   } catch (error) {
     const { name, base } = config();
 
-    storage.remove(name, "accessToken");
-    storage.remove(name, "refreshToken");
+    storage.remove("link", "accessToken");
+    storage.remove("link", "refreshToken");
 
     window.location.href = `${window.location.origin}${base}/login`;
     return Promise.reject(error);
@@ -128,7 +128,7 @@ refreshInterceptor(instance, refreshAuthLogic, {
   statusCodes: [401, 403],
   shouldRefresh: () => {
     const { name, base } = config();
-    const token = storage.get(name, "accessToken");
+    const token = storage.get("link", "accessToken");
 
     if (!token) {
       window.location.href = `${window.location.origin}${base}/login`;

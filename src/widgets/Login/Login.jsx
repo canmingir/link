@@ -19,7 +19,10 @@ export default function Auth0LoginView() {
   const navigate = useNavigate();
 
   function token() {
-    if (storage.get(name, "refreshToken") && storage.get(name, "accessToken")) {
+    if (
+      storage.get("link", "refreshToken") &&
+      storage.get("link", "accessToken")
+    ) {
       return true;
     } else {
       return false;

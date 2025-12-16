@@ -1,10 +1,3 @@
-import { Button, DialogActions } from "@mui/material";
-import Dialog, { dialogClasses } from "@mui/material/Dialog";
-import React, { useCallback, useState } from "react";
-import { publish, useEvent } from "@nucleoidai/react-event";
-import { storage, useStorage } from "@nucleoidjs/webstorage";
-import { useMediaQuery, useTheme } from "@mui/material";
-
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Iconify from "../../../components/Iconify";
@@ -29,9 +22,16 @@ import { useEventListener } from "../../../hooks/use-event-listener";
 import { useNavigate } from "react-router-dom";
 import useProjects from "../../../hooks/useProjects";
 
+import { Button, DialogActions } from "@mui/material";
+import Dialog, { dialogClasses } from "@mui/material/Dialog";
+import React, { useCallback, useState } from "react";
+import { publish, useEvent } from "@nucleoidai/react-event";
+import { storage, useStorage } from "@nucleoidjs/webstorage";
+import { useMediaQuery, useTheme } from "@mui/material";
+
 function ProjectBar() {
   const label = config().template?.projectBar?.label;
-  const { appId, name } = config();
+  const { appId } = config();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(435));
   const { loading, projects, getProjects } = useProjects();
@@ -91,15 +91,15 @@ function ProjectBar() {
   const handleSelect = (project) => {
     const { id: projectId } = project;
 
-    const refreshToken = storage.get(name, "refreshToken");
-    const provider = storage.get(name, "provider");
+    const refreshToken = storage.get("link", "refreshToken");
+    const provider = storage.get("link", "provider");
 
     oauth
       .post("/oauth", { appId, refreshToken, projectId, provider })
       .then(({ data }) => {
         const { refreshToken, accessToken } = data;
-        storage.set(name, "accessToken", accessToken);
-        storage.set(name, "refreshToken", refreshToken);
+        storage.set("link", "accessToken", accessToken);
+        storage.set("link", "refreshToken", refreshToken);
         storage.set("projectId", projectId);
       })
       .finally(() => {
