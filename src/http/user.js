@@ -47,7 +47,7 @@ instance.getUserDetails = async () => {
         );
         const { appId } = config();
         const projectId = storage.get("projectId");
-        const provider = decodedToken.provider;
+        const provider = storage.get("link", "provider");
 
         const { data } = await oauth.post("/oauth", {
           refreshToken,
