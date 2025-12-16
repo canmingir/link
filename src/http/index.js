@@ -89,13 +89,13 @@ const refreshAuthLogic = async (failedRequest) => {
 
     const projectId = storage.get("projectId");
 
-    const provider = storage.get("link", "identityProvider");
+    const identityProvider = storage.get("link", "identityProvider");
 
     const { data } = await oauth.post("/oauth", {
       refreshToken: storage.get("link", "refreshToken"),
       appId,
       projectId,
-      provider,
+      identityProvider,
     });
 
     const accessToken = data.accessToken;

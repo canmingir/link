@@ -28,12 +28,12 @@ function Callback() {
     const parsedQuery = qs.parse(location.search, { ignoreQueryPrefix: true });
     const { code, error, error_description, state } = parsedQuery;
 
-    let provider;
+    let identityProvider;
     let stateData = {};
 
     if (state) {
       stateData = JSON.parse(decodeURIComponent(state));
-      provider = stateData.provider;
+      identityProvider = stateData.identityProvider;
     }
 
     if (error) {
@@ -59,7 +59,7 @@ function Callback() {
       google,
     };
 
-    const providerConfig = providerConfigs[provider];
+    const providerConfig = providerConfigs[identityProvider];
 
     if (!providerConfig) {
       console.error("Could not determine OAuth provider or redirect URI");
@@ -85,7 +85,7 @@ function Callback() {
         appId,
         code,
         redirectUri,
-        provider: provider,
+        identityProvider: identityProvider,
         grant_type: "authorization_code",
       })
       .then(({ data }) => {
@@ -96,7 +96,7 @@ function Callback() {
         storage.set("link", "accessToken", accessToken);
         storage.set("link", "refreshToken", refreshToken);
         // TODO - update provider info
-        storage.set("link", "identityProvider", provider);
+        storage.set("link", "identityProvider", identityProvider);
 
         dispatch({ type: "LOGIN", payload: { user: userInfo } });
 
