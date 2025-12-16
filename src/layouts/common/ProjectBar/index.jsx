@@ -92,7 +92,7 @@ function ProjectBar() {
     const { id: projectId } = project;
 
     const refreshToken = storage.get("link", "refreshToken");
-    const provider = storage.get("link", "provider");
+    const provider = storage.get("link", "identityProvider");
 
     oauth
       .post("/oauth", { appId, refreshToken, projectId, provider })

@@ -47,7 +47,7 @@ instance.getUserDetails = async () => {
         );
         const { appId } = config();
         const projectId = storage.get("projectId");
-        const provider = storage.get("link", "provider");
+        const provider = storage.get("link", "identityProvider");
 
         const { data } = await oauth.post("/oauth", {
           refreshToken,
