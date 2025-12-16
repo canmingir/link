@@ -89,10 +89,16 @@ const refreshAuthLogic = async (failedRequest) => {
 
     const projectId = storage.get("projectId");
 
+    const jwtToken = storage.get(name, "accessToken");
+    const decoded = jwtDecode(jwtToken);
+
+    const provider = decoded.provider;
+
     const { data } = await oauth.post("/oauth", {
       refreshToken: storage.get(name, "refreshToken"),
       appId,
       projectId,
+      provider,
     });
 
     const accessToken = data.accessToken;
