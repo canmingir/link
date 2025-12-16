@@ -16,7 +16,7 @@ function NavHorizontal() {
 
   const { user } = useUser();
 
-  const { sideMenu } = config().menu;
+  const { sideMenu, actionButtons } = config().menu;
   return (
     <AppBar component="div" data-cy="nav-horizontal">
       <Toolbar
@@ -35,6 +35,11 @@ function NavHorizontal() {
             ...theme.mixins.toolbar,
           }}
         />
+
+        {actionButtons &&
+          actionButtons.map((Action, index) => (
+            <Box key={index} component={Action}></Box>
+          ))}
       </Toolbar>
 
       <HeaderShadow />
