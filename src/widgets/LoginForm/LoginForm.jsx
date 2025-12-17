@@ -1,17 +1,17 @@
-import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
-import React, { useState } from "react";
-
 import NucleoidLoginForm from "../../components/NucleoidLoginForm";
 import SocialLoginButtons from "../../components/SocialLoginButtons";
 import Stack from "@mui/material/Stack";
 import config from "../../config/config";
 
+import { Box, Divider, Link as MuiLink, Typography } from "@mui/material";
+import React, { useState } from "react";
+
 const handleOAuthLogin = (
   { redirectUri, authUrl, clientId, scope },
-  provider
+  identityProvider
 ) => {
   const state = JSON.stringify({
-    provider: provider,
+    identityProvider: identityProvider,
   });
   const encodedState = encodeURIComponent(state);
   window.location.href = `${authUrl}?client_id=${clientId}&scope=${scope}&response_type=code&redirect_uri=${redirectUri}&state=${encodedState}`;

@@ -1,5 +1,3 @@
-import { useEffect, useRef } from "react";
-
 import Page from "../layouts/Page";
 import React from "react";
 import config from "../config/config";
@@ -9,6 +7,8 @@ import { storage } from "@nucleoidjs/webstorage";
 import { useContext } from "../ContextProvider/ContextProvider";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
+import { useEffect, useRef } from "react";
 
 function Callback() {
   const { project: appConfig, name, appId } = config();
@@ -28,12 +28,12 @@ function Callback() {
     const parsedQuery = qs.parse(location.search, { ignoreQueryPrefix: true });
     const { code, error, error_description, state } = parsedQuery;
 
-    let provider;
+    let identityProvider;
     let stateData = {};
 
     if (state) {
       stateData = JSON.parse(decodeURIComponent(state));
-      provider = stateData.provider;
+      identityProvider = stateData.identityProvider;
     }
 
     if (error) {
@@ -59,7 +59,7 @@ function Callback() {
       google,
     };
 
-    const providerConfig = providerConfigs[provider];
+    const providerConfig = providerConfigs[identityProvider];
 
     if (!providerConfig) {
       console.error("Could not determine OAuth provider or redirect URI");
@@ -85,7 +85,7 @@ function Callback() {
         appId,
         code,
         redirectUri,
-        provider: provider,
+        identityProvider: identityProvider,
         grant_type: "authorization_code",
       })
       .then(({ data }) => {
@@ -93,10 +93,10 @@ function Callback() {
         const refreshToken = data.refreshToken;
         const userInfo = data.user;
 
-        storage.set(name, "accessToken", accessToken);
-        storage.set(name, "refreshToken", refreshToken);
+        storage.set("link", "accessToken", accessToken);
+        storage.set("link", "refreshToken", refreshToken);
         // TODO - update provider info
-        storage.set(name, "provider", provider);
+        storage.set("link", "identityProvider", identityProvider);
 
         dispatch({ type: "LOGIN", payload: { user: userInfo } });
 
