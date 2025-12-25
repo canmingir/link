@@ -30,6 +30,7 @@ const DynamicConnector = ({
       };
 
       const children = childEls.map((el) => {
+        if (!el) return { x: parent.x, y: parent.y };
         const r = el.getBoundingClientRect();
         return {
           x: r.left + r.width / 2 - cRect.left,
@@ -45,12 +46,13 @@ const DynamicConnector = ({
       setDims({ w: cRect.width, h: cRect.height });
     };
 
+    update();
+
     const ro = new ResizeObserver(update);
     ro.observe(containerEl);
     ro.observe(parentEl);
     childEls.forEach((el) => el && ro.observe(el));
 
-    update();
     return () => ro.disconnect();
   }, [containerEl, parentEl, childEls, tick]);
 
@@ -64,6 +66,18 @@ const DynamicConnector = ({
       : undefined;
 
   const onlyOne = points.children.length === 1;
+
+  const svgProps = {
+    style: {
+      position: "absolute",
+      inset: 0,
+      pointerEvents: "none",
+      overflow: "visible",
+    },
+    width: "100%",
+    height: "100%",
+    viewBox: `0 0 ${dims.w} ${dims.h}`,
+  };
 
   if (connectorType === "curved" || connectorType === "n8n") {
     const createN8nPath = (from, to) => {
@@ -83,12 +97,7 @@ const DynamicConnector = ({
     };
 
     return (
-      <svg
-        style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-        width="100%"
-        height="100%"
-        viewBox={`0 0 ${dims.w} ${dims.h}`}
-      >
+      <svg {...svgProps}>
         {points.children.map((child, i) => (
           <path
             key={i}
@@ -106,12 +115,7 @@ const DynamicConnector = ({
   }
 
   return (
-    <svg
-      style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-      width="100%"
-      height="100%"
-      viewBox={`0 0 ${dims.w} ${dims.h}`}
-    >
+    <svg {...svgProps}>
       {onlyOne ? (
         <line
           x1={points.parent.x}
@@ -136,8 +140,8 @@ const DynamicConnector = ({
 
           {(() => {
             const xs = points.children.map((c) => c.x);
-            const xMin = Math.min(...xs);
-            const xMax = Math.max(...xs);
+            const xMin = Math.min(...xs, points.parent.x);
+            const xMax = Math.max(...xs, points.parent.x);
             return (
               <line
                 x1={xMin}
