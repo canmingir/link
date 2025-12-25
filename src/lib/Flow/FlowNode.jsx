@@ -11,7 +11,15 @@ import {
   toPxNumber,
 } from "./styles";
 
-const FlowNode = ({ node, type, variant, style, plugin }) => {
+const NodeContent = ({
+  node,
+  type,
+  variant,
+  style,
+  plugin,
+  registerRef,
+  onDrag,
+}) => {
   const baseStyle = getBaseStyleForVariant(variant);
   const hasChildren = Array.isArray(node.children) && node.children.length > 0;
 
@@ -78,7 +86,11 @@ const FlowNode = ({ node, type, variant, style, plugin }) => {
   const [childElList, setChildElList] = useState([]);
 
   const [connectorTick, setConnectorTick] = useState(0);
-  const notifyDrag = () => setConnectorTick((t) => t + 1);
+
+  const handleDrag = (newOffset) => {
+    setConnectorTick((t) => t + 1);
+    if (onDrag) onDrag(newOffset);
+  };
 
   useLayoutEffect(() => {
     const els = (node.children || [])
@@ -213,9 +225,15 @@ const FlowNode = ({ node, type, variant, style, plugin }) => {
         position: "relative",
       }}
     >
-      <Box ref={parentRef} sx={{ position: "relative" }}>
+      <DraggableNode
+        registerRef={(el) => {
+          parentRef.current = el;
+          if (registerRef) registerRef(el);
+        }}
+        onDrag={handleDrag}
+      >
         {renderContent()}
-      </Box>
+      </DraggableNode>
 
       {hasChildren && (
         <>
@@ -242,23 +260,110 @@ const FlowNode = ({ node, type, variant, style, plugin }) => {
             }}
           >
             {node.children.map((child) => (
-              <DraggableNode
+              <FlowNode
                 key={child.id}
+                node={child}
+                type={type}
+                variant={variant}
+                style={style}
+                plugin={plugin}
                 registerRef={(el) => (childRefs.current[child.id] = el)}
-                onDrag={notifyDrag}
-              >
-                <FlowNode
-                  node={child}
-                  type={type}
-                  variant={variant}
-                  style={style}
-                  plugin={plugin}
-                />
-              </DraggableNode>
+                onDrag={() => setConnectorTick((t) => t + 1)}
+                isRoot={false}
+              />
             ))}
           </Box>
         </>
       )}
+    </Box>
+  );
+};
+
+const FlowNode = ({ isRoot = false, ...props }) => {
+  if (!isRoot) {
+    return <NodeContent {...props} />;
+  }
+
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+
+  const [zoom, setZoom] = useState(1);
+
+  const clampZoom = (z) => Math.min(2.5, Math.max(0.25, z));
+
+  useEffect(() => {
+    const onWheel = (e) => {
+      const wantsZoom = e.ctrlKey || e.metaKey;
+      if (!wantsZoom) return;
+
+      e.preventDefault();
+
+      const direction = e.deltaY > 0 ? -1 : 1;
+      const factor = direction > 0 ? 1.1 : 1 / 1.1;
+
+      setZoom((z) => clampZoom(z * factor));
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
+  }, []);
+
+  const handleCanvasMouseDown = (e) => {
+    if (e.target?.closest?.('[data-flow-zoom="true"]')) return;
+
+    if (e.button !== 0) return;
+
+    setIsDragging(true);
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startOffset = { ...offset };
+
+    const onMove = (ev) => {
+      setOffset({
+        x: startOffset.x + (ev.clientX - startX),
+        y: startOffset.y + (ev.clientY - startY),
+      });
+    };
+
+    const onUp = () => {
+      setIsDragging(false);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  };
+
+  return (
+    <Box
+      onMouseDown={handleCanvasMouseDown}
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+        bgcolor: "none",
+        cursor: isDragging ? "grabbing" : "default",
+        userSelect: "none",
+        position: "relative",
+      }}
+    >
+      <Box
+        sx={{
+          transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
+          transformOrigin: "center center",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          transition: isDragging ? "none" : "transform 0.1s ease-out",
+          pointerEvents: "auto",
+        }}
+      >
+        <NodeContent {...props} />
+      </Box>
     </Box>
   );
 };
