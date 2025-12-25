@@ -353,7 +353,7 @@ export function AvatarRoleCard({
         backgroundColor: theme.palette.background.paper,
         fontSize: 12,
         lineHeight: 1.3,
-        color: theme.palette.text.primary,
+        color: "rgba(255,255,255,0.82)",
         transition: "all 0.3s ease-in-out",
         "&:hover": {
           transform: "translateY(-4px)",
