@@ -27,7 +27,13 @@ export const Flow = ({ data, variant = "simple", style, plugin }) => {
   }, [nodesById, roots]);
 
   return (
-    <FlowNode node={treeData} variant={variant} style={style} plugin={plugin} />
+    <FlowNode
+      node={treeData}
+      variant={variant}
+      style={style}
+      plugin={plugin}
+      isRoot={true}
+    />
   );
 };
 

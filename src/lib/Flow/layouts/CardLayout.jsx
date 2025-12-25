@@ -1,12 +1,27 @@
 import React from "react";
 
-import { Box, Card, Stack } from "@mui/material";
+import { Box, Card, Stack, Typography } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
+
+const STYLES = {
+  width: "100%",
+  display: "-webkit-box",
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  wordBreak: "break-word",
+  lineHeight: 1.3,
+  opacity: 0.85,
+};
 
 export function MediaAvatarCard({
   sx,
   leftContent,
   rightContent,
+  title,
+  description,
+  footer,
   background,
   overlayColor,
   backgroundClassName = "animated-background-image",
@@ -25,6 +40,9 @@ export function MediaAvatarCard({
         position: "relative",
         display: "flex",
         flexDirection: "row",
+        fontSize: 12,
+        color: "rgba(255,255,255,0.82)",
+        lineHeight: 1.3,
         boxShadow: (theme) => theme.shadows[3],
         "&:hover": {
           boxShadow: (theme) => theme.shadows[6],
@@ -82,75 +100,44 @@ export function MediaAvatarCard({
 
       <Stack
         direction="column"
-        spacing={1}
         sx={{
           flex: 1,
           padding: 2,
           zIndex: 1,
           position: "relative",
-        }}
-      >
-        {rightContent}
-      </Stack>
-    </Card>
-  );
-}
-
-export function HeaderCard({
-  sx,
-  header,
-  children,
-  height = 140,
-  padding = 2,
-}) {
-  const theme = useTheme();
-
-  return (
-    <Card
-      sx={{
-        p: padding,
-        minWidth: 200,
-        maxWidth: 420,
-        height,
-        borderRadius: 3,
-        position: "relative",
-        overflow: "hidden",
-        backgroundColor: theme.palette.background.paper,
-        transition: "all 0.3s ease-in-out",
-        "&:hover": {
-          transform: "translateY(-4px)",
-          boxShadow: theme.shadows[8],
-          "&:before": {
-            height: "100%",
-          },
-        },
-        "&:before": {
-          content: '""',
-          width: "100%",
-          height: "40%",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          background: `linear-gradient(135deg, ${alpha(
-            theme.palette.secondary.light,
-            0.2
-          )}, ${alpha(theme.palette.primary.main, 0.3)})`,
-          borderRadius: "8px 8px 0 0",
-          transition: "height 0.3s ease-in-out",
-        },
-        ...sx,
-      }}
-    >
-      <Stack
-        spacing={2}
-        sx={{
           height: "100%",
-          position: "relative",
-          zIndex: 1,
+          justifyContent: "space-between",
         }}
       >
-        {header}
-        {children}
+        {rightContent ? (
+          rightContent
+        ) : (
+          <>
+            <Stack spacing={1} sx={{ width: "100%", minWidth: 0 }}>
+              <Box>{title}</Box>
+
+              {description && (
+                <Typography variant="inherit" sx={STYLES}>
+                  {description}
+                </Typography>
+              )}
+            </Stack>
+
+            {footer && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  gap: 0.5,
+                  mt: 0.5,
+                }}
+              >
+                {footer}
+              </Box>
+            )}
+          </>
+        )}
       </Stack>
     </Card>
   );
@@ -160,6 +147,9 @@ export function SideStripeCard({
   sx,
   stripeContent,
   mainContent,
+  title,
+  description,
+  footer,
   minWidth = 200,
   maxWidth = 290,
   height = 100,
@@ -168,11 +158,7 @@ export function SideStripeCard({
   const theme = useTheme();
 
   return (
-    <Box
-      sx={{
-        cursor: "pointer",
-      }}
-    >
+    <Box sx={{ cursor: "pointer" }}>
       <Card
         sx={{
           display: "flex",
@@ -185,6 +171,9 @@ export function SideStripeCard({
           boxShadow: 3,
           position: "relative",
           overflow: "hidden",
+          fontSize: 12,
+          lineHeight: 1.3,
+          color: "rgba(255,255,255,0.82)",
           "&:hover": {
             boxShadow: 6,
             "& .animated-background-selector": {
@@ -233,17 +222,115 @@ export function SideStripeCard({
 
         <Stack
           direction="column"
-          spacing={1}
           sx={{
             padding: 2,
             position: "relative",
             zIndex: 1,
+            flex: 1,
+            height: "100%",
+            justifyContent: "space-between",
           }}
         >
-          {mainContent}
+          {mainContent ? (
+            mainContent
+          ) : (
+            <>
+              <Box sx={{ minWidth: 0 }}>
+                {typeof title === "string" ? (
+                  <Typography
+                    variant="inherit"
+                    sx={{
+                      color: "text.primary",
+                      wordBreak: "break-word",
+                      hyphens: "auto",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {title}
+                  </Typography>
+                ) : (
+                  title
+                )}
+
+                {description && (
+                  <Typography
+                    variant="inherit"
+                    sx={{
+                      ...STYLES,
+                      mt: 0.5,
+                      color: "text.primary",
+                      opacity: 0.8,
+                    }}
+                  >
+                    {description}
+                  </Typography>
+                )}
+              </Box>
+
+              {footer && (
+                <Box sx={{ alignSelf: "flex-end", mt: 0.5 }}>{footer}</Box>
+              )}
+            </>
+          )}
         </Stack>
       </Card>
     </Box>
+  );
+}
+
+export function HeaderCard({
+  sx,
+  header,
+  children,
+  height = 140,
+  padding = 2,
+}) {
+  const theme = useTheme();
+  return (
+    <Card
+      sx={{
+        p: padding,
+        minWidth: 200,
+        maxWidth: 420,
+        height,
+        borderRadius: 3,
+        position: "relative",
+        overflow: "hidden",
+        backgroundColor: theme.palette.background.paper,
+        fontSize: 12,
+        lineHeight: 1.3,
+        color: "rgba(255,255,255,0.82)",
+        transition: "all 0.3s ease-in-out",
+        "&:hover": {
+          transform: "translateY(-4px)",
+          boxShadow: theme.shadows[8],
+          "&:before": { height: "100%" },
+        },
+        "&:before": {
+          content: '""',
+          width: "100%",
+          height: "40%",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          background: `linear-gradient(135deg, ${alpha(
+            theme.palette.secondary.light,
+            0.2
+          )}, ${alpha(theme.palette.primary.main, 0.3)})`,
+          borderRadius: "8px 8px 0 0",
+          transition: "height 0.3s ease-in-out",
+        },
+        ...sx,
+      }}
+    >
+      <Stack
+        spacing={2}
+        sx={{ height: "100%", position: "relative", zIndex: 1 }}
+      >
+        {header}
+        {children}
+      </Stack>
+    </Card>
   );
 }
 
@@ -264,13 +351,14 @@ export function AvatarRoleCard({
         borderRadius: 2,
         position: "relative",
         backgroundColor: theme.palette.background.paper,
+        fontSize: 12,
+        lineHeight: 1.3,
+        color: "rgba(255,255,255,0.82)",
         transition: "all 0.3s ease-in-out",
         "&:hover": {
           transform: "translateY(-4px)",
           boxShadow: theme.shadows[8],
-          "&:before": {
-            height: "100%",
-          },
+          "&:before": { height: "100%" },
         },
         "&:before": {
           content: '""',
@@ -291,11 +379,7 @@ export function AvatarRoleCard({
     >
       <Stack
         spacing={1}
-        sx={{
-          height: "100%",
-          position: "relative",
-          zIndex: 1,
-        }}
+        sx={{ height: "100%", position: "relative", zIndex: 1 }}
       >
         <Stack
           direction="row"
