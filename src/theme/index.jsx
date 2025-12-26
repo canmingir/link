@@ -50,7 +50,44 @@ export default function ThemeProvider({ children }) {
 
   const theme = createTheme(memoizedValue);
 
-  theme.components = merge(componentsOverrides(theme), contrast.components);
+  theme.components = merge(componentsOverrides(theme), contrast.components, {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          scrollbarColor:
+            theme.palette.mode === "dark"
+              ? `${theme.palette.grey[700]} ${theme.palette.background.default}`
+              : `${theme.palette.grey[500]} ${theme.palette.background.default}`,
+          scrollbarWidth: "thin",
+
+          "&::-webkit-scrollbar": {
+            width: 10,
+            height: 10,
+          },
+
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: theme.palette.background.default,
+          },
+
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? theme.palette.grey[700]
+                : theme.palette.grey[500],
+            borderRadius: 8,
+            border: `2px solid ${theme.palette.background.default}`,
+          },
+
+          "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? theme.palette.grey[600]
+                : theme.palette.grey[700],
+          },
+        },
+      },
+    },
+  });
 
   return (
     <MuiThemeProvider theme={theme}>

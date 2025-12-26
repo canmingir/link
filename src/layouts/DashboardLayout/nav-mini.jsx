@@ -63,9 +63,9 @@ export default function NavMini({ only }) {
           alignItems={"center"}
           justifyItems={"center"}
           sx={{
-            marginBottom: lgUp ? 3 : 0,
+            marginBottom: 0,
             position: lgUp ? "static" : "fixed",
-            bottom: lgUp ? "auto" : 66,
+            bottom: 0,
             width: "100%",
           }}
           gap={2}
