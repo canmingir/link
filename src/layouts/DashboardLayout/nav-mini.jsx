@@ -65,7 +65,7 @@ export default function NavMini({ only }) {
           sx={{
             marginBottom: 0,
             position: lgUp ? "static" : "fixed",
-            bottom: 0,
+            bottom: lgUp ? "auto" : 66,
             width: "100%",
           }}
           gap={2}
