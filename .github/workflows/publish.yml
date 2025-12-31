@@ -46,6 +46,7 @@ jobs:
         id: version_bump
         run: |
           npm version ${{ github.event.inputs.version_type }} -m "Bump version to %s [skip ci]"
+          echo "NEW_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
           git push --follow-tags
       
       - name: Publish to NPM
@@ -53,4 +54,13 @@ jobs:
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+
+      - name: Notify Slack
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: https://hooks.slack.com/services/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
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "Successfully published @canmingir/link@${{ steps.version_bump.outputs.NEW_VERSION }}"
+            }
