@@ -9,37 +9,80 @@ export const getBaseStyleForVariant = (v) => {
   switch (v) {
     case "card":
       return {
-        lineColor: "#BDBDBD",
+        lineColor: "#b1b1b7",
         lineWidth: "2px",
         lineStyle: "solid",
         gap: 56,
-        shape: 8,
+        shape: 10,
         bg: "background.paper",
-        hoverBg: "grey.100",
-        borderColor: "#9E9E9E",
+        hoverBg: "grey.50",
+        borderColor: "#e2e8f0",
+        selectionColor: "#64748b",
+        showDots: false,
+        showArrow: true,
+        arrowSize: 6,
+        animated: false,
+        animationSpeed: 1,
+        gradient: null,
+        curvature: 0.5,
       };
     case "pill":
       return {
-        lineColor: "#9C27B0",
+        lineColor: "#8b5cf6",
         lineWidth: "2px",
-        lineStyle: "dashed",
+        lineStyle: "solid",
         gap: 48,
         shape: 9999,
-        bg: "rgba(156, 39, 176, 0.08)",
-        hoverBg: "rgba(156, 39, 176, 0.16)",
-        borderColor: "#9C27B0",
+        bg: "rgba(139, 92, 246, 0.08)",
+        hoverBg: "rgba(139, 92, 246, 0.16)",
+        borderColor: "#8b5cf6",
+        selectionColor: "#8b5cf6",
+        showDots: false,
+        showArrow: true,
+        arrowSize: 6,
+        animated: false,
+        animationSpeed: 1,
+        gradient: null,
+        curvature: 0.4,
+      };
+    case "n8n":
+      return {
+        lineColor: "#b1b1b7",
+        lineWidth: "2px",
+        lineStyle: "solid",
+        gap: 60,
+        shape: 8,
+        bg: "#ffffff",
+        hoverBg: "#f8fafc",
+        borderColor: "#e2e8f0",
+        selectionColor: "#ff6d5a",
+        showDots: false,
+        showArrow: true,
+        arrowSize: 6,
+        animated: false,
+        animationSpeed: 1,
+        gradient: null,
+        curvature: 0.5,
       };
     case "simple":
     default:
       return {
-        lineColor: "#E0E0E0",
-        lineWidth: "1.5px",
+        lineColor: "#b1b1b7",
+        lineWidth: "2px",
         lineStyle: "solid",
-        gap: 40,
-        shape: 4,
-        bg: "background.default",
-        hoverBg: "grey.100",
-        borderColor: "#E0E0E0",
+        gap: 50,
+        shape: 8,
+        bg: "background.paper",
+        hoverBg: "grey.50",
+        borderColor: "#e2e8f0",
+        selectionColor: "#64748b",
+        showDots: false,
+        showArrow: true,
+        arrowSize: 6,
+        animated: false,
+        animationSpeed: 1,
+        gradient: null,
+        curvature: 0.5,
       };
   }
 };
@@ -74,7 +117,6 @@ export const applySemanticTokens = (styleObj, base) => {
     s.borderColor = s.border;
   }
 
-  // size: small | medium | large
   const sizeMap = {
     small: { cardWidth: 140, gap: 20 },
     medium: { cardWidth: 180, gap: 30 },
@@ -86,7 +128,6 @@ export const applySemanticTokens = (styleObj, base) => {
     if (s.gap == null) s.gap = gap;
   }
 
-  // shape: "square" | "vertical" (affects dimensions)
   if (s.shape === "square") {
     const defaultSize = 140;
     if (s.cardWidth != null && s.minHeight == null) s.minHeight = s.cardWidth;
@@ -104,7 +145,6 @@ export const applySemanticTokens = (styleObj, base) => {
     if (s.minHeight == null) s.minHeight = Math.max(s.cardWidth * 1.3, 110);
   }
 
-  // shadow: "none" | "soft" | "heavy"
   const shadowVariantMap = { none: 0, soft: 2, heavy: 6 };
   if (s.shadow && shadowVariantMap[s.shadow] != null && s.shadowLevel == null) {
     s.shadowLevel = shadowVariantMap[s.shadow];
