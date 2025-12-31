@@ -9,12 +9,12 @@ const MainContainer = styled("div", {
   shouldForwardProp: (prop) => prop !== "$style",
 })(({ theme, $style = {} }) => {
   const {
-    minWidth = 120,
-    minHeight = 120,
-    maxWidth = 160,
-    maxHeight = 160,
-    borderRadius = 16,
-    borderColor = "rgba(255, 255, 255, 0.2)",
+    minWidth = 280,
+    minHeight = 220,
+    maxWidth = 320,
+    maxHeight = "auto",
+    borderRadius = 20,
+    borderColor = "rgba(255, 255, 255, 0.08)",
     bgFrom,
     bgTo,
   } = $style;
@@ -28,10 +28,11 @@ const MainContainer = styled("div", {
   return {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
     color: "#ffffff",
     borderRadius,
-    padding: "16px 20px",
+    padding: "24px",
     border: `1px solid ${borderColor}`,
     backdropFilter: "blur(10px)",
     transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -56,26 +57,38 @@ const MainContainer = styled("div", {
   };
 });
 
+const HeaderRow = styled("div")({
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  width: "100%",
+  gap: "16px",
+  marginBottom: "16px",
+  minHeight: "44px",
+});
+
 const IconContainer = styled("div", {
   shouldForwardProp: (prop) => prop !== "$style",
 })(({ $style = {} }) => {
   const {
     bg = "rgba(255, 255, 255, 0.1)",
-    hoverBg = "rgba(255, 255, 255, 0.15)",
-    borderRadius = 12,
-    padding = 8,
-    borderColor = "rgba(255, 255, 255, 0.3)",
-    marginBottom = 12,
+    hoverBg = "rgba(255, 255, 255, 0.2)",
+    borderRadius = 14,
+    padding = 10,
+    borderColor = "rgba(255, 255, 255, 0.1)",
   } = $style;
 
   return {
     backgroundColor: bg,
     borderRadius,
     padding,
-    marginBottom,
     transition: "all 0.4s ease",
     backdropFilter: "blur(5px)",
     border: `1px solid ${borderColor}`,
+    flexShrink: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
 
     '[data-hovered="true"] &': {
       backgroundColor: hoverBg,
@@ -88,44 +101,90 @@ const LabelText = styled("div", {
 })(({ $style = {} }) => {
   const {
     color = "#ffffff",
-    fontWeight = 600,
-    fontSize = 13,
-    letterSpacing = 0.5,
+    fontWeight = 700,
+    fontSize = 15,
+    letterSpacing = 0.3,
   } = $style;
 
   return {
     fontWeight,
     fontSize,
     letterSpacing: `${letterSpacing}px`,
-    textAlign: "center",
+    textAlign: "left",
     transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-    textShadow: "none",
-    lineHeight: "1.4",
+    lineHeight: "1.2",
     opacity: 0,
-    transform: "translateY(10px)",
+    transform: "translateX(10px)",
     color,
+    flex: 1,
 
     '&[data-animated="true"]': {
       opacity: 1,
-      transform: "translateY(0)",
+      transform: "translateX(0)",
     },
   };
 });
+
+const DescriptionText = styled("div")(({ theme }) => ({
+  fontSize: "12px",
+  fontWeight: 400,
+  color: alpha("#fff", 0.6),
+  textAlign: "left",
+  lineHeight: "1.5",
+  width: "100%",
+  flex: 1,
+  opacity: 0,
+  transform: "translateY(10px)",
+  transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s",
+  marginBottom: "16px",
+  display: "-webkit-box",
+  WebkitLineClamp: 4,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+
+  '&[data-animated="true"]': {
+    opacity: 1,
+    transform: "translateY(0)",
+  },
+}));
+
+const ActionText = styled("div")(({ theme }) => ({
+  fontSize: "10px",
+  fontWeight: 700,
+  textTransform: "uppercase",
+  letterSpacing: "1px",
+  color: alpha("#fff", 0.4),
+  marginTop: "auto",
+  textAlign: "left",
+  width: "100%",
+  fontFamily: "monospace",
+  opacity: 0,
+  transform: "translateY(5px)",
+  transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s",
+
+  '&[data-animated="true"]': {
+    opacity: 1,
+    transform: "translateY(0)",
+  },
+}));
 
 const getIcon = (node) => {
   if (node.icon) return node.icon;
   if (node.type === "CONDITION" || node.type === "decision")
     return "mdi:help-circle-outline";
   if (node.type === "NORMAL") return "mdi:checkbox-blank-circle-outline";
-  return "mdi:cube-outline";
+  return "mdi:map-marker";
 };
 
-const InfoNode = ({ node, nodeStyle = {} }) => {
+const InfoNode = ({ node, nodeStyle = {}, children }) => {
   const [animated, setAnimated] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const label =
-    node.label || node.title || node.name || node.id || "Responsibility";
+  const label = node.label || node.title || node.name || node.id || "Get Data";
+
+  const action = node.action || "SYSTEM:DEFAULT_ACTION";
+  const description =
+    node.description || "Description of the operation goes here.";
 
   useEffect(() => {
     const timer = setTimeout(() => setAnimated(true), ANIMATION_DELAY_MS);
@@ -133,14 +192,9 @@ const InfoNode = ({ node, nodeStyle = {} }) => {
   }, []);
 
   const layoutStyle = {
-    minWidth: nodeStyle.cardWidth || nodeStyle.minWidth || 120,
-    minHeight: nodeStyle.minHeight || 120,
-    maxWidth: nodeStyle.maxWidth || 160,
-    maxHeight: nodeStyle.maxHeight || 160,
-    borderRadius: typeof nodeStyle.shape === "number" ? nodeStyle.shape : 16,
-    borderColor: nodeStyle.borderColor || "rgba(255, 255, 255, 0.2)",
-    bgFrom: nodeStyle.bgFrom,
-    bgTo: nodeStyle.bgTo,
+    ...nodeStyle,
+    minWidth: nodeStyle.cardWidth || nodeStyle.minWidth || 280,
+    minHeight: nodeStyle.minHeight || 220,
   };
 
   const iconContainerStyle = {
@@ -149,7 +203,6 @@ const InfoNode = ({ node, nodeStyle = {} }) => {
     iconBorderRadius: nodeStyle.iconRadius,
     iconPadding: nodeStyle.iconPadding,
     iconBorderColor: nodeStyle.iconBorderColor,
-    iconMarginBottom: nodeStyle.iconMarginBottom,
   };
 
   const labelStyle = {
@@ -168,27 +221,33 @@ const InfoNode = ({ node, nodeStyle = {} }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <IconContainer $style={iconContainerStyle}>
-        <Iconify
-          icon={icon}
-          width={28}
-          height={28}
-          sx={{
-            transition: "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
-            transform: animated
-              ? isHovered
-                ? "rotate(360deg) scale(1.1)"
-                : "rotate(0deg) scale(1)"
-              : "rotate(-90deg) scale(0.8)",
-            filter: "none",
-            color: nodeStyle.iconColor || "#ffffff",
-          }}
-        />
-      </IconContainer>
+      <HeaderRow>
+        <IconContainer $style={iconContainerStyle}>
+          <Iconify
+            icon={icon}
+            width={24}
+            height={24}
+            sx={{
+              filter: "none",
+              color: nodeStyle.iconColor || "#ffffff",
+            }}
+          />
+        </IconContainer>
 
-      <LabelText data-animated={animated} $style={labelStyle}>
-        {label}
-      </LabelText>
+        <LabelText data-animated={animated} $style={labelStyle}>
+          {label}
+        </LabelText>
+      </HeaderRow>
+
+      {description && (
+        <DescriptionText data-animated={animated}>
+          {description}
+        </DescriptionText>
+      )}
+
+      {action && <ActionText data-animated={animated}>{action}</ActionText>}
+
+      {children}
     </MainContainer>
   );
 };
