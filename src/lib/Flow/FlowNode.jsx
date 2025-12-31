@@ -509,7 +509,7 @@ const FlowNode = ({ isRoot = false, onAddNode, variant, ...props }) => {
 
   return (
     <SelectionProvider>
-      <FlowCanvas onAddNode={onAddNode} selectionColor={selectionColor}>
+      <FlowCanvas selectionColor={selectionColor}>
         <NodeContent onAddNode={onAddNode} variant={variant} {...props} />
       </FlowCanvas>
     </SelectionProvider>
