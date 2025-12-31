@@ -286,7 +286,7 @@ const NodeContent = ({
                     columnGap: gap,
                   }),
               position: "relative",
-              alignItems: isHorizontal ? "flex-start" : "flex-start",
+              alignItems: "flex-start",
               justifyContent: "center",
             }}
           >
