@@ -4,6 +4,7 @@ import { getContentParts } from "./flowUtils";
 
 import { Box, Card, Typography } from "@mui/material";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { SelectionProvider, useSelection } from "./SelectionContext";
 import {
   applySemanticTokens,
   getBaseStyleForVariant,
@@ -61,6 +62,7 @@ const NodeContent = ({
   const nodeStyle = applySemanticTokens(rawNodeStyle, baseStyle);
 
   const {
+    direction = "vertical",
     lineColor = baseStyle.lineColor,
     lineWidth = baseStyle.lineWidth,
     lineStyle = baseStyle.lineStyle,
@@ -73,8 +75,19 @@ const NodeContent = ({
     shape,
     shadowLevel,
     minHeight,
-    connectorType = baseStyle.connectorType ?? "default",
+    showDots = baseStyle.showDots ?? false,
+    dotRadius = baseStyle.dotRadius ?? 4,
+    dotColor = baseStyle.dotColor,
+    showArrow = baseStyle.showArrow ?? true,
+    arrowSize = baseStyle.arrowSize ?? 6,
+    animated = baseStyle.animated ?? false,
+    animationSpeed = baseStyle.animationSpeed ?? 1,
+    gradient = baseStyle.gradient ?? null,
+    curvature = baseStyle.curvature ?? 0.5,
+    selectionColor = baseStyle.selectionColor ?? "#64748b",
   } = nodeStyle;
+
+  const isHorizontal = direction === "horizontal";
 
   const strokeWidth = toPxNumber(lineWidth, 1.5);
   const dashStyle =
@@ -220,7 +233,7 @@ const NodeContent = ({
       ref={containerRef}
       sx={{
         display: "inline-flex",
-        flexDirection: "column",
+        flexDirection: isHorizontal ? "row" : "column",
         alignItems: "center",
         position: "relative",
       }}
@@ -231,6 +244,8 @@ const NodeContent = ({
           if (registerRef) registerRef(el);
         }}
         onDrag={handleDrag}
+        nodeId={node.id}
+        selectionColor={selectionColor}
       >
         {renderContent()}
       </DraggableNode>
@@ -244,18 +259,34 @@ const NodeContent = ({
             stroke={lineColor}
             strokeWidth={strokeWidth}
             lineStyle={dashStyle}
-            connectorType={connectorType}
             tick={connectorTick}
+            orientation={direction}
+            showDots={showDots}
+            dotRadius={dotRadius}
+            dotColor={dotColor}
+            showArrow={showArrow}
+            arrowSize={arrowSize}
+            animated={animated}
+            animationSpeed={animationSpeed}
+            gradient={gradient}
+            curvature={curvature}
           />
 
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
-              columnGap: gap,
-              marginTop: levelGap,
+              flexDirection: isHorizontal ? "column" : "row",
+              ...(isHorizontal
+                ? {
+                    marginLeft: levelGap,
+                    rowGap: gap,
+                  }
+                : {
+                    marginTop: levelGap,
+                    columnGap: gap,
+                  }),
               position: "relative",
-              alignItems: "flex-start",
+              alignItems: isHorizontal ? "flex-start" : "flex-start",
               justifyContent: "center",
             }}
           >
@@ -279,15 +310,49 @@ const NodeContent = ({
   );
 };
 
-const FlowNode = ({ isRoot = false, ...props }) => {
-  if (!isRoot) {
-    return <NodeContent {...props} />;
-  }
+const hexToRgba = (hex, alpha) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
 
+const SelectionBox = ({ box, selectionColor = "#64748b" }) => {
+  if (!box) return null;
+
+  const { startX, startY, currentX, currentY } = box;
+  const left = Math.min(startX, currentX);
+  const top = Math.min(startY, currentY);
+  const width = Math.abs(currentX - startX);
+  const height = Math.abs(currentY - startY);
+
+  return (
+    <Box
+      sx={{
+        position: "fixed",
+        left,
+        top,
+        width,
+        height,
+        border: `2px solid ${selectionColor}`,
+        backgroundColor: hexToRgba(selectionColor, 0.1),
+        pointerEvents: "none",
+        zIndex: 9999,
+        borderRadius: "4px",
+      }}
+    />
+  );
+};
+
+const FlowCanvas = ({ children, selectionColor = "#64748b" }) => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-
   const [zoom, setZoom] = useState(1);
+  const [selectionBox, setSelectionBox] = useState(null);
+  const containerRef = useRef(null);
+  const selectionBoxRef = useRef(null);
+
+  const { clearSelection, selectMultiple, addToSelection } = useSelection();
 
   const clampZoom = (z) => Math.min(2.5, Math.max(0.25, z));
 
@@ -295,28 +360,92 @@ const FlowNode = ({ isRoot = false, ...props }) => {
     const onWheel = (e) => {
       const wantsZoom = e.ctrlKey || e.metaKey;
       if (!wantsZoom) return;
-
       e.preventDefault();
-
       const direction = e.deltaY > 0 ? -1 : 1;
       const factor = direction > 0 ? 1.1 : 1 / 1.1;
-
       setZoom((z) => clampZoom(z * factor));
     };
-
     window.addEventListener("wheel", onWheel, { passive: false });
     return () => window.removeEventListener("wheel", onWheel);
   }, []);
 
   const handleCanvasMouseDown = (e) => {
-    if (e.target?.closest?.('[data-flow-zoom="true"]')) return;
+    if (e.target?.closest?.(".MuiCard-root") || e.target?.closest?.("button"))
+      return;
 
     if (e.button !== 0) return;
 
-    setIsDragging(true);
-
     const startX = e.clientX;
     const startY = e.clientY;
+
+    if (e.shiftKey || e.ctrlKey || e.metaKey) {
+      setSelectionBox({ startX, startY, currentX: startX, currentY: startY });
+      selectionBoxRef.current = {
+        startX,
+        startY,
+        currentX: startX,
+        currentY: startY,
+      };
+
+      const onMove = (ev) => {
+        const newBox = {
+          startX,
+          startY,
+          currentX: ev.clientX,
+          currentY: ev.clientY,
+        };
+        setSelectionBox(newBox);
+        selectionBoxRef.current = newBox;
+      };
+
+      const onUp = () => {
+        if (containerRef.current && selectionBoxRef.current) {
+          const box = selectionBoxRef.current;
+          const nodes = containerRef.current.querySelectorAll("[data-node-id]");
+          const selectedNodeIds = [];
+
+          const boxLeft = Math.min(box.startX, box.currentX);
+          const boxRight = Math.max(box.startX, box.currentX);
+          const boxTop = Math.min(box.startY, box.currentY);
+          const boxBottom = Math.max(box.startY, box.currentY);
+
+          nodes.forEach((node) => {
+            const rect = node.getBoundingClientRect();
+
+            if (
+              rect.left < boxRight &&
+              rect.right > boxLeft &&
+              rect.top < boxBottom &&
+              rect.bottom > boxTop
+            ) {
+              const nodeId = node.getAttribute("data-node-id");
+              if (nodeId) selectedNodeIds.push(nodeId);
+            }
+          });
+
+          if (selectedNodeIds.length > 0) {
+            if (e.shiftKey) {
+              addToSelection(selectedNodeIds);
+            } else {
+              selectMultiple(selectedNodeIds);
+            }
+          }
+        }
+
+        setSelectionBox(null);
+        selectionBoxRef.current = null;
+        window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("mouseup", onUp);
+      };
+
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", onUp);
+      return;
+    }
+
+    clearSelection();
+
+    setIsDragging(true);
     const startOffset = { ...offset };
 
     const onMove = (ev) => {
@@ -338,6 +467,7 @@ const FlowNode = ({ isRoot = false, ...props }) => {
 
   return (
     <Box
+      ref={containerRef}
       onMouseDown={handleCanvasMouseDown}
       sx={{
         width: "100vw",
@@ -349,6 +479,7 @@ const FlowNode = ({ isRoot = false, ...props }) => {
         position: "relative",
       }}
     >
+      <SelectionBox box={selectionBox} selectionColor={selectionColor} />
       <Box
         sx={{
           transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
@@ -362,9 +493,26 @@ const FlowNode = ({ isRoot = false, ...props }) => {
           pointerEvents: "auto",
         }}
       >
-        <NodeContent {...props} />
+        {children}
       </Box>
     </Box>
+  );
+};
+
+const FlowNode = ({ isRoot = false, onAddNode, variant, ...props }) => {
+  if (!isRoot) {
+    return <NodeContent onAddNode={onAddNode} variant={variant} {...props} />;
+  }
+
+  const baseStyle = getBaseStyleForVariant(variant);
+  const selectionColor = baseStyle.selectionColor ?? "#64748b";
+
+  return (
+    <SelectionProvider>
+      <FlowCanvas onAddNode={onAddNode} selectionColor={selectionColor}>
+        <NodeContent onAddNode={onAddNode} variant={variant} {...props} />
+      </FlowCanvas>
+    </SelectionProvider>
   );
 };
 
