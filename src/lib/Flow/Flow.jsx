@@ -1,5 +1,5 @@
 import FlowNode from "./FlowNode";
-import { v4 as uuid } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import React, { useCallback, useMemo, useState } from "react";
 import {
