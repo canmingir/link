@@ -459,11 +459,18 @@ const FlowCanvas = ({
   const clampZoom = (z) => Math.min(2.5, Math.max(0.25, z));
 
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
     const handleMouseMove = (e) => {
       mousePositionRef.current = { x: e.clientX, y: e.clientY };
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+
+    container.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      container.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   useEffect(() => {
