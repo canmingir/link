@@ -661,7 +661,7 @@ const FlowCanvas = ({
         {children}
         {floatingNodes.map((structure, index) => {
           const structureKey = structure.roots?.length
-            ? `floating-${structure.roots.join("-")}-${index}`
+            ? `floating-${JSON.stringify(structure.roots)}-${index}`
             : `floating-${index}`;
           return (
             <FloatingStructure
