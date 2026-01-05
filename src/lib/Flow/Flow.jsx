@@ -1,4 +1,5 @@
 import FlowNode from "./FlowNode";
+import { v4 as uuid } from "uuid";
 
 import React, { useCallback, useMemo, useState } from "react";
 import {
@@ -183,32 +184,26 @@ export const Flow = ({
         validNodes[id] = structure.nodes[id];
       });
 
-      // 2. Identify all "child" nodes within this paste group
       const internalChildIds = new Set();
 
       validNodeIds.forEach((id) => {
         const node = validNodes[id];
-        // Use utility to safely get array of connections from .next or .raw.next
+
         const nextIds = toNextArray(node.next || node.raw?.next);
         nextIds.forEach((childId) => internalChildIds.add(childId));
       });
 
-      // 3. Filter Roots:
-      // A node is a valid root ONLY if:
-      // a) It exists in the validNodes map
-      // b) It is NOT a child of another node in this group (internalChildIds)
       const validRoots = structure.roots.filter(
         (id) => validNodes[id] && !internalChildIds.has(id)
       );
 
-      // Even if roots were provided, if they are all actually children, we might have 0 roots.
       if (validRoots.length === 0) return;
 
       const newPasteItem = {
         ...structure,
         nodes: validNodes,
-        roots: [...new Set(validRoots)], // Ensure no duplicate strings in array
-        _pasteId: crypto.randomUUID(),
+        roots: [...new Set(validRoots)],
+        _pasteId: uuidv4(),
       };
 
       setFloatingNodes((prev) => {
@@ -224,8 +219,6 @@ export const Flow = ({
           console.log("Paste blocked: Nodes already exist in floating layer.");
           return prev;
         }
-
-        console.log("Pasting nodes into floating layer:", newPasteItem);
 
         return [...prev, newPasteItem];
       });
@@ -254,7 +247,7 @@ export const Flow = ({
         if (selectedInStructure.length === 0) return;
 
         const updatedNodes = { ...data.nodes };
-        const nodesToConnect = new Set();
+
         const rootsToConnect = [];
 
         selectedInStructure.forEach((selectedId) => {
