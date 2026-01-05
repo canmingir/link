@@ -182,13 +182,27 @@ export const SelectionProvider = ({ children }) => {
       setClipboard([]);
 
       const pasteData = buildPasteStructure(nodesToPaste, { x, y });
-      if (pasteData) {
-        callback(pasteData, { x, y });
+      if (!pasteData) {
+        isPastingRef.current = false;
+        return;
       }
 
-      setTimeout(() => {
+      let result;
+      try {
+        result = callback(pasteData, { x, y });
+      } catch (error) {
         isPastingRef.current = false;
-      }, 100);
+        throw error;
+      }
+
+      if (result && typeof result.then === "function") {
+        return result.finally(() => {
+          isPastingRef.current = false;
+        });
+      }
+
+      isPastingRef.current = false;
+      return result;
     },
     [clipboard]
   );
