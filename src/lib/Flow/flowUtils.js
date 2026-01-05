@@ -109,3 +109,45 @@ export const getContentParts = (n) => {
 
   return { title, subtitle, metaEntries };
 };
+
+export const toNextArray = (next) => {
+  if (!next) return [];
+  return Array.isArray(next) ? next : [next];
+};
+
+export const setNextProperty = (node, nextIds) => {
+  if (!nextIds || nextIds.length === 0) {
+    delete node.next;
+  } else if (nextIds.length === 1) {
+    node.next = nextIds[0];
+  } else {
+    node.next = nextIds;
+  }
+};
+
+export const addToNext = (node, childIds) => {
+  const current = toNextArray(node.next);
+  const newIds = childIds.filter((id) => !current.includes(id));
+  setNextProperty(node, [...current, ...newIds]);
+};
+
+export const removeFromNext = (node, childIds) => {
+  const removeSet = new Set(childIds);
+  const filtered = toNextArray(node.next).filter((id) => !removeSet.has(id));
+  setNextProperty(node, filtered);
+};
+
+export const cleanupReferences = (nodes, removedIds) => {
+  const removeSet = new Set(removedIds);
+  Object.values(nodes).forEach((node) => {
+    if (removeSet.has(node.next)) {
+      delete node.next;
+    } else if (Array.isArray(node.next)) {
+      const filtered = node.next.filter((n) => !removeSet.has(n));
+      setNextProperty(node, filtered);
+    }
+    if (removeSet.has(node.previous)) {
+      delete node.previous;
+    }
+  });
+};
