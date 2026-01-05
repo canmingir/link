@@ -3,7 +3,13 @@ import DynamicConnector from "./DynamicConnector";
 import { getContentParts } from "./flowUtils";
 
 import { Box, Card, Typography } from "@mui/material";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { SelectionProvider, useSelection } from "./SelectionContext";
 import {
   applySemanticTokens,
@@ -20,6 +26,7 @@ const NodeContent = ({
   plugin,
   registerRef,
   onDrag,
+  onConnect,
 }) => {
   const baseStyle = getBaseStyleForVariant(variant);
   const hasChildren = Array.isArray(node.children) && node.children.length > 0;
@@ -246,6 +253,8 @@ const NodeContent = ({
         onDrag={handleDrag}
         nodeId={node.id}
         selectionColor={selectionColor}
+        initialPosition={node._pastePosition}
+        onConnect={onConnect}
       >
         {renderContent()}
       </DraggableNode>
@@ -301,6 +310,7 @@ const NodeContent = ({
                 registerRef={(el) => (childRefs.current[child.id] = el)}
                 onDrag={() => setConnectorTick((t) => t + 1)}
                 isRoot={false}
+                onConnect={onConnect}
               />
             ))}
           </Box>
@@ -344,17 +354,117 @@ const SelectionBox = ({ box, selectionColor = "#64748b" }) => {
   );
 };
 
-const FlowCanvas = ({ children, selectionColor = "#64748b" }) => {
+const buildFloatingTree = (rootId, nodesById) => {
+  if (!rootId || !nodesById?.[rootId]) return null;
+  const seen = new Set();
+
+  const buildNode = (id) => {
+    if (!id || seen.has(id) || !nodesById[id]) return null;
+    seen.add(id);
+
+    const node = nodesById[id];
+    const { next, previous, ...rest } = node;
+    const result = { ...rest, id, children: [] };
+
+    const nextIds = Array.isArray(next) ? next : next != null ? [next] : [];
+
+    nextIds.forEach((nxt) => {
+      const nextId = typeof nxt === "string" ? nxt : nxt?.id;
+      if (!nextId || !nodesById[nextId]) return;
+
+      const child = buildNode(nextId);
+      if (child) result.children.push(child);
+    });
+
+    return result;
+  };
+
+  return buildNode(rootId);
+};
+
+const FloatingStructure = ({
+  structure,
+  variant,
+  style,
+  plugin,
+  onConnect,
+}) => {
+  const position = structure?._pastePosition || { x: 0, y: 0 };
+
+  const treesData = useMemo(() => {
+    if (!structure?.roots?.length || !structure?.nodes) return [];
+
+    return structure.roots
+      .map((rootId) => buildFloatingTree(rootId, structure.nodes))
+      .filter(Boolean);
+  }, [structure]);
+
+  if (!treesData.length) return null;
+
+  return (
+    <Box
+      sx={{
+        position: "absolute",
+        left: "50%",
+        top: "50%",
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        display: "flex",
+        gap: 2,
+      }}
+    >
+      {treesData.map((tree, idx) => (
+        <NodeContent
+          key={tree.id || `floating-${idx}`}
+          node={tree}
+          variant={variant}
+          style={style}
+          plugin={plugin}
+          isRoot={false}
+          onConnect={onConnect}
+        />
+      ))}
+    </Box>
+  );
+};
+
+const FlowCanvas = ({
+  children,
+  selectionColor = "#64748b",
+  nodesById,
+  onPaste,
+  onCut,
+  onConnect,
+  floatingNodes = [],
+  variant,
+  style,
+  plugin,
+}) => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [zoom, setZoom] = useState(1);
   const [selectionBox, setSelectionBox] = useState(null);
   const containerRef = useRef(null);
   const selectionBoxRef = useRef(null);
+  const mousePositionRef = useRef({ x: 0, y: 0 });
 
-  const { clearSelection, selectMultiple, addToSelection } = useSelection();
+  const {
+    clearSelection,
+    selectMultiple,
+    addToSelection,
+    cutSelectedNodes,
+    pasteNodes,
+    selectedIds,
+  } = useSelection();
 
   const clampZoom = (z) => Math.min(2.5, Math.max(0.25, z));
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      mousePositionRef.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   useEffect(() => {
     const onWheel = (e) => {
@@ -368,6 +478,53 @@ const FlowCanvas = ({ children, selectionColor = "#64748b" }) => {
     window.addEventListener("wheel", onWheel, { passive: false });
     return () => window.removeEventListener("wheel", onWheel);
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const isMod = e.ctrlKey || e.metaKey;
+      if (!isMod) return;
+
+      if (e.key === "x" && selectedIds.size > 0 && nodesById) {
+        e.preventDefault();
+        cutSelectedNodes(nodesById, onCut);
+      }
+
+      if (e.key === "v" && onPaste) {
+        e.preventDefault();
+        const containerRect = containerRef.current?.getBoundingClientRect();
+        const mousePos = mousePositionRef.current;
+
+        const canvasX = containerRect
+          ? (mousePos.x -
+              containerRect.left -
+              containerRect.width / 2 -
+              offset.x) /
+            zoom
+          : 0;
+        const canvasY = containerRect
+          ? (mousePos.y -
+              containerRect.top -
+              containerRect.height / 2 -
+              offset.y) /
+            zoom
+          : 0;
+
+        pasteNodes(onPaste, canvasX, canvasY);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [
+    cutSelectedNodes,
+    pasteNodes,
+    selectedIds,
+    nodesById,
+    onPaste,
+    onCut,
+    offset,
+    zoom,
+  ]);
 
   const handleCanvasMouseDown = (e) => {
     if (e.target?.closest?.(".MuiCard-root") || e.target?.closest?.("button"))
@@ -491,17 +648,58 @@ const FlowCanvas = ({ children, selectionColor = "#64748b" }) => {
           justifyContent: "center",
           transition: isDragging ? "none" : "transform 0.1s ease-out",
           pointerEvents: "auto",
+          position: "relative",
         }}
       >
         {children}
+        {floatingNodes.map((structure, index) => {
+          const structureKey = structure.roots?.length
+            ? `floating-${structure.roots.join("-")}-${index}`
+            : `floating-${index}`;
+          return (
+            <FloatingStructure
+              key={structureKey}
+              structure={structure}
+              variant={variant}
+              style={style}
+              plugin={plugin}
+              selectionColor={selectionColor}
+              onConnect={onConnect}
+            />
+          );
+        })}
       </Box>
     </Box>
   );
 };
 
-const FlowNode = ({ isRoot = false, onAddNode, variant, ...props }) => {
+const FlowNode = ({
+  isRoot = false,
+  onAddNode,
+  variant,
+  nodesById,
+  onPaste,
+  onCut,
+  onConnect,
+  floatingNodes,
+  style,
+  plugin,
+  node,
+  ...props
+}) => {
   if (!isRoot) {
-    return <NodeContent onAddNode={onAddNode} variant={variant} {...props} />;
+    if (!node) return null;
+    return (
+      <NodeContent
+        node={node}
+        onAddNode={onAddNode}
+        variant={variant}
+        style={style}
+        plugin={plugin}
+        onConnect={onConnect}
+        {...props}
+      />
+    );
   }
 
   const baseStyle = getBaseStyleForVariant(variant);
@@ -509,8 +707,28 @@ const FlowNode = ({ isRoot = false, onAddNode, variant, ...props }) => {
 
   return (
     <SelectionProvider>
-      <FlowCanvas selectionColor={selectionColor}>
-        <NodeContent onAddNode={onAddNode} variant={variant} {...props} />
+      <FlowCanvas
+        selectionColor={selectionColor}
+        nodesById={nodesById}
+        onPaste={onPaste}
+        onCut={onCut}
+        onConnect={onConnect}
+        floatingNodes={floatingNodes}
+        variant={variant}
+        style={style}
+        plugin={plugin}
+      >
+        {node && (
+          <NodeContent
+            node={node}
+            onAddNode={onAddNode}
+            variant={variant}
+            style={style}
+            plugin={plugin}
+            onConnect={onConnect}
+            {...props}
+          />
+        )}
       </FlowCanvas>
     </SelectionProvider>
   );
