@@ -151,3 +151,38 @@ export const cleanupReferences = (nodes, removedIds) => {
     }
   });
 };
+
+export const hexToRgba = (hex, alpha) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+export const buildDetachedTree = (rootId, nodesById) => {
+  if (!rootId || !nodesById?.[rootId]) return null;
+  const seen = new Set();
+
+  const buildNode = (id) => {
+    if (!id || seen.has(id) || !nodesById[id]) return null;
+    seen.add(id);
+
+    const node = nodesById[id];
+    const { next, previous, ...rest } = node;
+    const result = { ...rest, id, children: [] };
+
+    const nextIds = Array.isArray(next) ? next : next != null ? [next] : [];
+
+    nextIds.forEach((nxt) => {
+      const nextId = typeof nxt === "string" ? nxt : nxt?.id;
+      if (!nextId || !nodesById[nextId]) return;
+
+      const child = buildNode(nextId);
+      if (child) result.children.push(child);
+    });
+
+    return result;
+  };
+
+  return buildNode(rootId);
+};
