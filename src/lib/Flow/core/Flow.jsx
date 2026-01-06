@@ -1,8 +1,8 @@
 import FlowNode from "./FlowNode";
-import { useGraphOperations } from "./useGraphOperations";
+import { useGraphOperations } from "../hooks/useGraphOperations";
 
 import React, { useMemo, useState } from "react";
-import { assertLinkedGraph, buildTreeFromLinked } from "./flowUtils";
+import { assertLinkedGraph, buildTreeFromLinked } from "../utils/flowUtils";
 
 export const Flow = ({
   data,
@@ -26,26 +26,15 @@ export const Flow = ({
   });
 
   const allNodesById = useMemo(() => {
-    const floatingNodeIds = new Set();
-    floatingNodes.forEach((structure) => {
-      if (structure?.nodes) {
-        Object.keys(structure.nodes).forEach((id) => floatingNodeIds.add(id));
-      }
-    });
+    if (!floatingNodes.length) return nodesById;
 
-    const mainTreeNodes = {};
-    Object.keys(nodesById).forEach((id) => {
-      if (!floatingNodeIds.has(id)) {
-        mainTreeNodes[id] = nodesById[id];
-      }
-    });
+    const merged = { ...nodesById };
 
-    const merged = { ...mainTreeNodes };
-    floatingNodes.forEach((structure) => {
+    for (const structure of floatingNodes) {
       if (structure?.nodes) {
         Object.assign(merged, structure.nodes);
       }
-    });
+    }
 
     return merged;
   }, [nodesById, floatingNodes]);
