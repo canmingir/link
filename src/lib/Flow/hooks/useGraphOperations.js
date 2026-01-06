@@ -6,7 +6,7 @@ import {
   cleanupReferences,
   removeFromNext,
   toNextArray,
-} from "./flowUtils";
+} from "../utils/flowUtils";
 
 export const useGraphOperations = ({
   nodesById,
