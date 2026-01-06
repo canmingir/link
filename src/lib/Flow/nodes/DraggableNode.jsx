@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useSelection } from "./SelectionContext";
+import { useSelection } from "../selection/SelectionContext";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
