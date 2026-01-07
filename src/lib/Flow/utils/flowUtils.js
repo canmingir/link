@@ -186,3 +186,83 @@ export const buildDetachedTree = (rootId, nodesById) => {
 
   return buildNode(rootId);
 };
+
+export const getSelectedInStructure = (structure, selectedIds) =>
+  selectedIds.filter((id) => structure.nodes?.[id]);
+
+export const getRootsToConnect = (structure, selectedIds) => {
+  const selectedSet = new Set(selectedIds);
+  const roots = [];
+
+  selectedIds.forEach((id) => {
+    let current = structure.nodes[id];
+    if (!current) return;
+
+    let rootId = id;
+
+    while (current.previous && structure.nodes[current.previous]) {
+      if (selectedSet.has(current.previous)) {
+        rootId = current.previous;
+        current = structure.nodes[current.previous];
+      } else break;
+    }
+
+    if (!current.previous && !roots.includes(rootId)) {
+      roots.push(rootId);
+    }
+  });
+
+  if (roots.length > 0) return roots;
+
+  return selectedIds.filter((id) => {
+    const node = structure.nodes[id];
+    return node && (!node.previous || !structure.nodes[node.previous]);
+  });
+};
+
+export const collectSubtree = (structure, roots, selectedIds) => {
+  const selectedSet = new Set(selectedIds);
+  const collected = new Set();
+
+  const dfs = (id) => {
+    if (collected.has(id) || !structure.nodes[id]) return;
+    collected.add(id);
+
+    toNextArray(structure.nodes[id].next).forEach((childId) => {
+      if (structure.nodes[childId] && selectedSet.has(childId)) {
+        dfs(childId);
+      }
+    });
+  };
+
+  roots.forEach(dfs);
+  return collected;
+};
+
+export const splitFloatingStructure = (structure, removedIds) => {
+  const remainingNodes = {};
+
+  Object.entries(structure.nodes).forEach(([id, node]) => {
+    if (!removedIds.has(id)) {
+      remainingNodes[id] = node;
+    }
+  });
+
+  cleanupReferences(remainingNodes, [...removedIds]);
+
+  const remainingRoots =
+    structure.roots?.filter((r) => !removedIds.has(r)) ?? [];
+
+  const roots =
+    remainingRoots.length > 0
+      ? remainingRoots
+      : Object.keys(remainingNodes).filter(
+          (id) => !remainingNodes[id].previous
+        );
+
+  return {
+    ...structure,
+    nodes: remainingNodes,
+    roots: [...new Set(roots)],
+  };
+};
