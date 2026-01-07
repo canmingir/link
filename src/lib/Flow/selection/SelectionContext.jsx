@@ -179,7 +179,6 @@ export const SelectionProvider = ({ children }) => {
 
       isPastingRef.current = true;
       const nodesToPaste = [...clipboard];
-      setClipboard([]);
 
       const pasteData = buildPasteStructure(nodesToPaste, { x, y });
       if (!pasteData) {
@@ -196,11 +195,16 @@ export const SelectionProvider = ({ children }) => {
       }
 
       if (result && typeof result.then === "function") {
-        return result.finally(() => {
-          isPastingRef.current = false;
-        });
+        return result
+          .then(() => {
+            setClipboard([]);
+          })
+          .finally(() => {
+            isPastingRef.current = false;
+          });
       }
 
+      setClipboard([]);
       isPastingRef.current = false;
       return result;
     },
