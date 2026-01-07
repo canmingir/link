@@ -16,6 +16,14 @@ const DraggableNode = ({
     initialPosition ? { ...initialPosition } : { x: 0, y: 0 }
   );
 
+  useEffect(() => {
+    if (initialPosition) {
+      setOffset({ ...initialPosition });
+    } else {
+      setOffset({ x: 0, y: 0 });
+    }
+  }, [initialPosition]);
+
   const localRef = useRef(null);
   const lastDeltaRef = useRef({ x: 0, y: 0 });
   const onDragRef = useRef(onDrag);
@@ -58,7 +66,7 @@ const DraggableNode = ({
       if (e.button !== 0) return;
       e.stopPropagation();
 
-      if (e.altKey && onConnect) {
+      if (onConnect && e.altKey) {
         e.preventDefault();
         onConnect(nodeId, [...selectedIds]);
         return;
