@@ -38,17 +38,14 @@ const FlowViewport = ({
   } = useSelection();
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
     const handleMouseMove = (e) => {
       mousePositionRef.current = { x: e.clientX, y: e.clientY };
     };
 
-    container.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      container.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
@@ -239,9 +236,9 @@ const FlowViewport = ({
       >
         {children}
         {floatingNodes.map((structure, index) => {
-          const structureKey = structure.roots?.length
-            ? `floating-${JSON.stringify(structure.roots)}-${index}`
-            : `floating-${index}`;
+          const structureKey =
+            (structure && (structure.id || structure.key)) ??
+            `floating-${index}`;
           return (
             <FloatingGraph
               key={structureKey}
