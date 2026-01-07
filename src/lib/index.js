@@ -22,7 +22,7 @@ export { default as TableSelectedAction } from "./TableSelectedAction/TableSelec
 export { default as useTable } from "./useTable/useTable";
 export { default as useChart } from "./useChart/useChart";
 
-export { default as Flow } from "./Flow/Flow";
+export { default as Flow } from "./Flow/core/Flow";
 
 export {
   HeaderCard,

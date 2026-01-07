@@ -1,1 +1,1 @@
-export { default as Flow } from "./Flow";
+export { default as Flow } from "./core/Flow";
