@@ -1,3 +1,4 @@
+import CognitoLogin from "../widgets/Login/CognitoLogin";
 import LoginForm from "../widgets/LoginForm/LoginForm";
 import Page from "../layouts/Page";
 import React from "react";
@@ -6,7 +7,7 @@ import { storage } from "@nucleoidjs/webstorage";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 function LoginPage() {
-  const { name, template } = config();
+  const { name, template, project } = config();
   const formColor = "#a8a9ad";
   const navigate = useNavigate();
 
@@ -27,6 +28,10 @@ function LoginPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
+
+  if (project?.credentials?.provider === "COGNITO") {
+    return <CognitoLogin />;
+  }
 
   return (
     <Page title={`Sign in to ${name}`}>
