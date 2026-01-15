@@ -1,7 +1,8 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
-
 import { loginWithCognito } from "./cognitoAuth";
+import { storage } from "@nucleoidjs/webstorage";
 import { useState } from "react";
+
+import { Button, Stack, TextField, Typography } from "@mui/material";
 
 export default function CognitoLogin() {
   const [username, setUsername] = useState("");
@@ -10,13 +11,13 @@ export default function CognitoLogin() {
   const handleLogin = async () => {
     try {
       const tokens = await loginWithCognito(username, password);
-      console.log(tokens);
-      // save tokens
-      localStorage.setItem("link", "accessToken", tokens.AccessToken);
-      localStorage.setItem("link", "refreshToken", tokens.RefreshToken);
+      console.log("Login successful, tokens:", tokens);
+      storage.set("link", "accessToken", tokens.AccessToken);
+      storage.set("link", "refreshToken", tokens.RefreshToken);
       window.location.href = "/";
     } catch (e) {
-      alert("Login failed");
+      console.error("Login error:", e);
+      alert(`Login failed: ${e.message || e}`);
     }
   };
 
