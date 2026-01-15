@@ -12,9 +12,9 @@ export const ConfigSchema = Joi.object({
   }).optional(),
   credentials: Joi.object({
     provider: Joi.string().valid("DEMO", "COGNITO").required(),
-    region: Joi.string().required(),
-    userPoolId: Joi.string().required(),
-    clientId: Joi.string().required(),
+    region: Joi.string().optional(),
+    userPoolId: Joi.string().optional(),
+    clientId: Joi.string().optional(),
   }).optional(),
   project: Joi.object({
     nucleoid: Joi.object().optional(),
