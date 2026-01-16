@@ -94,8 +94,23 @@ function ProjectBar() {
     const refreshToken = storage.get("link", "refreshToken");
     const identityProvider = storage.get("link", "identityProvider");
 
-    oauth
-      .post("/oauth", { appId, refreshToken, projectId, identityProvider })
+    const isDemo = identityProvider?.toUpperCase() === "DEMO";
+
+    const request = isDemo
+      ? oauth.post("/oauth/demo", {
+          appId,
+          projectId,
+          username: "admin",
+          password: "admin",
+        })
+      : oauth.post("/oauth", {
+          appId,
+          refreshToken,
+          projectId,
+          identityProvider,
+        });
+
+    request
       .then(({ data }) => {
         const { refreshToken, accessToken } = data;
         storage.set("link", "accessToken", accessToken);
@@ -104,9 +119,7 @@ function ProjectBar() {
       })
       .finally(() => {
         setSelectedProject(project);
-
         publish("PROJECT_SELECTED", { projectId });
-
         search.onFalse();
         setSearchQuery("");
       });

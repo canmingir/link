@@ -4,6 +4,7 @@ import Logo from "../../components/logo";
 import { Outlet } from "react-router";
 import React from "react";
 import Stack from "@mui/material/Stack";
+import { alpha } from "@mui/material/styles";
 import { useResponsive } from "../../hooks/use-responsive";
 
 // ----------------------------------------------------------------------
@@ -16,28 +17,37 @@ export default function AuthModernLayout({ image }) {
       sx={{
         width: 1,
         mx: "auto",
-        maxWidth: 480,
-        px: { xs: 2, md: 8 },
+        maxWidth: 600,
+        px: { xs: 3, md: 10 },
+        py: { xs: 4, md: 0 },
         height: "100vh",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
       <Logo
-        maxSize={200}
+        maxSize={140}
         sx={{
-          mt: { xs: 2, md: 8 },
-          mb: { xs: 10, md: 8 },
+          mb: { xs: 1, md: 2 },
         }}
       />
 
       <Card
         sx={{
-          py: { xs: 5, md: 0 },
-          px: { xs: 3, md: 0 },
-          boxShadow: { md: "none" },
+          width: 1,
+          py: { xs: 6, md: 8 },
+          px: { xs: 4, md: 6 },
+          boxShadow: {
+            xs: (theme) =>
+              `0 0 2px ${alpha(
+                theme.palette.grey[500],
+                0.16
+              )}, 0 12px 24px -4px ${alpha(theme.palette.grey[500], 0.12)}`,
+            md: "none",
+          },
           overflow: { md: "unset" },
-          bgcolor: { md: "background.default" },
+          bgcolor: { md: "transparent" },
+          borderRadius: 2,
         }}
       >
         <Outlet />
@@ -46,7 +56,12 @@ export default function AuthModernLayout({ image }) {
   );
 
   const renderSection = (
-    <Stack flexGrow={1} sx={{ position: "relative" }}>
+    <Stack
+      flexGrow={1}
+      sx={{
+        position: "relative",
+      }}
+    >
       <Box
         component="img"
         alt="auth"
@@ -59,6 +74,7 @@ export default function AuthModernLayout({ image }) {
           position: "absolute",
           width: "calc(60% - 32px)",
           height: "calc(60% - 32px)",
+          borderRadius: 3,
         }}
       />
     </Stack>

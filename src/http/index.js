@@ -86,27 +86,38 @@ export const fetcher = (url) => instance.get(url).then((res) => res.data);
 const refreshAuthLogic = async (failedRequest) => {
   try {
     const { appId } = config();
-
     const projectId = storage.get("projectId");
-
     const identityProvider = storage.get("link", "identityProvider");
 
-    const { data } = await oauth.post("/oauth", {
-      refreshToken: storage.get("link", "refreshToken"),
-      appId,
-      projectId,
-      identityProvider,
-    });
+    const isDemo = identityProvider?.toUpperCase() === "DEMO";
 
-    const accessToken = data.accessToken;
+    const { data } = isDemo
+      ? await oauth.post("/oauth/demo", {
+          appId,
+          projectId,
+          username: "admin",
+          password: "admin",
+        })
+      : await oauth.post("/oauth", {
+          refreshToken: storage.get("link", "refreshToken"),
+          appId,
+          projectId,
+          identityProvider,
+        });
+
+    const { accessToken, refreshToken } = data;
 
     failedRequest.response.config.headers["Authorization"] =
       "Bearer " + accessToken;
 
     storage.set("link", "accessToken", accessToken);
+    if (refreshToken) {
+      storage.set("link", "refreshToken", refreshToken);
+    }
+
     return Promise.resolve();
   } catch (error) {
-    const { name, base } = config();
+    const { base } = config();
 
     storage.remove("link", "accessToken");
     storage.remove("link", "refreshToken");
