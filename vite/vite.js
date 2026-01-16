@@ -57,9 +57,18 @@ async function vite() {
       rollupOptions: {
         output: {
           entryFileNames: `assets/[name].[hash].js`,
-          chunkFileNames: `assets/[name].[hash].js`,
+          chunkFileNames: (chunkInfo) => {
+            if (chunkInfo.name === "config") {
+              return "config.js";
+            }
+            return `assets/[name].[hash].js`;
+          },
           assetFileNames: `assets/[name].[hash].[ext]`,
           manualChunks(id) {
+            if (id.includes("config.js") && !id.includes("node_modules")) {
+              return "config";
+            }
+
             if (id.includes("node_modules")) {
               return id
                 .toString()
