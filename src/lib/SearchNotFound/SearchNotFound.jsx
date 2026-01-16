@@ -1,6 +1,6 @@
 import Paper from "@mui/material/Paper";
+import React from "react";
 import Typography from "@mui/material/Typography";
-
 export default function SearchNotFound({ query, sx, ...other }) {
   return query ? (
     <Paper

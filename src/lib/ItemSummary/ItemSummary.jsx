@@ -1,5 +1,6 @@
 import DialogContentText from "@mui/material/DialogContentText";
 import Grid from "@mui/material/Grid";
+import React from "react";
 import SvgColor from "../SvgColor";
 
 import {

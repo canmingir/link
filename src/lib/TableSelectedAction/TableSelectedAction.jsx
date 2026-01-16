@@ -1,8 +1,8 @@
 import Checkbox from "@mui/material/Checkbox";
 import PropTypes from "prop-types";
+import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-
 export default function TableSelectedAction({
   dense,
   action,
