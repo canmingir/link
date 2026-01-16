@@ -1,3 +1,6 @@
+import { Grid, Stack, Switch, Typography } from "@mui/material";
+import { publish, useEvent } from "@nucleoidai/react-event";
+
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -6,9 +9,6 @@ import React from "react";
 import SelectAvatar from "../IconSelector/IconSelector";
 import SparkleInput from "../SparkleInput/SparkleInput";
 import StepComponent from "../StepComponent/StepComponent";
-
-import { Grid, Stack, Switch, Typography } from "@mui/material";
-import { publish, useEvent } from "@nucleoidai/react-event";
 
 function AddItemWizard({ onSubmit, items, steps, stepExp }) {
   const [activeStep, setActiveStep] = React.useState(0);
