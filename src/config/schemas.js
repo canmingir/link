@@ -9,10 +9,10 @@ export const ConfigSchema = Joi.object({
   socket: Joi.object({
     host: Joi.string().uri().required(),
     path: Joi.string().required(),
-    transport: Joi.string()
-      .valid("polling", "websocket")
+    transport: Joi.array()
+      .items(Joi.string().valid("polling", "websocket"))
       .optional()
-      .default("websocket"),
+      .default(["websocket"]),
   }).optional(),
   credentials: Joi.object({
     provider: Joi.string().valid("DEMO", "COGNITO").required(),
