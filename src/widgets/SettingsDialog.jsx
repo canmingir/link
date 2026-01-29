@@ -1,10 +1,12 @@
 import {
   Avatar,
   Box,
+  Chip,
   FormControl,
   Grow,
   IconButton,
   InputLabel,
+  Link,
   List,
   ListItem,
   ListItemAvatar,
@@ -22,6 +24,7 @@ import React, { useEffect, useState } from "react";
 
 import Iconify from "../components/Iconify";
 import config from "../config/config";
+import pkg from "../../../../../../package.json";
 import { useEvent } from "@nucleoidai/react-event";
 import useSettings from "../hooks/useSettings";
 import { useUser } from "../hooks/use-user";
@@ -95,13 +98,18 @@ const SettingsDialogTabs = ({ tabs }) => {
             sx={{ "& label": { color: "custom.grey" } }}
             {...a11yProps(1)}
           />
+          <Tab
+            label={"About"}
+            sx={{ "& label": { color: "custom.grey" } }}
+            {...a11yProps(2)}
+          />
           {tabs?.map((tab, index) => (
             <Tab
               key={tab.label}
               iconPosition="start"
               label={tab.label}
               sx={{ "& label": { color: "custom.grey" } }}
-              {...a11yProps(index + 2)}
+              {...a11yProps(index + 3)}
             />
           ))}
         </Tabs>
@@ -112,8 +120,11 @@ const SettingsDialogTabs = ({ tabs }) => {
           <TabPanel value={value} index={1}>
             <Settings />
           </TabPanel>
+          <TabPanel value={value} index={2}>
+            <About />
+          </TabPanel>
           {tabs?.map((tab, index) => (
-            <TabPanel key={tab.label} value={value} index={index + 2}>
+            <TabPanel key={tab.label} value={value} index={index + 3}>
               <tab.panel />
             </TabPanel>
           ))}
@@ -301,6 +312,120 @@ const Settings = () => {
           </FormControl>
         </ListItem>
       </List>
+    </Stack>
+  );
+};
+
+const About = () => {
+  const iconSrc = config().template?.login?.icon || "";
+
+  const appName = pkg.name;
+  const version = pkg.version;
+  const description = pkg.description;
+
+  return (
+    <Stack direction="column" spacing={2} p={2}>
+      <Box
+        sx={{
+          p: 3,
+          borderRadius: 3,
+          border: "1px solid",
+          borderColor: "divider",
+          background:
+            "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01))",
+        }}
+      >
+        <Stack direction="row" spacing={2.5} alignItems="center">
+          <Avatar
+            src={iconSrc}
+            variant="rounded"
+            sx={{
+              width: 56,
+              height: 56,
+              borderRadius: 2,
+              bgcolor: "background.paper",
+              boxShadow: 1,
+            }}
+          >
+            <Iconify icon="solar:widget-bold-duotone" width={28} />
+          </Avatar>
+
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Typography variant="h5" fontWeight={600}>
+              {appName.toUpperCase()}
+            </Typography>
+
+            {description && (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mt: 0.5, maxWidth: 520 }}
+              >
+                {description}
+              </Typography>
+            )}
+
+            <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+              <Chip size="small" label={`v${version}`} />
+            </Stack>
+          </Box>
+        </Stack>
+
+        <Box
+          sx={{
+            my: 2,
+            borderBottom: "1px dashed",
+            borderColor: "divider",
+          }}
+        />
+
+        <Stack spacing={1.2}>
+          <InfoRow label="Version" value={version} />
+          <InfoRow label="Deployment" value="On-Premise" />
+          <InfoRow
+            label="Support"
+            value="support@greycollar.ai"
+            link="mailto:support@greycollar.ai"
+          />
+          <InfoRow
+            label="Documentation"
+            value="greycollar.ai/docs"
+            link="https://greycollar.ai/docs"
+          />
+        </Stack>
+
+        <Box
+          sx={{
+            mt: 3,
+            pt: 2,
+            borderTop: "1px dashed",
+            borderColor: "divider",
+            textAlign: "center",
+          }}
+        >
+          <Typography variant="caption" color="text.secondary">
+            © 2026 greycollar.ai. All rights reserved.
+          </Typography>
+        </Box>
+      </Box>
+    </Stack>
+  );
+};
+
+const InfoRow = ({ label, value, link }) => {
+  return (
+    <Stack direction="row" spacing={1.5} alignItems="center">
+      <Typography variant="body2" color="text.secondary" sx={{ minWidth: 110 }}>
+        {label}
+      </Typography>
+
+      {link ? (
+        <Link href={link} target="_blank" rel="noreferrer" underline="hover">
+          {value}
+        </Link>
+      ) : (
+        <Typography variant="body2">{value}</Typography>
+      )}
     </Stack>
   );
 };
