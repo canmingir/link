@@ -17,7 +17,6 @@ import {
   Tab,
   Tabs,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
@@ -383,11 +382,15 @@ const About = () => {
         <Stack spacing={1.2}>
           <InfoRow label="Version" value={version} />
           <InfoRow label="Deployment" value="On-Premise" />
-          <InfoRow label="Support" value="support@greycollar.ai" />
+          <InfoRow
+            label="Support"
+            value="support@greycollar.ai"
+            link="mailto:support@greycollar.ai"
+          />
           <InfoRow
             label="Documentation"
             value="greycollar.ai/docs"
-            link="http://greycollar.ai/docs"
+            link="https://greycollar.ai/docs"
           />
         </Stack>
 

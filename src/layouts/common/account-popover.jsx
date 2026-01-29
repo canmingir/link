@@ -29,9 +29,9 @@ export default function AccountPopover() {
     try {
       storage.remove("link", "accessToken");
       storage.remove("link", "refreshToken");
-      storage.remove("link", "identityProvider"),
-        storage.remove("projectId"),
-        storage.remove("landingLevel");
+      storage.remove("link", "identityProvider");
+      storage.remove("projectId");
+      storage.remove("landingLevel");
       popover.onClose();
       router.replace("/login");
     } catch (error) {
