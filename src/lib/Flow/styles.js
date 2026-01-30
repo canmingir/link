@@ -25,6 +25,7 @@ export const getBaseStyleForVariant = (v) => {
         animationSpeed: 1,
         gradient: null,
         curvature: 0.5,
+        connectorType: "curved",
       };
     case "pill":
       return {
@@ -44,6 +45,7 @@ export const getBaseStyleForVariant = (v) => {
         animationSpeed: 1,
         gradient: null,
         curvature: 0.4,
+        connectorType: "curved",
       };
     case "n8n":
       return {
@@ -63,6 +65,7 @@ export const getBaseStyleForVariant = (v) => {
         animationSpeed: 1,
         gradient: null,
         curvature: 0.5,
+        connectorType: "curved",
       };
     case "simple":
     default:
@@ -83,6 +86,7 @@ export const getBaseStyleForVariant = (v) => {
         animationSpeed: 1,
         gradient: null,
         curvature: 0.5,
+        connectorType: "curved",
       };
   }
 };
