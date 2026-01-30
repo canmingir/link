@@ -18,6 +18,7 @@ const DynamicConnector = ({
   animationSpeed = 1,
   gradient = null,
   curvature = 0.5,
+  connectorType = "curved",
 }) => {
   const uniqueId = useId();
   const [dims, setDims] = useState(null);
@@ -91,6 +92,19 @@ const DynamicConnector = ({
   );
 
   const getPath = (from, to) => {
+    const isCornered =
+      connectorType === "cornered" || connectorType === "normal";
+
+    if (isCornered) {
+      if (isHorizontal) {
+        const midX = from.x + (to.x - from.x) / 2;
+        return `M ${from.x} ${from.y} L ${midX} ${from.y} L ${midX} ${to.y} L ${to.x} ${to.y}`;
+      }
+
+      const midY = from.y + (to.y - from.y) / 2;
+      return `M ${from.x} ${from.y} L ${from.x} ${midY} L ${to.x} ${midY} L ${to.x} ${to.y}`;
+    }
+
     const dx = Math.abs(to.x - from.x);
     const dy = Math.abs(to.y - from.y);
     const distance = Math.sqrt(dx * dx + dy * dy);
