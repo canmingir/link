@@ -56,6 +56,7 @@ const FlowNodeView = ({
     animationSpeed = baseStyle.animationSpeed ?? 1,
     gradient = baseStyle.gradient ?? null,
     curvature = baseStyle.curvature ?? 0.5,
+    connectorType = baseStyle.connectorType ?? "curved",
     selectionColor = baseStyle.selectionColor ?? "#64748b",
   } = nodeStyle;
 
@@ -170,6 +171,7 @@ const FlowNodeView = ({
             animationSpeed={animationSpeed}
             gradient={gradient}
             curvature={curvature}
+            connectorType={connectorType}
           />
 
           <Box
