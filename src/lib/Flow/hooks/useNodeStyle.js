@@ -38,6 +38,15 @@ export const useNodeStyle = ({ node, type, variant, style, plugin }) => {
         }) || {};
     }
 
+    let pluginEdgeTokens = {};
+    if (resolvedPlugin && typeof resolvedPlugin.edge === "function") {
+      pluginEdgeTokens =
+        resolvedPlugin.edge({
+          node,
+          style: styleTokens,
+        }) || {};
+    }
+
     const rawNodeStyle = {
       ...baseStyle,
       ...variantTokens,
@@ -47,9 +56,14 @@ export const useNodeStyle = ({ node, type, variant, style, plugin }) => {
 
     const nodeStyle = applySemanticTokens(rawNodeStyle, baseStyle);
 
+    const edgeStyle = {
+      ...pluginEdgeTokens,
+    };
+
     return {
       baseStyle,
       nodeStyle,
+      edgeStyle,
       plugin: resolvedPlugin,
     };
   }, [node, type, variant, style, plugin]);
