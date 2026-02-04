@@ -297,7 +297,6 @@ const DynamicConnector = ({
                 borderRadius: 1,
                 backgroundColor: "background.paper",
                 border: 1,
-                width: "20px",
                 borderColor: labelStyle.color || stroke,
                 fontSize: labelStyle.fontSize || "12px",
                 fontWeight: labelStyle.fontWeight || 600,
