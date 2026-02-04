@@ -24,6 +24,7 @@ const FlowNodeView = ({
   const {
     baseStyle,
     nodeStyle,
+    edgeStyle,
     plugin: _plugin,
   } = useNodeStyle({
     node,
@@ -60,11 +61,29 @@ const FlowNodeView = ({
     selectionColor = baseStyle.selectionColor ?? "#64748b",
   } = nodeStyle;
 
+  const edgeProps = {
+    lineColor: edgeStyle.lineColor ?? lineColor,
+    lineWidth: edgeStyle.lineWidth ?? lineWidth,
+    lineStyle: edgeStyle.lineStyle ?? lineStyle,
+    showDots: edgeStyle.showDots ?? showDots,
+    dotRadius: edgeStyle.dotRadius ?? dotRadius,
+    dotColor: edgeStyle.dotColor ?? dotColor,
+    showArrow: edgeStyle.showArrow ?? showArrow,
+    arrowSize: edgeStyle.arrowSize ?? arrowSize,
+    animated: edgeStyle.animated ?? animated,
+    animationSpeed: edgeStyle.animationSpeed ?? animationSpeed,
+    gradient: edgeStyle.gradient ?? gradient,
+    curvature: edgeStyle.curvature ?? curvature,
+    connectorType: edgeStyle.connectorType ?? connectorType,
+  };
+
   const isHorizontal = direction === "horizontal";
 
-  const strokeWidth = toPxNumber(lineWidth, 1.5);
+  const strokeWidth = toPxNumber(edgeProps.lineWidth, 1.5);
   const dashStyle =
-    lineStyle === "dashed" || lineStyle === "dotted" ? lineStyle : "solid";
+    edgeProps.lineStyle === "dashed" || edgeProps.lineStyle === "dotted"
+      ? edgeProps.lineStyle
+      : "solid";
 
   const containerRef = useRef(null);
   const parentRef = useRef(null);
@@ -153,26 +172,89 @@ const FlowNodeView = ({
 
       {hasChildren && (
         <>
-          <DynamicConnector
-            containerEl={containerRef.current}
-            parentEl={parentRef.current}
-            childEls={childElList}
-            stroke={lineColor}
-            strokeWidth={strokeWidth}
-            lineStyle={dashStyle}
-            tick={connectorTick}
-            orientation={direction}
-            showDots={showDots}
-            dotRadius={dotRadius}
-            dotColor={dotColor}
-            showArrow={showArrow}
-            arrowSize={arrowSize}
-            animated={animated}
-            animationSpeed={animationSpeed}
-            gradient={gradient}
-            curvature={curvature}
-            connectorType={connectorType}
-          />
+          {node.children.map((child, index) => {
+            let childEdgeProps = { ...edgeProps };
+            if (_plugin && typeof _plugin.edge === "function") {
+              const childSpecificStyle = _plugin.edge({
+                node,
+                child,
+                style: nodeStyle,
+              });
+              if (childSpecificStyle) {
+                childEdgeProps = {
+                  lineColor:
+                    childSpecificStyle.lineColor ?? childEdgeProps.lineColor,
+                  lineWidth:
+                    childSpecificStyle.lineWidth ?? childEdgeProps.lineWidth,
+                  lineStyle:
+                    childSpecificStyle.lineStyle ?? childEdgeProps.lineStyle,
+                  showDots:
+                    childSpecificStyle.showDots ?? childEdgeProps.showDots,
+                  dotRadius:
+                    childSpecificStyle.dotRadius ?? childEdgeProps.dotRadius,
+                  dotColor:
+                    childSpecificStyle.dotColor ?? childEdgeProps.dotColor,
+                  showArrow:
+                    childSpecificStyle.showArrow ?? childEdgeProps.showArrow,
+                  arrowSize:
+                    childSpecificStyle.arrowSize ?? childEdgeProps.arrowSize,
+                  animated:
+                    childSpecificStyle.animated ?? childEdgeProps.animated,
+                  animationSpeed:
+                    childSpecificStyle.animationSpeed ??
+                    childEdgeProps.animationSpeed,
+                  gradient:
+                    childSpecificStyle.gradient ?? childEdgeProps.gradient,
+                  curvature:
+                    childSpecificStyle.curvature ?? childEdgeProps.curvature,
+                  connectorType:
+                    childSpecificStyle.connectorType ??
+                    childEdgeProps.connectorType,
+                  label: childSpecificStyle.label,
+                  labelStyle: childSpecificStyle.labelStyle,
+                  labelPosition: childSpecificStyle.labelPosition,
+                  labelOffsetX: childSpecificStyle.labelOffsetX,
+                  labelOffsetY: childSpecificStyle.labelOffsetY,
+                };
+              }
+            }
+
+            const childStrokeWidth = toPxNumber(childEdgeProps.lineWidth, 1.5);
+            const childDashStyle =
+              childEdgeProps.lineStyle === "dashed" ||
+              childEdgeProps.lineStyle === "dotted"
+                ? childEdgeProps.lineStyle
+                : "solid";
+
+            return (
+              <DynamicConnector
+                key={child.id}
+                containerEl={containerRef.current}
+                parentEl={parentRef.current}
+                childEls={[childElList[index]]}
+                stroke={childEdgeProps.lineColor}
+                strokeWidth={childStrokeWidth}
+                lineStyle={childDashStyle}
+                tick={connectorTick}
+                orientation={direction}
+                showDots={childEdgeProps.showDots}
+                dotRadius={childEdgeProps.dotRadius}
+                dotColor={childEdgeProps.dotColor}
+                showArrow={childEdgeProps.showArrow}
+                arrowSize={childEdgeProps.arrowSize}
+                animated={childEdgeProps.animated}
+                animationSpeed={childEdgeProps.animationSpeed}
+                gradient={childEdgeProps.gradient}
+                curvature={childEdgeProps.curvature}
+                connectorType={childEdgeProps.connectorType}
+                label={childEdgeProps.label}
+                labelStyle={childEdgeProps.labelStyle}
+                labelPosition={childEdgeProps.labelPosition}
+                labelOffsetX={childEdgeProps.labelOffsetX}
+                labelOffsetY={childEdgeProps.labelOffsetY}
+              />
+            );
+          })}
 
           <Box
             sx={{
