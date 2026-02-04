@@ -1,3 +1,5 @@
+import { Box } from "@mui/material";
+
 import React, { useId, useLayoutEffect, useMemo, useState } from "react";
 
 const DynamicConnector = ({
@@ -19,6 +21,11 @@ const DynamicConnector = ({
   gradient = null,
   curvature = 0.5,
   connectorType = "curved",
+  label = null,
+  labelStyle = {},
+  labelPosition = 0.5,
+  labelOffsetX = 0,
+  labelOffsetY = -10,
 }) => {
   const uniqueId = useId();
   const [dims, setDims] = useState(null);
@@ -143,118 +150,170 @@ const DynamicConnector = ({
   const dashArray = getDashArray();
 
   return (
-    <svg
-      style={{
-        position: "absolute",
-        inset: 0,
-        pointerEvents: "none",
-        overflow: "visible",
-        zIndex: 0,
-      }}
-      width="100%"
-      height="100%"
-      viewBox={`0 0 ${dims.w} ${dims.h}`}
-    >
-      <defs>
-        {gradient && (
-          <linearGradient
-            id={ids.gradient}
-            gradientUnits="userSpaceOnUse"
-            x1={points.parent.x}
-            y1={points.parent.y}
-            x2={points.children[0]?.x || points.parent.x}
-            y2={points.children[0]?.y || points.parent.y}
-          >
-            <stop offset="0%" stopColor={gradient.from} />
-            <stop offset="100%" stopColor={gradient.to} />
-          </linearGradient>
-        )}
+    <>
+      <svg
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          overflow: "visible",
+          zIndex: 0,
+        }}
+        width="100%"
+        height="100%"
+        viewBox={`0 0 ${dims.w} ${dims.h}`}
+      >
+        <defs>
+          {gradient && (
+            <linearGradient
+              id={ids.gradient}
+              gradientUnits="userSpaceOnUse"
+              x1={points.parent.x}
+              y1={points.parent.y}
+              x2={points.children[0]?.x || points.parent.x}
+              y2={points.children[0]?.y || points.parent.y}
+            >
+              <stop offset="0%" stopColor={gradient.from} />
+              <stop offset="100%" stopColor={gradient.to} />
+            </linearGradient>
+          )}
 
-        {showArrow && (
-          <marker
-            id={ids.arrow}
-            viewBox="0 0 10 10"
-            refX="9"
-            refY="5"
-            markerWidth={arrowSize}
-            markerHeight={arrowSize}
-            orient="auto-start-reverse"
-          >
-            <path
-              d="M 0 0 L 10 5 L 0 10 z"
-              fill={gradient ? `url(#${ids.gradient})` : stroke}
-            />
-          </marker>
-        )}
+          {showArrow && (
+            <marker
+              id={ids.arrow}
+              viewBox="0 0 10 10"
+              refX="9"
+              refY="5"
+              markerWidth={arrowSize}
+              markerHeight={arrowSize}
+              orient="auto-start-reverse"
+            >
+              <path
+                d="M 0 0 L 10 5 L 0 10 z"
+                fill={gradient ? `url(#${ids.gradient})` : stroke}
+              />
+            </marker>
+          )}
 
-        {animated && <style>{animationStyle}</style>}
-      </defs>
+          {animated && <style>{animationStyle}</style>}
+        </defs>
 
-      {points.children.map((child, i) => {
-        const pathD = getPath(points.parent, child);
-        const pathStroke = gradient ? `url(#${ids.gradient})` : stroke;
+        {points.children.map((child, i) => {
+          const pathD = getPath(points.parent, child);
+          const pathStroke = gradient ? `url(#${ids.gradient})` : stroke;
 
-        return (
-          <g key={i}>
-            <path
-              d={pathD}
-              fill="none"
-              stroke={pathStroke}
-              strokeWidth={strokeWidth}
-              strokeDasharray={animated ? "8,4" : dashArray}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              markerEnd={showArrow ? `url(#${ids.arrow})` : undefined}
-              style={{
-                transition: "stroke 0.2s ease, stroke-width 0.2s ease",
-                ...(animated
-                  ? {
-                      animation: `flowAnimation ${
-                        0.5 / animationSpeed
-                      }s linear infinite`,
-                    }
-                  : {}),
-              }}
-            />
-          </g>
-        );
-      })}
+          const labelX =
+            points.parent.x +
+            (child.x - points.parent.x) * labelPosition +
+            labelOffsetX;
+          const labelY =
+            points.parent.y +
+            (child.y - points.parent.y) * labelPosition +
+            labelOffsetY;
 
-      {showDots && (
-        <>
-          <circle
-            cx={points.parent.x}
-            cy={points.parent.y}
-            r={dotRadius}
-            fill={gradient ? gradient.from : effectiveDotColor}
-            stroke="#fff"
-            strokeWidth={1.5}
-            style={{
-              filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.15))",
-            }}
-          />
-
-          {points.children.map((child, i) => {
-            const dotFill = gradient ? gradient.to : effectiveDotColor;
-
-            return (
-              <circle
-                key={i}
-                cx={child.x}
-                cy={child.y}
-                r={dotRadius}
-                fill={dotFill}
-                stroke="#fff"
-                strokeWidth={1.5}
+          return (
+            <g key={i}>
+              <path
+                d={pathD}
+                fill="none"
+                stroke={pathStroke}
+                strokeWidth={strokeWidth}
+                strokeDasharray={animated ? "8,4" : dashArray}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                markerEnd={showArrow ? `url(#${ids.arrow})` : undefined}
                 style={{
-                  filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.15))",
+                  transition: "stroke 0.2s ease, stroke-width 0.2s ease",
+                  ...(animated
+                    ? {
+                        animation: `flowAnimation ${
+                          0.5 / animationSpeed
+                        }s linear infinite`,
+                      }
+                    : {}),
                 }}
               />
-            );
-          })}
-        </>
-      )}
-    </svg>
+            </g>
+          );
+        })}
+
+        {showDots && (
+          <>
+            <circle
+              cx={points.parent.x}
+              cy={points.parent.y}
+              r={dotRadius}
+              fill={gradient ? gradient.from : effectiveDotColor}
+              stroke="#fff"
+              strokeWidth={1.5}
+              style={{
+                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.15))",
+              }}
+            />
+
+            {points.children.map((child, i) => {
+              const dotFill = gradient ? gradient.to : effectiveDotColor;
+
+              return (
+                <circle
+                  key={i}
+                  cx={child.x}
+                  cy={child.y}
+                  r={dotRadius}
+                  fill={dotFill}
+                  stroke="#fff"
+                  strokeWidth={1.5}
+                  style={{
+                    filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.15))",
+                  }}
+                />
+              );
+            })}
+          </>
+        )}
+      </svg>
+
+      {label &&
+        points.children.map((child, i) => {
+          const labelX =
+            points.parent.x +
+            (child.x - points.parent.x) * labelPosition +
+            labelOffsetX;
+          const labelY =
+            points.parent.y +
+            (child.y - points.parent.y) * labelPosition +
+            labelOffsetY;
+
+          return (
+            <Box
+              key={`label-${i}`}
+              sx={{
+                position: "absolute",
+                left: labelX,
+                top: labelY,
+                transform: "translate(-50%, -50%)",
+                px: 1,
+                py: 0.5,
+                borderRadius: 1,
+                backgroundColor: "background.paper",
+                border: 1,
+                width: "20px",
+                borderColor: labelStyle.color || stroke,
+                fontSize: labelStyle.fontSize || "12px",
+                fontWeight: labelStyle.fontWeight || 600,
+                color: labelStyle.textColor || stroke,
+                pointerEvents: "none",
+                userSelect: "none",
+                zIndex: 10,
+                boxShadow: 1,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {label}
+            </Box>
+          );
+        })}
+    </>
   );
 };
 
