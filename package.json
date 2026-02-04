@@ -21,7 +21,7 @@
     "cypress": "cypress open --browser chrome"
   },
   "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "^3.968.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.982.0",
     "@chatscope/chat-ui-kit-react": "^1.10.1",
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
