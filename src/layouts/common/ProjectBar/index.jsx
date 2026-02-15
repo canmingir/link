@@ -91,24 +91,23 @@ function ProjectBar() {
   const handleSelect = (project) => {
     const { id: projectId } = project;
 
-    const refreshToken = storage.get("link", "refreshToken");
-    const identityProvider = storage.get("link", "identityProvider");
+    const identityProviderRaw = storage.get("link", "identityProvider");
+    const identityProvider = identityProviderRaw?.toUpperCase();
 
-    const isDemo = identityProvider?.toUpperCase() === "DEMO";
+    const payload = {
+      appId,
+      projectId,
+      identityProvider,
+    };
 
-    const request = isDemo
-      ? oauth.post("/oauth/demo", {
-          appId,
-          projectId,
-          username: "admin",
-          password: "admin",
-        })
-      : oauth.post("/oauth", {
-          appId,
-          refreshToken,
-          projectId,
-          identityProvider,
-        });
+    if (identityProvider === "DEMO") {
+      payload.username = "admin";
+      payload.password = "admin";
+    } else {
+      payload.refreshToken = storage.get("link", "refreshToken");
+    }
+
+    const request = oauth.post("/oauth", payload);
 
     request
       .then(({ data }) => {
