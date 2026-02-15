@@ -1,4 +1,5 @@
 import "./global.css";
+import "./widgets/Login/amplifyAuth";
 
 import ContextProvider from "./ContextProvider/ContextProvider";
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
@@ -9,6 +10,7 @@ import { SettingsProvider } from "./components/settings";
 import { SnackbarProvider } from "notistack";
 import ThemeProvider from "./theme";
 import config from "./config/config";
+import { configureAmplify } from "./widgets/Login/amplifyConfig";
 import http from "./http";
 import { init } from "./config/config";
 import oauth from "./http/oauth";
@@ -18,6 +20,8 @@ import { initialState, reducer } from "./context/reducer";
 import { publish, subscribe, useEvent } from "@nucleoidai/react-event";
 
 init();
+
+configureAmplify();
 
 window["@nucleoidai"] = {
   Event: { publish, subscribe, useEvent },
