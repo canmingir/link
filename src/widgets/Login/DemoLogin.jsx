@@ -29,7 +29,7 @@ export default function DemoLogin() {
   const { appId } = config();
 
   async function handleLogin() {
-    const res = await fetch("/api/oauth/demo", {
+    const res = await fetch("/api/oauth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -37,6 +37,7 @@ export default function DemoLogin() {
         projectId: "cb16e069-6214-47f1-9922-1f7fe7629525",
         username,
         password,
+        identityProvider: "DEMO",
       }),
     });
 
@@ -46,7 +47,7 @@ export default function DemoLogin() {
 
     storage.set("link", "accessToken", data.accessToken);
     storage.set("link", "refreshToken", data.refreshToken);
-    storage.set("link", "identityProvider", "Demo");
+    storage.set("link", "identityProvider", "DEMO");
 
     navigate("/");
   }
