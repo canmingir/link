@@ -1,5 +1,6 @@
 import config from "../../config/config";
 import { storage } from "@nucleoidjs/webstorage";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import { Button, Stack, TextField, Typography } from "@mui/material";
@@ -12,6 +13,8 @@ export default function CognitoLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
+
+  const navigate = useNavigate();
 
   const { appId } = config();
 
@@ -42,7 +45,7 @@ export default function CognitoLogin() {
       storage.set("link", "refreshToken", data.refreshToken);
       storage.set("link", "identityProvider", "COGNITO");
 
-      window.location.href = "/";
+      navigate("/");
     } catch (e) {
       console.error("Login error:", e);
       alert(e.message || "Login failed");
