@@ -1,6 +1,7 @@
 import config from "../../config/config";
 import { storage } from "@nucleoidjs/webstorage";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 import { useState } from "react";
 
 import { Button, Stack, TextField, Typography } from "@mui/material";
@@ -15,6 +16,7 @@ export default function CognitoLogin() {
   const [code, setCode] = useState("");
 
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { appId } = config();
 
@@ -48,26 +50,32 @@ export default function CognitoLogin() {
       navigate("/");
     } catch (e) {
       console.error("Login error:", e);
-      alert(e.message || "Login failed");
+      enqueueSnackbar(e.message || "Login failed", { variant: "error" });
     }
   };
 
   const handleSignup = async () => {
     try {
       await signup(username, password, email);
+      enqueueSnackbar(
+        "Account created! Please check your email for the confirmation code.",
+        { variant: "success" }
+      );
       setMode("confirm");
     } catch (e) {
-      alert(e.message || "Signup failed");
+      enqueueSnackbar(e.message || "Signup failed", { variant: "error" });
     }
   };
 
   const handleConfirm = async () => {
     try {
       await confirmSignup(username, code);
-      alert("Account confirmed! You can now log in.");
+      enqueueSnackbar("Account confirmed! You can now log in.", {
+        variant: "success",
+      });
       setMode("login");
     } catch (e) {
-      alert(e.message || "Confirmation failed");
+      enqueueSnackbar(e.message || "Confirmation failed", { variant: "error" });
     }
   };
 
