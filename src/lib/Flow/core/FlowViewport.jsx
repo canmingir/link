@@ -253,6 +253,7 @@ const FlowViewport = ({
           transition: isDragging ? "none" : "transform 0.1s ease-out",
           pointerEvents: "auto",
           position: "relative",
+          pl: variant === "horizontal" ? 4 : 0,
         }}
       >
         {children}
