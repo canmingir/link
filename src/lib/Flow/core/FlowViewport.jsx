@@ -16,6 +16,9 @@ const FlowViewport = ({
   variant,
   style,
   plugin,
+  height = "100vh",
+  sx = {},
+  ...rest
 }) => {
   const clampZoom = (zoom) => Math.min(2.5, Math.max(0.25, zoom));
 
@@ -225,7 +228,7 @@ const FlowViewport = ({
           transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
           transformOrigin: "center center",
           width: "100%",
-          height: "100%",
+          height: height,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
