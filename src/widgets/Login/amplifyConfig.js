@@ -14,6 +14,9 @@ export function configureAmplify() {
         userPoolId: credentials.userPoolId,
         userPoolClientId: credentials.clientId,
         region: credentials.region,
+        loginWith: {
+          email: true,
+        },
       },
     },
   });

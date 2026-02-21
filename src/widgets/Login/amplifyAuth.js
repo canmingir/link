@@ -6,13 +6,13 @@ import {
   signUp,
 } from "aws-amplify/auth";
 
-export async function login(username, password) {
-  return signIn({ username, password });
+export async function login(email, password) {
+  return signIn({ username: email, password });
 }
 
-export async function signup(username, password, email) {
+export async function signup(email, password) {
   return signUp({
-    username,
+    username: email,
     password,
     options: {
       userAttributes: {
@@ -22,9 +22,9 @@ export async function signup(username, password, email) {
   });
 }
 
-export async function confirmSignup(username, code) {
+export async function confirmSignup(email, code) {
   return confirmSignUp({
-    username,
+    username: email,
     confirmationCode: code,
   });
 }
