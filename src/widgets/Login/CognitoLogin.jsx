@@ -15,6 +15,7 @@ import {
   alpha,
 } from "@mui/material";
 import {
+  CheckOutlined,
   EmailOutlined,
   LockOutlined,
   MarkEmailReadOutlined,
@@ -260,6 +261,15 @@ export default function CognitoLogin() {
             value={code}
             onChange={(e) => setCode(e.target.value)}
             fullWidth
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CheckOutlined
+                    sx={{ color: "text.secondary", fontSize: 22 }}
+                  />
+                </InputAdornment>
+              ),
+            }}
             sx={inputSx}
           />
         )}
