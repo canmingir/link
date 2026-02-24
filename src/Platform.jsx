@@ -21,7 +21,9 @@ import { publish, subscribe, useEvent } from "@nucleoidai/react-event";
 
 init();
 
-configureAmplify();
+if (config().credentials?.provider === "COGNITO") {
+  configureAmplify();
+}
 
 window["@nucleoidai"] = {
   Event: { publish, subscribe, useEvent },
