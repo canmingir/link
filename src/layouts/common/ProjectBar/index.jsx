@@ -92,7 +92,10 @@ function ProjectBar() {
     const { id: projectId } = project;
 
     const identityProviderRaw = storage.get("link", "identityProvider");
-    const identityProvider = identityProviderRaw?.toUpperCase();
+    const identityProvider =
+      identityProviderRaw?.toLowerCase() === "github"
+        ? "github"
+        : identityProviderRaw?.toUpperCase();
 
     const payload = {
       appId,
