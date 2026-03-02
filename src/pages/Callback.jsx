@@ -14,7 +14,7 @@ function Callback() {
   const { project: appConfig, name, appId } = config();
   const projectBar = config().template?.projectBar;
 
-  const { google, github, linkedin } = appConfig;
+  const { GOOGLE, GITHUB, LINKEDIN } = appConfig;
   const [, dispatch] = useContext();
   const location = useLocation();
   const navigate = useNavigate();
@@ -33,7 +33,8 @@ function Callback() {
 
     if (state) {
       stateData = JSON.parse(decodeURIComponent(state));
-      identityProvider = stateData.identityProvider;
+      identityProvider = stateData.identityProvider.toUpperCase();
+      console.log("Received OAuth callback with state:", identityProvider);
     }
 
     if (error) {
@@ -54,9 +55,9 @@ function Callback() {
     hasProcessed.current = true;
 
     const providerConfigs = {
-      github,
-      linkedin,
-      google,
+      GITHUB,
+      LINKEDIN,
+      GOOGLE,
     };
 
     const providerConfig = providerConfigs[identityProvider];

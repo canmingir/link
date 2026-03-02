@@ -68,12 +68,12 @@ function LoginForm() {
         </>
       )}
       <SocialLoginButtons
-        googleEnable={!!project.google}
-        onGoogle={() => handleOAuthLogin({ ...project.google }, "google")}
-        githubEnable={!!project.github}
-        onGithub={() => handleOAuthLogin({ ...project.github }, "github")}
-        linkedinEnable={!!project.linkedin}
-        onLinkedin={() => handleOAuthLogin({ ...project.linkedin }, "linkedin")}
+        googleEnable={!!project.GOOGLE}
+        onGoogle={() => handleOAuthLogin({ ...project.GOOGLE }, "google")}
+        githubEnable={!!project.GITHUB}
+        onGithub={() => handleOAuthLogin({ ...project.GITHUB }, "github")}
+        linkedinEnable={!!project.LINKEDIN}
+        onLinkedin={() => handleOAuthLogin({ ...project.LINKEDIN }, "linkedin")}
       />
     </>
   );
