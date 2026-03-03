@@ -34,7 +34,6 @@ function Callback() {
     if (state) {
       stateData = JSON.parse(decodeURIComponent(state));
       identityProvider = stateData.identityProvider.toUpperCase();
-      console.log("Received OAuth callback with state:", identityProvider);
     }
 
     if (error) {
