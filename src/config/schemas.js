@@ -18,7 +18,7 @@ export const ConfigSchema = Joi.object({
   }).optional(),
   project: Joi.object({
     nucleoid: Joi.object().optional(),
-    GITHUB: Joi.object({
+    github: Joi.object({
       authUrl: Joi.string().uri().required(),
       clientId: Joi.string().required(),
       redirectUri: Joi.string().uri().required(),
@@ -26,7 +26,7 @@ export const ConfigSchema = Joi.object({
       response_type: Joi.string().required(),
       userUrl: Joi.string().uri().required(),
     }).optional(),
-    GOOGLE: Joi.object({
+    google: Joi.object({
       authUrl: Joi.string().uri().required(),
       clientId: Joi.string().required(),
       redirectUri: Joi.string().uri().required(),
@@ -34,7 +34,7 @@ export const ConfigSchema = Joi.object({
       response_type: Joi.string().required(),
       userUrl: Joi.string().uri().required(),
     }).optional(),
-    LINKEDIN: Joi.object({
+    linkedin: Joi.object({
       authUrl: Joi.string().uri().required(),
       clientId: Joi.string().required(),
       redirectUri: Joi.string().uri().required(),
