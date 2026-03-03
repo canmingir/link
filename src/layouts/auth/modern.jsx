@@ -29,6 +29,8 @@ export default function AuthModernLayout({ image }) {
         maxSize={140}
         sx={{
           mb: { xs: 1, md: 2 },
+          width: 80,
+          height: 80,
         }}
       />
 

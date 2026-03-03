@@ -53,7 +53,7 @@ export default function CognitoLogin() {
 
   const navigate = useNavigate();
 
-  const { appId } = config();
+  const { appId, credentials } = config();
 
   const handleLogin = async () => {
     try {
@@ -63,7 +63,9 @@ export default function CognitoLogin() {
       if (!tokens?.accessToken)
         throw new Error("No Cognito access token received");
 
-      const res = await fetch("/api/oauth", {
+      const requestUrl = credentials.requestUrl || "/api/oauth";
+
+      const res = await fetch(requestUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

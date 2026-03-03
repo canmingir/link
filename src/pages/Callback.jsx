@@ -33,7 +33,7 @@ function Callback() {
 
     if (state) {
       stateData = JSON.parse(decodeURIComponent(state));
-      identityProvider = stateData.identityProvider;
+      identityProvider = stateData.identityProvider.toUpperCase();
     }
 
     if (error) {
@@ -54,9 +54,9 @@ function Callback() {
     hasProcessed.current = true;
 
     const providerConfigs = {
-      github,
-      linkedin,
-      google,
+      GITHUB: github,
+      LINKEDIN: linkedin,
+      GOOGLE: google,
     };
 
     const providerConfig = providerConfigs[identityProvider];
