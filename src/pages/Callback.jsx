@@ -14,7 +14,7 @@ function Callback() {
   const { project: appConfig, name, appId } = config();
   const projectBar = config().template?.projectBar;
 
-  const { GOOGLE, GITHUB, LINKEDIN } = appConfig;
+  const { google, github, linkedin } = appConfig;
   const [, dispatch] = useContext();
   const location = useLocation();
   const navigate = useNavigate();
@@ -55,9 +55,9 @@ function Callback() {
     hasProcessed.current = true;
 
     const providerConfigs = {
-      GITHUB,
-      LINKEDIN,
-      GOOGLE,
+      GITHUB: github,
+      LINKEDIN: linkedin,
+      GOOGLE: google,
     };
 
     const providerConfig = providerConfigs[identityProvider];
