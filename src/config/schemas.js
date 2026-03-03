@@ -15,6 +15,7 @@ export const ConfigSchema = Joi.object({
     region: Joi.string().optional(),
     userPoolId: Joi.string().optional(),
     clientId: Joi.string().optional(),
+    requestUrl: Joi.string().uri().optional(),
   }).optional(),
   project: Joi.object({
     nucleoid: Joi.object().optional(),

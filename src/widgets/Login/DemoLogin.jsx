@@ -1,3 +1,7 @@
+import config from "../../config/config";
+import { storage } from "@nucleoidjs/webstorage";
+import { useNavigate } from "react-router-dom";
+
 import {
   Box,
   Button,
@@ -16,20 +20,18 @@ import {
 } from "@mui/icons-material";
 import React, { useState } from "react";
 
-import config from "../../config/config";
-import { storage } from "@nucleoidjs/webstorage";
-import { useNavigate } from "react-router-dom";
-
 export default function DemoLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const { appId } = config();
+  const { appId, credentials } = config();
 
   async function handleLogin() {
-    const res = await fetch("/api/oauth", {
+    const requestUrl = credentials.requestUrl || "/api/oauth";
+
+    const res = await fetch(requestUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
