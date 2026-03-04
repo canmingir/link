@@ -3,17 +3,14 @@ import APIParams from "../lib/APIParams/APIParams";
 import APIPath from "../lib/APIPath/APIPath";
 import APITree from "../lib/APITree/APITree";
 import APITypes from "../lib/APITypes/APITypes";
-import Context from "../context/Context";
-import ContextProvider from "../ContextProvider/ContextProvider";
 import CssBaseline from "@mui/material/CssBaseline";
 import NewAPIBody from "../lib/NewApiBody/NewAPIBody";
 import NucDialog from "../lib/NucDialog/NucDialog";
-import { reducer } from "../context/reducer";
-import { useContext } from "../ContextProvider/ContextProvider";
 
 import { Box, Divider } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { publish, useEvent } from "@nucleoidai/react-event";
 
 const theme = createTheme({
   palette: {
@@ -37,16 +34,6 @@ const theme = createTheme({
     },
   },
 });
-
-const resolve = (context, param) => {
-  try {
-    const parts = param.split(".");
-    parts[0] = context[parts[0]];
-    return parts.reduce((obj, part) => obj[part]);
-  } catch (error) {
-    return undefined;
-  }
-};
 
 const sampleApi = [
   {
@@ -103,7 +90,6 @@ export default {
 const ALL_METHODS = ["GET", "POST", "PUT", "DELETE", "PATCH"];
 
 const APIWorkspace = () => {
-  const [state, dispatch] = useContext();
   const [view, setView] = useState("PARAMS");
   const [dialogKey, setDialogKey] = useState(0);
 
@@ -115,18 +101,129 @@ const APIWorkspace = () => {
   const responseSchemaRef = useRef();
   const typesRef = useRef({});
 
-  const dialog = state.pages.api.dialog;
-  const selected = state.pages.api.selected;
-  const types = state.specification.types || [];
+  const [dialog, setDialog] = useState({
+    type: null,
+    action: null,
+    open: false,
+  });
+
+  const [api, setApi] = useState(sampleApi);
+
+  const [selected] = useEvent("SELECTED_API_CHANGED", {
+    path: "/",
+    method: "GET",
+  });
+
+  const [types, setTypes] = useState([]);
+
+  const [typeAdd] = useEvent("API_TYPE_ADD", null);
+  const [typeDelete] = useEvent("API_TYPE_DELETE", null);
+  const [typeRename] = useEvent("API_TYPE_RENAME", null);
+
+  const [methodDelete] = useEvent("API_METHOD_DELETE", null);
+  const [resourceDelete] = useEvent("API_RESOURCE_DELETE", null);
+  const [apiDialogOpen] = useEvent("API_DIALOG_OPEN", null);
 
   const isEdit = dialog.type === "method" && dialog.action === "edit";
   const isAddMethod = dialog.type === "method" && dialog.action === "add";
 
-  const selectedEndpoint = state.specification.api.find(
+  const selectedEndpoint = api.find(
     (ep) =>
       ep.path === selected?.path &&
       ep.method?.toLowerCase() === selected?.method?.toLowerCase()
   );
+
+  useEffect(() => {
+    if (!typeAdd) return;
+
+    setTypes((prev) => {
+      const { typeName } = typeAdd;
+      if (!typeName) return prev;
+
+      const exists = prev.some((t) => t.name === typeName);
+      if (exists) return prev;
+
+      return [
+        ...prev,
+        {
+          name: typeName,
+          schema: {
+            name: typeName,
+            type: "object",
+            properties: [
+              { type: "string", name: "id" },
+              { type: "string", name: "name" },
+            ],
+          },
+        },
+      ];
+    });
+  }, [typeAdd]);
+
+  useEffect(() => {
+    if (!typeDelete) return;
+
+    setTypes((prev) => prev.filter((t) => t.name !== typeDelete.typeName));
+  }, [typeDelete]);
+
+  useEffect(() => {
+    if (!typeRename) return;
+
+    setTypes((prev) =>
+      prev.map((t) =>
+        t.name === typeRename.oldTypeName
+          ? {
+              ...t,
+              name: typeRename.newTypeName,
+              schema: {
+                ...t.schema,
+                name: typeRename.newTypeName,
+              },
+            }
+          : t
+      )
+    );
+  }, [typeRename]);
+
+  useEffect(() => {
+    publish("API_TYPES_CHANGED", { types });
+  }, [types]);
+
+  useEffect(() => {
+    publish("API_DATA_CHANGED", api);
+  }, [api]);
+
+  useEffect(() => {
+    if (!apiDialogOpen) return;
+
+    setDialog((prev) => ({
+      ...prev,
+      type: apiDialogOpen.type,
+      action: apiDialogOpen.action,
+      open: true,
+    }));
+  }, [apiDialogOpen]);
+
+  useEffect(() => {
+    if (!methodDelete || !selected) return;
+
+    setApi((prev) =>
+      prev.filter(
+        (route) =>
+          !(
+            route.path === selected.path &&
+            route.method?.toLowerCase() === selected.method?.toLowerCase()
+          )
+      )
+    );
+  }, [methodDelete, selected]);
+
+  useEffect(() => {
+    if (!resourceDelete || !resourceDelete.path) return;
+
+    const pathToDelete = resourceDelete.path;
+    setApi((prev) => prev.filter((ep) => !ep.path.startsWith(pathToDelete)));
+  }, [resourceDelete]);
 
   useEffect(() => {
     if (!dialog.open) return;
@@ -148,7 +245,7 @@ const APIWorkspace = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dialog.open]);
 
-  const usedMethods = state.specification.api
+  const usedMethods = api
     .filter((ep) => ep.path === selected?.path)
     .map((ep) => ep.method?.toUpperCase());
 
@@ -171,46 +268,71 @@ const APIWorkspace = () => {
     ? "Add Method"
     : "Add Resource";
 
-  const handleClose = () => dispatch({ type: "CLOSE_API_DIALOG" });
+  const handleCloseDialog = () =>
+    setDialog((prev) => ({
+      ...prev,
+      open: false,
+    }));
 
   const handleSave = () => {
     if (isEdit) {
-      dispatch({
-        type: "UPDATE_API_SCHEMAS",
-        payload: {
-          path: selected.path,
-          method: selected.method,
-          requestSchema: requestSchemaRef.current?.schemaOutput?.() || [],
-          responseSchema: responseSchemaRef.current?.schemaOutput?.() || [],
-        },
-      });
-      dispatch({
-        type: "SAVE_API_PARAMS",
-        payload: {
-          path: selected.path,
-          method: selected.method,
+      setApi((prev) => {
+        const idx = prev.findIndex(
+          (ep) =>
+            ep.path === selected.path &&
+            ep.method?.toLowerCase() === selected.method?.toLowerCase()
+        );
+        if (idx === -1) return prev;
+
+        const next = [...prev];
+        const current = next[idx];
+
+        next[idx] = {
+          ...current,
+          request: {
+            ...(current.request || {}),
+            schema: requestSchemaRef.current?.schemaOutput?.() || [],
+          },
+          response: {
+            ...(current.response || {}),
+            schema: responseSchemaRef.current?.schemaOutput?.() || [],
+          },
           params: paramsRef.current,
-        },
+        };
+
+        return next;
       });
-      dispatch({ type: "CLOSE_API_DIALOG" });
+
+      setDialog((prev) => ({ ...prev, open: false }));
     } else {
-      dispatch({
-        type: "SAVE_API_DIALOG",
-        payload: {
-          path: pathRef.current,
-          method: methodRef.current,
-          request: requestSchemaRef.current?.schemaOutput?.() || {},
-          response: responseSchemaRef.current?.schemaOutput?.() || {},
-          params: paramsRef.current,
-          types,
-          summary: `${methodRef.current} ${pathRef.current}`,
-          description: `API endpoint for ${pathRef.current}`,
-        },
-      });
+      const newEndpoint = {
+        path: pathRef.current,
+        method: methodRef.current,
+        request: requestSchemaRef.current?.schemaOutput?.() || {},
+        response: responseSchemaRef.current?.schemaOutput?.() || {},
+        params: paramsRef.current,
+        summary: `${methodRef.current} ${pathRef.current}`,
+        description: `API endpoint for ${pathRef.current}`,
+      };
+
+      setApi((prev) => [...prev, newEndpoint]);
+      setDialog((prev) => ({ ...prev, open: false }));
     }
   };
 
-  const handleDelete = () => dispatch({ type: "DELETE_API" });
+  const handleDelete = () => {
+    if (!selected) return;
+    setApi((prev) =>
+      prev.filter(
+        (ep) =>
+          !(
+            ep.path === selected.path &&
+            ep.method?.toLowerCase() === selected.method?.toLowerCase()
+          )
+      )
+    );
+    setDialog((prev) => ({ ...prev, open: false }));
+  };
 
   return (
     <Box sx={{ display: "flex", height: "100%", gap: 2 }}>
@@ -221,7 +343,7 @@ const APIWorkspace = () => {
       <NucDialog
         title={dialogTitle}
         open={dialog.open}
-        handleClose={handleClose}
+        handleClose={handleCloseDialog}
         maximizedDimensions={{ width: "75rem", height: "60rem" }}
         minimizedDimensions={{ width: "65rem", height: "50rem" }}
         action={
@@ -281,40 +403,15 @@ const APIWorkspace = () => {
   );
 };
 
-const integratedContext = new Context({
-  specification: {
-    api: sampleApi,
-    types: [],
-    functions: [],
-    declarations: [],
-  },
-  pages: {
-    api: {
-      selected: { path: "/", method: "GET" },
-      dialog: {
-        type: null,
-        action: null,
-        open: false,
-        view: null,
-        map: {},
-        params: {},
-      },
-      resourceMenu: { open: false, anchor: null, path: null },
-    },
-  },
-});
-
 export const APITreeWorkspace = {
   render: () => <APIWorkspace />,
   decorators: [
     (Story) => (
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <ContextProvider state={integratedContext} reducer={reducer}>
-          <div style={{ width: 900, height: 600 }}>
-            <Story />
-          </div>
-        </ContextProvider>
+        <div style={{ width: 900, height: 600 }}>
+          <Story />
+        </div>
       </ThemeProvider>
     ),
   ],
