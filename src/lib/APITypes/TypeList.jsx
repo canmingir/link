@@ -30,14 +30,16 @@ const TypeList = ({
     setEditingType(item);
   };
 
-  const handleDeleteType = (item) => {
+  const handleDeleteType = (typeName) => {
     const deletedIndex = combinedData.findIndex(
-      (item) => item.name === editingType
+      (type) => type.name === typeName
     );
 
-    onDeleteType(item);
+    onDeleteType(typeName);
 
-    if (deletedIndex > 0) {
+    if (deletedIndex === -1) {
+      onTypeSelect(null);
+    } else if (deletedIndex > 0) {
       setTimeout(() => {
         onTypeSelect(combinedData[deletedIndex - 1].name);
       }, 0);
