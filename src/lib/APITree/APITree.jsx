@@ -10,8 +10,7 @@ import ResourceMenu from "../ResourceMenu";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import styles from "./styles";
-import { useContext } from "../../ContextProvider/ContextProvider";
-import { useEvent } from "@nucleoidai/react-event";
+import { publish, useEvent } from "@nucleoidai/react-event";
 import { useTheme } from "@mui/material/styles";
 
 import {
@@ -38,7 +37,6 @@ function APITree() {
   const [anchor, setAnchor] = React.useState();
   const [expanded, setExpanded] = useState([]);
   const [errors] = useEvent("DIAGNOSTICS_COMPLETED", []);
-  const [state, dispatch] = useContext();
   const theme = useTheme();
 
   const [selectedAPI] = useEvent("SELECTED_API_CHANGED", {
@@ -46,9 +44,8 @@ function APITree() {
     method: "GET",
   });
 
-  const api = state.get("specification.api");
-  //eslint-disable-next-line
-  const [apiExists, setApiExists] = useState(Boolean(api.length));
+  const [api] = useEvent("API_DATA_CHANGED", []);
+  const apiExists = api.length > 0;
 
   const expandList = React.useMemo(() => [], []);
 
@@ -64,7 +61,7 @@ function APITree() {
     if (map.current[id]) {
       setSelected(id);
       if (callDispatch) {
-        dispatch({ type: "SET_SELECTED_API", payload: map.current[id] });
+        publish("SELECTED_API_CHANGED", map.current[id]);
       }
     }
   };
@@ -115,15 +112,12 @@ function APITree() {
   };
 
   const editMethod = () => {
-    dispatch({
-      type: "OPEN_API_DIALOG",
-      payload: { type: "method", action: "edit" },
-    });
+    publish("API_DIALOG_OPEN", { type: "method", action: "edit" });
     handleClose();
   };
 
   const deleteMethod = () => {
-    dispatch({ type: "DELETE_METHOD" });
+    publish("API_METHOD_DELETE", {});
     setOpen(false);
   };
 
@@ -133,14 +127,11 @@ function APITree() {
   };
 
   const checkMethodDeletable = () => {
-    const { pages, specification } = state;
-    const { api } = specification;
-
     const countMethodsForPath = (path) => {
       return api.filter((endpoint) => endpoint.path === path).length;
     };
-    if (pages.api.selected) {
-      const apiSelectedPath = pages.api.selected.path;
+    if (selectedAPI) {
+      const apiSelectedPath = selectedAPI.path;
 
       return countMethodsForPath(apiSelectedPath) <= 1;
     }
@@ -155,7 +146,7 @@ function APITree() {
     handleExpandClick();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected, state]);
+  }, [selected, api, selectedAPI]);
 
   return (
     <Card sx={{ height: "100%" }}>

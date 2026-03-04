@@ -1,13 +1,12 @@
 import Schema from "../Schema/Schema";
 import SchemaEditor from "../SchemaEditor";
 import TypeList from "./TypeList";
-import { useContext } from "../../ContextProvider/ContextProvider";
+import { publish } from "@nucleoidai/react-event";
 
 import { Box, Divider, Paper } from "@mui/material";
 import React, { useState } from "react";
 
 const APITypes = ({ tstypes, nuctypes, typesRef }) => {
-  const [, dispatch] = useContext();
   const combinedData = [
     ...tstypes.map((item) => ({ ...item, isTypeScript: true })),
     ...nuctypes.map((item) => ({ ...item, isTypeScript: false })),
@@ -25,24 +24,15 @@ const APITypes = ({ tstypes, nuctypes, typesRef }) => {
   };
 
   const handleAddType = (typeName) => {
-    dispatch({
-      type: "ADD_TYPE",
-      payload: { typeName },
-    });
+    publish("API_TYPE_ADD", { typeName });
   };
 
   const handleDeleteType = (typeName) => {
-    dispatch({
-      type: "DELETE_TYPE",
-      payload: { typeName },
-    });
+    publish("API_TYPE_DELETE", { typeName });
   };
 
   const handleUpdateType = (oldTypeName, newTypeName) => {
-    dispatch({
-      type: "UPDATE_TYPE_NAME",
-      payload: { oldTypeName, newTypeName },
-    });
+    publish("API_TYPE_RENAME", { oldTypeName, newTypeName });
   };
 
   const renderRightPanel = () => {

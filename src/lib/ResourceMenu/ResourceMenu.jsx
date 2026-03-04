@@ -6,25 +6,27 @@ import HttpIcon from "@mui/icons-material/Http";
 import React from "react";
 import SourceIcon from "@mui/icons-material/Source";
 import styles from "./styles";
-import { useContext } from "../../ContextProvider/ContextProvider";
 import { useRef } from "react";
 
 import { Divider, Menu, MenuItem, Typography } from "@mui/material";
+import { publish, useEvent } from "@nucleoidai/react-event";
 
 const ResourceMenu = (props) => {
   const { anchor, openMenu, handleClose, hash, map } = props;
 
-  const [state, dispatch] = useContext();
   const [methodDisabled, setMethodDisabled] = React.useState();
   const [alertMessage, setAlertMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const resourceRef = useRef();
 
+  const [api] = useEvent("API_DATA_CHANGED", []);
+  const [selectedAPI] = useEvent("SELECTED_API_CHANGED", {
+    path: "/",
+    method: "GET",
+  });
+
   React.useEffect(() => {
     const checkMethodAddable = () => {
-      const { pages, specification } = state;
-      const { api } = specification;
-
       const countMethodsForPath = (path) => {
         return api.filter((endpoint) => endpoint.path === path).length;
       };
@@ -34,40 +36,33 @@ const ResourceMenu = (props) => {
         return countMethodsForPath(path) > 3;
       }
 
-      if (pages.api.selected) {
-        const apiSelectedPath = pages.api.selected.path;
+      if (selectedAPI) {
+        const apiSelectedPath = selectedAPI.path;
         return countMethodsForPath(apiSelectedPath) > 4;
       }
       return false;
     };
 
     setMethodDisabled(checkMethodAddable());
-  }, [state, hash, map]);
+  }, [api, hash, map, selectedAPI]);
 
   const addMethod = () => {
     selectPath();
-    dispatch({
-      type: "OPEN_API_DIALOG",
-      payload: { type: "method", action: "add" },
-    });
+    publish("API_DIALOG_OPEN", { type: "method", action: "add" });
     handleClose();
   };
 
   const addResource = () => {
     selectPath();
-    dispatch({
-      type: "OPEN_API_DIALOG",
-      payload: { type: "resource", action: "add" },
-    });
+    publish("API_DIALOG_OPEN", { type: "resource", action: "add" });
     handleClose();
   };
 
   const deleteResource = () => {
-    const { pages } = state;
-    dispatch({
-      type: "DELETE_RESOURCE",
-      payload: { path: pages.api.selected.path },
-    });
+    const path = selectedAPI?.path;
+    if (!path) return;
+
+    publish("API_RESOURCE_DELETE", { path });
     handleClose();
     setOpen(false);
   };
@@ -75,12 +70,12 @@ const ResourceMenu = (props) => {
   const handleResourceDeleteDialog = () => {
     selectPath();
 
-    if (state.pages.api.selected.path === "/") {
+    if (selectedAPI?.path === "/") {
       setAlertMessage("Root path cannot be deleted");
       handleClose();
     } else {
-      const selectedPath = state.pages.api.selected.path;
-      const deleteList = state.specification.api
+      const selectedPath = selectedAPI?.path;
+      const deleteList = api
         .filter(
           (item) =>
             item.path.startsWith(selectedPath) && item.path !== selectedPath
@@ -101,14 +96,11 @@ const ResourceMenu = (props) => {
     const item = map ? map[hash] : null;
 
     if (item) {
-      dispatch({
-        type: "SET_SELECTED_API",
-        payload: { path: item.path, method: null },
-      });
-    } else {
-      dispatch({
-        type: "SET_SELECTED_API",
-        payload: { path: state.pages.api.selected.path, method: null },
+      publish("SELECTED_API_CHANGED", { path: item.path, method: null });
+    } else if (selectedAPI) {
+      publish("SELECTED_API_CHANGED", {
+        path: selectedAPI.path,
+        method: null,
       });
     }
   };
@@ -124,7 +116,6 @@ const ResourceMenu = (props) => {
         />
       )}
       {alertMessage && <AlertMassage message={alertMessage} />}
-      {state.pages.api.resourceMenu.open && <></>}
       <Menu
         open={openMenu}
         onClose={handleClose}
@@ -151,7 +142,7 @@ const ResourceMenu = (props) => {
         <Divider />
         <MenuItem
           onClick={handleResourceDeleteDialog}
-          disabled={state.pages.api.selected?.path === "/"}
+          disabled={selectedAPI?.path === "/"}
           data-cy="delete-resource"
         >
           <DeleteIcon />

@@ -2,9 +2,9 @@ import Page from "../layouts/Page";
 import React from "react";
 import config from "../config/config";
 import oauth from "../http/oauth";
+import { publish } from "@nucleoidai/react-event";
 import qs from "qs";
 import { storage } from "@nucleoidjs/webstorage";
-import { useContext } from "../ContextProvider/ContextProvider";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,6 @@ function Callback() {
   const projectBar = config().template?.projectBar;
 
   const { google, github, linkedin } = appConfig;
-  const [, dispatch] = useContext();
   const location = useLocation();
   const navigate = useNavigate();
   const hasProcessed = useRef(false);
@@ -91,14 +90,13 @@ function Callback() {
       .then(({ data }) => {
         const accessToken = data.accessToken;
         const refreshToken = data.refreshToken;
-        const userInfo = data.user;
 
         storage.set("link", "accessToken", accessToken);
         storage.set("link", "refreshToken", refreshToken);
         // TODO - update provider info
         storage.set("link", "identityProvider", identityProvider);
 
-        dispatch({ type: "LOGIN", payload: { user: userInfo } });
+        publish("LOGIN", { data: data });
 
         window.history.replaceState(
           {},
