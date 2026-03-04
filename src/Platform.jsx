@@ -1,4 +1,5 @@
 import "./global.css";
+import "./widgets/Login/amplifyAuth";
 
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
 import React from "react";
@@ -8,6 +9,7 @@ import { SettingsProvider } from "./components/settings";
 import { SnackbarProvider } from "notistack";
 import ThemeProvider from "./theme";
 import config from "./config/config";
+import { configureAmplify } from "./widgets/Login/amplifyConfig";
 import http from "./http";
 import { init } from "./config/config";
 import oauth from "./http/oauth";
@@ -16,6 +18,10 @@ import { BrowserRouter, Navigate } from "react-router-dom";
 import { publish, subscribe, useEvent } from "@nucleoidai/react-event";
 
 init();
+
+if (config().credentials?.provider === "COGNITO") {
+  configureAmplify();
+}
 
 window["@nucleoidai"] = {
   Event: { publish, subscribe, useEvent },

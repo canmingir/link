@@ -1,5 +1,3 @@
-import CustomPopover, { usePopover } from "../../components/custom-popover";
-
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -16,6 +14,8 @@ import { useRouter } from "../../routes/hooks";
 import { useUser } from "../../hooks/use-user";
 import { varHover } from "../../components/animate";
 
+import CustomPopover, { usePopover } from "../../components/custom-popover";
+
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
@@ -27,11 +27,7 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
-      storage.remove("link", "accessToken");
-      storage.remove("link", "refreshToken");
-      storage.remove("link", "identityProvider");
-      storage.remove("projectId");
-      storage.remove("landingLevel");
+      storage.clear();
       popover.onClose();
       router.replace("/login");
     } catch (error) {

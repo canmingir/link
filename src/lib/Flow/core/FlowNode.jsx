@@ -16,6 +16,7 @@ const FlowNode = ({
   style,
   plugin,
   node,
+  height,
   ...props
 }) => {
   if (!isRoot) {
@@ -48,6 +49,7 @@ const FlowNode = ({
         variant={variant}
         style={style}
         plugin={plugin}
+        height={height}
       >
         {node && (
           <FlowNodeView

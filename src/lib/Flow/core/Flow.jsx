@@ -11,6 +11,7 @@ export const Flow = ({
   plugin,
   editable = false,
   onChange,
+  height,
 }) => {
   const [floatingNodes, setFloatingNodes] = useState([]);
 
@@ -72,6 +73,7 @@ export const Flow = ({
       onCut={editable ? handleCut : undefined}
       onConnect={editable ? handleConnect : undefined}
       floatingNodes={floatingNodes}
+      height={height}
     />
   );
 };

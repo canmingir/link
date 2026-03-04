@@ -16,6 +16,9 @@ const FlowViewport = ({
   variant,
   style,
   plugin,
+  height = "100vh",
+  sx = {},
+  ...rest
 }) => {
   const clampZoom = (zoom) => Math.min(2.5, Math.max(0.25, zoom));
 
@@ -50,16 +53,34 @@ const FlowViewport = ({
   }, []);
 
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
     const onWheel = (e) => {
       const wantsZoom = e.ctrlKey || e.metaKey;
-      if (!wantsZoom) return;
-      e.preventDefault();
-      const direction = e.deltaY > 0 ? -1 : 1;
-      const factor = direction > 0 ? 1.1 : 1 / 1.1;
-      setZoom((z) => clampZoom(z * factor));
+
+      if (wantsZoom) {
+        e.preventDefault();
+        const direction = e.deltaY > 0 ? -1 : 1;
+        const factor = direction > 0 ? 1.1 : 1 / 1.1;
+        setZoom((z) => clampZoom(z * factor));
+      } else if (e.shiftKey) {
+        e.preventDefault();
+        const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+        setOffset((prev) => ({
+          x: prev.x - delta,
+          y: prev.y,
+        }));
+      } else {
+        e.preventDefault();
+        setOffset((prev) => ({
+          x: prev.x - e.deltaX,
+          y: prev.y - e.deltaY,
+        }));
+      }
     };
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel);
+    container.addEventListener("wheel", onWheel, { passive: false });
+    return () => container.removeEventListener("wheel", onWheel);
   }, []);
 
   useEffect(() => {
@@ -225,13 +246,14 @@ const FlowViewport = ({
           transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
           transformOrigin: "center center",
           width: "100%",
-          height: "100%",
+          height: height,
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: variant === "horizontal" ? "flex-start" : "center",
           transition: isDragging ? "none" : "transform 0.1s ease-out",
           pointerEvents: "auto",
           position: "relative",
+          pl: variant === "horizontal" ? 4 : 0,
         }}
       >
         {children}

@@ -1,6 +1,6 @@
 {
   "name": "@canmingir/link",
-  "version": "1.2.19",
+  "version": "1.2.23",
   "type": "module",
   "exports": {
     ".": "./index.js",
@@ -36,6 +36,7 @@
     "@nucleoidai/react-event": "^1.1.9",
     "@nucleoidjs/webstorage": "^1.0.5",
     "autosuggest-highlight": "^3.3.4",
+    "aws-amplify": "^6.16.0",
     "axios": "^1.10.0",
     "axios-auth-refresh": "^3.3.6",
     "axios-retry": "^4.4.1",
