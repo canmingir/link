@@ -1,6 +1,5 @@
 import Iconify from "../components/Iconify";
 import config from "../config/config";
-import pkg from "../../../../../package.json";
 import { useEvent } from "@nucleoidai/react-event";
 import useSettings from "../hooks/useSettings";
 import { useUser } from "../hooks/use-user";
@@ -29,6 +28,18 @@ import {
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
+let pkg = {
+  name: "",
+  version: "",
+  description: "",
+};
+
+try {
+  pkg = require("../../../../../../package.json");
+} catch (error) {
+  console.error("Failed to load package.json for About tab:", error);
+}
+
 function a11yProps(index) {
   return {
     id: `vertical-tab-${index}`,
@@ -44,6 +55,9 @@ const TabPanel = (props) => {
 
 const SettingsDialogTabs = ({ tabs }) => {
   const [value, setValue] = useState(0);
+
+  const hasPkgInfo =
+    pkg && (pkg.name || pkg.version || pkg.description) ? true : false;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -98,18 +112,20 @@ const SettingsDialogTabs = ({ tabs }) => {
             sx={{ "& label": { color: "custom.grey" } }}
             {...a11yProps(1)}
           />
-          <Tab
-            label={"About"}
-            sx={{ "& label": { color: "custom.grey" } }}
-            {...a11yProps(2)}
-          />
+          {hasPkgInfo && (
+            <Tab
+              label={"About"}
+              sx={{ "& label": { color: "custom.grey" } }}
+              {...a11yProps(2)}
+            />
+          )}
           {tabs?.map((tab, index) => (
             <Tab
               key={tab.label}
               iconPosition="start"
               label={tab.label}
               sx={{ "& label": { color: "custom.grey" } }}
-              {...a11yProps(index + 3)}
+              {...a11yProps(index + (hasPkgInfo ? 3 : 2))}
             />
           ))}
         </Tabs>
@@ -120,11 +136,17 @@ const SettingsDialogTabs = ({ tabs }) => {
           <TabPanel value={value} index={1}>
             <Settings />
           </TabPanel>
-          <TabPanel value={value} index={2}>
-            <About />
-          </TabPanel>
+          {hasPkgInfo && (
+            <TabPanel value={value} index={2}>
+              <About />
+            </TabPanel>
+          )}
           {tabs?.map((tab, index) => (
-            <TabPanel key={tab.label} value={value} index={index + 3}>
+            <TabPanel
+              key={tab.label}
+              value={value}
+              index={index + (hasPkgInfo ? 3 : 2)}
+            >
               <tab.panel />
             </TabPanel>
           ))}

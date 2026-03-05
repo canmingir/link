@@ -1,7 +1,6 @@
 import "./global.css";
 import "./widgets/Login/amplifyAuth";
 
-import ContextProvider from "./ContextProvider/ContextProvider";
 import GlobalSnackMessage from "./GlobalSnackMessage/GlobalSnackMessage";
 import React from "react";
 import RouteManager from "./RouteManager/RouteManager";
@@ -16,7 +15,6 @@ import { init } from "./config/config";
 import oauth from "./http/oauth";
 
 import { BrowserRouter, Navigate } from "react-router-dom";
-import { initialState, reducer } from "./context/reducer";
 import { publish, subscribe, useEvent } from "@nucleoidai/react-event";
 
 init();
@@ -60,18 +58,16 @@ const Platform = ({ routes }) => {
             {configInitError.error !== "" && (
               <Navigate to="/config-error" state={configInitError} />
             )}
-            <ContextProvider reducer={reducer} state={initialState}>
-              <SnackbarProvider
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-              >
-                <SettingsDrawer />
-                <GlobalSnackMessage />
-                <RouteManager routes={routes} />
-              </SnackbarProvider>
-            </ContextProvider>
+            <SnackbarProvider
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <SettingsDrawer />
+              <GlobalSnackMessage />
+              <RouteManager routes={routes} />
+            </SnackbarProvider>
           </BrowserRouter>
         </ThemeProvider>
       </SettingsProvider>

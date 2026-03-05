@@ -1,4 +1,4 @@
-import { FlowChart } from "../lib/FlowChart";
+import { FlowChart } from "../lib/Flow";
 import React from "react";
 
 const treeToLinked = (tree) => {
