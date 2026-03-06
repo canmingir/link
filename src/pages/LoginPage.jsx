@@ -30,10 +30,6 @@ function LoginPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
-  if (credentials?.provider === "COGNITO") {
-    return <CognitoLogin />;
-  }
-
   if (credentials?.provider === "DEMO") {
     return (
       <Page title={`Sign in to ${name}`}>
@@ -44,6 +40,7 @@ function LoginPage() {
 
   return (
     <Page title={`Sign in to ${name}`}>
+      {credentials?.provider === "COGNITO" && <CognitoLogin />}
       <LoginForm icon={template.login.icon} name={name} formColor={formColor} />
     </Page>
   );
