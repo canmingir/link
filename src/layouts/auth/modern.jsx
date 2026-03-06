@@ -28,7 +28,7 @@ export default function AuthModernLayout({ image }) {
       <Logo
         maxSize={140}
         sx={{
-          mb: { xs: 1, md: 2 },
+          mb: 1,
           width: 80,
           height: 80,
         }}
@@ -37,7 +37,7 @@ export default function AuthModernLayout({ image }) {
       <Card
         sx={{
           width: 1,
-          py: { xs: 6, md: 8 },
+          py: { xs: 6, md: 4 },
           px: { xs: 4, md: 6 },
           boxShadow: {
             xs: (theme) =>
