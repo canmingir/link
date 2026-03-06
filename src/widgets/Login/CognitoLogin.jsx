@@ -158,8 +158,8 @@ export default function CognitoLogin() {
   );
 
   return (
-    <Stack spacing={3}>
-      <Box sx={{ mb: 1, textAlign: "center" }}>
+    <Stack spacing={3} sx={{ mb: 2 }}>
+      <Box sx={{ textAlign: "center" }}>
         <Box
           sx={{
             width: 52,
