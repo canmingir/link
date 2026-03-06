@@ -23,7 +23,10 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const hasContent = credentials?.provider !== "COGNITO" || project.nucleoid;
+  const providerCheck =
+    credentials?.provider === "COGNITO" || credentials?.provider === "DEMO";
+
+  const hasContent = !providerCheck || !!project.nucleoid;
 
   const renderHead = hasContent ? (
     <Stack spacing={2} sx={{ mb: 5 }}>
