@@ -18,12 +18,14 @@ const handleOAuthLogin = (
 };
 
 function LoginForm() {
-  const { name, project } = config();
+  const { name, project, credentials } = config();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const renderHead = (
+  const hasContent = credentials?.provider !== "COGNITO" || project.nucleoid;
+
+  const renderHead = hasContent ? (
     <Stack spacing={2} sx={{ mb: 5 }}>
       <Typography variant="h4">Sign in to {name}</Typography>
       {project.nucleoid && (
@@ -34,7 +36,7 @@ function LoginForm() {
         </Stack>
       )}
     </Stack>
-  );
+  ) : null;
 
   const renderForm = (
     <>
