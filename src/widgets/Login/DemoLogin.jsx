@@ -55,7 +55,7 @@ export default function DemoLogin() {
   }
 
   return (
-    <Stack spacing={2.5}>
+    <Stack spacing={2.5} sx={{ mb: 2 }}>
       <Stack spacing={2}>
         <TextField
           label="Username"
