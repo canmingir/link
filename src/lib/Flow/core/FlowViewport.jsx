@@ -57,25 +57,35 @@ const FlowViewport = ({
     if (!container) return;
 
     const onWheel = (e) => {
+      e.preventDefault();
+
+      let deltaX = e.deltaX;
+      let deltaY = e.deltaY;
+      if (e.deltaMode === 1) {
+        deltaX *= 20;
+        deltaY *= 20;
+      } else if (e.deltaMode === 2) {
+        deltaX *= 400;
+        deltaY *= 400;
+      }
+
       const wantsZoom = e.ctrlKey || e.metaKey;
 
       if (wantsZoom) {
-        e.preventDefault();
-        const direction = e.deltaY > 0 ? -1 : 1;
-        const factor = direction > 0 ? 1.1 : 1 / 1.1;
+        const maxDelta = 15;
+        const clamped = Math.max(-maxDelta, Math.min(maxDelta, deltaY));
+        const factor = Math.exp(-clamped * 0.007);
         setZoom((z) => clampZoom(z * factor));
       } else if (e.shiftKey) {
-        e.preventDefault();
-        const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+        const delta = deltaX !== 0 ? deltaX : deltaY;
         setOffset((prev) => ({
           x: prev.x - delta,
           y: prev.y,
         }));
       } else {
-        e.preventDefault();
         setOffset((prev) => ({
-          x: prev.x - e.deltaX,
-          y: prev.y - e.deltaY,
+          x: prev.x - deltaX,
+          y: prev.y - deltaY,
         }));
       }
     };
