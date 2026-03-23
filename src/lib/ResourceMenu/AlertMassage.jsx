@@ -1,6 +1,6 @@
-import { Alert } from "@mui/material";
 import React from "react";
-import Snackbar from "@mui/material/Snackbar";
+
+import { Alert, Snackbar } from "@mui/material";
 
 export default function AlertMassage({ message }) {
   const [open, setOpen] = React.useState(true);

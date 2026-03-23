@@ -1,15 +1,17 @@
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import SchemaPropertyEditor from "./SchemaPropertyEditor";
-import { v4 as uuidv4 } from "uuid";
-
-import { Box, Typography } from "@mui/material";
-import React, { forwardRef, useEffect, useState } from "react";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
+import { v4 as uuidv4 } from "uuid";
+
+import {
+  AddCircleOutline,
+  ChevronRight,
+  ExpandMore,
+  RemoveCircleOutline,
+} from "@mui/icons-material";
+import { Box, Typography } from "@mui/material";
+import React, { forwardRef, useEffect, useState } from "react";
 import { addProperty, changeProperty, removeProperty } from "./SchemaUtils";
 
 const SchemaEditor = forwardRef(
@@ -109,7 +111,7 @@ const SchemaEditor = forwardRef(
                   }}
                   data-cy={`add-property-button-${node.id}`}
                 >
-                  <AddCircleOutlineIcon fontSize="small" />
+                  <AddCircleOutline fontSize="small" />
                 </IconButton>
               )}
             </Box>
@@ -128,7 +130,7 @@ const SchemaEditor = forwardRef(
                   color: (theme) => theme.palette.grey[600],
                 }}
               >
-                <RemoveCircleOutlineIcon fontSize="small" />
+                <RemoveCircleOutline fontSize="small" />
               </IconButton>
             )}
           </Box>
@@ -212,8 +214,8 @@ const SchemaEditor = forwardRef(
     return (
       <SimpleTreeView
         slots={{
-          collapseIcon: () => <ExpandMoreIcon data-cy="collapse-icon" />,
-          expandIcon: () => <ChevronRightIcon data-cy="expand-icon" />,
+          collapseIcon: () => <ExpandMore data-cy="collapse-icon" />,
+          expandIcon: () => <ChevronRight data-cy="expand-icon" />,
         }}
         defaultExpandedItems={["1"]}
         sx={{

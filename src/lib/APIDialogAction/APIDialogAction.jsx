@@ -1,8 +1,7 @@
-import DeleteIcon from "@mui/icons-material/Delete";
 import DialogTooltip from "../DialogTootip/DialogTooltip";
-import SaveIcon from "@mui/icons-material/Save";
 
 import { Box, Button, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Delete, Save } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
 function APIDialogAction({
@@ -72,7 +71,7 @@ function APIDialogAction({
               variant="contained"
               color="error"
               onClick={deleteMethod}
-              startIcon={<DeleteIcon />}
+              startIcon={<Delete />}
               data-cy="delete-api-button-yes"
             >
               Delete
@@ -85,7 +84,7 @@ function APIDialogAction({
             color="error"
             onClick={handleTooltipOpen}
             disabled={deleteDisable}
-            startIcon={<DeleteIcon />}
+            startIcon={<Delete />}
             data-cy="delete-api-button"
           >
             Delete
@@ -96,7 +95,7 @@ function APIDialogAction({
           color="primary"
           onClick={saveApiDialog}
           disabled={saveDisable}
-          startIcon={<SaveIcon />}
+          startIcon={<Save />}
           data-cy="save-api-button"
         >
           Save
