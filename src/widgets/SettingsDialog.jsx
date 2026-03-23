@@ -2,6 +2,7 @@ import Iconify from "../components/Iconify";
 import config from "../config/config";
 import { useEvent } from "@nucleoidai/react-event";
 import useSettings from "../hooks/useSettings";
+import { useSettingsContext } from "../components/settings/context";
 import { useUser } from "../hooks/use-user";
 
 import {
@@ -20,6 +21,7 @@ import {
   ListItemText,
   NativeSelect,
   Stack,
+  Switch,
   Tab,
   Tabs,
   TextField,
@@ -282,6 +284,7 @@ const Permission = () => {
 const Settings = () => {
   const projectId = localStorage.getItem("projectId");
   const { settings, updateSettings } = useSettings(projectId);
+  const { beta, onUpdate } = useSettingsContext();
 
   const timeZones = [
     "Asia/Kolkata",
@@ -332,6 +335,20 @@ const Settings = () => {
               ))}
             </NativeSelect>
           </FormControl>
+        </ListItem>
+        <ListItem
+          sx={{
+            backgroundColor: "background.paper",
+            boxShadow: 1,
+            borderRadius: 1,
+            m: 1,
+            p: 2,
+            ":hover": { boxShadow: 3 },
+            transition: "all 0.2s ease-in-out",
+          }}
+        >
+          <ListItemText primary="Beta" secondary="Enable beta features" />
+          <Switch checked={beta} onChange={() => onUpdate("beta", !beta)} />
         </ListItem>
       </List>
     </Stack>
