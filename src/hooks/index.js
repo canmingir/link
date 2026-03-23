@@ -1,2 +1,3 @@
 import useApi from "./useApi";
-export { useApi };
+import useBeta from "./use-beta";
+export { useApi, useBeta };
