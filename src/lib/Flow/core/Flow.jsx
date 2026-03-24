@@ -1,7 +1,7 @@
 import FlowNode from "./FlowNode";
 import { useGraphOperations } from "../hooks/useGraphOperations";
 
-import { Box, alpha, useTheme } from "@mui/material";
+import { Box, alpha } from "@mui/material";
 import React, { useMemo, useState } from "react";
 import { assertLinkedGraph, buildTreeFromLinked } from "../utils/flowUtils";
 
