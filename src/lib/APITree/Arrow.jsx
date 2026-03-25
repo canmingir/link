@@ -1,20 +1,21 @@
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import React from "react";
 
-// fill: "#212121", old fill color
+import {
+  KeyboardArrowDown,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+  KeyboardArrowUp,
+} from "@mui/icons-material";
 
 function Arrow({ up, down, right, left }) {
   return up ? (
-    <KeyboardArrowUpIcon />
+    <KeyboardArrowUp />
   ) : down ? (
-    <KeyboardArrowDownIcon />
+    <KeyboardArrowDown />
   ) : right ? (
-    <KeyboardArrowRightIcon />
+    <KeyboardArrowRight />
   ) : left ? (
-    <KeyboardArrowLeftIcon />
+    <KeyboardArrowLeft />
   ) : null;
 }
 
