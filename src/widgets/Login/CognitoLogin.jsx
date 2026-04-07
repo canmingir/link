@@ -180,28 +180,33 @@ export default function CognitoLogin() {
           )}
         </Box>
 
-        <Typography variant="h4" fontWeight={700} gutterBottom>
+        <Typography variant="h4" gutterBottom sx={{
+          fontWeight: 700
+        }}>
           {titles[mode].heading}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" sx={{
+          color: "text.secondary"
+        }}>
           {titles[mode].sub}
         </Typography>
       </Box>
-
       <Stack spacing={2}>
         <TextField
           label="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailOutlined sx={{ color: "text.secondary", fontSize: 22 }} />
-              </InputAdornment>
-            ),
-          }}
           sx={inputSx}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <EmailOutlined sx={{ color: "text.secondary", fontSize: 22 }} />
+                </InputAdornment>
+              ),
+            }
+          }}
         />
 
         {mode !== "confirm" && (
@@ -211,17 +216,19 @@ export default function CognitoLogin() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockOutlined
-                    sx={{ color: "text.secondary", fontSize: 22 }}
-                  />
-                </InputAdornment>
-              ),
-              endAdornment: passwordAdornment,
-            }}
             sx={inputSx}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LockOutlined
+                      sx={{ color: "text.secondary", fontSize: 22 }}
+                    />
+                  </InputAdornment>
+                ),
+                endAdornment: passwordAdornment,
+              }
+            }}
           />
         )}
 
@@ -232,28 +239,30 @@ export default function CognitoLogin() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockOutlined
-                    sx={{ color: "text.secondary", fontSize: 22 }}
-                  />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    edge="end"
-                    size="small"
-                    tabIndex={-1}
-                  >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
             sx={inputSx}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LockOutlined
+                      sx={{ color: "text.secondary", fontSize: 22 }}
+                    />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      edge="end"
+                      size="small"
+                      tabIndex={-1}
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }
+            }}
           />
         )}
 
@@ -263,20 +272,21 @@ export default function CognitoLogin() {
             value={code}
             onChange={(e) => setCode(e.target.value)}
             fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <CheckOutlined
-                    sx={{ color: "text.secondary", fontSize: 22 }}
-                  />
-                </InputAdornment>
-              ),
-            }}
             sx={inputSx}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <CheckOutlined
+                      sx={{ color: "text.secondary", fontSize: 22 }}
+                    />
+                  </InputAdornment>
+                ),
+              }
+            }}
           />
         )}
       </Stack>
-
       {mode === "login" && (
         <Stack spacing={1.5}>
           <Button
@@ -297,7 +307,6 @@ export default function CognitoLogin() {
           </Button>
         </Stack>
       )}
-
       {mode === "signup" && (
         <Stack spacing={1.5}>
           <Button
@@ -318,7 +327,6 @@ export default function CognitoLogin() {
           </Button>
         </Stack>
       )}
-
       {mode === "confirm" && (
         <Button
           variant="contained"

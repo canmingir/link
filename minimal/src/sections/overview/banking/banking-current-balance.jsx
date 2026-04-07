@@ -106,7 +106,12 @@ function CardItem({ card }) {
 
   return (
     <>
-      <Stack justifyContent="space-between" sx={{ height: 1, p: 3 }}>
+      <Stack
+        sx={{
+          justifyContent: "space-between",
+          height: 1,
+          p: 3
+        }}>
         <IconButton
           color="inherit"
           onClick={popover.onOpen}
@@ -129,7 +134,9 @@ function CardItem({ card }) {
             Current Balance
           </Typography>
 
-          <Stack direction="row" alignItems="center" spacing={1}>
+          <Stack direction="row" spacing={1} sx={{
+            alignItems: "center"
+          }}>
             <Typography sx={{ typography: 'h3' }}>
               {currency.value ? '********' : fCurrency(balance)}
             </Typography>
@@ -142,10 +149,11 @@ function CardItem({ card }) {
 
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="flex-end"
-          sx={{ typography: 'subtitle1' }}
-        >
+          sx={{
+            alignItems: "center",
+            justifyContent: "flex-end",
+            typography: 'subtitle1'
+          }}>
           <Box
             sx={{
               bgcolor: 'white',
@@ -172,7 +180,6 @@ function CardItem({ card }) {
           </Stack>
         </Stack>
       </Stack>
-
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 140 }}>
         <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
           <Iconify icon="solar:trash-bin-trash-bold" />

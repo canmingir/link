@@ -35,7 +35,13 @@ export default function ChatHeaderDetail({ participants }) {
   );
 
   const renderSingle = (
-    <Stack flexGrow={1} direction="row" alignItems="center" spacing={2}>
+    <Stack
+      direction="row"
+      spacing={2}
+      sx={{
+        flexGrow: 1,
+        alignItems: "center"
+      }}>
       <Badge
         variant={singleParticipant.status}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -50,11 +56,13 @@ export default function ChatHeaderDetail({ participants }) {
             ? fToNow(singleParticipant.lastActivity)
             : singleParticipant.status
         }
-        secondaryTypographyProps={{
-          component: 'span',
-          ...(singleParticipant.status !== 'offline' && {
-            textTransform: 'capitalize',
-          }),
+        slotProps={{
+          secondary: {
+            component: 'span',
+            ...(singleParticipant.status !== 'offline' && {
+              textTransform: 'capitalize',
+            }),
+          }
         }}
       />
     </Stack>
@@ -63,9 +71,9 @@ export default function ChatHeaderDetail({ participants }) {
   return (
     <>
       {group ? renderGroup : renderSingle}
-
-      <Stack flexGrow={1} />
-
+      <Stack sx={{
+        flexGrow: 1
+      }} />
       <IconButton>
         <Iconify icon="solar:phone-bold" />
       </IconButton>

@@ -31,16 +31,19 @@ export default function BookingCustomerReviews({ title, subheader, list, ...othe
         subheader={subheader}
         action={<CarouselArrows onNext={carousel.onNext} onPrev={carousel.onPrev} />}
       />
-
       <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
         {list.map((item) => (
           <ReviewItem key={item.id} item={item} />
         ))}
       </Carousel>
-
       <Divider sx={{ borderStyle: 'dashed' }} />
-
-      <Stack spacing={2} direction="row" alignItems="center" sx={{ p: 3 }}>
+      <Stack
+        spacing={2}
+        direction="row"
+        sx={{
+          alignItems: "center",
+          p: 3
+        }}>
         <Button
           fullWidth
           color="error"
@@ -82,26 +85,29 @@ function ReviewItem({ item }) {
         position: 'relative',
       }}
     >
-      <Stack direction="row" alignItems="center" spacing={2}>
+      <Stack direction="row" spacing={2} sx={{
+        alignItems: "center"
+      }}>
         <Avatar alt={name} src={avatarUrl} sx={{ width: 48, height: 48 }} />
 
         <ListItemText
           primary={name}
           secondary={`Posted ${fDateTime(postedAt)}`}
-          secondaryTypographyProps={{
-            component: 'span',
-            typography: 'caption',
-            mt: 0.5,
-            color: 'text.disabled',
+          slotProps={{
+            secondary: {
+              component: 'span',
+              typography: 'caption',
+              mt: 0.5,
+              color: 'text.disabled',
+            }
           }}
         />
       </Stack>
-
       <Rating value={rating} size="small" readOnly precision={0.5} />
-
       <Typography variant="body2">{description}</Typography>
-
-      <Stack direction="row" flexWrap="wrap" spacing={1}>
+      <Stack direction="row" spacing={1} sx={{
+        flexWrap: "wrap"
+      }}>
         {tags.map((tag) => (
           <Chip size="small" variant="soft" key={tag} label={tag} />
         ))}

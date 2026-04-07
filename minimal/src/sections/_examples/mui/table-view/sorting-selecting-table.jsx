@@ -74,7 +74,13 @@ export default function SortingSelectingTable() {
 
   return (
     <div>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ p: 3 }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          p: 3
+        }}>
         <Typography variant="h6">Sorting & Selecting</Typography>
 
         <Tooltip title="Filter list">
@@ -83,7 +89,6 @@ export default function SortingSelectingTable() {
           </IconButton>
         </Tooltip>
       </Stack>
-
       <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
         <TableSelectedAction
           dense={table.dense}
@@ -153,7 +158,6 @@ export default function SortingSelectingTable() {
           </Table>
         </Scrollbar>
       </TableContainer>
-
       <TablePaginationCustom
         count={dataFiltered.length}
         page={table.page}

@@ -35,7 +35,9 @@ EcommerceSalesOverview.propTypes = {
 function ProgressItem({ progress }) {
   return (
     <Stack spacing={1}>
-      <Stack direction="row" alignItems="center">
+      <Stack direction="row" sx={{
+        alignItems: "center"
+      }}>
         <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
           {progress.label}
         </Typography>
@@ -46,7 +48,6 @@ function ProgressItem({ progress }) {
           &nbsp;({fPercent(progress.value)})
         </Typography>
       </Stack>
-
       <LinearProgress
         variant="determinate"
         value={progress.value}

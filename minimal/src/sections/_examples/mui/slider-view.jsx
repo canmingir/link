@@ -87,11 +87,16 @@ export default function SliderView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Masonry columns={{ xs: 1, md: 3 }} spacing={3}>
           <ComponentBlock title="Volume">
-            <Stack direction="row" alignItems="center" spacing={1} width={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: "center",
+                width: 1
+              }}>
               <Iconify icon="eva:volume-mute-fill" width={24} />
               <Slider value={value} onChange={handleChange} aria-labelledby="continuous-slider" />
               <Iconify icon="eva:volume-up-fill" width={24} />

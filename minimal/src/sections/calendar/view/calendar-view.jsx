@@ -130,12 +130,11 @@ export default function CalendarView() {
       <Container maxWidth={settings.themeStretch ? false : 'xl'}>
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
           sx={{
-            mb: { xs: 3, md: 5 },
-          }}
-        >
+            alignItems: "center",
+            justifyContent: "space-between",
+            mb: { xs: 3, md: 5 }
+          }}>
           <Typography variant="h4">Calendar</Typography>
           <Button
             variant="contained"
@@ -196,7 +195,6 @@ export default function CalendarView() {
           </StyledCalendar>
         </Card>
       </Container>
-
       <Dialog
         fullWidth
         maxWidth="xs"
@@ -217,7 +215,6 @@ export default function CalendarView() {
           onClose={onCloseForm}
         />
       </Dialog>
-
       <CalendarFilters
         open={openFilters.value}
         onClose={openFilters.onFalse}

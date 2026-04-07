@@ -23,9 +23,24 @@ export default function FileManagerPanel({
   ...other
 }) {
   return (
-    <Stack direction="row" alignItems="center" sx={{ mb: 3, ...sx }} {...other}>
-      <Stack flexGrow={1}>
-        <Stack direction="row" alignItems="center" spacing={1} flexGrow={1}>
+    <Stack
+      direction="row"
+      {...other}
+      sx={[{
+        alignItems: "center",
+        mb: 3,
+        ...sx
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
+      <Stack sx={{
+        flexGrow: 1
+      }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: "center",
+            flexGrow: 1
+          }}>
           <Typography variant="h6"> {title} </Typography>
 
           <IconButton
@@ -48,7 +63,6 @@ export default function FileManagerPanel({
 
         <Box sx={{ typography: 'body2', color: 'text.disabled', mt: 0.5 }}>{subTitle}</Box>
       </Stack>
-
       {link && (
         <Button
           href={link}
@@ -60,7 +74,6 @@ export default function FileManagerPanel({
           View All
         </Button>
       )}
-
       {onCollapse && (
         <IconButton onClick={onCollapse}>
           <Iconify icon={collapse ? 'eva:arrow-ios-downward-fill' : 'eva:arrow-ios-upward-fill'} />

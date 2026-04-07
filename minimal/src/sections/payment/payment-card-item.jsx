@@ -29,7 +29,9 @@ export default function PaymentCardItem({ card, sx, ...other }) {
         }}
         {...other}
       >
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{
+          alignItems: "center"
+        }}>
           <Iconify
             icon={(card.cardType === 'visa' && 'logos:visa') || 'logos:mastercard'}
             width={36}
@@ -51,7 +53,6 @@ export default function PaymentCardItem({ card, sx, ...other }) {
           <Iconify icon="eva:more-vertical-fill" />
         </IconButton>
       </Stack>
-
       <CustomPopover open={popover.open} onClose={popover.onClose}>
         <MenuItem onClick={popover.onClose}>
           <Iconify icon="eva:star-fill" />

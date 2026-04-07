@@ -98,14 +98,13 @@ export default function BookingCheckInWidgets({ chart, ...other }) {
             key={item.label}
             spacing={3}
             direction="row"
-            alignItems="center"
-            justifyContent={{ sm: 'center' }}
             sx={{
+              alignItems: "center",
+              justifyContent: { sm: 'center' },
               py: 5,
               width: 1,
-              px: { xs: 3, sm: 0 },
-            }}
-          >
+              px: { xs: 3, sm: 0 }
+            }}>
             <Chart
               dir="ltr"
               type="radialBar"

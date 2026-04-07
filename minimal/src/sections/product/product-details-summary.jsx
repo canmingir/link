@@ -133,7 +133,9 @@ export default function ProductDetailsSummary({
   );
 
   const renderShare = (
-    <Stack direction="row" spacing={3} justifyContent="center">
+    <Stack direction="row" spacing={3} sx={{
+      justifyContent: "center"
+    }}>
       <Link
         variant="subtitle2"
         sx={{
@@ -278,19 +280,20 @@ export default function ProductDetailsSummary({
   const renderRating = (
     <Stack
       direction="row"
-      alignItems="center"
       sx={{
+        alignItems: "center",
         color: 'text.disabled',
-        typography: 'body2',
-      }}
-    >
+        typography: 'body2'
+      }}>
       <Rating size="small" value={totalRatings} precision={0.1} readOnly sx={{ mr: 1 }} />
       {`(${fShortenNumber(totalReviews)} reviews)`}
     </Stack>
   );
 
   const renderLabels = (newLabel.enabled || saleLabel.enabled) && (
-    <Stack direction="row" alignItems="center" spacing={1}>
+    <Stack direction="row" spacing={1} sx={{
+      alignItems: "center"
+    }}>
       {newLabel.enabled && <Label color="info">{newLabel.content}</Label>}
       {saleLabel.enabled && <Label color="error">{saleLabel.content}</Label>}
     </Stack>
@@ -314,7 +317,9 @@ export default function ProductDetailsSummary({
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Stack spacing={3} sx={{ pt: 3 }} {...other}>
-        <Stack spacing={2} alignItems="flex-start">
+        <Stack spacing={2} sx={{
+          alignItems: "flex-start"
+        }}>
           {renderLabels}
 
           {renderInventoryType}

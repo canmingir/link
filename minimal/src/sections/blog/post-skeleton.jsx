@@ -23,8 +23,18 @@ export function PostItemSkeleton({ variant = 'vertical', sx, ...other }) {
         }}
         {...other}
       >
-        <Stack spacing={2} flexGrow={1} sx={{ p: 3 }}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack
+          spacing={2}
+          sx={{
+            flexGrow: 1,
+            p: 3
+          }}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}>
             <Skeleton variant="circular" sx={{ width: 40, height: 40 }} />
             <Skeleton sx={{ width: 24, height: 12 }} />
           </Stack>
@@ -33,7 +43,6 @@ export function PostItemSkeleton({ variant = 'vertical', sx, ...other }) {
           <Skeleton sx={{ width: `calc(100% - 40px)`, height: 10 }} />
           <Skeleton sx={{ width: `calc(100% - 80px)`, height: 10 }} />
         </Stack>
-
         {smUp && (
           <Stack sx={{ p: 1 }}>
             <Skeleton sx={{ width: 170, height: 240, flexShrink: 0 }} />
@@ -56,10 +65,18 @@ export function PostItemSkeleton({ variant = 'vertical', sx, ...other }) {
       <Stack sx={{ p: 1 }}>
         <Skeleton sx={{ paddingTop: '100%' }} />
       </Stack>
-
-      <Stack spacing={2} direction="row" alignItems="center" sx={{ p: 3, pt: 2 }}>
+      <Stack
+        spacing={2}
+        direction="row"
+        sx={{
+          alignItems: "center",
+          p: 3,
+          pt: 2
+        }}>
         <Skeleton variant="circular" sx={{ width: 40, height: 40, flexShrink: 0 }} />
-        <Stack flexGrow={1} spacing={1}>
+        <Stack spacing={1} sx={{
+          flexGrow: 1
+        }}>
           <Skeleton sx={{ height: 10 }} />
           <Skeleton sx={{ width: 0.5, height: 10 }} />
         </Stack>

@@ -92,26 +92,32 @@ export default function ChatNavItem({ selected, collapse, conversation, onCloseM
       >
         {group ? renderGroup : renderSingle}
       </Badge>
-
       {!collapse && (
         <>
           <ListItemText
             sx={{ ml: 2 }}
             primary={displayName}
-            primaryTypographyProps={{
-              noWrap: true,
-              variant: 'subtitle2',
-            }}
             secondary={displayText}
-            secondaryTypographyProps={{
-              noWrap: true,
-              component: 'span',
-              variant: conversation.unreadCount ? 'subtitle2' : 'body2',
-              color: conversation.unreadCount ? 'text.primary' : 'text.secondary',
-            }}
-          />
+            slotProps={{
+              primary: {
+                noWrap: true,
+                variant: 'subtitle2',
+              },
 
-          <Stack alignItems="flex-end" sx={{ ml: 2, height: 44 }}>
+              secondary: {
+                noWrap: true,
+                component: 'span',
+                variant: conversation.unreadCount ? 'subtitle2' : 'body2',
+                color: conversation.unreadCount ? 'text.primary' : 'text.secondary',
+              }
+            }} />
+
+          <Stack
+            sx={{
+              alignItems: "flex-end",
+              ml: 2,
+              height: 44
+            }}>
             <Typography
               noWrap
               variant="body2"

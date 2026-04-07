@@ -69,16 +69,17 @@ export default function KanbanTaskItem({ task, index, onDeleteTask, onUpdateTask
   );
 
   const renderInfo = (
-    <Stack direction="row" alignItems="center">
+    <Stack direction="row" sx={{
+      alignItems: "center"
+    }}>
       <Stack
-        flexGrow={1}
         direction="row"
-        alignItems="center"
         sx={{
+          flexGrow: 1,
+          alignItems: "center",
           typography: 'caption',
-          color: 'text.disabled',
-        }}
-      >
+          color: 'text.disabled'
+        }}>
         <Iconify width={16} icon="solar:chat-round-dots-bold" sx={{ mr: 0.25 }} />
         <Box component="span" sx={{ mr: 1 }}>
           {task.comments.length}

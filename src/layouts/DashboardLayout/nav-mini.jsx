@@ -39,7 +39,6 @@ export default function NavMini({ only }) {
           }}
         />
       )}
-
       <Stack
         sx={{
           pb: 2,
@@ -60,16 +59,15 @@ export default function NavMini({ only }) {
         <Box sx={{ flexGrow: 1 }} />
         <Stack
           direction={"column"}
-          alignItems={"center"}
-          justifyItems={"center"}
           sx={{
+            alignItems: "center",
+            justifyItems: "center",
+            gap: 2,
             marginBottom: 0,
             position: lgUp ? "static" : "fixed",
             bottom: lgUp ? "auto" : 66,
-            width: "100%",
-          }}
-          gap={2}
-        >
+            width: "100%"
+          }}>
           {actionButtons &&
             actionButtons.map((Action, index) => (
               <Box key={index} component={Action}></Box>

@@ -36,15 +36,16 @@ export default function NavMobile({ data }) {
       <IconButton onClick={handleOpenMenu} sx={{ ml: 1 }}>
         <SvgColor src="/assets/icons/navbar/ic_menu_item.svg" />
       </IconButton>
-
       <Drawer
         open={openMenu}
         onClose={handleCloseMenu}
-        PaperProps={{
-          sx: {
-            pb: 5,
-            width: 260,
-          },
+        slotProps={{
+          paper: {
+            sx: {
+              pb: 5,
+              width: 260,
+            },
+          }
         }}
       >
         <Scrollbar>

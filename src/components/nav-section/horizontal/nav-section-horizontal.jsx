@@ -9,14 +9,13 @@ function NavSectionHorizontal({ data, slotProps, sx, ...other }) {
       component="nav"
       id="nav-section-horizontal"
       direction="row"
-      alignItems="center"
       spacing={`${slotProps?.gap || 6}px`}
-      sx={{
-        mx: "auto",
-        ...sx,
-      }}
       {...other}
-    >
+      sx={[{
+        alignItems: "center",
+        mx: "auto",
+        ...sx
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       {data.map((group, index) => (
         <Group
           key={group?.subheader || index}

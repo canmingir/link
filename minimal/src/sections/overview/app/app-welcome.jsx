@@ -13,33 +13,35 @@ export default function AppWelcome({ title, description, action, img, ...other }
 
   return (
     <Stack
-      flexDirection={{ xs: 'column', md: 'row' }}
-      sx={{
+      {...other}
+      sx={[{
+        flexDirection: { xs: 'column', md: 'row' },
+
         ...bgGradient({
           direction: '135deg',
           startColor: alpha(theme.palette.primary.light, 0.2),
           endColor: alpha(theme.palette.primary.main, 0.2),
         }),
+
         height: { md: 1 },
         borderRadius: 2,
         position: 'relative',
         color: 'primary.darker',
-        backgroundColor: 'common.white',
-      }}
-      {...other}
-    >
+        backgroundColor: 'common.white'
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       <Stack
-        flexGrow={1}
-        justifyContent="center"
-        alignItems={{ xs: 'center', md: 'flex-start' }}
         sx={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: { xs: 'center', md: 'flex-start' },
+
           p: {
             xs: theme.spacing(5, 3, 0, 3),
             md: theme.spacing(5),
           },
-          textAlign: { xs: 'center', md: 'left' },
-        }}
-      >
+
+          textAlign: { xs: 'center', md: 'left' }
+        }}>
         <Typography variant="h4" sx={{ mb: 2, whiteSpace: 'pre-line' }}>
           {title}
         </Typography>
@@ -57,17 +59,15 @@ export default function AppWelcome({ title, description, action, img, ...other }
 
         {action && action}
       </Stack>
-
       {img && (
         <Stack
           component="span"
-          justifyContent="center"
           sx={{
+            justifyContent: "center",
             p: { xs: 5, md: 3 },
             maxWidth: 360,
-            mx: 'auto',
-          }}
-        >
+            mx: 'auto'
+          }}>
           {img}
         </Stack>
       )}

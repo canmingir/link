@@ -27,13 +27,15 @@ export default function Chips({ variant = 'filled' }) {
     <Stack spacing={3}>
       <Stack
         spacing={1}
-        flexWrap="wrap"
         component={Paper}
         variant="outlined"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ p: 5, borderStyle: 'dashed' }}
-      >
+        sx={{
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "center",
+          p: 5,
+          borderStyle: 'dashed'
+        }}>
         <Chip
           variant={variant}
           label="Default deletable"
@@ -139,19 +141,20 @@ export default function Chips({ variant = 'filled' }) {
           color="error"
         />
       </Stack>
-
       <div>
         {renderLabel('Custom icon')}
 
         <Stack
           spacing={1}
-          flexWrap="wrap"
           component={Paper}
           variant="outlined"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ p: 5, borderStyle: 'dashed' }}
-        >
+          sx={{
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+            p: 5,
+            borderStyle: 'dashed'
+          }}>
           <Chip
             variant={variant}
             icon={<Iconify width={24} icon="eva:smiling-face-fill" />}
@@ -170,19 +173,20 @@ export default function Chips({ variant = 'filled' }) {
           />
         </Stack>
       </div>
-
       <div>
         {renderLabel('Disabled')}
 
         <Stack
           spacing={1}
-          flexWrap="wrap"
           component={Paper}
           variant="outlined"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ p: 5, borderStyle: 'dashed' }}
-        >
+          sx={{
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+            p: 5,
+            borderStyle: 'dashed'
+          }}>
           <Chip
             disabled
             variant={variant}
@@ -201,19 +205,20 @@ export default function Chips({ variant = 'filled' }) {
           />
         </Stack>
       </div>
-
       <div>
         {renderLabel('Sizes')}
 
         <Stack
           spacing={1}
-          flexWrap="wrap"
           component={Paper}
           variant="outlined"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ p: 5, borderStyle: 'dashed' }}
-        >
+          sx={{
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+            p: 5,
+            borderStyle: 'dashed'
+          }}>
           <Chip
             variant={variant}
             icon={<Iconify width={24} icon="eva:smiling-face-fill" />}

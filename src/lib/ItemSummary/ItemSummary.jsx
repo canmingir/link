@@ -17,15 +17,15 @@ export default function ItemSummary({ newItem }) {
       <DialogContentText sx={{ textAlign: "center", mb: 2 }}>
         Summary
       </DialogContentText>
-      <Grid container spacing={1} mb={4}>
+      <Grid container spacing={1} sx={{
+        mb: 4
+      }}>
         <Grid
-          item
-          xs={newItem.description ? 4 : 12}
           sx={{
             justifyContent: "center",
             display: "flex",
           }}
-        >
+          size={newItem.description ? 4 : 12}>
           <Card
             sx={{
               bgcolor: (theme) => theme.palette.background.paper,
@@ -37,7 +37,12 @@ export default function ItemSummary({ newItem }) {
             <CardContent
               children={
                 <>
-                  <Typography variant="h6" textAlign={"center"} mb={2}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      textAlign: "center",
+                      mb: 2
+                    }}>
                     {newItem.name}
                   </Typography>
                   <Stack
@@ -63,7 +68,7 @@ export default function ItemSummary({ newItem }) {
           </Card>
         </Grid>
         {newItem.description && (
-          <Grid item xs={8}>
+          <Grid size={8}>
             <Card sx={{ minHeight: "100%" }}>
               <CardHeader title="Description" />
               <CardContent>

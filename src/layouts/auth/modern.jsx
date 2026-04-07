@@ -59,11 +59,10 @@ export default function AuthModernLayout({ image }) {
 
   const renderSection = (
     <Stack
-      flexGrow={1}
       sx={{
-        position: "relative",
-      }}
-    >
+        flexGrow: 1,
+        position: "relative"
+      }}>
       <Box
         component="img"
         alt="auth"

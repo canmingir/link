@@ -48,8 +48,10 @@ export default function CheckoutOrderComplete({ open, onReset, onDownloadPDF }) 
 
       <Stack
         spacing={2}
-        justifyContent="space-between"
         direction={{ xs: 'column-reverse', sm: 'row' }}
+        sx={{
+          justifyContent: "space-between"
+        }}
       >
         <Button
           fullWidth

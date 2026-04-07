@@ -71,16 +71,18 @@ export default function ChatRoomGroup({ participants }) {
             sx={{ ml: 2 }}
             primary={participant.name}
             secondary={participant.role}
-            primaryTypographyProps={{
-              noWrap: true,
-              typography: 'subtitle2',
-            }}
-            secondaryTypographyProps={{
-              noWrap: true,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
+            slotProps={{
+              primary: {
+                noWrap: true,
+                typography: 'subtitle2',
+              },
+
+              secondary: {
+                noWrap: true,
+                component: 'span',
+                typography: 'caption',
+              }
+            }} />
         </ListItemButton>
       ))}
     </Scrollbar>

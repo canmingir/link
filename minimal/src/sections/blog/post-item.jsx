@@ -153,38 +153,42 @@ export function PostContent({ title, createdAt, totalViews, totalShares, totalCo
       >
         {fDate(createdAt)}
       </Typography>
-
       <Link color="inherit" component={RouterLink} href={linkTo}>
         <TextMaxLine variant={mdUp && latestPostLarge ? 'h5' : 'subtitle2'} line={2} persistent>
           {title}
         </TextMaxLine>
       </Link>
-
       <Stack
         spacing={1.5}
         direction="row"
-        justifyContent="flex-end"
         sx={{
+          justifyContent: "flex-end",
           mt: 3,
           typography: 'caption',
           color: 'text.disabled',
+
           ...((latestPostLarge || latestPostSmall) && {
             opacity: 0.64,
             color: 'common.white',
-          }),
-        }}
-      >
-        <Stack direction="row" alignItems="center">
+          })
+        }}>
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
           <Iconify icon="eva:message-circle-fill" width={16} sx={{ mr: 0.5 }} />
           {fShortenNumber(totalComments)}
         </Stack>
 
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
           <Iconify icon="solar:eye-bold" width={16} sx={{ mr: 0.5 }} />
           {fShortenNumber(totalViews)}
         </Stack>
 
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
           <Iconify icon="solar:share-bold" width={16} sx={{ mr: 0.5 }} />
           {fShortenNumber(totalShares)}
         </Stack>

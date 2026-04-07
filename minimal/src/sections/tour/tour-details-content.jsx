@@ -49,16 +49,17 @@ export default function TourDetailsContent({ tour }) {
   const renderGallery = (
     <>
       <Box
-        gap={1}
-        display="grid"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          md: 'repeat(2, 1fr)',
-        }}
         sx={{
-          mb: { xs: 3, md: 5 },
-        }}
-      >
+          gap: 1,
+          display: "grid",
+
+          gridTemplateColumns: {
+            xs: 'repeat(1, 1fr)',
+            md: 'repeat(2, 1fr)',
+          },
+
+          mb: { xs: 3, md: 5 }
+        }}>
         <m.div
           key={slides[0].src}
           whileHover="hover"
@@ -76,7 +77,12 @@ export default function TourDetailsContent({ tour }) {
           />
         </m.div>
 
-        <Box gap={1} display="grid" gridTemplateColumns="repeat(2, 1fr)">
+        <Box
+          sx={{
+            gap: 1,
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)"
+          }}>
           {slides.slice(1, 5).map((slide) => (
             <m.div
               key={slide.src}
@@ -126,8 +132,20 @@ export default function TourDetailsContent({ tour }) {
         />
       </Stack>
 
-      <Stack spacing={3} direction="row" flexWrap="wrap" alignItems="center">
-        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
+      <Stack
+        spacing={3}
+        direction="row"
+        sx={{
+          flexWrap: "wrap",
+          alignItems: "center"
+        }}>
+        <Stack
+          direction="row"
+          spacing={0.5}
+          sx={{
+            alignItems: "center",
+            typography: 'body2'
+          }}>
           <Iconify icon="eva:star-fill" sx={{ color: 'warning.main' }} />
           <Box component="span" sx={{ typography: 'subtitle2' }}>
             {ratingNumber}
@@ -135,12 +153,24 @@ export default function TourDetailsContent({ tour }) {
           <Link sx={{ color: 'text.secondary' }}>(234 reviews)</Link>
         </Stack>
 
-        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
+        <Stack
+          direction="row"
+          spacing={0.5}
+          sx={{
+            alignItems: "center",
+            typography: 'body2'
+          }}>
           <Iconify icon="mingcute:location-fill" sx={{ color: 'error.main' }} />
           {destination}
         </Stack>
 
-        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'subtitle2' }}>
+        <Stack
+          direction="row"
+          spacing={0.5}
+          sx={{
+            alignItems: "center",
+            typography: 'subtitle2'
+          }}>
           <Iconify icon="solar:flag-bold" sx={{ color: 'info.main' }} />
           <Box component="span" sx={{ typography: 'body2', color: 'text.secondary' }}>
             Guide by
@@ -153,13 +183,15 @@ export default function TourDetailsContent({ tour }) {
 
   const renderOverview = (
     <Box
-      gap={3}
-      display="grid"
-      gridTemplateColumns={{
-        xs: 'repeat(1, 1fr)',
-        md: 'repeat(2, 1fr)',
-      }}
-    >
+      sx={{
+        gap: 3,
+        display: "grid",
+
+        gridTemplateColumns: {
+          xs: 'repeat(1, 1fr)',
+          md: 'repeat(2, 1fr)',
+        }
+      }}>
       {[
         {
           label: 'Available',
@@ -187,17 +219,19 @@ export default function TourDetailsContent({ tour }) {
           <ListItemText
             primary={item.label}
             secondary={item.value}
-            primaryTypographyProps={{
-              typography: 'body2',
-              color: 'text.secondary',
-              mb: 0.5,
-            }}
-            secondaryTypographyProps={{
-              typography: 'subtitle2',
-              color: 'text.primary',
-              component: 'span',
-            }}
-          />
+            slotProps={{
+              primary: {
+                typography: 'body2',
+                color: 'text.secondary',
+                mb: 0.5,
+              },
+
+              secondary: {
+                typography: 'subtitle2',
+                color: 'text.primary',
+                component: 'span',
+              }
+            }} />
         </Stack>
       ))}
     </Box>
@@ -211,25 +245,27 @@ export default function TourDetailsContent({ tour }) {
         <Typography variant="h6"> Services</Typography>
 
         <Box
-          rowGap={2}
-          display="grid"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            md: 'repeat(2, 1fr)',
-          }}
-        >
+          sx={{
+            rowGap: 2,
+            display: "grid",
+
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+            }
+          }}>
           {TOUR_SERVICE_OPTIONS.map((service) => (
             <Stack
               key={service.label}
               spacing={1}
               direction="row"
-              alignItems="center"
               sx={{
+                alignItems: "center",
+
                 ...(services.includes(service.label) && {
                   color: 'text.disabled',
-                }),
-              }}
-            >
+                })
+              }}>
               <Iconify
                 icon="eva:checkmark-circle-2-outline"
                 sx={{

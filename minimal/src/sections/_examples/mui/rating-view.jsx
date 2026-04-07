@@ -80,7 +80,6 @@ export default function RatingView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={3}>
           <ComponentBlock title="Controlled">
@@ -133,7 +132,11 @@ export default function RatingView() {
               name="customized-icons"
               defaultValue={2}
               getLabelText={(ratingValue) => customIcons[ratingValue].label}
-              IconContainerComponent={IconContainer}
+              slotProps={{
+                icon: {
+                  component: IconContainer
+                }
+              }}
             />
           </ComponentBlock>
 

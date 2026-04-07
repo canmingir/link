@@ -115,14 +115,17 @@ export default function ProductDetailsView({ id }) {
       </Grid>
 
       <Box
-        gap={5}
-        display="grid"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          md: 'repeat(3, 1fr)',
-        }}
-        sx={{ my: 10 }}
-      >
+        sx={{
+          gap: 5,
+          display: "grid",
+
+          gridTemplateColumns: {
+            xs: 'repeat(1, 1fr)',
+            md: 'repeat(3, 1fr)',
+          },
+
+          my: 10
+        }}>
         {SUMMARY.map((item) => (
           <Box key={item.title} sx={{ textAlign: 'center', px: 5 }}>
             <Iconify icon={item.icon} width={32} sx={{ color: 'primary.main' }} />

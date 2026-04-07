@@ -107,10 +107,11 @@ export default function JobListView() {
   const renderFilters = (
     <Stack
       spacing={3}
-      justifyContent="space-between"
-      alignItems={{ xs: 'flex-end', sm: 'center' }}
       direction={{ xs: 'column', sm: 'row' }}
-    >
+      sx={{
+        justifyContent: "space-between",
+        alignItems: { xs: 'flex-end', sm: 'center' }
+      }}>
       <JobSearch
         query={search.query}
         results={search.results}
@@ -118,7 +119,9 @@ export default function JobListView() {
         hrefItem={(id) => paths.dashboard.job.details(id)}
       />
 
-      <Stack direction="row" spacing={1} flexShrink={0}>
+      <Stack direction="row" spacing={1} sx={{
+        flexShrink: 0
+      }}>
         <JobFilters
           open={openFilters.value}
           onOpen={openFilters.onTrue}

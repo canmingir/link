@@ -11,16 +11,14 @@ export function MailNavItemSkeleton({ sx, ...other }) {
     <Stack
       spacing={2}
       direction="row"
-      alignItems="center"
-      sx={{
+      {...other}
+      sx={[{
+        alignItems: "center",
         py: 1,
         color: (theme) => alpha(theme.palette.grey[500], 0.24),
-        ...sx,
-      }}
-      {...other}
-    >
+        ...sx
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       <Skeleton variant="circular" sx={{ width: 32, height: 32, bgcolor: 'currentColor' }} />
-
       <Skeleton sx={{ width: 0.5, height: 10, bgcolor: 'currentColor' }} />
     </Stack>
   );
@@ -37,16 +35,16 @@ export function MailItemSkeleton({ sx, ...other }) {
     <Stack
       spacing={2}
       direction="row"
-      alignItems="center"
-      sx={{
-        py: 1,
-        ...sx,
-      }}
       {...other}
-    >
+      sx={[{
+        alignItems: "center",
+        py: 1,
+        ...sx
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       <Skeleton variant="circular" sx={{ width: 40, height: 40 }} />
-
-      <Stack spacing={1} flexGrow={1}>
+      <Stack spacing={1} sx={{
+        flexGrow: 1
+      }}>
         <Skeleton sx={{ width: 0.75, height: 10 }} />
         <Skeleton sx={{ width: 0.5, height: 10 }} />
       </Stack>

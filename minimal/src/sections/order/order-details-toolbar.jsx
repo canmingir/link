@@ -35,13 +35,17 @@ export default function OrderDetailsToolbar({
           mb: { xs: 3, md: 5 },
         }}
       >
-        <Stack spacing={1} direction="row" alignItems="flex-start">
+        <Stack spacing={1} direction="row" sx={{
+          alignItems: "flex-start"
+        }}>
           <IconButton component={RouterLink} href={backLink}>
             <Iconify icon="eva:arrow-ios-back-fill" />
           </IconButton>
 
           <Stack spacing={0.5}>
-            <Stack spacing={1} direction="row" alignItems="center">
+            <Stack spacing={1} direction="row" sx={{
+              alignItems: "center"
+            }}>
               <Typography variant="h4"> Order {orderNumber} </Typography>
               <Label
                 variant="soft"
@@ -63,12 +67,13 @@ export default function OrderDetailsToolbar({
         </Stack>
 
         <Stack
-          flexGrow={1}
           spacing={1.5}
           direction="row"
-          alignItems="center"
-          justifyContent="flex-end"
-        >
+          sx={{
+            flexGrow: 1,
+            alignItems: "center",
+            justifyContent: "flex-end"
+          }}>
           <Button
             color="inherit"
             variant="outlined"
@@ -92,7 +97,6 @@ export default function OrderDetailsToolbar({
           </Button>
         </Stack>
       </Stack>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}

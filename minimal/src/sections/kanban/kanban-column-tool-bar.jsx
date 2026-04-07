@@ -60,10 +60,11 @@ export default function KanbanColumnToolBar({
       <Stack
         spacing={1}
         direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ pt: 3 }}
-      >
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          pt: 3
+        }}>
         <KanbanInputName
           inputRef={renameRef}
           placeholder="Section name"
@@ -76,7 +77,6 @@ export default function KanbanColumnToolBar({
           <Iconify icon="eva:more-horizontal-fill" />
         </IconButton>
       </Stack>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -111,7 +111,6 @@ export default function KanbanColumnToolBar({
           Delete
         </MenuItem>
       </CustomPopover>
-
       <ConfirmDialog
         open={confirmDialog.value}
         onClose={confirmDialog.onFalse}

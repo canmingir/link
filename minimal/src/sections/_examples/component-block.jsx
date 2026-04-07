@@ -18,20 +18,18 @@ export default function ComponentBlock({ title, sx, children, ...other }) {
       }}
     >
       {title && <CardHeader title={title} />}
-
       <Stack
         spacing={3}
         direction="row"
-        alignItems="center"
-        justifyContent="center"
-        flexWrap="wrap"
-        sx={{
+        {...other}
+        sx={[{
+          alignItems: "center",
+          justifyContent: "center",
+          flexWrap: "wrap",
           p: 5,
           minHeight: 180,
-          ...sx,
-        }}
-        {...other}
-      >
+          ...sx
+        }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
         {children}
       </Stack>
     </Paper>

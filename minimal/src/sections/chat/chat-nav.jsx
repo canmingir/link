@@ -170,21 +170,30 @@ export default function ChatNav({ loading, contacts, conversations, selectedConv
         value={searchContacts.query}
         onChange={(event) => handleSearchContacts(event.target.value)}
         placeholder="Search contacts..."
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-            </InputAdornment>
-          ),
-        }}
         sx={{ mt: 2.5 }}
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+              </InputAdornment>
+            ),
+          }
+        }}
       />
     </ClickAwayListener>
   );
 
   const renderContent = (
     <>
-      <Stack direction="row" alignItems="center" justifyContent="center" sx={{ p: 2.5, pb: 0 }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          justifyContent: "center",
+          p: 2.5,
+          pb: 0
+        }}>
         {!collapseDesktop && (
           <>
             <ChatNavAccount />
@@ -220,7 +229,6 @@ export default function ChatNav({ loading, contacts, conversations, selectedConv
   return (
     <>
       {!mdUp && renderToggleBtn}
-
       {mdUp ? (
         <Stack
           sx={{
@@ -244,11 +252,11 @@ export default function ChatNav({ loading, contacts, conversations, selectedConv
           onClose={onCloseMobile}
           slotProps={{
             backdrop: { invisible: true },
-          }}
-          PaperProps={{
-            sx: { width: NAV_WIDTH },
-          }}
-        >
+
+            paper: {
+              sx: { width: NAV_WIDTH },
+            }
+          }}>
           {renderContent}
         </Drawer>
       )}

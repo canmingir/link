@@ -61,25 +61,26 @@ export default function LayoutOptions({ options, value, onChange }) {
     return (
       <Stack
         spacing={0.5}
-        flexShrink={0}
         direction={option === "horizontal" ? "row" : "column"}
         sx={{
+          flexShrink: 0,
           p: 0.5,
           width: 28,
           height: 1,
           borderRight: `solid 1px ${alpha(theme.palette.grey[500], 0.08)}`,
+
           ...(option === "mini" && {
             width: 16,
           }),
+
           ...(option === "horizontal" && {
             width: 1,
             height: 16,
             alignItems: "center",
             borderRight: "unset",
             borderBottom: `solid 1px ${alpha(theme.palette.grey[500], 0.08)}`,
-          }),
-        }}
-      >
+          })
+        }}>
         {circle}
         {primaryItem}
         {secondaryItem}

@@ -38,8 +38,10 @@ export default function HomeAdvertisement() {
 
       <Stack
         direction={{ xs: 'column', md: 'row' }}
-        justifyContent={{ xs: 'center', md: 'flex-start' }}
         spacing={2}
+        sx={{
+          justifyContent: { xs: 'center', md: 'flex-start' }
+        }}
       >
         <m.div variants={varFade().inRight}>
           <Button
@@ -80,7 +82,9 @@ export default function HomeAdvertisement() {
   );
 
   const renderImg = (
-    <Stack component={m.div} variants={varFade().inUp} alignItems="center">
+    <Stack component={m.div} variants={varFade().inUp} sx={{
+      alignItems: "center"
+    }}>
       <Box
         component={m.img}
         animate={{
@@ -97,18 +101,19 @@ export default function HomeAdvertisement() {
   return (
     <Container component={MotionViewport}>
       <Stack
-        alignItems="center"
         direction={{ xs: 'column', md: 'row' }}
         sx={{
+          alignItems: "center",
+
           ...bgGradient({
             direction: '135deg',
             startColor: theme.palette.primary.main,
             endColor: theme.palette.primary.dark,
           }),
+
           borderRadius: 2,
-          pb: { xs: 5, md: 0 },
-        }}
-      >
+          pb: { xs: 5, md: 0 }
+        }}>
         {renderImg}
 
         {renderDescription}

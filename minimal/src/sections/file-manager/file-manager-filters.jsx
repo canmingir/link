@@ -74,15 +74,17 @@ export default function FileManagerFilters({
       value={filters.name}
       onChange={handleFilterName}
       placeholder="Search..."
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-          </InputAdornment>
-        ),
-      }}
       sx={{
         width: { xs: 1, md: 260 },
+      }}
+      slotProps={{
+        input: {
+          startAdornment: (
+            <InputAdornment position="start">
+              <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+            </InputAdornment>
+          ),
+        }
       }}
     />
   );
@@ -110,13 +112,15 @@ export default function FileManagerFilters({
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ p: 2.5 }}>
         <Stack spacing={2.5}>
           <Box
-            gap={1}
-            display="grid"
-            gridTemplateColumns={{
-              xs: 'repeat(2, 1fr)',
-              sm: 'repeat(4, 1fr)',
-            }}
-          >
+            sx={{
+              gap: 1,
+              display: "grid",
+
+              gridTemplateColumns: {
+                xs: 'repeat(2, 1fr)',
+                sm: 'repeat(4, 1fr)',
+              }
+            }}>
             {typeOptions.map((type) => {
               const selected = filters.type.includes(type);
 
@@ -134,7 +138,9 @@ export default function FileManagerFilters({
                     }),
                   }}
                 >
-                  <Stack spacing={1} direction="row" alignItems="center">
+                  <Stack spacing={1} direction="row" sx={{
+                    alignItems: "center"
+                  }}>
                     <FileThumbnail file={type} />
                     <Typography variant={selected ? 'subtitle2' : 'body2'}>{type}</Typography>
                   </Stack>
@@ -143,7 +149,13 @@ export default function FileManagerFilters({
             })}
           </Box>
 
-          <Stack spacing={1.5} direction="row" alignItems="center" justifyContent="flex-end">
+          <Stack
+            spacing={1.5}
+            direction="row"
+            sx={{
+              alignItems: "center",
+              justifyContent: "flex-end"
+            }}>
             <Button variant="outlined" color="inherit" onClick={handleResetType}>
               Clear
             </Button>
@@ -192,12 +204,19 @@ export default function FileManagerFilters({
     <Stack
       spacing={1}
       direction={{ xs: 'column', md: 'row' }}
-      alignItems={{ xs: 'flex-end', md: 'center' }}
-      sx={{ width: 1 }}
-    >
+      sx={{
+        alignItems: { xs: 'flex-end', md: 'center' },
+        width: 1
+      }}>
       {renderFilterName}
-
-      <Stack spacing={1} direction="row" alignItems="center" justifyContent="flex-end" flexGrow={1}>
+      <Stack
+        spacing={1}
+        direction="row"
+        sx={{
+          alignItems: "center",
+          justifyContent: "flex-end",
+          flexGrow: 1
+        }}>
         {renderFilterDate}
 
         {renderFilterType}

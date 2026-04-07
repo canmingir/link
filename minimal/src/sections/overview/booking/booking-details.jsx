@@ -112,39 +112,45 @@ function BookingDetailsRow({ row }) {
           <ListItemText
             primary={row.customer.name}
             secondary={row.customer.phoneNumber}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
+            slotProps={{
+              primary: { typography: 'body2', noWrap: true },
+
+              secondary: {
+                mt: 0.5,
+                component: 'span',
+                typography: 'caption',
+              }
+            }} />
         </TableCell>
 
         <TableCell>
           <ListItemText
             primary={format(new Date(row.checkIn), 'dd MMM yyyy')}
             secondary={format(new Date(row.checkIn), 'p')}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
+            slotProps={{
+              primary: { typography: 'body2', noWrap: true },
+
+              secondary: {
+                mt: 0.5,
+                component: 'span',
+                typography: 'caption',
+              }
+            }} />
         </TableCell>
 
         <TableCell>
           <ListItemText
             primary={format(new Date(row.checkOut), 'dd MMM yyyy')}
             secondary={format(new Date(row.checkOut), 'p')}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
+            slotProps={{
+              primary: { typography: 'body2', noWrap: true },
+
+              secondary: {
+                mt: 0.5,
+                component: 'span',
+                typography: 'caption',
+              }
+            }} />
         </TableCell>
 
         <TableCell>
@@ -166,7 +172,6 @@ function BookingDetailsRow({ row }) {
           </IconButton>
         </TableCell>
       </TableRow>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}

@@ -122,7 +122,9 @@ export default function FileManagerView() {
     <Stack
       spacing={2}
       direction={{ xs: 'column', md: 'row' }}
-      alignItems={{ xs: 'flex-end', md: 'center' }}
+      sx={{
+        alignItems: { xs: 'flex-end', md: 'center' }
+      }}
     >
       <FileManagerFilters
         openDateRange={openDateRange.value}
@@ -163,7 +165,12 @@ export default function FileManagerView() {
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: "center",
+            justifyContent: "space-between"
+          }}>
           <Typography variant="h4">File Manager</Typography>
           <Button
             variant="contained"
@@ -216,9 +223,7 @@ export default function FileManagerView() {
           </>
         )}
       </Container>
-
       <FileManagerNewFolderDialog open={upload.value} onClose={upload.onFalse} />
-
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}

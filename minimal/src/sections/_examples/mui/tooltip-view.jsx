@@ -51,7 +51,6 @@ export default function TooltipView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Masonry columns={{ xs: 1, md: 2 }} spacing={3}>
           <ComponentBlock title="Simple">
@@ -119,11 +118,17 @@ export default function TooltipView() {
               <Button color="inherit">Grow</Button>
             </Tooltip>
 
-            <Tooltip TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} title="Add">
+            <Tooltip title="Add" slots={{
+              transition: Fade
+            }} slotProps={{
+              transition: { timeout: 600 }
+            }}>
               <Button color="inherit">Fade</Button>
             </Tooltip>
 
-            <Tooltip TransitionComponent={Zoom} title="Add">
+            <Tooltip title="Add" slots={{
+              transition: Zoom
+            }}>
               <Button color="inherit">Zoom</Button>
             </Tooltip>
           </ComponentBlock>

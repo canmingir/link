@@ -33,24 +33,25 @@ export function RHFSelect({
           {...field}
           select
           fullWidth
-          SelectProps={{
-            native,
-            MenuProps: {
-              PaperProps: {
-                sx: {
-                  ...(!native && {
-                    maxHeight: typeof maxHeight === 'number' ? maxHeight : 'unset',
-                  }),
-                  ...PaperPropsSx,
-                },
-              },
-            },
-            sx: { textTransform: 'capitalize' },
-          }}
           error={!!error}
           helperText={error ? error?.message : helperText}
           {...other}
-        >
+          slotProps={{
+            select: {
+              native,
+              MenuProps: {
+                PaperProps: {
+                  sx: {
+                    ...(!native && {
+                      maxHeight: typeof maxHeight === 'number' ? maxHeight : 'unset',
+                    }),
+                    ...PaperPropsSx,
+                  },
+                },
+              },
+              sx: { textTransform: 'capitalize' },
+            }
+          }}>
           {children}
         </TextField>
       )}

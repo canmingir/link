@@ -155,13 +155,15 @@ function BankingRecentTransitionsRow({ row }) {
           <ListItemText
             primary={format(new Date(row.date), 'dd MMM yyyy')}
             secondary={format(new Date(row.date), 'p')}
-            primaryTypographyProps={{ typography: 'body2' }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
+            slotProps={{
+              primary: { typography: 'body2' },
+
+              secondary: {
+                mt: 0.5,
+                component: 'span',
+                typography: 'caption',
+              }
+            }} />
         </TableCell>
 
         <TableCell>{fCurrency(row.amount)}</TableCell>
@@ -185,7 +187,6 @@ function BankingRecentTransitionsRow({ row }) {
           </IconButton>
         </TableCell>
       </TableRow>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}

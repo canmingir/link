@@ -53,10 +53,13 @@ export default function CalendarToolbar({
     <>
       <Stack
         direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ p: 2.5, pr: 2, position: 'relative' }}
-      >
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          p: 2.5,
+          pr: 2,
+          position: 'relative'
+        }}>
         {smUp && (
           <Button
             size="small"
@@ -69,7 +72,9 @@ export default function CalendarToolbar({
           </Button>
         )}
 
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{
+          alignItems: "center"
+        }}>
           <IconButton onClick={onPrevDate}>
             <Iconify icon="eva:arrow-ios-back-fill" />
           </IconButton>
@@ -81,7 +86,9 @@ export default function CalendarToolbar({
           </IconButton>
         </Stack>
 
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{
+          alignItems: "center"
+        }}>
           <Button size="small" color="error" variant="contained" onClick={onToday}>
             Today
           </Button>
@@ -104,7 +111,6 @@ export default function CalendarToolbar({
           />
         )}
       </Stack>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}

@@ -84,8 +84,10 @@ export default function UserQuickEditForm({ currentUser, open, onClose }) {
       maxWidth={false}
       open={open}
       onClose={onClose}
-      PaperProps={{
-        sx: { maxWidth: 720 },
+      slotProps={{
+        paper: {
+          sx: { maxWidth: 720 },
+        }
       }}
     >
       <FormProvider methods={methods} onSubmit={onSubmit}>
@@ -97,14 +99,16 @@ export default function UserQuickEditForm({ currentUser, open, onClose }) {
           </Alert>
 
           <Box
-            rowGap={3}
-            columnGap={2}
-            display="grid"
-            gridTemplateColumns={{
-              xs: 'repeat(1, 1fr)',
-              sm: 'repeat(2, 1fr)',
-            }}
-          >
+            sx={{
+              rowGap: 3,
+              columnGap: 2,
+              display: "grid",
+
+              gridTemplateColumns: {
+                xs: 'repeat(1, 1fr)',
+                sm: 'repeat(2, 1fr)',
+              }
+            }}>
             <RHFSelect name="status" label="Status">
               {USER_STATUS_OPTIONS.map((status) => (
                 <MenuItem key={status.value} value={status.value}>

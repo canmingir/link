@@ -64,12 +64,11 @@ export default function PostDetailsHero({ title, author, coverUrl, createdAt }) 
           {author && createdAt && (
             <Stack
               direction="row"
-              alignItems="center"
               sx={{
+                alignItems: "center",
                 px: { xs: 2, md: 3 },
-                pb: { xs: 3, md: 8 },
-              }}
-            >
+                pb: { xs: 3, md: 8 }
+              }}>
               <Avatar
                 alt={author.name}
                 src={author.avatarUrl}
@@ -80,12 +79,14 @@ export default function PostDetailsHero({ title, author, coverUrl, createdAt }) 
                 sx={{ color: 'common.white' }}
                 primary={author.name}
                 secondary={fDate(createdAt)}
-                primaryTypographyProps={{ typography: 'subtitle1', mb: 0.5 }}
-                secondaryTypographyProps={{
-                  color: 'inherit',
-                  sx: { opacity: 0.64 },
-                }}
-              />
+                slotProps={{
+                  primary: { typography: 'subtitle1', mb: 0.5 },
+
+                  secondary: {
+                    color: 'inherit',
+                    sx: { opacity: 0.64 },
+                  }
+                }} />
             </Stack>
           )}
 

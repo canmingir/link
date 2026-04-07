@@ -104,12 +104,11 @@ export default function Footer() {
 
             <Stack
               direction="row"
-              justifyContent={{ xs: "center", md: "flex-start" }}
               sx={{
+                justifyContent: { xs: "center", md: "flex-start" },
                 mt: 3,
-                mb: { xs: 5, md: 0 },
-              }}
-            ></Stack>
+                mb: { xs: 5, md: 0 }
+              }}></Stack>
           </Grid>
 
           <Grid xs={12} md={6}>
@@ -118,9 +117,10 @@ export default function Footer() {
                 <Stack
                   key={list.headline}
                   spacing={2}
-                  alignItems={{ xs: "center", md: "flex-start" }}
-                  sx={{ width: 1 }}
-                >
+                  sx={{
+                    alignItems: { xs: "center", md: "flex-start" },
+                    width: 1
+                  }}>
                   <Typography component="div" variant="overline">
                     {list.headline}
                   </Typography>

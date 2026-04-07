@@ -194,7 +194,9 @@ function APITree() {
                   ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
                   : undefined
               }
-              TransitionComponent={Fade}
+              slots={{
+                transition: Fade
+              }}
             >
               <MenuItem
                 onClick={() => {

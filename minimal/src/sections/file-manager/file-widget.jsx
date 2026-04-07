@@ -14,11 +14,9 @@ export default function FileWidget({ title, value, total, icon, sx, ...other }) 
   return (
     <Card sx={{ p: 3, ...sx }} {...other}>
       <Box component="img" src={icon} sx={{ width: 48, height: 48 }} />
-
       <Typography variant="h6" sx={{ mt: 3 }}>
         {title}
       </Typography>
-
       <LinearProgress
         value={24}
         variant="determinate"
@@ -32,13 +30,13 @@ export default function FileWidget({ title, value, total, icon, sx, ...other }) 
           },
         }}
       />
-
       <Stack
         direction="row"
         spacing={0.5}
-        justifyContent="flex-end"
-        sx={{ typography: 'subtitle2' }}
-      >
+        sx={{
+          justifyContent: "flex-end",
+          typography: 'subtitle2'
+        }}>
         <Box
           sx={{
             mr: 0.5,

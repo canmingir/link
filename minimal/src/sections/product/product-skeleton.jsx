@@ -20,10 +20,14 @@ export function ProductItemSkeleton({ sx, ...other }) {
       <Stack sx={{ p: 1 }}>
         <Skeleton sx={{ paddingTop: '100%' }} />
       </Stack>
-
       <Stack spacing={2} sx={{ p: 3, pt: 2 }}>
         <Skeleton sx={{ width: 0.5, height: 16 }} />
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}>
           <Stack direction="row">
             <Skeleton variant="circular" sx={{ width: 16, height: 16 }} />
             <Skeleton variant="circular" sx={{ width: 16, height: 16 }} />
@@ -48,7 +52,6 @@ export function ProductDetailsSkeleton({ ...other }) {
       <Grid xs={12} md={6} lg={7}>
         <Skeleton sx={{ paddingTop: '100%' }} />
       </Grid>
-
       <Grid xs={12} md={6} lg={5}>
         <Stack spacing={3}>
           <Skeleton sx={{ height: 16, width: 48 }} />
@@ -58,17 +61,19 @@ export function ProductDetailsSkeleton({ ...other }) {
           <Skeleton sx={{ height: 120 }} />
         </Stack>
       </Grid>
-
       <Grid xs={12}>
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
           {[...Array(3)].map((_, index) => (
             <Stack
               key={index}
               spacing={2}
-              alignItems="center"
-              justifyContent="center"
-              sx={{ width: 1 }}
-            >
+              sx={{
+                alignItems: "center",
+                justifyContent: "center",
+                width: 1
+              }}>
               <Skeleton variant="circular" sx={{ width: 80, height: 80 }} />
               <Skeleton sx={{ height: 16, width: 160 }} />
               <Skeleton sx={{ height: 16, width: 80 }} />

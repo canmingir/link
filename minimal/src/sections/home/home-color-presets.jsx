@@ -93,16 +93,15 @@ export default function HomeColorPresets() {
   const renderOptions = (
     <m.div variants={varFade().inDown}>
       <Stack
-        alignItems="center"
-        justifyContent="center"
         sx={{
+          alignItems: "center",
+          justifyContent: "center",
           my: 5,
           width: 100,
           height: 88,
           mx: 'auto',
-          position: 'relative',
-        }}
-      >
+          position: 'relative'
+        }}>
         {presetOptions.map((color, index) => {
           const { name, value } = color;
 

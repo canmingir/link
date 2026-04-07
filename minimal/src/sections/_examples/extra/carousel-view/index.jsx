@@ -53,20 +53,20 @@ export default function CarouselView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Box
-          gap={3}
-          display="grid"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            md: 'repeat(2, 1fr)',
-          }}
           sx={{
+            gap: 3,
+            display: "grid",
+
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+            },
+
             mb: 3,
-            alignItems: 'flex-start',
-          }}
-        >
+            alignItems: 'flex-start'
+          }}>
           <Card>
             <CardHeader title="Carousel Basic 1" />
             <CardContent>

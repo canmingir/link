@@ -19,16 +19,15 @@ export default function ProductReviewItem({ review }) {
   const renderInfo = (
     <Stack
       spacing={2}
-      alignItems="center"
       direction={{
         xs: 'row',
         md: 'column',
       }}
       sx={{
+        alignItems: "center",
         width: { md: 240 },
-        textAlign: { md: 'center' },
-      }}
-    >
+        textAlign: { md: 'center' }
+      }}>
       <Avatar
         src={avatarUrl}
         sx={{
@@ -40,33 +39,36 @@ export default function ProductReviewItem({ review }) {
       <ListItemText
         primary={name}
         secondary={fDate(postedAt)}
-        primaryTypographyProps={{
-          noWrap: true,
-          typography: 'subtitle2',
-          mb: 0.5,
-        }}
-        secondaryTypographyProps={{
-          noWrap: true,
-          typography: 'caption',
-          component: 'span',
-        }}
-      />
+        slotProps={{
+          primary: {
+            noWrap: true,
+            typography: 'subtitle2',
+            mb: 0.5,
+          },
+
+          secondary: {
+            noWrap: true,
+            typography: 'caption',
+            component: 'span',
+          }
+        }} />
     </Stack>
   );
 
   const renderContent = (
-    <Stack spacing={1} flexGrow={1}>
+    <Stack spacing={1} sx={{
+      flexGrow: 1
+    }}>
       <Rating size="small" value={rating} precision={0.1} readOnly />
 
       {isPurchased && (
         <Stack
           direction="row"
-          alignItems="center"
           sx={{
+            alignItems: "center",
             color: 'success.main',
-            typography: 'caption',
-          }}
-        >
+            typography: 'caption'
+          }}>
           <Iconify icon="ic:round-verified" width={16} sx={{ mr: 0.5 }} />
           Verified purchase
         </Stack>
@@ -75,7 +77,13 @@ export default function ProductReviewItem({ review }) {
       <Typography variant="body2">{comment}</Typography>
 
       {!!attachments?.length && (
-        <Stack direction="row" flexWrap="wrap" spacing={1} sx={{ pt: 1 }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            flexWrap: "wrap",
+            pt: 1
+          }}>
           {attachments.map((attachment) => (
             <Box
               component="img"
@@ -89,12 +97,22 @@ export default function ProductReviewItem({ review }) {
       )}
 
       <Stack direction="row" spacing={2} sx={{ pt: 1.5 }}>
-        <Stack direction="row" alignItems="center" sx={{ typography: 'caption' }}>
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: "center",
+            typography: 'caption'
+          }}>
           <Iconify icon="solar:like-outline" width={16} sx={{ mr: 0.5 }} />
           123
         </Stack>
 
-        <Stack direction="row" alignItems="center" sx={{ typography: 'caption' }}>
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: "center",
+            typography: 'caption'
+          }}>
           <Iconify icon="solar:dislike-outline" width={16} sx={{ mr: 0.5 }} />
           34
         </Stack>

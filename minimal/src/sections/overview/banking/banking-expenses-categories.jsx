@@ -58,7 +58,6 @@ export default function BankingExpensesCategories({ title, subheader, chart, ...
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
-
       <Box
         sx={{
           my: 5,
@@ -82,14 +81,14 @@ export default function BankingExpensesCategories({ title, subheader, chart, ...
           height={smUp ? 240 : 360}
         />
       </Box>
-
       <Divider sx={{ borderStyle: 'dashed' }} />
-
       <Box
-        display="grid"
-        gridTemplateColumns="repeat(2, 1fr)"
-        sx={{ textAlign: 'center', typography: 'h4' }}
-      >
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          textAlign: 'center',
+          typography: 'h4'
+        }}>
         <Stack sx={{ py: 2, borderRight: `dashed 1px ${theme.palette.divider}` }}>
           <Box component="span" sx={{ mb: 1, typography: 'body2', color: 'text.secondary' }}>
             Categories

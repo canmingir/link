@@ -70,13 +70,12 @@ const DefaultNodeCard = ({
         {subtitle && (
           <Typography
             variant="body2"
-            color="text.secondary"
             sx={{
+              color: "text.secondary",
               textAlign: "center",
               fontSize: 11,
-              mb: metaEntries.length ? 0.5 : 0,
-            }}
-          >
+              mb: metaEntries.length ? 0.5 : 0
+            }}>
             {subtitle}
           </Typography>
         )}
@@ -87,13 +86,12 @@ const DefaultNodeCard = ({
               <Typography
                 key={key}
                 variant="caption"
-                color="text.secondary"
                 sx={{
+                  color: "text.secondary",
                   textAlign: "center",
                   display: "block",
-                  fontSize: 10,
-                }}
-              >
+                  fontSize: 10
+                }}>
                 {key}: {String(value)}
               </Typography>
             ))}

@@ -23,25 +23,30 @@ export default function EcommerceCurrentBalance({
       <Typography variant="subtitle2" gutterBottom>
         {title}
       </Typography>
-
       <Stack spacing={2}>
         <Typography variant="h3">{fCurrency(totalAmount)}</Typography>
 
-        <Stack direction="row" justifyContent="space-between">
+        <Stack direction="row" sx={{
+          justifyContent: "space-between"
+        }}>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Order Total
           </Typography>
           <Typography variant="body2">{fCurrency(currentBalance)}</Typography>
         </Stack>
 
-        <Stack direction="row" justifyContent="space-between">
+        <Stack direction="row" sx={{
+          justifyContent: "space-between"
+        }}>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Earning
           </Typography>
           <Typography variant="body2">- {fCurrency(sentAmount)}</Typography>
         </Stack>
 
-        <Stack direction="row" justifyContent="space-between">
+        <Stack direction="row" sx={{
+          justifyContent: "space-between"
+        }}>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Refunded
           </Typography>

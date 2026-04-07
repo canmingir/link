@@ -163,18 +163,18 @@ export default function HomeHero() {
 
   const renderDescription = (
     <Stack
-      alignItems="center"
-      justifyContent="center"
       sx={{
+        alignItems: "center",
+        justifyContent: "center",
         height: 1,
         mx: 'auto',
         maxWidth: 480,
         opacity: opacity > 0 ? opacity : 0,
+
         mt: {
           md: `-${HEADER.H_DESKTOP + percent * 2.5}px`,
-        },
-      }}
-    >
+        }
+      }}>
       <m.div variants={varFade().in}>
         <Typography
           variant="h2"
@@ -212,10 +212,11 @@ export default function HomeHero() {
         <Stack
           spacing={0.75}
           direction="row"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ my: 3 }}
-        >
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+            my: 3
+          }}>
           <Rating readOnly value={4.95} precision={0.1} max={5} />
           <Typography variant="caption" sx={{ color: 'text.secondary' }}>
             <Box component="strong" sx={{ mr: 0.5, color: 'text.primary' }}>
@@ -228,7 +229,9 @@ export default function HomeHero() {
 
       <m.div variants={varFade().in}>
         <Stack spacing={1.5} direction={{ xs: 'column-reverse', sm: 'row' }} sx={{ mb: 5 }}>
-          <Stack alignItems="center" spacing={2}>
+          <Stack spacing={2} sx={{
+            alignItems: "center"
+          }}>
             <Button
               component={RouterLink}
               href={paths.dashboard.root}
@@ -279,7 +282,9 @@ export default function HomeHero() {
           </Typography>
         </m.div>
 
-        <Stack spacing={2} direction="row" justifyContent="center">
+        <Stack spacing={2} direction="row" sx={{
+          justifyContent: "center"
+        }}>
           {['js', 'ts', 'figma', 'nextjs', 'vite'].map((icon) => (
             <m.div key={icon} variants={varFade().in}>
               <Box
@@ -298,17 +303,17 @@ export default function HomeHero() {
   const renderSlides = (
     <Stack
       direction="row"
-      alignItems="flex-start"
       sx={{
+        alignItems: "flex-start",
         height: '150%',
         position: 'absolute',
         opacity: opacity > 0 ? opacity : 0,
         transform: `skew(${-16 - percent / 24}deg, ${4 - percent / 16}deg)`,
+
         ...(theme.direction === 'rtl' && {
           transform: `skew(${16 + percent / 24}deg, ${4 + percent / 16}deg)`,
-        }),
-      }}
-    >
+        })
+      }}>
       <Stack
         component={m.div}
         variants={varFade().in}

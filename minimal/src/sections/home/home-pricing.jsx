@@ -58,13 +58,12 @@ export default function HomePricing() {
     <>
       {mdUp ? (
         <Box
-          display="grid"
-          gridTemplateColumns="repeat(3, 1fr)"
           sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
             borderRadius: 2,
-            border: (theme) => `dashed 1px ${theme.palette.divider}`,
-          }}
-        >
+            border: (theme) => `dashed 1px ${theme.palette.divider}`
+          }}>
           {_homePlans.map((plan) => (
             <m.div key={plan.license} variants={varFade().in}>
               <PlanCard key={plan.license} plan={plan} />
@@ -73,7 +72,11 @@ export default function HomePricing() {
         </Box>
       ) : (
         <>
-          <Stack alignItems="center" sx={{ mb: 5 }}>
+          <Stack
+            sx={{
+              alignItems: "center",
+              mb: 5
+            }}>
             <Tabs value={currentTab} onChange={handleChangeTab}>
               {_homePlans.map((tab) => (
                 <Tab key={tab.license} value={tab.license} label={tab.license} />
@@ -199,7 +202,6 @@ function PlanCard({ plan, sx, ...other }) {
           />
         </Box>
       </Stack>
-
       {standardLicense ? (
         <Box component="img" alt={icons[1]} src={icons[1]} sx={{ width: 20, height: 20 }} />
       ) : (
@@ -209,10 +211,11 @@ function PlanCard({ plan, sx, ...other }) {
           ))}
         </Stack>
       )}
-
       <Stack spacing={2.5}>
         {commons.map((option) => (
-          <Stack key={option} spacing={1} direction="row" alignItems="center">
+          <Stack key={option} spacing={1} direction="row" sx={{
+            alignItems: "center"
+          }}>
             <Iconify icon="eva:checkmark-fill" width={16} />
             <Typography variant="body2">{option}</Typography>
           </Stack>
@@ -231,20 +234,20 @@ function PlanCard({ plan, sx, ...other }) {
             <Stack
               spacing={1}
               direction="row"
-              alignItems="center"
-              sx={{
-                ...(disabled && { color: 'text.disabled' }),
-              }}
               key={option}
-            >
+              sx={{
+                alignItems: "center",
+                ...(disabled && { color: 'text.disabled' })
+              }}>
               <Iconify icon={disabled ? 'mingcute:close-line' : 'eva:checkmark-fill'} width={16} />
               <Typography variant="body2">{option}</Typography>
             </Stack>
           );
         })}
       </Stack>
-
-      <Stack alignItems="flex-end">
+      <Stack sx={{
+        alignItems: "flex-end"
+      }}>
         <Button
           color="inherit"
           size="small"

@@ -170,7 +170,9 @@ export default function FirebaseLoginView() {
         OR
       </Divider>
 
-      <Stack direction="row" justifyContent="center" spacing={2}>
+      <Stack direction="row" spacing={2} sx={{
+        justifyContent: "center"
+      }}>
         <IconButton onClick={handleGoogleLogin}>
           <Iconify icon="eva:google-fill" color="#DF3E30" />
         </IconButton>

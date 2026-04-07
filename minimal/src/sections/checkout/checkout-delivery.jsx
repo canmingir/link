@@ -18,21 +18,23 @@ export default function CheckoutDelivery({ options, onApplyShipping, ...other })
   return (
     <Card {...other}>
       <CardHeader title="Delivery" />
-
       <Controller
         name="delivery"
         control={control}
         render={({ field }) => (
           <Box
-            columnGap={2}
-            rowGap={2.5}
-            display="grid"
-            gridTemplateColumns={{
-              xs: 'repeat(1, 1fr)',
-              sm: 'repeat(2, 1fr)',
-            }}
-            sx={{ p: 3 }}
-          >
+            sx={{
+              columnGap: 2,
+              rowGap: 2.5,
+              display: "grid",
+
+              gridTemplateColumns: {
+                xs: 'repeat(1, 1fr)',
+                sm: 'repeat(2, 1fr)',
+              },
+
+              p: 3
+            }}>
             {options.map((option) => (
               <OptionItem
                 key={option.label}
@@ -78,11 +80,12 @@ function OptionItem({ option, selected, ...other }) {
       {label === 'Free' && <Iconify icon="carbon:bicycle" width={32} />}
       {label === 'Standard' && <Iconify icon="carbon:delivery" width={32} />}
       {label === 'Express' && <Iconify icon="carbon:rocket" width={32} />}
-
       <ListItemText
         sx={{ ml: 2 }}
         primary={
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" sx={{
+            alignItems: "center"
+          }}>
             <Box component="span" sx={{ flexGrow: 1 }}>
               {label}
             </Box>
@@ -90,9 +93,10 @@ function OptionItem({ option, selected, ...other }) {
           </Stack>
         }
         secondary={description}
-        primaryTypographyProps={{ typography: 'subtitle1', mb: 0.5 }}
-        secondaryTypographyProps={{ typography: 'body2' }}
-      />
+        slotProps={{
+          primary: { typography: 'subtitle1', mb: 0.5 },
+          secondary: { typography: 'body2' }
+        }} />
     </Paper>
   );
 }

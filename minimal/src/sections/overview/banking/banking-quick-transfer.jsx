@@ -194,7 +194,12 @@ export default function BankingQuickTransfer({ title, subheader, list, sx, ...ot
         onChange={handleChangeSlider}
       />
 
-      <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle1' }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          typography: 'subtitle1'
+        }}>
         <Box component="span" sx={{ flexGrow: 1 }}>
           Your Balance
         </Box>
@@ -226,7 +231,12 @@ export default function BankingQuickTransfer({ title, subheader, list, sx, ...ot
         <CardHeader title={title} subheader={subheader} />
 
         <Stack sx={{ p: 3 }}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}>
             <Typography variant="overline" sx={{ color: 'text.secondary' }}>
               Recent
             </Typography>
@@ -246,7 +256,6 @@ export default function BankingQuickTransfer({ title, subheader, list, sx, ...ot
           {renderInput}
         </Stack>
       </Stack>
-
       <ConfirmTransferDialog
         amount={amount}
         onBlur={handleBlur}
@@ -271,9 +280,13 @@ BankingQuickTransfer.propTypes = {
 
 function InputAmount({ autoWidth, amount, onBlur, onChange, sx, ...other }) {
   return (
-    <Stack direction="row" justifyContent="center" spacing={1} sx={sx}>
+    <Stack
+      direction="row"
+      spacing={1}
+      sx={[{
+        justifyContent: "center"
+      }, ...(Array.isArray(sx) ? sx : [sx])]}>
       <Typography variant="h5">$</Typography>
-
       <Input
         disableUnderline
         size="small"
@@ -322,15 +335,18 @@ function ConfirmTransferDialog({
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
       <DialogTitle>Transfer to</DialogTitle>
-
       <Stack spacing={3} sx={{ px: 3 }}>
-        <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack direction="row" spacing={2} sx={{
+          alignItems: "center"
+        }}>
           <Avatar src={contactInfo?.avatarUrl} sx={{ width: 48, height: 48 }} />
 
           <ListItemText
             primary={contactInfo?.name}
             secondary={contactInfo?.email}
-            secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
+            slotProps={{
+              secondary: { component: 'span', mt: 0.5 }
+            }}
           />
         </Stack>
 
@@ -345,7 +361,6 @@ function ConfirmTransferDialog({
 
         <TextField fullWidth multiline rows={3} placeholder="Write a message..." />
       </Stack>
-
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
 

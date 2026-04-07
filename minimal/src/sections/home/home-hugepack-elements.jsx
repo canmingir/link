@@ -123,24 +123,24 @@ export default function HomeHugePackElements() {
     <Stack
       component={Paper}
       variant="outlined"
-      alignItems="center"
       spacing={{ xs: 3, md: 5 }}
       sx={{
+        alignItems: "center",
         borderRadius: 2,
         bgcolor: 'unset',
         borderStyle: 'dashed',
-        p: { xs: 3, md: 5 },
-      }}
-    >
+        p: { xs: 3, md: 5 }
+      }}>
       {/* Row 1 */}
       <Stack
         direction="row"
-        flexWrap="wrap"
-        alignItems="center"
-        justifyContent="center"
         spacing={{ xs: 3, md: 4 }}
-        sx={{ width: 1 }}
-      >
+        sx={{
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 1
+        }}>
         <m.div variants={varFade().in}>
           <Button
             variant="contained"
@@ -175,12 +175,13 @@ export default function HomeHugePackElements() {
       {/* Row 2 */}
       <Stack
         direction="row"
-        flexWrap="wrap"
-        alignItems="center"
-        justifyContent="center"
         spacing={{ xs: 3, md: 4 }}
-        sx={{ width: 1 }}
-      >
+        sx={{
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 1
+        }}>
         <m.div variants={varFade().in}>
           <Tabs
             value={currentTab}
@@ -239,12 +240,13 @@ export default function HomeHugePackElements() {
       {/* Row 3 */}
       <Stack
         direction="row"
-        flexWrap="wrap"
-        alignItems="center"
-        justifyContent="center"
         spacing={{ xs: 3, md: 4 }}
-        sx={{ width: 1 }}
-      >
+        sx={{
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 1
+        }}>
         <m.div variants={varFade().in}>
           <Badge variant="online" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
             <Avatar src={_mock.image.avatar(19)} alt={_mock.fullName(19)} />
@@ -308,12 +310,13 @@ export default function HomeHugePackElements() {
           {/* Row 5 */}
           <Stack
             direction="row"
-            flexWrap="wrap"
-            alignItems="center"
-            justifyContent="center"
             spacing={{ xs: 3, md: 4 }}
-            sx={{ width: 1 }}
-          >
+            sx={{
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 1
+            }}>
             <m.div variants={varFade().in}>
               <FormControlLabel control={<Switch defaultChecked />} label="Switch" sx={{ m: 0 }} />
             </m.div>
@@ -344,7 +347,13 @@ export default function HomeHugePackElements() {
           </Stack>
 
           {/* Row 6 */}
-          <Stack spacing={3} direction="row" justifyContent="center" sx={{ width: 1 }}>
+          <Stack
+            spacing={3}
+            direction="row"
+            sx={{
+              justifyContent: "center",
+              width: 1
+            }}>
             <m.div variants={varFade().in}>
               <Paper
                 sx={{
@@ -371,13 +380,15 @@ export default function HomeHugePackElements() {
                       />
                     </Badge>
                   }
-                  titleTypographyProps={{
-                    typography: 'subtitle2',
-                    sx: { mb: 0.25 },
-                  }}
-                  subheaderTypographyProps={{ typography: 'caption' }}
                   sx={{ p: 2 }}
-                />
+                  slotProps={{
+                    title: {
+                      typography: 'subtitle2',
+                      sx: { mb: 0.25 },
+                    },
+
+                    subheader: { typography: 'caption' }
+                  }} />
                 <Box sx={{ px: 1 }}>
                   <Image
                     alt="cover-url"

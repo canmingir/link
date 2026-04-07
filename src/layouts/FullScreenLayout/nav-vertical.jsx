@@ -62,16 +62,15 @@ export default function NavVertical({ openNav, onCloseNav }) {
       <Box sx={{ flexGrow: 1 }} />
       <Stack
         direction={"column"}
-        alignItems={"center"}
-        justifyItems={"center"}
         sx={{
+          alignItems: "center",
+          justifyItems: "center",
+          gap: 2,
           marginBottom: lgUp ? 3 : 0,
           position: lgUp ? "static" : "fixed",
           bottom: lgUp ? "auto" : 66,
-          width: "100%",
-        }}
-        gap={2}
-      >
+          width: "100%"
+        }}>
         {actionButtons &&
           actionButtons.map((Action, index) => (
             <Box key={index} component={Action}></Box>
@@ -105,7 +104,6 @@ export default function NavVertical({ openNav, onCloseNav }) {
       }}
     >
       <NavToggleButton />
-
       {lgUp ? (
         <Stack
           sx={{
@@ -121,10 +119,12 @@ export default function NavVertical({ openNav, onCloseNav }) {
         <Drawer
           open={openNav}
           onClose={onCloseNav}
-          PaperProps={{
-            sx: {
-              width: NAV.W_VERTICAL,
-            },
+          slotProps={{
+            paper: {
+              sx: {
+                width: NAV.W_VERTICAL,
+              },
+            }
           }}
         >
           {renderContent}

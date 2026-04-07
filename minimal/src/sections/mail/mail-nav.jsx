@@ -100,13 +100,13 @@ export default function MailNav({
       onClose={onCloseNav}
       slotProps={{
         backdrop: { invisible: true },
-      }}
-      PaperProps={{
-        sx: {
-          width: 260,
-        },
-      }}
-    >
+
+        paper: {
+          sx: {
+            width: 260,
+          },
+        }
+      }}>
       {renderContent}
     </Drawer>
   );

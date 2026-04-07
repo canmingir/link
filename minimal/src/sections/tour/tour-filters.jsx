@@ -80,10 +80,13 @@ export default function TourFilters({
   const renderHead = (
     <Stack
       direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-      sx={{ py: 2, pr: 1, pl: 2.5 }}
-    >
+      sx={{
+        alignItems: "center",
+        justifyContent: "space-between",
+        py: 2,
+        pr: 1,
+        pl: 2.5
+      }}>
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
         Filters
       </Typography>
@@ -251,18 +254,17 @@ export default function TourFilters({
       >
         Filters
       </Button>
-
       <Drawer
         anchor="right"
         open={open}
         onClose={onClose}
         slotProps={{
           backdrop: { invisible: true },
-        }}
-        PaperProps={{
-          sx: { width: 280 },
-        }}
-      >
+
+          paper: {
+            sx: { width: 280 },
+          }
+        }}>
         {renderHead}
 
         <Divider />

@@ -78,18 +78,19 @@ export default function Textfield({ variant }) {
           defaultValue="Hello Minimal"
         />
       </ComponentBlock>
-
       <ComponentBlock title="With Icon & Adornments">
         <TextField
           variant={variant}
           fullWidth
           label="Filled"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon="solar:user-rounded-bold" width={24} />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="solar:user-rounded-bold" width={24} />
+                </InputAdornment>
+              ),
+            }
           }}
         />
 
@@ -99,12 +100,14 @@ export default function Textfield({ variant }) {
           fullWidth
           label="Disabled"
           defaultValue="Hello Minimal"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon="solar:user-rounded-bold" width={24} />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="solar:user-rounded-bold" width={24} />
+                </InputAdornment>
+              ),
+            }
           }}
         />
 
@@ -112,8 +115,10 @@ export default function Textfield({ variant }) {
           variant={variant}
           fullWidth
           label="With normal TextField"
-          InputProps={{
-            startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
+          slotProps={{
+            input: {
+              startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
+            }
           }}
         />
 
@@ -123,8 +128,10 @@ export default function Textfield({ variant }) {
           value={values.weight}
           onChange={handleChange('weight')}
           helperText="Weight"
-          InputProps={{
-            endAdornment: <InputAdornment position="end">Kg</InputAdornment>,
+          slotProps={{
+            input: {
+              endAdornment: <InputAdornment position="end">Kg</InputAdornment>,
+            }
           }}
         />
 
@@ -135,31 +142,32 @@ export default function Textfield({ variant }) {
           value={values.password}
           onChange={handleChange('password')}
           label="Password"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon="solar:user-rounded-bold" width={24} />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={handleShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {values.showPassword ? (
-                    <Iconify icon="solar:eye-bold" width={24} />
-                  ) : (
-                    <Iconify icon="solar:eye-closed-bold" width={24} />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="solar:user-rounded-bold" width={24} />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {values.showPassword ? (
+                      <Iconify icon="solar:eye-bold" width={24} />
+                    ) : (
+                      <Iconify icon="solar:eye-closed-bold" width={24} />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }
           }}
         />
       </ComponentBlock>
-
       <ComponentBlock title="With Caption">
         <TextField
           variant={variant}
@@ -178,7 +186,6 @@ export default function Textfield({ variant }) {
           helperText="Incorrect entry."
         />
       </ComponentBlock>
-
       <ComponentBlock title="Type">
         <TextField
           variant={variant}
@@ -194,18 +201,18 @@ export default function Textfield({ variant }) {
           type="number"
           label="Number"
           defaultValue={0}
-          InputLabelProps={{ shrink: true }}
+          slotProps={{
+            inputLabel: { shrink: true }
+          }}
         />
 
         <TextField variant={variant} fullWidth label="Search" type="search" />
       </ComponentBlock>
-
       <ComponentBlock title="Sizes">
         <TextField variant={variant} fullWidth label="Size" size="small" defaultValue="Small" />
 
         <TextField variant={variant} fullWidth label="Size" defaultValue="Normal" />
       </ComponentBlock>
-
       <ComponentBlock title="Select">
         <TextField
           variant={variant}
@@ -230,9 +237,11 @@ export default function Textfield({ variant }) {
           size="small"
           value={currency}
           label="Native select"
-          SelectProps={{ native: true }}
           onChange={handleChangeCurrency}
           helperText="Please select your currency"
+          slotProps={{
+            select: { native: true }
+          }}
         >
           {CURRENCIES.map((option) => (
             <option key={option.value} value={option.value}>
@@ -241,7 +250,6 @@ export default function Textfield({ variant }) {
           ))}
         </TextField>
       </ComponentBlock>
-
       <ComponentBlock title="Multiline">
         <TextField
           variant={variant}

@@ -39,9 +39,13 @@ export default function FormValidationView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: "center",
+            justifyContent: "space-between"
+          }}>
           <Typography variant="h4"> React Hook Form + Yup </Typography>
           <FormControlLabel
             control={<Switch checked={debug} onChange={handleChangeDebug} />}

@@ -61,8 +61,10 @@ export default function Header() {
           {mdUp && <NavDesktop data={topMenu} />}
 
           <Stack
-            alignItems="center"
             direction={{ xs: "row", md: "row-reverse" }}
+            sx={{
+              alignItems: "center"
+            }}
           >
             <NotificationsPopover />
 
@@ -74,7 +76,6 @@ export default function Header() {
           </Stack>
         </Container>
       </Toolbar>
-
       {offsetTop && <HeaderShadow />}
     </AppBar>
   );

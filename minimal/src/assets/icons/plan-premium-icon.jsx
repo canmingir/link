@@ -17,12 +17,13 @@ function PlanPremiumIcon({ ...other }) {
   return (
     <Box
       component="svg"
-      width="100%"
-      height="100%"
       viewBox="0 0 80 80"
       xmlns="http://www.w3.org/2000/svg"
       {...other}
-    >
+      sx={[{
+        width: "100%",
+        height: "100%"
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       <g transform="translate(0 -9)">
         <g transform="translate(0 18.271)">
           <g transform="translate(9.167 19.932)">

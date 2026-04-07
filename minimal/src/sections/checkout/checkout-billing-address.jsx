@@ -28,7 +28,12 @@ export default function CheckoutBillingAddress() {
               key={address.id}
               address={address}
               action={
-                <Stack flexDirection="row" flexWrap="wrap" flexShrink={0}>
+                <Stack
+                  sx={{
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    flexShrink: 0
+                  }}>
                   {!address.primary && (
                     <Button size="small" color="error" sx={{ mr: 1 }}>
                       Delete
@@ -52,7 +57,9 @@ export default function CheckoutBillingAddress() {
             />
           ))}
 
-          <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" sx={{
+            justifyContent: "space-between"
+          }}>
             <Button
               size="small"
               color="inherit"
@@ -81,7 +88,6 @@ export default function CheckoutBillingAddress() {
           />
         </Grid>
       </Grid>
-
       <AddressNewForm
         open={addressForm.value}
         onClose={addressForm.onFalse}

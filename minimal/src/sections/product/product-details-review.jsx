@@ -26,7 +26,12 @@ export default function ProductDetailsReview({ totalRatings, totalReviews, ratin
   const total = sumBy(ratings, (star) => star.starCount);
 
   const renderSummary = (
-    <Stack spacing={1} alignItems="center" justifyContent="center">
+    <Stack
+      spacing={1}
+      sx={{
+        alignItems: "center",
+        justifyContent: "center"
+      }}>
       <Typography variant="subtitle2">Average rating</Typography>
 
       <Typography variant="h2">{totalRatings}/5</Typography>
@@ -57,7 +62,9 @@ export default function ProductDetailsReview({ totalRatings, totalReviews, ratin
         .slice(0)
         .reverse()
         .map((rating) => (
-          <Stack key={rating.name} direction="row" alignItems="center">
+          <Stack key={rating.name} direction="row" sx={{
+            alignItems: "center"
+          }}>
             <Typography variant="subtitle2" component="span" sx={{ width: 42 }}>
               {rating.name}
             </Typography>
@@ -88,7 +95,11 @@ export default function ProductDetailsReview({ totalRatings, totalReviews, ratin
   );
 
   const renderReviewButton = (
-    <Stack alignItems="center" justifyContent="center">
+    <Stack
+      sx={{
+        alignItems: "center",
+        justifyContent: "center"
+      }}>
       <Button
         size="large"
         variant="soft"
@@ -104,26 +115,24 @@ export default function ProductDetailsReview({ totalRatings, totalReviews, ratin
   return (
     <>
       <Box
-        display="grid"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          md: 'repeat(3, 1fr)',
-        }}
         sx={{
-          py: { xs: 5, md: 0 },
-        }}
-      >
+          display: "grid",
+
+          gridTemplateColumns: {
+            xs: 'repeat(1, 1fr)',
+            md: 'repeat(3, 1fr)',
+          },
+
+          py: { xs: 5, md: 0 }
+        }}>
         {renderSummary}
 
         {renderProgress}
 
         {renderReviewButton}
       </Box>
-
       <Divider sx={{ borderStyle: 'dashed' }} />
-
       <ProductReviewList reviews={reviews} />
-
       <ProductReviewNewForm open={review.value} onClose={review.onFalse} />
     </>
   );

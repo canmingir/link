@@ -92,14 +92,16 @@ export default function AddressNewForm({ open, onClose, onCreate }) {
             />
 
             <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                sm: 'repeat(2, 1fr)',
-              }}
-            >
+              sx={{
+                rowGap: 3,
+                columnGap: 2,
+                display: "grid",
+
+                gridTemplateColumns: {
+                  xs: 'repeat(1, 1fr)',
+                  sm: 'repeat(2, 1fr)',
+                }
+              }}>
               <RHFTextField name="name" label="Full Name" />
 
               <RHFTextField name="phoneNumber" label="Phone Number" />
@@ -108,14 +110,16 @@ export default function AddressNewForm({ open, onClose, onCreate }) {
             <RHFTextField name="address" label="Address" />
 
             <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                sm: 'repeat(3, 1fr)',
-              }}
-            >
+              sx={{
+                rowGap: 3,
+                columnGap: 2,
+                display: "grid",
+
+                gridTemplateColumns: {
+                  xs: 'repeat(1, 1fr)',
+                  sm: 'repeat(3, 1fr)',
+                }
+              }}>
               <RHFTextField name="city" label="Town / City" />
 
               <RHFTextField name="state" label="State" />

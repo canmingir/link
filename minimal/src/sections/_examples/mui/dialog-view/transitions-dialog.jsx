@@ -21,12 +21,13 @@ export default function TransitionsDialog() {
       <Button variant="outlined" color="success" onClick={dialog.onTrue}>
         Transitions Dialogs
       </Button>
-
       <Dialog
         keepMounted
         open={dialog.value}
-        TransitionComponent={Transition}
         onClose={dialog.onFalse}
+        slots={{
+          transition: Transition
+        }}
       >
         <DialogTitle>{`Use Google's location service?`}</DialogTitle>
 

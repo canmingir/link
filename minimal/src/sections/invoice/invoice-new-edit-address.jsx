@@ -49,7 +49,12 @@ export default function InvoiceNewEditAddress() {
         sx={{ p: 3 }}
       >
         <Stack sx={{ width: 1 }}>
-          <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              mb: 1
+            }}>
             <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
               From:
             </Typography>
@@ -67,7 +72,12 @@ export default function InvoiceNewEditAddress() {
         </Stack>
 
         <Stack sx={{ width: 1 }}>
-          <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              mb: 1
+            }}>
             <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
               To:
             </Typography>
@@ -84,13 +94,16 @@ export default function InvoiceNewEditAddress() {
               <Typography variant="body2"> {invoiceTo.phoneNumber}</Typography>
             </Stack>
           ) : (
-            <Typography typography="caption" sx={{ color: 'error.main' }}>
+            <Typography
+              sx={{
+                typography: "caption",
+                color: 'error.main'
+              }}>
               {errors.invoiceTo?.message}
             </Typography>
           )}
         </Stack>
       </Stack>
-
       <AddressListDialog
         title="Customers"
         open={from.value}
@@ -108,7 +121,6 @@ export default function InvoiceNewEditAddress() {
           </Button>
         }
       />
-
       <AddressListDialog
         title="Customers"
         open={to.value}

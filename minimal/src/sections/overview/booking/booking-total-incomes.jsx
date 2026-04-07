@@ -95,14 +95,25 @@ export default function BookingTotalIncomes({
       }}
       {...other}
     >
-      <Stack direction="row" justifyContent="space-between" sx={{ mb: 3 }}>
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: "space-between",
+          mb: 3
+        }}>
         <div>
           <Box sx={{ mb: 1, typography: 'subtitle2' }}>{title}</Box>
           <Box sx={{ typography: 'h3' }}>{fCurrency(total)}</Box>
         </div>
 
         <div>
-          <Stack spacing={0.5} direction="row" alignItems="center" justifyContent="flex-end">
+          <Stack
+            spacing={0.5}
+            direction="row"
+            sx={{
+              alignItems: "center",
+              justifyContent: "flex-end"
+            }}>
             <Iconify icon={percent >= 0 ? 'eva:trending-up-fill' : 'eva:trending-down-fill'} />
 
             <Box sx={{ typography: 'subtitle2' }}>
@@ -114,7 +125,6 @@ export default function BookingTotalIncomes({
           <Box sx={{ mt: 0.5, opacity: 0.8, typography: 'body2' }}>than last month </Box>
         </div>
       </Stack>
-
       <Chart
         dir="ltr"
         type="line"

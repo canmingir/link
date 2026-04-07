@@ -106,16 +106,14 @@ export default function PostListView() {
           mb: { xs: 3, md: 5 },
         }}
       />
-
       <Stack
         spacing={3}
-        justifyContent="space-between"
-        alignItems={{ xs: 'flex-end', sm: 'center' }}
         direction={{ xs: 'column', sm: 'row' }}
         sx={{
-          mb: { xs: 3, md: 5 },
-        }}
-      >
+          justifyContent: "space-between",
+          alignItems: { xs: 'flex-end', sm: 'center' },
+          mb: { xs: 3, md: 5 }
+        }}>
         <PostSearch
           query={debouncedQuery}
           results={searchResults}
@@ -126,7 +124,6 @@ export default function PostListView() {
 
         <PostSort sort={sortBy} onSort={handleSortBy} sortOptions={POST_SORT_OPTIONS} />
       </Stack>
-
       <Tabs
         value={filters.publish}
         onChange={handleFilterPublish}
@@ -156,7 +153,6 @@ export default function PostListView() {
           />
         ))}
       </Tabs>
-
       <PostListHorizontal posts={dataFiltered} loading={postsLoading} />
     </Container>
   );

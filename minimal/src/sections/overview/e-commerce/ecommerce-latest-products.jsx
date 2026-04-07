@@ -50,7 +50,6 @@ function ProductItem({ product }) {
         src={coverUrl}
         sx={{ width: 48, height: 48, flexShrink: 0 }}
       />
-
       <ListItemText
         primary={<Link sx={{ color: 'text.primary', typography: 'subtitle2' }}>{name}</Link>}
         secondary={
@@ -66,14 +65,15 @@ function ProductItem({ product }) {
             </Box>
           </>
         }
-        primaryTypographyProps={{
-          noWrap: true,
-        }}
-        secondaryTypographyProps={{
-          mt: 0.5,
-        }}
-      />
+        slotProps={{
+          primary: {
+            noWrap: true,
+          },
 
+          secondary: {
+            mt: 0.5,
+          }
+        }} />
       <ColorPreview limit={3} colors={product.colors} />
     </Stack>
   );

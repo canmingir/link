@@ -40,10 +40,11 @@ export default function FileManagerInvitedItem({ person }) {
               <span>{person.email}</span>
             </Tooltip>
           }
-          primaryTypographyProps={{ noWrap: true, typography: 'subtitle2' }}
-          secondaryTypographyProps={{ noWrap: true, component: 'span' }}
           sx={{ flexGrow: 1, pr: 1 }}
-        />
+          slotProps={{
+            primary: { noWrap: true, typography: 'subtitle2' },
+            secondary: { noWrap: true, component: 'span' }
+          }} />
 
         <Button
           size="small"
@@ -66,7 +67,6 @@ export default function FileManagerInvitedItem({ person }) {
           Can {permission}
         </Button>
       </ListItem>
-
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 160 }}>
         <>
           <MenuItem

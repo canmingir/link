@@ -42,8 +42,8 @@ export default function TourItem({ tour, onView, onEdit, onDelete }) {
   const renderRating = (
     <Stack
       direction="row"
-      alignItems="center"
       sx={{
+        alignItems: "center",
         top: 8,
         right: 8,
         zIndex: 9,
@@ -51,9 +51,8 @@ export default function TourItem({ tour, onView, onEdit, onDelete }) {
         position: 'absolute',
         p: '2px 6px 2px 4px',
         typography: 'subtitle2',
-        bgcolor: 'warning.lighter',
-      }}
-    >
+        bgcolor: 'warning.lighter'
+      }}>
       <Iconify icon="eva:star-fill" sx={{ color: 'warning.main', mr: 0.25 }} /> {ratingNumber}
     </Stack>
   );
@@ -61,8 +60,8 @@ export default function TourItem({ tour, onView, onEdit, onDelete }) {
   const renderPrice = (
     <Stack
       direction="row"
-      alignItems="center"
       sx={{
+        alignItems: "center",
         top: 8,
         left: 8,
         zIndex: 9,
@@ -71,9 +70,8 @@ export default function TourItem({ tour, onView, onEdit, onDelete }) {
         position: 'absolute',
         p: '2px 6px 2px 4px',
         color: 'common.white',
-        typography: 'subtitle2',
-      }}
-    >
+        typography: 'subtitle2'
+      }}>
       {!!priceSale && (
         <Box component="span" sx={{ color: 'grey.500', mr: 0.25, textDecoration: 'line-through' }}>
           {fCurrency(priceSale)}
@@ -91,7 +89,11 @@ export default function TourItem({ tour, onView, onEdit, onDelete }) {
         p: (theme) => theme.spacing(1, 1, 0, 1),
       }}
     >
-      <Stack flexGrow={1} sx={{ position: 'relative' }}>
+      <Stack
+        sx={{
+          flexGrow: 1,
+          position: 'relative'
+        }}>
         {renderPrice}
         {renderRating}
         <Image alt={images[0]} src={images[0]} sx={{ borderRadius: 1, height: 164, width: 1 }} />
@@ -114,18 +116,20 @@ export default function TourItem({ tour, onView, onEdit, onDelete }) {
           {name}
         </Link>
       }
-      primaryTypographyProps={{
-        typography: 'caption',
-        color: 'text.disabled',
-      }}
-      secondaryTypographyProps={{
-        mt: 1,
-        noWrap: true,
-        component: 'span',
-        color: 'text.primary',
-        typography: 'subtitle1',
-      }}
-    />
+      slotProps={{
+        primary: {
+          typography: 'caption',
+          color: 'text.disabled',
+        },
+
+        secondary: {
+          mt: 1,
+          noWrap: true,
+          component: 'span',
+          color: 'text.primary',
+          typography: 'subtitle1',
+        }
+      }} />
   );
 
   const renderInfo = (
@@ -158,9 +162,10 @@ export default function TourItem({ tour, onView, onEdit, onDelete }) {
           key={item.label}
           spacing={1}
           direction="row"
-          alignItems="center"
-          sx={{ typography: 'body2' }}
-        >
+          sx={{
+            alignItems: "center",
+            typography: 'body2'
+          }}>
           {item.icon}
           {item.label}
         </Stack>

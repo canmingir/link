@@ -15,16 +15,16 @@ export default function BookingBooked({ title, subheader, data, ...other }) {
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
-
       <Stack spacing={3} sx={{ p: 3 }}>
         {data.map((progress) => (
           <Stack key={progress.status}>
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              sx={{ mb: 1 }}
-            >
+              sx={{
+                alignItems: "center",
+                justifyContent: "space-between",
+                mb: 1
+              }}>
               <Box sx={{ typography: 'overline' }}>{progress.status}</Box>
               <Box sx={{ typography: 'subtitle1' }}>{fShortenNumber(progress.quantity)}</Box>
             </Stack>

@@ -63,7 +63,11 @@ export default function FullScreenLayout() {
         return (
           <>
             {renderHorizontal}
-            <Stack width={"100%"} sx={{ mt: 7 }}>
+            <Stack
+              sx={{
+                width: "100%",
+                mt: 7
+              }}>
               <Outlet />
             </Stack>
           </>

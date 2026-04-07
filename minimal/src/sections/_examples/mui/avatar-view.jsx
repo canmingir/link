@@ -54,7 +54,6 @@ export default function AvatarView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Masonry columns={{ xs: 1, md: 2 }} spacing={3}>
           <ComponentBlock title="Image">
@@ -101,7 +100,9 @@ export default function AvatarView() {
           </ComponentBlock>
 
           <ComponentBlock title="Grouped">
-            <Stack spacing={2} alignItems="center">
+            <Stack spacing={2} sx={{
+              alignItems: "center"
+            }}>
               {SIZES.map((size) => (
                 <Tooltip key={size} title={size}>
                   <AvatarGroup

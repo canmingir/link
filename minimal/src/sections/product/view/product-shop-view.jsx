@@ -94,10 +94,11 @@ export default function ProductShopView() {
   const renderFilters = (
     <Stack
       spacing={3}
-      justifyContent="space-between"
-      alignItems={{ xs: 'flex-end', sm: 'center' }}
       direction={{ xs: 'column', sm: 'row' }}
-    >
+      sx={{
+        justifyContent: "space-between",
+        alignItems: { xs: 'flex-end', sm: 'center' }
+      }}>
       <ProductSearch
         query={debouncedQuery}
         results={searchResults}
@@ -106,7 +107,9 @@ export default function ProductShopView() {
         hrefItem={(id) => paths.product.details(id)}
       />
 
-      <Stack direction="row" spacing={1} flexShrink={0}>
+      <Stack direction="row" spacing={1} sx={{
+        flexShrink: 0
+      }}>
         <ProductFilters
           open={openFilters.value}
           onOpen={openFilters.onTrue}

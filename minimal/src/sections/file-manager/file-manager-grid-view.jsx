@@ -65,15 +65,17 @@ export default function FileManagerGridView({
 
         <Collapse in={!folders.value} unmountOnExit>
           <Box
-            gap={3}
-            display="grid"
-            gridTemplateColumns={{
-              xs: 'repeat(1, 1fr)',
-              sm: 'repeat(2, 1fr)',
-              md: 'repeat(3, 1fr)',
-              lg: 'repeat(4, 1fr)',
-            }}
-          >
+            sx={{
+              gap: 3,
+              display: "grid",
+
+              gridTemplateColumns: {
+                xs: 'repeat(1, 1fr)',
+                sm: 'repeat(2, 1fr)',
+                md: 'repeat(3, 1fr)',
+                lg: 'repeat(4, 1fr)',
+              }
+            }}>
             {dataFiltered
               .filter((i) => i.type === 'folder')
               .map((folder) => (
@@ -101,15 +103,18 @@ export default function FileManagerGridView({
 
         <Collapse in={!files.value} unmountOnExit>
           <Box
-            display="grid"
-            gridTemplateColumns={{
-              xs: 'repeat(1, 1fr)',
-              sm: 'repeat(2, 1fr)',
-              md: 'repeat(3, 1fr)',
-              lg: 'repeat(4, 1fr)',
-            }}
-            gap={3}
-          >
+            sx={{
+              display: "grid",
+
+              gridTemplateColumns: {
+                xs: 'repeat(1, 1fr)',
+                sm: 'repeat(2, 1fr)',
+                md: 'repeat(3, 1fr)',
+                lg: 'repeat(4, 1fr)',
+              },
+
+              gap: 3
+            }}>
             {dataFiltered
               .filter((i) => i.type !== 'folder')
               .map((file) => (
@@ -163,7 +168,6 @@ export default function FileManagerGridView({
           />
         )}
       </Box>
-
       <FileManagerShareDialog
         open={share.value}
         inviteEmail={inviteEmail}
@@ -173,9 +177,7 @@ export default function FileManagerGridView({
           setInviteEmail('');
         }}
       />
-
       <FileManagerNewFolderDialog open={upload.value} onClose={upload.onFalse} />
-
       <FileManagerNewFolderDialog
         open={newFolder.value}
         onClose={newFolder.onFalse}

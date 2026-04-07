@@ -33,17 +33,18 @@ export default function ScrollView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Box
-          gap={3}
-          display="grid"
-          alignItems="flex-start"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            md: 'repeat(2, 1fr)',
-          }}
-        >
+          sx={{
+            gap: 3,
+            display: "grid",
+            alignItems: "flex-start",
+
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+            }
+          }}>
           <Card>
             <CardHeader title="Vertical" />
             <CardContent sx={{ height: 320 }}>
