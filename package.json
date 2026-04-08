@@ -1,6 +1,6 @@
 {
   "name": "@canmingir/link",
-  "version": "1.2.27",
+  "version": "1.2.28",
   "type": "module",
   "exports": {
     ".": "./index.js",
