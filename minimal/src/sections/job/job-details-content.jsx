@@ -38,7 +38,9 @@ export default function JobDetailsContent({ job }) {
 
       <Stack spacing={2}>
         <Typography variant="h6">Skills</Typography>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{
+          alignItems: "center"
+        }}>
           {skills.map((skill) => (
             <Chip key={skill} label={skill} variant="soft" />
           ))}
@@ -47,7 +49,9 @@ export default function JobDetailsContent({ job }) {
 
       <Stack spacing={2}>
         <Typography variant="h6">Benefits</Typography>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{
+          alignItems: "center"
+        }}>
           {benefits.map((benefit) => (
             <Chip key={benefit} label={benefit} variant="soft" />
           ))}
@@ -90,17 +94,19 @@ export default function JobDetailsContent({ job }) {
           <ListItemText
             primary={item.label}
             secondary={item.value}
-            primaryTypographyProps={{
-              typography: 'body2',
-              color: 'text.secondary',
-              mb: 0.5,
-            }}
-            secondaryTypographyProps={{
-              typography: 'subtitle2',
-              color: 'text.primary',
-              component: 'span',
-            }}
-          />
+            slotProps={{
+              primary: {
+                typography: 'body2',
+                color: 'text.secondary',
+                mb: 0.5,
+              },
+
+              secondary: {
+                typography: 'subtitle2',
+                color: 'text.primary',
+                component: 'span',
+              }
+            }} />
         </Stack>
       ))}
     </Stack>

@@ -101,16 +101,17 @@ export default function MenuView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Box
-          gap={3}
-          display="grid"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            md: 'repeat(3, 1fr)',
-          }}
-        >
+          sx={{
+            gap: 3,
+            display: "grid",
+
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              md: 'repeat(3, 1fr)',
+            }
+          }}>
           <ComponentBlock title="Simple">
             <Button variant="outlined" onClick={handleOpen}>
               Open Menu

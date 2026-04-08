@@ -73,10 +73,11 @@ function AddItemWizard({ onSubmit, items, steps, stepExp }) {
       <Stack
         container
         direction="column"
-        alignItems="center"
-        justifyContent="center"
         spacing={2}
-      >
+        sx={{
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
         <SparkleInput
           prop="name"
           value={newItems[0].details.name}
@@ -94,7 +95,9 @@ function AddItemWizard({ onSubmit, items, steps, stepExp }) {
         <Typography variant="subtitle1" color={"gray"} sx={{ mb: -2 }}>
           Service Type
         </Typography>
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
           <Typography>Single</Typography>
           <Switch
             data-cy="type-switch"
@@ -109,8 +112,14 @@ function AddItemWizard({ onSubmit, items, steps, stepExp }) {
 
   const Service = () => {
     return (
-      <Grid container justifyContent="center" mt={1} spacing={2}>
-        <Grid item xs={5}>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          justifyContent: "center",
+          mt: 1
+        }}>
+        <Grid size={5}>
           <Stack
             sx={{
               borderStyle: "none dotted none none",
@@ -128,9 +137,11 @@ function AddItemWizard({ onSubmit, items, steps, stepExp }) {
             <Typography
               variant="subtitle1"
               color={"gray"}
-              textAlign={"center"}
-              sx={{ marginTop: 2, marginBottom: 1 }}
-            >
+              sx={{
+                textAlign: "center",
+                marginTop: 2,
+                marginBottom: 1
+              }}>
               Select an Icon
             </Typography>
             <SelectAvatar
@@ -142,7 +153,7 @@ function AddItemWizard({ onSubmit, items, steps, stepExp }) {
             />
           </Stack>
         </Grid>
-        <Grid item xs={7}>
+        <Grid size={7}>
           <SparkleInput
             prop="description"
             value={newItems[1].details.description}

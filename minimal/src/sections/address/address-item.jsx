@@ -16,16 +16,19 @@ export default function AddressItem({ address, action, sx, ...other }) {
     <Stack
       component={Paper}
       spacing={2}
-      alignItems={{ md: 'flex-end' }}
       direction={{ xs: 'column', md: 'row' }}
-      sx={{
-        position: 'relative',
-        ...sx,
-      }}
       {...other}
-    >
-      <Stack flexGrow={1} spacing={1}>
-        <Stack direction="row" alignItems="center">
+      sx={[{
+        alignItems: { md: 'flex-end' },
+        position: 'relative',
+        ...sx
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
+      <Stack spacing={1} sx={{
+        flexGrow: 1
+      }}>
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
           <Typography variant="subtitle2">
             {name}
             <Box component="span" sx={{ ml: 0.5, typography: 'body2', color: 'text.secondary' }}>
@@ -48,7 +51,6 @@ export default function AddressItem({ address, action, sx, ...other }) {
           {phoneNumber}
         </Typography>
       </Stack>
-
       {action && action}
     </Stack>
   );

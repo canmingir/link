@@ -21,28 +21,28 @@ export default function PaymentView() {
       <Typography variant="h3" align="center" sx={{ mb: 2 }}>
         {`Let's finish powering you up!`}
       </Typography>
-
       <Typography align="center" sx={{ color: 'text.secondary', mb: 5 }}>
         Professional plan is right for you.
       </Typography>
-
       <Grid container rowSpacing={{ xs: 5, md: 0 }} columnSpacing={{ xs: 0, md: 5 }}>
         <Grid xs={12} md={8}>
           <Box
-            gap={5}
-            display="grid"
-            gridTemplateColumns={{
-              xs: 'repeat(1, 1fr)',
-              md: 'repeat(2, 1fr)',
-            }}
             sx={{
+              gap: 5,
+              display: "grid",
+
+              gridTemplateColumns: {
+                xs: 'repeat(1, 1fr)',
+                md: 'repeat(2, 1fr)',
+              },
+
               p: { md: 5 },
               borderRadius: 2,
+
               border: (theme) => ({
                 md: `dashed 1px ${theme.palette.divider}`,
-              }),
-            }}
-          >
+              })
+            }}>
             <PaymentBillingAddress />
 
             <PaymentMethods />

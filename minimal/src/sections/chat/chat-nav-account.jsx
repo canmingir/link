@@ -39,22 +39,22 @@ export default function ChatNavAccount() {
           sx={{ cursor: 'pointer', width: 48, height: 48 }}
         />
       </Badge>
-
       <CustomPopover open={popover.open} onClose={popover.onClose} arrow="top-left" sx={{ p: 0 }}>
         <Stack
           direction="row"
-          alignItems="center"
           spacing={2}
           sx={{
+            alignItems: "center",
             py: 2,
             pr: 1,
-            pl: 2.5,
-          }}
-        >
+            pl: 2.5
+          }}>
           <ListItemText
             primary={user?.displayName}
             secondary={user?.email}
-            secondaryTypographyProps={{ component: 'span' }}
+            slotProps={{
+              secondary: { component: 'span' }
+            }}
           />
 
           <Tooltip title="Log out">

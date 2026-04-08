@@ -107,7 +107,6 @@ export default function ChatRoom({ participants, conversation }) {
   return (
     <Box sx={{ position: 'relative' }}>
       {renderToggleBtn}
-
       {lgUp ? (
         <Stack
           sx={{
@@ -132,11 +131,11 @@ export default function ChatRoom({ participants, conversation }) {
           onClose={onCloseMobile}
           slotProps={{
             backdrop: { invisible: true },
-          }}
-          PaperProps={{
-            sx: { width: NAV_WIDTH },
-          }}
-        >
+
+            paper: {
+              sx: { width: NAV_WIDTH },
+            }
+          }}>
           {renderContent}
         </Drawer>
       )}

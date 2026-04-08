@@ -44,11 +44,13 @@ export default function CheckoutSteps({ steps, activeStep, sx, ...other }) {
       {steps.map((label) => (
         <Step key={label}>
           <StepLabel
-            StepIconComponent={StepIcon}
             sx={{
               [`& .${stepLabelClasses.label}`]: {
                 fontWeight: 'fontWeightSemiBold',
               },
+            }}
+            slots={{
+              stepIcon: StepIcon
             }}
           >
             {label}
@@ -70,17 +72,17 @@ CheckoutSteps.propTypes = {
 function StepIcon({ active, completed }) {
   return (
     <Stack
-      alignItems="center"
-      justifyContent="center"
       sx={{
+        alignItems: "center",
+        justifyContent: "center",
         width: 24,
         height: 24,
         color: 'text.disabled',
+
         ...(active && {
           color: 'primary.main',
-        }),
-      }}
-    >
+        })
+      }}>
       {completed ? (
         <Iconify icon="eva:checkmark-fill" sx={{ color: 'primary.main' }} />
       ) : (

@@ -28,7 +28,6 @@ export default function BankingInviteFriends({ img, price, title, description, s
           ...sx,
         }}
       />
-
       <Box
         sx={{
           mt: -15,
@@ -42,7 +41,12 @@ export default function BankingInviteFriends({ img, price, title, description, s
           }),
         }}
       >
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: "center",
+            justifyContent: "space-between"
+          }}>
           <Box sx={{ whiteSpace: 'pre-line', typography: 'h4' }}>{title}</Box>
           <Box sx={{ typography: 'h2' }}>{price}</Box>
         </Stack>

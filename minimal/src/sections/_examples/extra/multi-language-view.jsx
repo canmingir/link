@@ -67,7 +67,6 @@ export default function MultiLanguageView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Stack spacing={5}>
           <Card>
@@ -89,7 +88,13 @@ export default function MultiLanguageView() {
                 ))}
               </RadioGroup>
 
-              <Stack direction="row" alignItems="center" sx={{ typography: 'h2', my: 3 }}>
+              <Stack
+                direction="row"
+                sx={{
+                  alignItems: "center",
+                  typography: 'h2',
+                  my: 3
+                }}>
                 <Iconify icon={currentLang.icon} width={32} sx={{ mr: 1, borderRadius: 1 }} />
                 {mounted && t('demo.title')}
               </Stack>

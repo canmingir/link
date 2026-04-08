@@ -33,16 +33,17 @@ export default function ProfileFollowers({ followers }) {
       <Typography variant="h4" sx={{ my: 5 }}>
         Followers
       </Typography>
-
       <Box
-        gap={3}
-        display="grid"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          sm: 'repeat(2, 1fr)',
-          md: 'repeat(3, 1fr)',
-        }}
-      >
+        sx={{
+          gap: 3,
+          display: "grid",
+
+          gridTemplateColumns: {
+            xs: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+          }
+        }}>
         {followers.map((follower) => (
           <FollowerItem
             key={follower.id}
@@ -74,7 +75,6 @@ function FollowerItem({ follower, selected, onSelected }) {
       }}
     >
       <Avatar alt={name} src={avatarUrl} sx={{ width: 48, height: 48, mr: 2 }} />
-
       <ListItemText
         primary={name}
         secondary={
@@ -83,21 +83,22 @@ function FollowerItem({ follower, selected, onSelected }) {
             {country} country country country country country country country country country
           </>
         }
-        primaryTypographyProps={{
-          noWrap: true,
-          typography: 'subtitle2',
-        }}
-        secondaryTypographyProps={{
-          mt: 0.5,
-          noWrap: true,
-          display: 'flex',
-          component: 'span',
-          alignItems: 'center',
-          typography: 'caption',
-          color: 'text.disabled',
-        }}
-      />
+        slotProps={{
+          primary: {
+            noWrap: true,
+            typography: 'subtitle2',
+          },
 
+          secondary: {
+            mt: 0.5,
+            noWrap: true,
+            display: 'flex',
+            component: 'span',
+            alignItems: 'center',
+            typography: 'caption',
+            color: 'text.disabled',
+          }
+        }} />
       <Button
         size="small"
         variant={selected ? 'text' : 'outlined'}

@@ -58,12 +58,14 @@ export default function MailList({
         {mdUp ? (
           <TextField
             placeholder="Search..."
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                  </InputAdornment>
+                ),
+              }
             }}
           />
         ) : (
@@ -98,13 +100,13 @@ export default function MailList({
       onClose={onCloseMail}
       slotProps={{
         backdrop: { invisible: true },
-      }}
-      PaperProps={{
-        sx: {
-          width: 320,
-        },
-      }}
-    >
+
+        paper: {
+          sx: {
+            width: 320,
+          },
+        }
+      }}>
       {renderContent}
     </Drawer>
   );

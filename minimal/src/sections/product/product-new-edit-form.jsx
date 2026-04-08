@@ -233,14 +233,16 @@ export default function ProductNewEditForm({ currentProduct }) {
 
           <Stack spacing={3} sx={{ p: 3 }}>
             <Box
-              columnGap={2}
-              rowGap={3}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                md: 'repeat(2, 1fr)',
-              }}
-            >
+              sx={{
+                columnGap: 2,
+                rowGap: 3,
+                display: "grid",
+
+                gridTemplateColumns: {
+                  xs: 'repeat(1, 1fr)',
+                  md: 'repeat(2, 1fr)',
+                }
+              }}>
               <RHFTextField name="code" label="Product Code" />
 
               <RHFTextField name="sku" label="Product SKU" />
@@ -309,7 +311,9 @@ export default function ProductNewEditForm({ currentProduct }) {
 
             <Divider sx={{ borderStyle: 'dashed' }} />
 
-            <Stack direction="row" alignItems="center" spacing={3}>
+            <Stack direction="row" spacing={3} sx={{
+              alignItems: "center"
+            }}>
               <RHFSwitch name="saleLabel.enabled" label={null} sx={{ m: 0 }} />
               <RHFTextField
                 name="saleLabel.content"
@@ -319,7 +323,9 @@ export default function ProductNewEditForm({ currentProduct }) {
               />
             </Stack>
 
-            <Stack direction="row" alignItems="center" spacing={3}>
+            <Stack direction="row" spacing={3} sx={{
+              alignItems: "center"
+            }}>
               <RHFSwitch name="newLabel.enabled" label={null} sx={{ m: 0 }} />
               <RHFTextField
                 name="newLabel.content"

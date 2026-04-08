@@ -74,7 +74,14 @@ export default function FileManagerFileItem({ file, selected, onSelect, onDelete
     );
 
   const renderAction = (
-    <Stack direction="row" alignItems="center" sx={{ top: 8, right: 8, position: 'absolute' }}>
+    <Stack
+      direction="row"
+      sx={{
+        alignItems: "center",
+        top: 8,
+        right: 8,
+        position: 'absolute'
+      }}>
       <Checkbox
         color="warning"
         icon={<Iconify icon="eva:star-outline" />}
@@ -102,14 +109,13 @@ export default function FileManagerFileItem({ file, selected, onSelect, onDelete
 
       <Stack
         direction="row"
-        alignItems="center"
         sx={{
+          alignItems: "center",
           maxWidth: 0.99,
           whiteSpace: 'nowrap',
           typography: 'caption',
-          color: 'text.disabled',
-        }}
-      >
+          color: 'text.disabled'
+        }}>
         {fData(file.size)}
 
         <Box
@@ -155,21 +161,22 @@ export default function FileManagerFileItem({ file, selected, onSelect, onDelete
       <Stack
         component={Paper}
         variant="outlined"
-        alignItems="flex-start"
-        sx={{
+        {...other}
+        sx={[{
+          alignItems: "flex-start",
           p: 2.5,
           borderRadius: 2,
           bgcolor: 'unset',
           cursor: 'pointer',
           position: 'relative',
+
           ...((checkbox.value || selected) && {
             bgcolor: 'background.paper',
             boxShadow: (theme) => theme.customShadows.z20,
           }),
-          ...sx,
-        }}
-        {...other}
-      >
+
+          ...sx
+        }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
         <Box onMouseEnter={checkbox.onTrue} onMouseLeave={checkbox.onFalse}>
           {renderIcon}
         </Box>
@@ -180,7 +187,6 @@ export default function FileManagerFileItem({ file, selected, onSelect, onDelete
 
         {renderAction}
       </Stack>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -220,7 +226,6 @@ export default function FileManagerFileItem({ file, selected, onSelect, onDelete
           Delete
         </MenuItem>
       </CustomPopover>
-
       <FileManagerFileDetails
         item={file}
         favorited={favorite.value}
@@ -233,7 +238,6 @@ export default function FileManagerFileItem({ file, selected, onSelect, onDelete
           onDelete();
         }}
       />
-
       <FileManagerShareDialog
         open={share.value}
         shared={file.shared}
@@ -245,7 +249,6 @@ export default function FileManagerFileItem({ file, selected, onSelect, onDelete
           setInviteEmail('');
         }}
       />
-
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}

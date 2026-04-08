@@ -80,20 +80,20 @@ export default function AuthClassicLayout({ children, image, title }) {
 
   const renderSection = (
     <Stack
-      flexGrow={1}
       spacing={10}
-      alignItems="center"
-      justifyContent="center"
       sx={{
+        flexGrow: 1,
+        alignItems: "center",
+        justifyContent: "center",
+
         ...bgGradient({
           color: alpha(
             theme.palette.background.default,
             theme.palette.mode === 'light' ? 0.88 : 0.94
           ),
           imgUrl: '/assets/background/overlay_2.jpg',
-        }),
-      }}
-    >
+        })
+      }}>
       <Typography variant="h3" sx={{ maxWidth: 480, textAlign: 'center' }}>
         {title || 'Hi, Welcome back'}
       </Typography>

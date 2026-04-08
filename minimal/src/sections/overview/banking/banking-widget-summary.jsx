@@ -97,7 +97,6 @@ export default function BankingWidgetSummary({
           bgcolor: `${color}.dark`,
         }}
       />
-
       <Stack spacing={1} sx={{ p: 3 }}>
         <Typography variant="subtitle2">{title}</Typography>
 
@@ -106,10 +105,11 @@ export default function BankingWidgetSummary({
         <Stack
           spacing={0.5}
           direction="row"
-          flexWrap="wrap"
-          alignItems="center"
-          sx={{ typography: 'body2' }}
-        >
+          sx={{
+            flexWrap: "wrap",
+            alignItems: "center",
+            typography: 'body2'
+          }}>
           <Iconify icon={percent < 0 ? 'eva:trending-down-fill' : 'eva:trending-up-fill'} />
 
           <Box sx={{ typography: 'subtitle2' }}>
@@ -120,7 +120,6 @@ export default function BankingWidgetSummary({
           <Box sx={{ opacity: 0.8 }}>than last month</Box>
         </Stack>
       </Stack>
-
       <Chart
         dir="ltr"
         type="area"

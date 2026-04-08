@@ -44,7 +44,9 @@ function ApplicationItem({ app }) {
   const { shortcut, system, price, ratingNumber, totalReviews, name } = app;
 
   return (
-    <Stack direction="row" alignItems="center" spacing={2}>
+    <Stack direction="row" spacing={2} sx={{
+      alignItems: "center"
+    }}>
       <Avatar
         variant="rounded"
         sx={{
@@ -55,13 +57,18 @@ function ApplicationItem({ app }) {
       >
         <Box component="img" src={shortcut} sx={{ width: 24, height: 24 }} />
       </Avatar>
-
       <Box sx={{ flexGrow: 1, minWidth: 0 }}>
         <Typography variant="subtitle2" noWrap>
           {name}
         </Typography>
 
-        <Stack direction="row" alignItems="center" sx={{ mt: 0.5, color: 'text.secondary' }}>
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: "center",
+            mt: 0.5,
+            color: 'text.secondary'
+          }}>
           <Iconify
             width={14}
             icon={system === 'Mac' ? 'mingcute:apple-fill' : 'mingcute:windows-fill'}
@@ -76,8 +83,9 @@ function ApplicationItem({ app }) {
           </Label>
         </Stack>
       </Box>
-
-      <Stack alignItems="flex-end">
+      <Stack sx={{
+        alignItems: "flex-end"
+      }}>
         <Rating readOnly size="small" precision={0.5} name="reviews" value={ratingNumber} />
         <Typography variant="caption" sx={{ mt: 0.5, color: 'text.secondary' }}>
           {fShortenNumber(totalReviews)} reviews

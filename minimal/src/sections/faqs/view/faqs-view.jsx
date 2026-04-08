@@ -13,7 +13,6 @@ export default function FaqsView() {
   return (
     <>
       <FaqsHero />
-
       <Container
         sx={{
           pb: 10,
@@ -33,13 +32,15 @@ export default function FaqsView() {
         </Typography>
 
         <Box
-          gap={10}
-          display="grid"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            md: 'repeat(2, 1fr)',
-          }}
-        >
+          sx={{
+            gap: 10,
+            display: "grid",
+
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+            }
+          }}>
           <FaqsList />
 
           <FaqsForm />

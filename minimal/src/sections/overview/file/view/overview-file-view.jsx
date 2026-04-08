@@ -249,7 +249,12 @@ export default function OverviewFileView() {
             <UploadBox
               onDrop={handleDrop}
               placeholder={
-                <Stack spacing={0.5} alignItems="center" sx={{ color: 'text.disabled' }}>
+                <Stack
+                  spacing={0.5}
+                  sx={{
+                    alignItems: "center",
+                    color: 'text.disabled'
+                  }}>
                   <Iconify icon="eva:cloud-upload-fill" width={40} />
                   <Typography variant="body2">Upload file</Typography>
                 </Stack>
@@ -269,9 +274,7 @@ export default function OverviewFileView() {
           </Grid>
         </Grid>
       </Container>
-
       <FileManagerNewFolderDialog open={upload.value} onClose={upload.onFalse} />
-
       <FileManagerNewFolderDialog
         open={newFolder.value}
         onClose={newFolder.onFalse}

@@ -16,8 +16,13 @@ export default function AnalyticsTrafficBySite({ title, subheader, list, ...othe
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
-
-      <Box display="grid" gap={2} gridTemplateColumns="repeat(2, 1fr)" sx={{ p: 3 }}>
+      <Box
+        sx={{
+          display: "grid",
+          gap: 2,
+          gridTemplateColumns: "repeat(2, 1fr)",
+          p: 3
+        }}>
         {list.map((site) => (
           <Paper key={site.label} variant="outlined" sx={{ py: 2.5, textAlign: 'center' }}>
             <Iconify

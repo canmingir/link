@@ -99,7 +99,9 @@ export default function KanbanView() {
   );
 
   const renderSkeleton = (
-    <Stack direction="row" alignItems="flex-start" spacing={3}>
+    <Stack direction="row" spacing={3} sx={{
+      alignItems: "flex-start"
+    }}>
       {[...Array(4)].map((_, index) => (
         <KanbanColumnSkeleton key={index} index={index} />
       ))}
@@ -121,9 +123,7 @@ export default function KanbanView() {
       >
         Kanban
       </Typography>
-
       {boardLoading && renderSkeleton}
-
       {boardEmpty && (
         <EmptyContent
           filled
@@ -134,7 +134,6 @@ export default function KanbanView() {
           }}
         />
       )}
-
       {!!board?.ordered.length && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="board" type="COLUMN" direction="horizontal">
@@ -153,12 +152,11 @@ export default function KanbanView() {
                   {...provided.droppableProps}
                   spacing={3}
                   direction="row"
-                  alignItems="flex-start"
                   sx={{
+                    alignItems: "flex-start",
                     p: 0.25,
-                    height: 1,
-                  }}
-                >
+                    height: 1
+                  }}>
                   {board?.ordered.map((columnId, index) => (
                     <KanbanColumn
                       index={index}

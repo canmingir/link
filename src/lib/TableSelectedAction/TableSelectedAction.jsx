@@ -19,8 +19,9 @@ export default function TableSelectedAction({
   return (
     <Stack
       direction="row"
-      alignItems="center"
-      sx={{
+      {...other}
+      sx={[{
+        alignItems: "center",
         pl: 1,
         pr: 2,
         top: 0,
@@ -30,19 +31,18 @@ export default function TableSelectedAction({
         height: 58,
         position: "absolute",
         bgcolor: "primary.lighter",
+
         ...(dense && {
           height: 38,
         }),
-        ...sx,
-      }}
-      {...other}
-    >
+
+        ...sx
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       <Checkbox
         indeterminate={!!numSelected && numSelected < rowCount}
         checked={!!rowCount && numSelected === rowCount}
         onChange={(event) => onSelectAllRows(event.target.checked)}
       />
-
       <Typography
         variant="subtitle2"
         sx={{
@@ -56,7 +56,6 @@ export default function TableSelectedAction({
       >
         {numSelected} selected
       </Typography>
-
       {action && action}
     </Stack>
   );

@@ -170,27 +170,26 @@ function TestimonialCard({ testimonial, sx, ...other }) {
       {...other}
     >
       <Iconify icon="mingcute:quote-left-fill" width={40} sx={{ opacity: 0.48 }} />
-
       <Typography variant="body2">{content}</Typography>
-
       <Rating value={ratingNumber} readOnly size="small" />
-
       <Stack direction="row">
         <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
 
         <ListItemText
           primary={name}
           secondary={fDate(postedDate)}
-          primaryTypographyProps={{
-            typography: 'subtitle2',
-            mb: 0.5,
-          }}
-          secondaryTypographyProps={{
-            typography: 'caption',
-            color: 'inherit',
-            sx: { opacity: 0.64 },
-          }}
-        />
+          slotProps={{
+            primary: {
+              typography: 'subtitle2',
+              mb: 0.5,
+            },
+
+            secondary: {
+              typography: 'caption',
+              color: 'inherit',
+              sx: { opacity: 0.64 },
+            }
+          }} />
       </Stack>
     </Stack>
   );

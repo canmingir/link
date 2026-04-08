@@ -28,19 +28,20 @@ export default function ProductList({ products, loading, ...other }) {
   return (
     <>
       <Box
-        gap={3}
-        display="grid"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          sm: 'repeat(2, 1fr)',
-          md: 'repeat(3, 1fr)',
-          lg: 'repeat(4, 1fr)',
-        }}
         {...other}
-      >
+        sx={[{
+          gap: 3,
+          display: "grid",
+
+          gridTemplateColumns: {
+            xs: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)',
+          }
+        }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
         {loading ? renderSkeleton : renderList}
       </Box>
-
       {products.length > 8 && (
         <Pagination
           count={8}

@@ -16,13 +16,15 @@ import Iconify from 'src/components/iconify';
 export default function JobDetailsCandidates({ candidates }) {
   return (
     <Box
-      gap={3}
-      display="grid"
-      gridTemplateColumns={{
-        xs: 'repeat(1, 1fr)',
-        md: 'repeat(3, 1fr)',
-      }}
-    >
+      sx={{
+        gap: 3,
+        display: "grid",
+
+        gridTemplateColumns: {
+          xs: 'repeat(1, 1fr)',
+          md: 'repeat(3, 1fr)',
+        }
+      }}>
       {candidates.map((candidate) => (
         <Stack component={Card} direction="row" spacing={2} key={candidate.id} sx={{ p: 3 }}>
           <IconButton sx={{ position: 'absolute', top: 8, right: 8 }}>
@@ -35,11 +37,13 @@ export default function JobDetailsCandidates({ candidates }) {
             <ListItemText
               primary={candidate.name}
               secondary={candidate.role}
-              secondaryTypographyProps={{
-                mt: 0.5,
-                component: 'span',
-                typography: 'caption',
-                color: 'text.disabled',
+              slotProps={{
+                secondary: {
+                  mt: 0.5,
+                  component: 'span',
+                  typography: 'caption',
+                  color: 'text.disabled',
+                }
               }}
             />
 

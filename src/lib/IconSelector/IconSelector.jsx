@@ -18,7 +18,11 @@ export default function IconSelector({
     setEmojiDialogOpen(true);
   };
   return (
-    <Stack alignContent={"center"} justifyContent={"center"}>
+    <Stack
+      sx={{
+        alignContent: "center",
+        justifyContent: "center"
+      }}>
       <Stack>
         <IconButton
           data-cy="avatar-select-button"

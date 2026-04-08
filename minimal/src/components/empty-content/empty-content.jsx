@@ -10,28 +10,28 @@ import Typography from '@mui/material/Typography';
 export default function EmptyContent({ title, imgUrl, action, filled, description, sx, ...other }) {
   return (
     <Stack
-      flexGrow={1}
-      alignItems="center"
-      justifyContent="center"
-      sx={{
+      {...other}
+      sx={[{
+        flexGrow: 1,
+        alignItems: "center",
+        justifyContent: "center",
         px: 3,
         height: 1,
+
         ...(filled && {
           borderRadius: 2,
           bgcolor: (theme) => alpha(theme.palette.grey[500], 0.04),
           border: (theme) => `dashed 1px ${alpha(theme.palette.grey[500], 0.08)}`,
         }),
-        ...sx,
-      }}
-      {...other}
-    >
+
+        ...sx
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       <Box
         component="img"
         alt="empty content"
         src={imgUrl || '/assets/icons/empty/ic_content.svg'}
         sx={{ width: 1, maxWidth: 160 }}
       />
-
       {title && (
         <Typography
           variant="h6"
@@ -41,13 +41,11 @@ export default function EmptyContent({ title, imgUrl, action, filled, descriptio
           {title}
         </Typography>
       )}
-
       {description && (
         <Typography variant="caption" sx={{ mt: 1, color: 'text.disabled', textAlign: 'center' }}>
           {description}
         </Typography>
       )}
-
       {action && action}
     </Stack>
   );

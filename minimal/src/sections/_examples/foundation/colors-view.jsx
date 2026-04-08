@@ -59,17 +59,18 @@ export default function ColorsView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Box
-          gap={3}
-          display="grid"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(3, 1fr)',
-          }}
-        >
+          sx={{
+            gap: 3,
+            display: "grid",
+
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+              md: 'repeat(3, 1fr)',
+            }
+          }}>
           {PALETTE.map((color) => (
             <Stack
               key={color}
@@ -153,13 +154,13 @@ function ColorCard({ hexColor, variation, onCopy }) {
       <Typography variant="subtitle2" sx={{ textTransform: 'capitalize' }}>
         {variation}
       </Typography>
-
       <Box
-        gap={2.5}
-        display="grid"
-        gridTemplateColumns="repeat(2, 1fr)"
-        sx={{ typography: 'caption' }}
-      >
+        sx={{
+          gap: 2.5,
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          typography: 'caption'
+        }}>
         <Box>
           <Box component="span">Hex </Box>
           {hexColor}

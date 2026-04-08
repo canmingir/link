@@ -38,13 +38,16 @@ export default function PricingView() {
         Flexible plans for your
         <br /> {`community's size and needs`}
       </Typography>
-
       <Typography align="center" sx={{ color: 'text.secondary' }}>
         Choose your plan and make modern online conversation magic
       </Typography>
-
       <Box sx={{ mt: 9, mb: 5, position: 'relative' }}>
-        <Stack direction="row" alignItems="center" justifyContent="center">
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: "center",
+            justifyContent: "center"
+          }}>
           <Typography variant="overline">MONTHLY</Typography>
 
           <Switch sx={{ mx: 1 }} />
@@ -68,13 +71,13 @@ export default function PricingView() {
           </Box>
         </Stack>
       </Box>
-
       <Box
-        gap={{ xs: 3, md: 0 }}
-        display="grid"
-        alignItems={{ md: 'center' }}
-        gridTemplateColumns={{ md: 'repeat(3, 1fr)' }}
-      >
+        sx={{
+          gap: { xs: 3, md: 0 },
+          display: "grid",
+          alignItems: { md: 'center' },
+          gridTemplateColumns: { md: 'repeat(3, 1fr)' }
+        }}>
         {_pricingPlans.map((card, index) => (
           <PricingCard key={card.subscription} card={card} index={index} />
         ))}

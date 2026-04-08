@@ -61,7 +61,9 @@ export default function MegaMenuView() {
   );
 
   const renderVertical = (
-    <Stack direction="row" spacing={3} mt={5}>
+    <Stack direction="row" spacing={3} sx={{
+      mt: 5
+    }}>
       <Card sx={{ width: 260, flexShrink: 0, overflow: 'unset', zIndex: 9 }}>
         <Typography variant="h6" sx={{ p: 2 }}>
           Menu Vertical
@@ -90,11 +92,13 @@ export default function MegaMenuView() {
       <Drawer
         open={mobileOpen.value}
         onClose={mobileOpen.onFalse}
-        PaperProps={{
-          sx: {
-            pb: 5,
-            width: 260,
-          },
+        slotProps={{
+          paper: {
+            sx: {
+              pb: 5,
+              width: 260,
+            },
+          }
         }}
       >
         <Scrollbar>

@@ -109,7 +109,9 @@ export default function KanbanDetails({
   );
 
   const renderReporter = (
-    <Stack direction="row" alignItems="center">
+    <Stack direction="row" sx={{
+      alignItems: "center"
+    }}>
       <StyledLabel>Reporter</StyledLabel>
       <Avatar alt={task.reporter.name} src={task.reporter.avatarUrl} />
     </Stack>
@@ -119,7 +121,13 @@ export default function KanbanDetails({
     <Stack direction="row">
       <StyledLabel sx={{ height: 40, lineHeight: '40px' }}>Assignee</StyledLabel>
 
-      <Stack direction="row" flexWrap="wrap" alignItems="center" spacing={1}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          flexWrap: "wrap",
+          alignItems: "center"
+        }}>
         {task.assignee.map((user) => (
           <Avatar key={user.id} alt={user.name} src={user.avatarUrl} />
         ))}
@@ -150,7 +158,13 @@ export default function KanbanDetails({
       <StyledLabel sx={{ height: 24, lineHeight: '24px' }}>Labels</StyledLabel>
 
       {!!task.labels.length && (
-        <Stack direction="row" flexWrap="wrap" alignItems="center" spacing={1}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            flexWrap: "wrap",
+            alignItems: "center"
+          }}>
           {task.labels.map((label) => (
             <Chip key={label} color="info" label={label} size="small" variant="soft" />
           ))}
@@ -160,7 +174,9 @@ export default function KanbanDetails({
   );
 
   const renderDueDate = (
-    <Stack direction="row" alignItems="center">
+    <Stack direction="row" sx={{
+      alignItems: "center"
+    }}>
       <StyledLabel> Due date </StyledLabel>
 
       {rangePicker.selected ? (
@@ -197,7 +213,9 @@ export default function KanbanDetails({
   );
 
   const renderPriority = (
-    <Stack direction="row" alignItems="center">
+    <Stack direction="row" sx={{
+      alignItems: "center"
+    }}>
       <StyledLabel>Priority</StyledLabel>
 
       <KanbanDetailsPriority priority={priority} onChangePriority={handleChangePriority} />
@@ -214,8 +232,10 @@ export default function KanbanDetails({
         size="small"
         value={taskDescription}
         onChange={handleChangeTaskDescription}
-        InputProps={{
-          sx: { typography: 'body2' },
+        slotProps={{
+          input: {
+            sx: { typography: 'body2' },
+          }
         }}
       />
     </Stack>
@@ -237,20 +257,18 @@ export default function KanbanDetails({
       anchor="right"
       slotProps={{
         backdrop: { invisible: true },
-      }}
-      PaperProps={{
-        sx: {
-          width: {
-            xs: 1,
-            sm: 480,
+
+        paper: {
+          sx: {
+            width: {
+              xs: 1,
+              sm: 480,
+            },
           },
-        },
-      }}
-    >
+        }
+      }}>
       {renderHead}
-
       <Divider />
-
       <Scrollbar
         sx={{
           height: 1,
@@ -288,7 +306,6 @@ export default function KanbanDetails({
 
         {!!task.comments.length && renderComments}
       </Scrollbar>
-
       <KanbanDetailsCommentInput />
     </Drawer>
   );

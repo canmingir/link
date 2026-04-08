@@ -105,11 +105,14 @@ export function defaultProps(theme) {
     },
     MuiCardHeader: {
       defaultProps: {
-        titleTypographyProps: { variant: "h6" },
-        subheaderTypographyProps: {
-          variant: "body2",
-          marginTop: theme.spacing(0.5),
-        },
+        slotProps: {
+          title: { variant: "h6" },
+
+          subheader: {
+            variant: "body2",
+            marginTop: theme.spacing(0.5),
+          }
+        }
       },
     },
     MuiChip: {
@@ -134,12 +137,15 @@ export function defaultProps(theme) {
     },
     MuiListItemText: {
       defaultProps: {
-        primaryTypographyProps: {
-          typography: "subtitle2",
-        },
-        secondaryTypographyProps: {
-          component: "span",
-        },
+        slotProps: {
+          primary: {
+            typography: "subtitle2",
+          },
+
+          secondary: {
+            component: "span",
+          }
+        }
       },
     },
     MuiPaper: {

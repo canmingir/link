@@ -40,16 +40,17 @@ export default function CustomDateRangePicker({
       maxWidth={isCalendarView ? false : 'xs'}
       open={open}
       onClose={onClose}
-      PaperProps={{
-        sx: {
-          ...(isCalendarView && {
-            maxWidth: 720,
-          }),
-        },
+      slotProps={{
+        paper: {
+          sx: {
+            ...(isCalendarView && {
+              maxWidth: 720,
+            }),
+          },
+        }
       }}
     >
       <DialogTitle sx={{ pb: 2 }}>{title}</DialogTitle>
-
       <DialogContent
         sx={{
           ...(isCalendarView &&
@@ -59,11 +60,12 @@ export default function CustomDateRangePicker({
         }}
       >
         <Stack
-          justifyContent="center"
           spacing={isCalendarView ? 3 : 2}
           direction={isCalendarView && mdUp ? 'row' : 'column'}
-          sx={{ pt: 1 }}
-        >
+          sx={{
+            justifyContent: "center",
+            pt: 1
+          }}>
           {isCalendarView ? (
             <>
               <Paper
@@ -103,7 +105,6 @@ export default function CustomDateRangePicker({
           </FormHelperText>
         )}
       </DialogContent>
-
       <DialogActions>
         <Button variant="outlined" color="inherit" onClick={onClose}>
           Cancel

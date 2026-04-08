@@ -46,7 +46,9 @@ export default function ModernForgotPasswordView() {
   });
 
   const renderForm = (
-    <Stack spacing={3} alignItems="center">
+    <Stack spacing={3} sx={{
+      alignItems: "center"
+    }}>
       <RHFTextField name="email" label="Email address" />
 
       <LoadingButton

@@ -14,10 +14,11 @@ export default function Buttons() {
     <Stack
       spacing={2}
       direction="row"
-      alignItems="center"
-      justifyContent="center"
-      sx={{ height: 1 }}
-    >
+      sx={{
+        alignItems: "center",
+        justifyContent: "center",
+        height: 1
+      }}>
       <Fab
         component={m.button}
         whileTap="tap"
@@ -28,7 +29,6 @@ export default function Buttons() {
       >
         <Iconify icon="mingcute:add-line" width={24} />
       </Fab>
-
       <Fab
         component={m.button}
         whileTap="tap"
@@ -39,7 +39,6 @@ export default function Buttons() {
       >
         <Iconify icon="mingcute:add-line" width={24} />
       </Fab>
-
       <Fab
         component={m.button}
         whileTap="tap"
@@ -49,7 +48,6 @@ export default function Buttons() {
       >
         <Iconify icon="mingcute:add-line" width={24} />
       </Fab>
-
       <IconButton
         component={m.button}
         whileTap="tap"
@@ -60,7 +58,6 @@ export default function Buttons() {
       >
         <Iconify icon="mingcute:add-line" width={24} />
       </IconButton>
-
       <IconButton
         component={m.button}
         whileTap="tap"
@@ -70,7 +67,6 @@ export default function Buttons() {
       >
         <Iconify icon="mingcute:add-line" width={24} />
       </IconButton>
-
       <IconButton
         component={m.button}
         whileTap="tap"

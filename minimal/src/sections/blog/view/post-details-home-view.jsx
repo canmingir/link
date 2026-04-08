@@ -109,13 +109,17 @@ export default function PostDetailsHomeView({ title }) {
               borderBottom: (theme) => `dashed 1px ${theme.palette.divider}`,
             }}
           >
-            <Stack direction="row" flexWrap="wrap" spacing={1}>
+            <Stack direction="row" spacing={1} sx={{
+              flexWrap: "wrap"
+            }}>
               {post.tags.map((tag) => (
                 <Chip key={tag} label={tag} variant="soft" />
               ))}
             </Stack>
 
-            <Stack direction="row" alignItems="center">
+            <Stack direction="row" sx={{
+              alignItems: "center"
+            }}>
               <FormControlLabel
                 control={
                   <Checkbox

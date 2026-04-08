@@ -75,13 +75,12 @@ export default function FileManagerFolderItem({
   const renderAction = (
     <Stack
       direction="row"
-      alignItems="center"
       sx={{
+        alignItems: "center",
         top: 8,
         right: 8,
-        position: 'absolute',
-      }}
-    >
+        position: 'absolute'
+      }}>
       <Checkbox
         color="warning"
         icon={<Iconify icon="eva:star-outline" />}
@@ -130,19 +129,21 @@ export default function FileManagerFolderItem({
           {folder.totalFiles} files
         </>
       }
-      primaryTypographyProps={{
-        noWrap: true,
-        typography: 'subtitle1',
-      }}
-      secondaryTypographyProps={{
-        mt: 0.5,
-        component: 'span',
-        alignItems: 'center',
-        typography: 'caption',
-        color: 'text.disabled',
-        display: 'inline-flex',
-      }}
-    />
+      slotProps={{
+        primary: {
+          noWrap: true,
+          typography: 'subtitle1',
+        },
+
+        secondary: {
+          mt: 0.5,
+          component: 'span',
+          alignItems: 'center',
+          typography: 'caption',
+          color: 'text.disabled',
+          display: 'inline-flex',
+        }
+      }} />
   );
 
   const renderAvatar = (
@@ -170,22 +171,23 @@ export default function FileManagerFolderItem({
         component={Paper}
         variant="outlined"
         spacing={1}
-        alignItems="flex-start"
-        sx={{
+        {...other}
+        sx={[{
+          alignItems: "flex-start",
           p: 2.5,
           maxWidth: 222,
           borderRadius: 2,
           bgcolor: 'unset',
           cursor: 'pointer',
           position: 'relative',
+
           ...((checkbox.value || selected) && {
             bgcolor: 'background.paper',
             boxShadow: (theme) => theme.customShadows.z20,
           }),
-          ...sx,
-        }}
-        {...other}
-      >
+
+          ...sx
+        }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
         <Box onMouseEnter={checkbox.onTrue} onMouseLeave={checkbox.onFalse}>
           {renderIcon}
         </Box>
@@ -196,7 +198,6 @@ export default function FileManagerFolderItem({
 
         {!!folder?.shared?.length && renderAvatar}
       </Stack>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -246,7 +247,6 @@ export default function FileManagerFolderItem({
           Delete
         </MenuItem>
       </CustomPopover>
-
       <FileManagerFileDetails
         item={folder}
         favorited={favorite.value}
@@ -259,7 +259,6 @@ export default function FileManagerFolderItem({
           onDelete();
         }}
       />
-
       <FileManagerShareDialog
         open={share.value}
         shared={folder.shared}
@@ -271,7 +270,6 @@ export default function FileManagerFolderItem({
           setInviteEmail('');
         }}
       />
-
       <FileManagerNewFolderDialog
         open={editFolder.value}
         onClose={editFolder.onFalse}
@@ -284,7 +282,6 @@ export default function FileManagerFolderItem({
         folderName={folderName}
         onChangeFolderName={handleChangeFolderName}
       />
-
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}

@@ -140,14 +140,16 @@ export default function AccountGeneral() {
         <Grid xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                sm: 'repeat(2, 1fr)',
-              }}
-            >
+              sx={{
+                rowGap: 3,
+                columnGap: 2,
+                display: "grid",
+
+                gridTemplateColumns: {
+                  xs: 'repeat(1, 1fr)',
+                  sm: 'repeat(2, 1fr)',
+                }
+              }}>
               <RHFTextField name="displayName" label="Name" />
               <RHFTextField name="email" label="Email Address" />
               <RHFTextField name="phoneNumber" label="Phone Number" />
@@ -186,7 +188,12 @@ export default function AccountGeneral() {
               <RHFTextField name="zipCode" label="Zip/Code" />
             </Box>
 
-            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+            <Stack
+              spacing={3}
+              sx={{
+                alignItems: "flex-end",
+                mt: 3
+              }}>
               <RHFTextField name="about" multiline rows={4} label="About" />
 
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>

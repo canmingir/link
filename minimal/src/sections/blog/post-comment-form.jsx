@@ -55,8 +55,15 @@ export default function PostCommentForm() {
           rows={4}
         />
 
-        <Stack direction="row" alignItems="center">
-          <Stack direction="row" alignItems="center" flexGrow={1}>
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              flexGrow: 1
+            }}>
             <IconButton>
               <Iconify icon="solar:gallery-add-bold" />
             </IconButton>

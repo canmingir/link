@@ -74,26 +74,30 @@ export default function InvoiceTableRow({
           <ListItemText
             primary={format(new Date(createDate), 'dd MMM yyyy')}
             secondary={format(new Date(createDate), 'p')}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
+            slotProps={{
+              primary: { typography: 'body2', noWrap: true },
+
+              secondary: {
+                mt: 0.5,
+                component: 'span',
+                typography: 'caption',
+              }
+            }} />
         </TableCell>
 
         <TableCell>
           <ListItemText
             primary={format(new Date(dueDate), 'dd MMM yyyy')}
             secondary={format(new Date(dueDate), 'p')}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
+            slotProps={{
+              primary: { typography: 'body2', noWrap: true },
+
+              secondary: {
+                mt: 0.5,
+                component: 'span',
+                typography: 'caption',
+              }
+            }} />
         </TableCell>
 
         <TableCell>{fCurrency(totalAmount)}</TableCell>
@@ -120,7 +124,6 @@ export default function InvoiceTableRow({
           </IconButton>
         </TableCell>
       </TableRow>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -160,7 +163,6 @@ export default function InvoiceTableRow({
           Delete
         </MenuItem>
       </CustomPopover>
-
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}

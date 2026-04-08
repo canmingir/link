@@ -101,7 +101,12 @@ export default function AccountBillingPlan({ cardList, addressBook, plans }) {
           {plan.subscription}
         </Box>
 
-        <Stack direction="row" alignItems="center" sx={{ typography: 'h4' }}>
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: "center",
+            typography: 'h4'
+          }}>
           {plan.price || 'Free'}
 
           {!!plan.price && (
@@ -184,12 +189,17 @@ export default function AccountBillingPlan({ cardList, addressBook, plans }) {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <Stack spacing={1.5} direction="row" justifyContent="flex-end" sx={{ p: 3 }}>
+        <Stack
+          spacing={1.5}
+          direction="row"
+          sx={{
+            justifyContent: "flex-end",
+            p: 3
+          }}>
           <Button variant="outlined">Cancel Plan</Button>
           <Button variant="contained">Upgrade Plan</Button>
         </Stack>
       </Card>
-
       <PaymentCardListDialog
         list={cardList}
         open={openCards.value}
@@ -197,7 +207,6 @@ export default function AccountBillingPlan({ cardList, addressBook, plans }) {
         selected={(selectedId) => selectedCard?.id === selectedId}
         onSelect={handleSelectCard}
       />
-
       <AddressListDialog
         list={addressBook}
         open={openAddress.value}

@@ -38,7 +38,6 @@ export default function MailCompose({ onCloseCompose }) {
   return (
     <Portal>
       {(fullScreen.value || !smUp) && <Backdrop open sx={{ zIndex: ZINDEX }} />}
-
       <Paper
         sx={{
           right: 0,
@@ -62,12 +61,11 @@ export default function MailCompose({ onCloseCompose }) {
       >
         <Stack
           direction="row"
-          alignItems="center"
           sx={{
+            alignItems: "center",
             bgcolor: 'background.neutral',
-            p: (theme) => theme.spacing(1.5, 1, 1.5, 2),
-          }}
-        >
+            p: (theme) => theme.spacing(1.5, 1, 1.5, 2)
+          }}>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             New Message
           </Typography>
@@ -119,7 +117,12 @@ export default function MailCompose({ onCloseCompose }) {
           }}
         />
 
-        <Stack spacing={2} flexGrow={1} sx={{ p: 2 }}>
+        <Stack
+          spacing={2}
+          sx={{
+            flexGrow: 1,
+            p: 2
+          }}>
           <Editor
             simple
             id="compose-mail"
@@ -140,8 +143,15 @@ export default function MailCompose({ onCloseCompose }) {
             }}
           />
 
-          <Stack direction="row" alignItems="center">
-            <Stack direction="row" alignItems="center" flexGrow={1}>
+          <Stack direction="row" sx={{
+            alignItems: "center"
+          }}>
+            <Stack
+              direction="row"
+              sx={{
+                alignItems: "center",
+                flexGrow: 1
+              }}>
               <IconButton>
                 <Iconify icon="solar:gallery-add-bold" />
               </IconButton>

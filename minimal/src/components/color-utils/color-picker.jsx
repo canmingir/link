@@ -34,17 +34,18 @@ const ColorPicker = forwardRef(
       <Stack
         ref={ref}
         direction="row"
-        display="inline-flex"
-        sx={{
+        {...other}
+        sx={[{
+          display: "inline-flex",
           flexWrap: 'wrap',
+
           ...(limit !== 'auto' && {
             width: limit * 36,
             justifyContent: 'flex-end',
           }),
-          ...sx,
-        }}
-        {...other}
-      >
+
+          ...sx
+        }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
         {colors.map((color) => {
           const hasSelected = singleSelect ? selected === color : selected.includes(color);
 
@@ -61,14 +62,15 @@ const ColorPicker = forwardRef(
               }}
             >
               <Stack
-                alignItems="center"
-                justifyContent="center"
                 sx={{
+                  alignItems: "center",
+                  justifyContent: "center",
                   width: 20,
                   height: 20,
                   bgcolor: color,
                   borderRadius: '50%',
                   border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.16)}`,
+
                   ...(hasSelected && {
                     transform: 'scale(1.3)',
                     boxShadow: `4px 4px 8px 0 ${alpha(color, 0.48)}`,
@@ -77,9 +79,8 @@ const ColorPicker = forwardRef(
                       theme.transitions.create('all', {
                         duration: theme.transitions.duration.shortest,
                       }),
-                  }),
-                }}
-              >
+                  })
+                }}>
                 <Iconify
                   width={hasSelected ? 12 : 0}
                   icon="eva:checkmark-fill"

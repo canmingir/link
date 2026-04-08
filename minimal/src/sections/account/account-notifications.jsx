@@ -84,9 +84,10 @@ export default function AccountNotifications() {
               <ListItemText
                 primary={notification.subheader}
                 secondary={notification.caption}
-                primaryTypographyProps={{ typography: 'h6', mb: 0.5 }}
-                secondaryTypographyProps={{ component: 'span' }}
-              />
+                slotProps={{
+                  primary: { typography: 'h6', mb: 0.5 },
+                  secondary: { component: 'span' }
+                }} />
             </Grid>
 
             <Grid xs={12} md={8}>

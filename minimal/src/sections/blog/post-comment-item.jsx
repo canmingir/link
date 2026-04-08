@@ -31,14 +31,12 @@ export default function PostCommentItem({ name, avatarUrl, message, tagUser, pos
       }}
     >
       <Avatar alt={name} src={avatarUrl} sx={{ mr: 2, width: 48, height: 48 }} />
-
       <Stack
-        flexGrow={1}
         sx={{
+          flexGrow: 1,
           pb: 3,
-          borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
-        }}
-      >
+          borderBottom: (theme) => `solid 1px ${theme.palette.divider}`
+        }}>
         <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
           {name}
         </Typography>
@@ -62,7 +60,6 @@ export default function PostCommentItem({ name, avatarUrl, message, tagUser, pos
           </Box>
         )}
       </Stack>
-
       {!hasReply && (
         <Button
           size="small"

@@ -20,7 +20,9 @@ const ConfigErrorDialog = () => {
   return (
     <Dialog fullWidth open>
       <DialogTitle>
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
           <Box
             component="span"
             sx={{ display: "flex", alignItems: "center", mr: 1 }}

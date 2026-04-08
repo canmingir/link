@@ -28,12 +28,13 @@ export default function FullScreenDialog() {
       <Button variant="outlined" color="error" onClick={dialog.onTrue}>
         Full Screen Dialogs
       </Button>
-
       <Dialog
         fullScreen
         open={dialog.value}
         onClose={dialog.onFalse}
-        TransitionComponent={Transition}
+        slots={{
+          transition: Transition
+        }}
       >
         <AppBar position="relative" color="default">
           <Toolbar>

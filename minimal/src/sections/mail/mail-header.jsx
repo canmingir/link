@@ -11,8 +11,17 @@ import Iconify from 'src/components/iconify';
 
 export default function MailHeader({ onOpenNav, onOpenMail, ...other }) {
   return (
-    <Stack spacing={2} direction="row" alignItems="center" sx={{ py: 1 }} {...other}>
-      <Stack direction="row" alignItems="center">
+    <Stack
+      spacing={2}
+      direction="row"
+      {...other}
+      sx={[{
+        alignItems: "center",
+        py: 1
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
+      <Stack direction="row" sx={{
+        alignItems: "center"
+      }}>
         <IconButton onClick={onOpenNav}>
           <Iconify icon="fluent:mail-24-filled" />
         </IconButton>
@@ -23,17 +32,18 @@ export default function MailHeader({ onOpenNav, onOpenMail, ...other }) {
           </IconButton>
         )}
       </Stack>
-
       <TextField
         fullWidth
         size="small"
         placeholder="Search..."
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+              </InputAdornment>
+            ),
+          }
         }}
       />
     </Stack>

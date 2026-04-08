@@ -64,7 +64,6 @@ export default function FileManagerNewFolderDialog({
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose} {...other}>
       <DialogTitle sx={{ p: (theme) => theme.spacing(3, 3, 2, 3) }}> {title} </DialogTitle>
-
       <DialogContent dividers sx={{ pt: 1, pb: 0, border: 'none' }}>
         {(onCreate || onUpdate) && (
           <TextField
@@ -78,7 +77,6 @@ export default function FileManagerNewFolderDialog({
 
         <Upload multiple files={files} onDrop={handleDrop} onRemove={handleRemoveFile} />
       </DialogContent>
-
       <DialogActions>
         <Button
           variant="contained"
@@ -95,7 +93,12 @@ export default function FileManagerNewFolderDialog({
         )}
 
         {(onCreate || onUpdate) && (
-          <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
+          <Stack
+            direction="row"
+            sx={{
+              justifyContent: "flex-end",
+              flexGrow: 1
+            }}>
             <Button variant="soft" onClick={onCreate || onUpdate}>
               {onUpdate ? 'Save' : 'Create'}
             </Button>

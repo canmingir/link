@@ -13,20 +13,19 @@ const IncrementerButton = forwardRef(
   ({ quantity, onIncrease, onDecrease, disabledIncrease, disabledDecrease, sx, ...other }, ref) => (
     <Stack
       ref={ref}
-      flexShrink={0}
       direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-      sx={{
+      {...other}
+      sx={[{
+        flexShrink: 0,
+        alignItems: "center",
+        justifyContent: "space-between",
         p: 0.5,
         width: 88,
         borderRadius: 1,
         typography: 'subtitle2',
         border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.2)}`,
-        ...sx,
-      }}
-      {...other}
-    >
+        ...sx
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       <IconButton
         size="small"
         onClick={onDecrease}

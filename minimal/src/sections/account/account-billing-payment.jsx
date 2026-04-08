@@ -35,21 +35,23 @@ export default function AccountBillingPayment({ cards }) {
         />
 
         <Box
-          rowGap={2.5}
-          columnGap={2}
-          display="grid"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            md: 'repeat(2, 1fr)',
-          }}
-          sx={{ p: 3 }}
-        >
+          sx={{
+            rowGap: 2.5,
+            columnGap: 2,
+            display: "grid",
+
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+            },
+
+            p: 3
+          }}>
           {cards.map((card) => (
             <PaymentCardItem key={card.id} card={card} />
           ))}
         </Box>
       </Card>
-
       <PaymentNewCardDialog open={newCard.value} onClose={newCard.onFalse} />
     </>
   );

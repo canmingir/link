@@ -7,11 +7,12 @@ import { presetOptions } from "../../../theme/options/presets";
 export default function PresetsOptions({ value, onChange }) {
   return (
     <Box
-      columnGap={2}
-      rowGap={1.5}
-      display="grid"
-      gridTemplateColumns="repeat(3, 1fr)"
-    >
+      sx={{
+        columnGap: 2,
+        rowGap: 1.5,
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)"
+      }}>
       {presetOptions.map((option) => {
         const selected = value === option.name;
 

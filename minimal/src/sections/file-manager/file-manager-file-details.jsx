@@ -64,10 +64,11 @@ export default function FileManagerFileDetails({
     <Stack spacing={1.5}>
       <Stack
         direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ typography: 'subtitle2' }}
-      >
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          typography: 'subtitle2'
+        }}>
         Tags
         <IconButton size="small" onClick={toggleTags.onToggle}>
           <Iconify
@@ -113,10 +114,11 @@ export default function FileManagerFileDetails({
     <Stack spacing={1.5}>
       <Stack
         direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ typography: 'subtitle2' }}
-      >
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          typography: 'subtitle2'
+        }}>
         Properties
         <IconButton size="small" onClick={properties.onToggle}>
           <Iconify
@@ -154,7 +156,13 @@ export default function FileManagerFileDetails({
 
   const renderShared = (
     <>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ p: 2.5 }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          p: 2.5
+        }}>
         <Typography variant="subtitle2"> File Share With </Typography>
 
         <IconButton
@@ -193,14 +201,20 @@ export default function FileManagerFileDetails({
         anchor="right"
         slotProps={{
           backdrop: { invisible: true },
+
+          paper: {
+            sx: { width: 320 },
+          }
         }}
-        PaperProps={{
-          sx: { width: 320 },
-        }}
-        {...other}
-      >
+        {...other}>
         <Scrollbar sx={{ height: 1 }}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ p: 2.5 }}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              justifyContent: "space-between",
+              p: 2.5
+            }}>
             <Typography variant="h6"> Info </Typography>
 
             <Checkbox
@@ -214,12 +228,11 @@ export default function FileManagerFileDetails({
 
           <Stack
             spacing={2.5}
-            justifyContent="center"
             sx={{
+              justifyContent: "center",
               p: 2.5,
-              bgcolor: 'background.neutral',
-            }}
-          >
+              bgcolor: 'background.neutral'
+            }}>
             <FileThumbnail
               imageView
               file={type === 'folder' ? type : url}
@@ -254,7 +267,6 @@ export default function FileManagerFileDetails({
           </Button>
         </Box>
       </Drawer>
-
       <FileManagerShareDialog
         open={share.value}
         shared={shared}

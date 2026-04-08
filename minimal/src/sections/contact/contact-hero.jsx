@@ -65,7 +65,13 @@ export default function ContactHero() {
           <TextAnimate text="Where" sx={{ color: 'primary.main' }} variants={varFade().inRight} />
           <br />
 
-          <Stack spacing={2} display="inline-flex" direction="row" sx={{ color: 'common.white' }}>
+          <Stack
+            spacing={2}
+            direction="row"
+            sx={{
+              display: "inline-flex",
+              color: 'common.white'
+            }}>
             <TextAnimate text="to" />
             <TextAnimate text="find" />
             <TextAnimate text="us?" />
@@ -73,10 +79,12 @@ export default function ContactHero() {
 
           <Stack
             spacing={5}
-            alignItems={{ xs: 'center', md: 'unset' }}
             direction={{ xs: 'column', md: 'row' }}
-            sx={{ mt: 5, color: 'common.white' }}
-          >
+            sx={{
+              alignItems: { xs: 'center', md: 'unset' },
+              mt: 5,
+              color: 'common.white'
+            }}>
             {CONTACTS.map((contact) => (
               <Stack key={contact.country} sx={{ maxWidth: 180 }}>
                 <m.div variants={varFade().in}>

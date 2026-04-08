@@ -111,10 +111,11 @@ export default function TourListView() {
   const renderFilters = (
     <Stack
       spacing={3}
-      justifyContent="space-between"
-      alignItems={{ xs: 'flex-end', sm: 'center' }}
       direction={{ xs: 'column', sm: 'row' }}
-    >
+      sx={{
+        justifyContent: "space-between",
+        alignItems: { xs: 'flex-end', sm: 'center' }
+      }}>
       <TourSearch
         query={search.query}
         results={search.results}
@@ -122,7 +123,9 @@ export default function TourListView() {
         hrefItem={(id) => paths.dashboard.tour.details(id)}
       />
 
-      <Stack direction="row" spacing={1} flexShrink={0}>
+      <Stack direction="row" spacing={1} sx={{
+        flexShrink: 0
+      }}>
         <TourFilters
           open={openFilters.value}
           onOpen={openFilters.onTrue}

@@ -61,16 +61,21 @@ export default function UserCard({ user }) {
           overlay={alpha(theme.palette.grey[900], 0.48)}
         />
       </Box>
-
       <ListItemText
         sx={{ mt: 7, mb: 1 }}
         primary={name}
         secondary={role}
-        primaryTypographyProps={{ typography: 'subtitle1' }}
-        secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
-      />
-
-      <Stack direction="row" alignItems="center" justifyContent="center" sx={{ mb: 2.5 }}>
+        slotProps={{
+          primary: { typography: 'subtitle1' },
+          secondary: { component: 'span', mt: 0.5 }
+        }} />
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          justifyContent: "center",
+          mb: 2.5
+        }}>
         {_socials.map((social) => (
           <IconButton
             key={social.name}
@@ -85,14 +90,14 @@ export default function UserCard({ user }) {
           </IconButton>
         ))}
       </Stack>
-
       <Divider sx={{ borderStyle: 'dashed' }} />
-
       <Box
-        display="grid"
-        gridTemplateColumns="repeat(3, 1fr)"
-        sx={{ py: 3, typography: 'subtitle1' }}
-      >
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          py: 3,
+          typography: 'subtitle1'
+        }}>
         <div>
           <Typography variant="caption" component="div" sx={{ mb: 0.5, color: 'text.secondary' }}>
             Follower

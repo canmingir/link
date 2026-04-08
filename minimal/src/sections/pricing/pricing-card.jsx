@@ -25,7 +25,12 @@ export default function PricingCard({ card, sx, ...other }) {
   const premium = subscription === 'premium';
 
   const renderIcon = (
-    <Stack direction="row" alignItems="center" justifyContent="space-between">
+    <Stack
+      direction="row"
+      sx={{
+        alignItems: "center",
+        justifyContent: "space-between"
+      }}>
       <Box sx={{ width: 48, height: 48 }}>
         {basic && <PlanFreeIcon />}
         {starter && <PlanStarterIcon />}
@@ -69,7 +74,12 @@ export default function PricingCard({ card, sx, ...other }) {
 
   const renderList = (
     <Stack spacing={2}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}>
         <Box component="span" sx={{ typography: 'overline' }}>
           Features
         </Box>
@@ -83,11 +93,10 @@ export default function PricingCard({ card, sx, ...other }) {
           key={item}
           spacing={1}
           direction="row"
-          alignItems="center"
           sx={{
-            typography: 'body2',
-          }}
-        >
+            alignItems: "center",
+            typography: 'body2'
+          }}>
           <Iconify icon="eva:checkmark-fill" width={16} sx={{ mr: 1 }} />
           {item}
         </Stack>

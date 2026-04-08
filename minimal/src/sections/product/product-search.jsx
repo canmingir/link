@@ -64,19 +64,21 @@ export default function ProductSearch({ query, results, onSearch, hrefItem, load
           {...params}
           placeholder="Search..."
           onKeyUp={handleKeyUp}
-          InputProps={{
-            ...params.InputProps,
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon="eva:search-fill" sx={{ ml: 1, color: 'text.disabled' }} />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <>
-                {loading ? <Iconify icon="svg-spinners:8-dots-rotate" sx={{ mr: -3 }} /> : null}
-                {params.InputProps.endAdornment}
-              </>
-            ),
+          slotProps={{
+            input: {
+              ...params.InputProps,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="eva:search-fill" sx={{ ml: 1, color: 'text.disabled' }} />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <>
+                  {loading ? <Iconify icon="svg-spinners:8-dots-rotate" sx={{ mr: -3 }} /> : null}
+                  {params.InputProps.endAdornment}
+                </>
+              ),
+            }
           }}
         />
       )}

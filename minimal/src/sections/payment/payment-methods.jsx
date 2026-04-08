@@ -98,7 +98,9 @@ function OptionItem({ option, selected, isCredit, onOpen, ...other }) {
     >
       <ListItemText
         primary={
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" sx={{
+            alignItems: "center"
+          }}>
             <Iconify
               icon={selected ? 'eva:checkmark-circle-2-fill' : 'eva:radio-button-off-fill'}
               width={24}
@@ -112,7 +114,9 @@ function OptionItem({ option, selected, isCredit, onOpen, ...other }) {
               {label}
             </Box>
 
-            <Stack spacing={1} direction="row" alignItems="center">
+            <Stack spacing={1} direction="row" sx={{
+              alignItems: "center"
+            }}>
               {value === 'credit' && (
                 <>
                   <Iconify icon="logos:mastercard" width={24} />,
@@ -124,18 +128,20 @@ function OptionItem({ option, selected, isCredit, onOpen, ...other }) {
             </Stack>
           </Stack>
         }
-        primaryTypographyProps={{ typography: 'subtitle2' }}
+        slotProps={{
+          primary: { typography: 'subtitle2' }
+        }}
       />
-
       {isCredit && (
         <Stack
           spacing={2.5}
-          alignItems="flex-end"
           sx={{
-            pt: 2.5,
-          }}
-        >
-          <TextField select fullWidth label="Cards" SelectProps={{ native: true }}>
+            alignItems: "flex-end",
+            pt: 2.5
+          }}>
+          <TextField select fullWidth label="Cards" slotProps={{
+            select: { native: true }
+          }}>
             {CARD_OPTIONS.map((card) => (
               <option key={card.value} value={card.value}>
                 {card.label}

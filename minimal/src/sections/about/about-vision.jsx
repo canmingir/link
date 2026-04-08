@@ -27,18 +27,17 @@ export default function AboutVision() {
   const renderLogo = (
     <Stack
       direction="row"
-      flexWrap="wrap"
-      alignItems="center"
-      justifyContent="center"
       sx={{
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "center",
         width: 1,
         zIndex: 9,
         bottom: 0,
         opacity: 0.48,
         position: 'absolute',
-        py: { xs: 1.5, md: 2.5 },
-      }}
-    >
+        py: { xs: 1.5, md: 2.5 }
+      }}>
       {['ibm', 'lya', 'spotify', 'netflix', 'hbo', 'amazon'].map((logo) => (
         <Box
           component={m.img}

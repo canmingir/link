@@ -39,6 +39,7 @@ export default function AboutWhat() {
   )}`;
 
   return (
+    // </Box>
     <Container
       component={MotionViewport}
       sx={{
@@ -96,7 +97,12 @@ export default function AboutWhat() {
           <Stack spacing={3} sx={{ my: 5 }}>
             {SKILLS.map((progress, index) => (
               <Box component={m.div} key={progress.label} variants={varFade().inRight}>
-                <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
+                <Stack
+                  direction="row"
+                  sx={{
+                    alignItems: "center",
+                    mb: 1
+                  }}>
                   <Typography variant="subtitle2" sx={{ flexGrow: 1, textAlign: 'left' }}>
                     {progress.label}
                   </Typography>
@@ -128,6 +134,5 @@ export default function AboutWhat() {
         </Grid>
       </Grid>
     </Container>
-    // </Box>
   );
 }

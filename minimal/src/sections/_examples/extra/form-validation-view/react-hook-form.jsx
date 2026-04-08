@@ -145,16 +145,17 @@ export default function ReactHookForm({ debug }) {
           <CircularProgress color="primary" />
         </Backdrop>
       )}
-
       <FormProvider methods={methods} onSubmit={onSubmit}>
         <Box
-          gap={5}
-          display="grid"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-          }}
-        >
+          sx={{
+            gap: 5,
+            display: "grid",
+
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+            }
+          }}>
           <Stack spacing={2}>
             <Block>
               <RHFTextField name="fullName" label="Full Name" />

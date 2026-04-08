@@ -37,15 +37,13 @@ export default function PostList({ posts, loading, disabledIndex }) {
       <Grid container spacing={3}>
         {loading ? renderSkeleton : renderList}
       </Grid>
-
       {posts.length > 8 && (
         <Stack
-          alignItems="center"
           sx={{
+            alignItems: "center",
             mt: 8,
-            mb: { xs: 10, md: 15 },
-          }}
-        >
+            mb: { xs: 10, md: 15 }
+          }}>
           <Button
             size="large"
             variant="outlined"

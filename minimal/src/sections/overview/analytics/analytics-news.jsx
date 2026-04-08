@@ -54,35 +54,34 @@ function NewsItem({ news }) {
     <Stack
       spacing={2}
       direction="row"
-      alignItems="center"
       sx={{
+        alignItems: "center",
         py: 2,
         px: 3,
         minWidth: 640,
-        borderBottom: (theme) => `dashed 1px ${theme.palette.divider}`,
-      }}
-    >
+        borderBottom: (theme) => `dashed 1px ${theme.palette.divider}`
+      }}>
       <Avatar
         variant="rounded"
         alt={title}
         src={coverUrl}
         sx={{ width: 48, height: 48, flexShrink: 0 }}
       />
-
       <ListItemText
         primary={title}
         secondary={description}
-        primaryTypographyProps={{
-          noWrap: true,
-          typography: 'subtitle2',
-        }}
-        secondaryTypographyProps={{
-          mt: 0.5,
-          noWrap: true,
-          component: 'span',
-        }}
-      />
+        slotProps={{
+          primary: {
+            noWrap: true,
+            typography: 'subtitle2',
+          },
 
+          secondary: {
+            mt: 0.5,
+            noWrap: true,
+            component: 'span',
+          }
+        }} />
       <Box sx={{ flexShrink: 0, color: 'text.disabled', typography: 'caption' }}>
         {fToNow(postedAt)}
       </Box>

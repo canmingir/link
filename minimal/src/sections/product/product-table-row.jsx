@@ -88,13 +88,15 @@ export default function ProductTableRow({
           <ListItemText
             primary={format(new Date(createdAt), 'dd MMM yyyy')}
             secondary={format(new Date(createdAt), 'p')}
-            primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
+            slotProps={{
+              primary: { typography: 'body2', noWrap: true },
+
+              secondary: {
+                mt: 0.5,
+                component: 'span',
+                typography: 'caption',
+              }
+            }} />
         </TableCell>
 
         <TableCell sx={{ typography: 'caption', color: 'text.secondary' }}>
@@ -125,7 +127,6 @@ export default function ProductTableRow({
           </IconButton>
         </TableCell>
       </TableRow>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -163,7 +164,6 @@ export default function ProductTableRow({
           Delete
         </MenuItem>
       </CustomPopover>
-
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}

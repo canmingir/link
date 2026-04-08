@@ -62,13 +62,6 @@ export default function DemoLogin() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <PersonOutline sx={{ color: "text.secondary", fontSize: 22 }} />
-              </InputAdornment>
-            ),
-          }}
           sx={{
             "& .MuiOutlinedInput-root": {
               fontSize: "1rem",
@@ -80,6 +73,15 @@ export default function DemoLogin() {
               },
             },
           }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <PersonOutline sx={{ color: "text.secondary", fontSize: 22 }} />
+                </InputAdornment>
+              ),
+            }
+          }}
         />
 
         <TextField
@@ -88,25 +90,6 @@ export default function DemoLogin() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <LockOutlined sx={{ color: "text.secondary", fontSize: 22 }} />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => setShowPassword(!showPassword)}
-                  edge="end"
-                  size="small"
-                  tabIndex={-1}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
           sx={{
             "& .MuiOutlinedInput-root": {
               fontSize: "1rem",
@@ -123,9 +106,29 @@ export default function DemoLogin() {
               handleLogin();
             }
           }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <LockOutlined sx={{ color: "text.secondary", fontSize: 22 }} />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                    size="small"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }
+          }}
         />
       </Stack>
-
       <Button
         variant="contained"
         onClick={handleLogin}
@@ -153,7 +156,6 @@ export default function DemoLogin() {
       >
         Sign in
       </Button>
-
       <Box
         sx={{
           mt: 1,
@@ -167,9 +169,10 @@ export default function DemoLogin() {
       >
         <Typography
           variant="caption"
-          color="text.secondary"
-          sx={{ fontSize: "0.8125rem" }}
-        >
+          sx={{
+            color: "text.secondary",
+            fontSize: "0.8125rem"
+          }}>
           Demo credentials:{" "}
           <Box component="strong" sx={{ color: "text.primary" }}>
             admin / admin

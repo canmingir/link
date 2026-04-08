@@ -88,20 +88,21 @@ export default function LightboxView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Card sx={{ p: 3 }}>
           <Grid container spacing={3}>
             <Grid xs={12} md={9}>
               <Box
-                gap={1}
-                display="grid"
-                gridTemplateColumns={{
-                  xs: 'repeat(2, 1fr)',
-                  sm: 'repeat(3, 1fr)',
-                  md: 'repeat(4, 1fr)',
-                }}
-              >
+                sx={{
+                  gap: 1,
+                  display: "grid",
+
+                  gridTemplateColumns: {
+                    xs: 'repeat(2, 1fr)',
+                    sm: 'repeat(3, 1fr)',
+                    md: 'repeat(4, 1fr)',
+                  }
+                }}>
                 {slides.map((slide) => {
                   const thumbnail = slide.type === 'video' ? slide.poster : slide.src;
 
@@ -220,7 +221,6 @@ export default function LightboxView() {
           </Grid>
         </Card>
       </Container>
-
       <Lightbox
         open={lightbox.open}
         close={lightbox.onClose}

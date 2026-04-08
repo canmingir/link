@@ -51,23 +51,27 @@ export default function JobItem({ job, onView, onEdit, onDelete }) {
               </Link>
             }
             secondary={`Posted date: ${fDate(createdAt)}`}
-            primaryTypographyProps={{
-              typography: 'subtitle1',
-            }}
-            secondaryTypographyProps={{
-              mt: 1,
-              component: 'span',
-              typography: 'caption',
-              color: 'text.disabled',
-            }}
-          />
+            slotProps={{
+              primary: {
+                typography: 'subtitle1',
+              },
+
+              secondary: {
+                mt: 1,
+                component: 'span',
+                typography: 'caption',
+                color: 'text.disabled',
+              }
+            }} />
 
           <Stack
             spacing={0.5}
             direction="row"
-            alignItems="center"
-            sx={{ color: 'primary.main', typography: 'caption' }}
-          >
+            sx={{
+              alignItems: "center",
+              color: 'primary.main',
+              typography: 'caption'
+            }}>
             <Iconify width={16} icon="solar:users-group-rounded-bold" />
             {candidates.length} Candidates
           </Stack>
@@ -75,7 +79,13 @@ export default function JobItem({ job, onView, onEdit, onDelete }) {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <Box rowGap={1.5} display="grid" gridTemplateColumns="repeat(2, 1fr)" sx={{ p: 3 }}>
+        <Box
+          sx={{
+            rowGap: 1.5,
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            p: 3
+          }}>
           {[
             {
               label: experience,
@@ -97,11 +107,13 @@ export default function JobItem({ job, onView, onEdit, onDelete }) {
             <Stack
               key={item.label}
               spacing={0.5}
-              flexShrink={0}
               direction="row"
-              alignItems="center"
-              sx={{ color: 'text.disabled', minWidth: 0 }}
-            >
+              sx={{
+                flexShrink: 0,
+                alignItems: "center",
+                color: 'text.disabled',
+                minWidth: 0
+              }}>
               {item.icon}
               <Typography variant="caption" noWrap>
                 {item.label}
@@ -110,7 +122,6 @@ export default function JobItem({ job, onView, onEdit, onDelete }) {
           ))}
         </Box>
       </Card>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}

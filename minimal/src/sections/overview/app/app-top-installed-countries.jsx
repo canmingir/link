@@ -38,16 +38,28 @@ AppTopInstalledCountries.propTypes = {
 
 function CountryItem({ country }) {
   return (
-    <Stack direction="row" alignItems="center" spacing={2}>
-      <Stack direction="row" alignItems="center" flexGrow={1} sx={{ minWidth: 120 }}>
+    <Stack direction="row" spacing={2} sx={{
+      alignItems: "center"
+    }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          flexGrow: 1,
+          minWidth: 120
+        }}>
         <Iconify icon={country.flag} sx={{ borderRadius: 0.65, width: 28, mr: 1 }} />
 
         <Typography variant="subtitle2" noWrap>
           {country.name}
         </Typography>
       </Stack>
-
-      <Stack direction="row" alignItems="center" sx={{ minWidth: 80 }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          minWidth: 80
+        }}>
         <Iconify
           width={14}
           icon="ant-design:android-filled"
@@ -55,13 +67,21 @@ function CountryItem({ country }) {
         />
         <Typography variant="body2">{fShortenNumber(country.android)}</Typography>
       </Stack>
-
-      <Stack direction="row" alignItems="center" sx={{ minWidth: 80 }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          minWidth: 80
+        }}>
         <Iconify icon="mingcute:windows-fill" width={14} sx={{ mr: 0.5, color: 'text.disabled' }} />
         <Typography variant="body2">{fShortenNumber(country.windows)}</Typography>
       </Stack>
-
-      <Stack direction="row" alignItems="center" sx={{ minWidth: 80 }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          minWidth: 80
+        }}>
         <Iconify icon="mingcute:apple-fill" width={14} sx={{ mr: 0.5, color: 'text.disabled' }} />
         <Typography variant="body2">{fShortenNumber(country.windows)}</Typography>
       </Stack>

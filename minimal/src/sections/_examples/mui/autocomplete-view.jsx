@@ -49,7 +49,6 @@ export default function AutocompleteView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={3}>
           <ComponentBlock title="Combo box">
@@ -76,9 +75,11 @@ export default function AutocompleteView() {
                 <TextField
                   {...params}
                   label="Choose a country"
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: 'new-password',
+                  slotProps={{
+                    htmlInput: {
+                      ...params.inputProps,
+                      autoComplete: 'new-password',
+                    }
                   }}
                 />
               )}
@@ -154,7 +155,9 @@ export default function AutocompleteView() {
                 <TextField
                   {...params}
                   label="Search input"
-                  InputProps={{ ...params.InputProps, type: 'search' }}
+                  slotProps={{
+                    input: { ...params.InputProps, type: 'search' }
+                  }}
                 />
               )}
               renderOption={(props, option) => (

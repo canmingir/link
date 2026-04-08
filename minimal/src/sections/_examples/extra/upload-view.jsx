@@ -98,7 +98,6 @@ export default function UploadView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Stack spacing={5}>
           <Card>
@@ -173,7 +172,9 @@ export default function UploadView() {
 
                 <UploadBox
                   placeholder={
-                    <Stack spacing={0.5} alignItems="center">
+                    <Stack spacing={0.5} sx={{
+                      alignItems: "center"
+                    }}>
                       <Iconify icon="eva:cloud-upload-fill" width={40} />
                       <Typography variant="body2">Upload file</Typography>
                     </Stack>

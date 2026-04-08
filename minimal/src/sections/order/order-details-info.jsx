@@ -33,7 +33,12 @@ export default function OrderDetailsInfo({ customer, delivery, payment, shipping
           sx={{ width: 48, height: 48, mr: 2 }}
         />
 
-        <Stack spacing={0.5} alignItems="flex-start" sx={{ typography: 'body2' }}>
+        <Stack
+          spacing={0.5}
+          sx={{
+            alignItems: "flex-start",
+            typography: 'body2'
+          }}>
           <Typography variant="subtitle2">{customer.name}</Typography>
 
           <Box sx={{ color: 'text.secondary' }}>{customer.email}</Box>
@@ -69,19 +74,25 @@ export default function OrderDetailsInfo({ customer, delivery, payment, shipping
         }
       />
       <Stack spacing={1.5} sx={{ p: 3, typography: 'body2' }}>
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
           <Box component="span" sx={{ color: 'text.secondary', width: 120, flexShrink: 0 }}>
             Ship by
           </Box>
           {delivery.shipBy}
         </Stack>
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
           <Box component="span" sx={{ color: 'text.secondary', width: 120, flexShrink: 0 }}>
             Speedy
           </Box>
           {delivery.speedy}
         </Stack>
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
           <Box component="span" sx={{ color: 'text.secondary', width: 120, flexShrink: 0 }}>
             Tracking No.
           </Box>
@@ -131,7 +142,13 @@ export default function OrderDetailsInfo({ customer, delivery, payment, shipping
           </IconButton>
         }
       />
-      <Stack direction="row" alignItems="center" sx={{ p: 3, typography: 'body2' }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          p: 3,
+          typography: 'body2'
+        }}>
         <Box component="span" sx={{ color: 'text.secondary', flexGrow: 1 }}>
           Phone number
         </Box>

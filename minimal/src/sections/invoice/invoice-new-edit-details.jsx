@@ -103,9 +103,12 @@ export default function InvoiceNewEditDetails() {
   const renderTotal = (
     <Stack
       spacing={2}
-      alignItems="flex-end"
-      sx={{ mt: 3, textAlign: 'right', typography: 'body2' }}
-    >
+      sx={{
+        alignItems: "flex-end",
+        mt: 3,
+        textAlign: 'right',
+        typography: 'body2'
+      }}>
       <Stack direction="row">
         <Box sx={{ color: 'text.secondary' }}>Subtotal</Box>
         <Box sx={{ width: 160, typography: 'subtitle2' }}>{fCurrency(subTotal) || '-'}</Box>
@@ -152,10 +155,11 @@ export default function InvoiceNewEditDetails() {
       <Typography variant="h6" sx={{ color: 'text.disabled', mb: 3 }}>
         Details:
       </Typography>
-
       <Stack divider={<Divider flexItem sx={{ borderStyle: 'dashed' }} />} spacing={3}>
         {fields.map((item, index) => (
-          <Stack key={item.id} alignItems="flex-end" spacing={1.5}>
+          <Stack key={item.id} spacing={1.5} sx={{
+            alignItems: "flex-end"
+          }}>
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ width: 1 }}>
               <RHFTextField
                 size="small"
@@ -265,13 +269,13 @@ export default function InvoiceNewEditDetails() {
           </Stack>
         ))}
       </Stack>
-
       <Divider sx={{ my: 3, borderStyle: 'dashed' }} />
-
       <Stack
         spacing={3}
         direction={{ xs: 'column', md: 'row' }}
-        alignItems={{ xs: 'flex-end', md: 'center' }}
+        sx={{
+          alignItems: { xs: 'flex-end', md: 'center' }
+        }}
       >
         <Button
           size="small"
@@ -285,10 +289,11 @@ export default function InvoiceNewEditDetails() {
 
         <Stack
           spacing={2}
-          justifyContent="flex-end"
           direction={{ xs: 'column', md: 'row' }}
-          sx={{ width: 1 }}
-        >
+          sx={{
+            justifyContent: "flex-end",
+            width: 1
+          }}>
           <RHFTextField
             size="small"
             label="Shipping($)"
@@ -314,7 +319,6 @@ export default function InvoiceNewEditDetails() {
           />
         </Stack>
       </Stack>
-
       {renderTotal}
     </Box>
   );

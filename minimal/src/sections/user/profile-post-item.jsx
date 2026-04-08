@@ -88,11 +88,12 @@ export default function ProfilePostItem({ post }) {
             }}
           >
             <Stack
-              sx={{ mb: 0.5 }}
-              alignItems={{ sm: 'center' }}
-              justifyContent="space-between"
               direction={{ xs: 'column', sm: 'row' }}
-            >
+              sx={{
+                alignItems: { sm: 'center' },
+                justifyContent: "space-between",
+                mb: 0.5
+              }}>
               <Box sx={{ typography: 'subtitle2' }}>{comment.author.name}</Box>
 
               <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
@@ -111,11 +112,10 @@ export default function ProfilePostItem({ post }) {
     <Stack
       spacing={2}
       direction="row"
-      alignItems="center"
       sx={{
-        p: (theme) => theme.spacing(0, 3, 3, 3),
-      }}
-    >
+        alignItems: "center",
+        p: (theme) => theme.spacing(0, 3, 3, 3)
+      }}>
       <Avatar src={user?.photoURL} alt={user?.displayName} />
 
       <InputBase
@@ -150,11 +150,10 @@ export default function ProfilePostItem({ post }) {
   const renderActions = (
     <Stack
       direction="row"
-      alignItems="center"
       sx={{
-        p: (theme) => theme.spacing(2, 3, 3, 3),
-      }}
-    >
+        alignItems: "center",
+        p: (theme) => theme.spacing(2, 3, 3, 3)
+      }}>
       <FormControlLabel
         control={
           <Checkbox

@@ -41,11 +41,12 @@ export default function HeaderSim() {
       >
         <Logo />
 
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{
+          alignItems: "center"
+        }}>
           <SettingsButton />
         </Stack>
       </Toolbar>
-
       {offsetTop && <HeaderShadow />}
     </AppBar>
   );

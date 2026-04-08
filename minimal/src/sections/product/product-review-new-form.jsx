@@ -68,7 +68,13 @@ export default function ProductReviewNewForm({ onClose, ...other }) {
         <DialogTitle> Add Review </DialogTitle>
 
         <DialogContent>
-          <Stack direction="row" flexWrap="wrap" alignItems="center" spacing={1.5}>
+          <Stack
+            direction="row"
+            spacing={1.5}
+            sx={{
+              flexWrap: "wrap",
+              alignItems: "center"
+            }}>
             <Typography variant="body2">Your review about this product:</Typography>
 
             <Controller

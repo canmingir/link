@@ -165,17 +165,18 @@ export default function InvoiceDetails({ invoice }) {
         onChangeStatus={handleChangeStatus}
         statusOptions={INVOICE_STATUS_OPTIONS}
       />
-
       <Card sx={{ pt: 5, px: 5 }}>
         <Box
-          rowGap={5}
-          display="grid"
-          alignItems="center"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-          }}
-        >
+          sx={{
+            rowGap: 5,
+            display: "grid",
+            alignItems: "center",
+
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+            }
+          }}>
           <Box
             component="img"
             alt="logo"
@@ -183,7 +184,9 @@ export default function InvoiceDetails({ invoice }) {
             sx={{ width: 48, height: 48 }}
           />
 
-          <Stack spacing={1} alignItems={{ xs: 'flex-start', md: 'flex-end' }}>
+          <Stack spacing={1} sx={{
+            alignItems: { xs: 'flex-start', md: 'flex-end' }
+          }}>
             <Label
               variant="soft"
               color={
