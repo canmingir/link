@@ -1,5 +1,4 @@
 import config from "../../config/config";
-import { inputSx } from "./styles";
 import { storage } from "@nucleoidjs/webstorage";
 import { useNavigate } from "react-router-dom";
 
@@ -15,6 +14,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { inputSx, primaryButtonSx } from "./styles";
 
 export default function DemoLogin() {
   const [username, setUsername] = useState("");
@@ -102,22 +102,7 @@ export default function DemoLogin() {
         size="large"
         fullWidth
         disableElevation
-        sx={{
-          py: 1.5,
-          fontSize: "0.9375rem",
-          fontWeight: 700,
-          textTransform: "none",
-          borderRadius: 1.5,
-          background: (theme) =>
-            `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
-          letterSpacing: "0.01em",
-          transition: "opacity 0.2s",
-          "&:hover": {
-            opacity: 0.88,
-            background: (theme) =>
-              `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
-          },
-        }}
+        sx={primaryButtonSx}
       >
         Sign in &rarr;
       </Button>
