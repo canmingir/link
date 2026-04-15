@@ -1,4 +1,5 @@
 import config from "../../config/config";
+import { inputSx } from "./styles";
 import { storage } from "@nucleoidjs/webstorage";
 import { useNavigate } from "react-router-dom";
 
@@ -12,13 +13,8 @@ import {
   Typography,
   alpha,
 } from "@mui/material";
-import {
-  LockOutlined,
-  PersonOutline,
-  Visibility,
-  VisibilityOff,
-} from "@mui/icons-material";
 import React, { useState } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function DemoLogin() {
   const [username, setUsername] = useState("");
@@ -56,51 +52,25 @@ export default function DemoLogin() {
 
   return (
     <Stack spacing={2.5} sx={{ mb: 2 }}>
-      <Stack spacing={2}>
+      <Stack spacing={1.5}>
         <TextField
+          variant="filled"
           label="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           fullWidth
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              fontSize: "1rem",
-              "& input": {
-                py: 1.5,
-              },
-              "&:hover fieldset": {
-                borderColor: "primary.main",
-              },
-            },
-          }}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <PersonOutline sx={{ color: "text.secondary", fontSize: 22 }} />
-                </InputAdornment>
-              ),
-            }
-          }}
+          sx={inputSx}
+          slotProps={{ input: { disableUnderline: true } }}
         />
 
         <TextField
+          variant="filled"
           label="Password"
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              fontSize: "1rem",
-              "& input": {
-                py: 1.5,
-              },
-              "&:hover fieldset": {
-                borderColor: "primary.main",
-              },
-            },
-          }}
+          sx={inputSx}
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               handleLogin();
@@ -108,11 +78,7 @@ export default function DemoLogin() {
           }}
           slotProps={{
             input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockOutlined sx={{ color: "text.secondary", fontSize: 22 }} />
-                </InputAdornment>
-              ),
+              disableUnderline: true,
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
@@ -125,56 +91,52 @@ export default function DemoLogin() {
                   </IconButton>
                 </InputAdornment>
               ),
-            }
+            },
           }}
         />
       </Stack>
+
       <Button
         variant="contained"
         onClick={handleLogin}
         size="large"
         fullWidth
+        disableElevation
         sx={{
-          mt: 1,
           py: 1.5,
-          fontSize: "1rem",
-          fontWeight: 600,
+          fontSize: "0.9375rem",
+          fontWeight: 700,
           textTransform: "none",
           borderRadius: 1.5,
-          boxShadow: (theme) =>
-            `0 8px 16px ${alpha(theme.palette.primary.main, 0.24)}`,
-          transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+          background: (theme) =>
+            `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
+          letterSpacing: "0.01em",
+          transition: "opacity 0.2s",
           "&:hover": {
-            transform: "translateY(-2px)",
-            boxShadow: (theme) =>
-              `0 12px 24px ${alpha(theme.palette.primary.main, 0.32)}`,
-          },
-          "&:active": {
-            transform: "translateY(0px)",
+            opacity: 0.88,
+            background: (theme) =>
+              `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
           },
         }}
       >
-        Sign in
+        Sign in &rarr;
       </Button>
-      <Box
-        sx={{
-          mt: 1,
-          textAlign: "center",
-          p: 2,
-          borderRadius: 1.5,
-          bgcolor: (theme) => alpha(theme.palette.info.main, 0.08),
-          border: (theme) =>
-            `1px dashed ${alpha(theme.palette.info.main, 0.24)}`,
-        }}
-      >
-        <Typography
-          variant="caption"
-          sx={{
-            color: "text.secondary",
-            fontSize: "0.8125rem"
-          }}>
-          Demo credentials:{" "}
-          <Box component="strong" sx={{ color: "text.primary" }}>
+
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Typography variant="caption" sx={{ color: "text.disabled" }}>
+          Demo credentials:&nbsp;
+          <Box
+            component="span"
+            sx={{
+              color: "text.secondary",
+              fontWeight: 600,
+              fontFamily: "monospace",
+              px: 0.5,
+              py: 0.25,
+              borderRadius: 0.5,
+              bgcolor: (theme) => alpha(theme.palette.grey[500], 0.1),
+            }}
+          >
             admin / admin
           </Box>
         </Typography>
