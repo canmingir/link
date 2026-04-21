@@ -36,7 +36,14 @@ async function vite() {
       esbuildOptions: {
         jsx: "automatic",
       },
-      include: ["@mui/material", "@nucleoidai/platform", "axios-auth-refresh"],
+      include: [
+        "@mui/material",
+        "@nucleoidai/platform",
+        "axios-auth-refresh",
+        "@emotion/react",
+        "@emotion/styled",
+        "@emotion/css",
+      ],
     },
     resolve: {
       alias: [
@@ -70,11 +77,15 @@ async function vite() {
             }
 
             if (id.includes("node_modules")) {
-              return id
+              const packageName = id
                 .toString()
                 .split("node_modules/")[1]
                 .split("/")[0]
                 .toString();
+
+              if (packageName === "@emotion") return undefined;
+
+              return packageName;
             }
           },
         },
