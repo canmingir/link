@@ -29,42 +29,52 @@ export default function PaymentNewCardDialog({ onClose, ...other }) {
               autoFocus
               label="Card Number"
               placeholder="XXXX XXXX XXXX XXXX"
-              InputLabelProps={{ shrink: true }}
+              slotProps={{
+                inputLabel: { shrink: true }
+              }}
             />
 
             <TextField
               label="Card Holder"
               placeholder="JOHN DOE"
-              InputLabelProps={{ shrink: true }}
+              slotProps={{
+                inputLabel: { shrink: true }
+              }}
             />
 
             <Stack spacing={2} direction="row">
               <TextField
                 label="Expiration Date"
                 placeholder="MM/YY"
-                InputLabelProps={{ shrink: true }}
+                slotProps={{
+                  inputLabel: { shrink: true }
+                }}
               />
               <TextField
                 label="CVV/CVC"
                 placeholder="***"
-                InputLabelProps={{ shrink: true }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton size="small" edge="end" onClick={popover.onOpen}>
-                        <Iconify icon="eva:info-outline" />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton size="small" edge="end" onClick={popover.onOpen}>
+                          <Iconify icon="eva:info-outline" />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
+
+                  inputLabel: { shrink: true }
+                }} />
             </Stack>
 
             <Stack
               direction="row"
-              alignItems="center"
-              sx={{ typography: 'caption', color: 'text.disabled' }}
-            >
+              sx={{
+                alignItems: "center",
+                typography: 'caption',
+                color: 'text.disabled'
+              }}>
               <Iconify icon="carbon:locked" sx={{ mr: 0.5 }} />
               Your transaction is secured with SSL encryption
             </Stack>
@@ -81,7 +91,6 @@ export default function PaymentNewCardDialog({ onClose, ...other }) {
           </Button>
         </DialogActions>
       </Dialog>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}

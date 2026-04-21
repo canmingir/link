@@ -175,10 +175,11 @@ function ProjectBar() {
   const renderButton = (
     <Stack
       direction="row"
-      alignItems="center"
-      justifyContent={"flex-start"}
-      sx={{ width: "100%" }}
-    >
+      sx={{
+        alignItems: "center",
+        justifyContent: "flex-start",
+        width: "100%"
+      }}>
       <IconButton
         data-cy="open-select-bar-button"
         onClick={search.onTrue}
@@ -270,7 +271,6 @@ function ProjectBar() {
   return (
     <>
       {renderButton}
-
       <Dialog
         data-cy="select-bar-dialog"
         fullWidth={true}
@@ -281,16 +281,18 @@ function ProjectBar() {
           enter: theme.transitions.duration.shortest,
           exit: 0,
         }}
-        PaperProps={{
-          sx: {
-            mt: 15,
-            overflow: "unset",
-          },
-        }}
         sx={{
           [`& .${dialogClasses.container}`]: {
             alignItems: "flex-start",
           },
+        }}
+        slotProps={{
+          paper: {
+            sx: {
+              mt: 15,
+              overflow: "unset",
+            },
+          }
         }}
       >
         <Box sx={{ p: 3, borderBottom: `solid 1px gray` }}>

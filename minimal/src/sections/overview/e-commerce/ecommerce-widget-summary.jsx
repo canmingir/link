@@ -59,7 +59,13 @@ export default function EcommerceWidgetSummary({ title, percent, total, chart, s
   });
 
   const renderTrending = (
-    <Stack direction="row" alignItems="center" sx={{ mt: 2, mb: 1 }}>
+    <Stack
+      direction="row"
+      sx={{
+        alignItems: "center",
+        mt: 2,
+        mb: 1
+      }}>
       <Iconify
         icon={percent < 0 ? 'eva:trending-down-fill' : 'eva:trending-up-fill'}
         sx={{

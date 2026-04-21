@@ -34,18 +34,18 @@ export default function CheckoutCartProduct({ row, onDelete, onDecrease, onIncre
 
           <Stack
             direction="row"
-            alignItems="center"
-            sx={{ typography: 'body2', color: 'text.secondary' }}
-          >
+            sx={{
+              alignItems: "center",
+              typography: 'body2',
+              color: 'text.secondary'
+            }}>
             size: <Label sx={{ ml: 0.5 }}> {size} </Label>
             <Divider orientation="vertical" sx={{ mx: 1, height: 16 }} />
             <ColorPreview colors={colors} />
           </Stack>
         </Stack>
       </TableCell>
-
       <TableCell>{fCurrency(price)}</TableCell>
-
       <TableCell>
         <Box sx={{ width: 88, textAlign: 'right' }}>
           <IncrementerButton
@@ -61,9 +61,7 @@ export default function CheckoutCartProduct({ row, onDelete, onDecrease, onIncre
           </Typography>
         </Box>
       </TableCell>
-
       <TableCell align="right">{fCurrency(price * quantity)}</TableCell>
-
       <TableCell align="right" sx={{ px: 1 }}>
         <IconButton onClick={onDelete}>
           <Iconify icon="solar:trash-bin-trash-bold" />

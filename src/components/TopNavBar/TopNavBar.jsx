@@ -119,7 +119,9 @@ function TopNavBar({
                 to={itemUrl}
                 onClick={() => selectItem(item)}
               >
-                <Typography textAlign="center">{item.name}</Typography>
+                <Typography sx={{
+                  textAlign: "center"
+                }}>{item.name}</Typography>
               </MenuItem>
             ))}
           </Menu>
@@ -173,7 +175,9 @@ function TopNavBar({
             </Typography>
             {settings.map((setting) => (
               <MenuItem key={setting.name} onClick={setting.action}>
-                <Typography textAlign="center">{setting.name}</Typography>
+                <Typography sx={{
+                  textAlign: "center"
+                }}>{setting.name}</Typography>
               </MenuItem>
             ))}
           </Menu>

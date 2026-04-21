@@ -22,19 +22,25 @@ export default function KanbanDetailsCommentList({ comments }) {
     <>
       <Stack
         spacing={3}
-        flexGrow={1}
         sx={{
+          flexGrow: 1,
           py: 3,
           px: 2.5,
-          bgcolor: 'background.neutral',
-        }}
-      >
+          bgcolor: 'background.neutral'
+        }}>
         {comments.map((comment) => (
           <Stack key={comment.id} direction="row" spacing={2}>
             <Avatar src={comment.avatarUrl} />
 
-            <Stack spacing={comment.messageType === 'image' ? 1 : 0.5} flexGrow={1}>
-              <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Stack spacing={comment.messageType === 'image' ? 1 : 0.5} sx={{
+              flexGrow: 1
+            }}>
+              <Stack
+                direction="row"
+                sx={{
+                  alignItems: "center",
+                  justifyContent: "space-between"
+                }}>
                 <Typography variant="subtitle2"> {comment.name}</Typography>
                 <Typography variant="caption" sx={{ color: 'text.disabled' }}>
                   {fToNow(comment.createdAt)}
@@ -62,7 +68,6 @@ export default function KanbanDetailsCommentList({ comments }) {
           </Stack>
         ))}
       </Stack>
-
       <Lightbox
         index={lightbox.selected}
         slides={slides}

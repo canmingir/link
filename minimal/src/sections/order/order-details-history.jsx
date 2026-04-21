@@ -92,10 +92,11 @@ export default function OrderDetailsHistory({ history }) {
       <CardHeader title="History" />
       <Stack
         spacing={3}
-        alignItems={{ md: 'flex-start' }}
         direction={{ xs: 'column-reverse', md: 'row' }}
-        sx={{ p: 3 }}
-      >
+        sx={{
+          alignItems: { md: 'flex-start' },
+          p: 3
+        }}>
         {renderTimeline}
 
         {renderSummary}

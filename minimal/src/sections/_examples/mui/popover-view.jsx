@@ -55,17 +55,19 @@ export default function PopoverView() {
           />
         </Container>
       </Box>
-
       <Container sx={{ my: 10 }}>
         <Box
-          gap={3}
-          display="grid"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            md: 'repeat(2, 1fr)',
-          }}
-          sx={{ mb: 3 }}
-        >
+          sx={{
+            gap: 3,
+            display: "grid",
+
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+            },
+
+            mb: 3
+          }}>
           <ComponentBlock title="Click">
             <Button variant="contained" onClick={clickPopover.onOpen}>
               Open Popover

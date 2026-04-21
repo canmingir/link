@@ -71,9 +71,14 @@ export default function FaqsCategory() {
           </Toolbar>
           <Divider />
         </AppBar>
-
         <Drawer open={nav.value} onClose={nav.onFalse}>
-          <Box gap={1} display="grid" gridTemplateColumns="repeat(2, 1fr)" sx={{ p: 1 }}>
+          <Box
+            sx={{
+              gap: 1,
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              p: 1
+            }}>
             {CATEGORIES.map((category) => (
               <CardMobile key={category.label} category={category} />
             ))}
@@ -86,13 +91,15 @@ export default function FaqsCategory() {
   return (
     <Box
       component={MotionViewport}
-      gap={3}
-      display="grid"
-      gridTemplateColumns={{
-        md: 'repeat(3, 1fr)',
-        lg: 'repeat(6, 1fr)',
-      }}
-    >
+      sx={{
+        gap: 3,
+        display: "grid",
+
+        gridTemplateColumns: {
+          md: 'repeat(3, 1fr)',
+          lg: 'repeat(6, 1fr)',
+        }
+      }}>
       {CATEGORIES.map((category) => (
         <m.div key={category.label} variants={varFade().in}>
           <CardDesktop category={category} />

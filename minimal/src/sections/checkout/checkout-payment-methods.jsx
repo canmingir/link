@@ -89,11 +89,15 @@ function OptionItem({ option, cardOptions, selected, isCredit, onOpen, ...other 
     >
       <ListItemText
         primary={
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" sx={{
+            alignItems: "center"
+          }}>
             <Box component="span" sx={{ flexGrow: 1 }}>
               {label}
             </Box>
-            <Stack spacing={1} direction="row" alignItems="center">
+            <Stack spacing={1} direction="row" sx={{
+              alignItems: "center"
+            }}>
               {value === 'credit' && (
                 <>
                   <Iconify icon="logos:mastercard" width={24} />,
@@ -106,19 +110,20 @@ function OptionItem({ option, cardOptions, selected, isCredit, onOpen, ...other 
           </Stack>
         }
         secondary={description}
-        primaryTypographyProps={{ typography: 'subtitle1', mb: 0.5 }}
-        secondaryTypographyProps={{ typography: 'body2' }}
-      />
-
+        slotProps={{
+          primary: { typography: 'subtitle1', mb: 0.5 },
+          secondary: { typography: 'body2' }
+        }} />
       {isCredit && (
         <Stack
           spacing={2.5}
-          alignItems="flex-end"
           sx={{
-            pt: 2.5,
-          }}
-        >
-          <TextField select fullWidth label="Cards" SelectProps={{ native: true }}>
+            alignItems: "flex-end",
+            pt: 2.5
+          }}>
+          <TextField select fullWidth label="Cards" slotProps={{
+            select: { native: true }
+          }}>
             {cardOptions.map((card) => (
               <option key={card.value} value={card.value}>
                 {card.label}

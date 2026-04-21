@@ -40,24 +40,29 @@ export default function CheckoutSummary({
           )
         }
       />
-
       <CardContent>
         <Stack spacing={2}>
-          <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" sx={{
+            justifyContent: "space-between"
+          }}>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Sub Total
             </Typography>
             <Typography variant="subtitle2">{fCurrency(subTotal)}</Typography>
           </Stack>
 
-          <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" sx={{
+            justifyContent: "space-between"
+          }}>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Discount
             </Typography>
             <Typography variant="subtitle2">{discount ? fCurrency(-discount) : '-'}</Typography>
           </Stack>
 
-          <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" sx={{
+            justifyContent: "space-between"
+          }}>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Shipping
             </Typography>
@@ -68,7 +73,9 @@ export default function CheckoutSummary({
 
           <Divider sx={{ borderStyle: 'dashed' }} />
 
-          <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" sx={{
+            justifyContent: "space-between"
+          }}>
             <Typography variant="subtitle1">Total</Typography>
             <Box sx={{ textAlign: 'right' }}>
               <Typography variant="subtitle1" sx={{ color: 'error.main' }}>
@@ -85,14 +92,16 @@ export default function CheckoutSummary({
               fullWidth
               placeholder="Discount codes / Gifts"
               value="DISCOUNT5"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Button color="primary" onClick={() => onApplyDiscount(5)} sx={{ mr: -0.5 }}>
-                      Apply
-                    </Button>
-                  </InputAdornment>
-                ),
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button color="primary" onClick={() => onApplyDiscount(5)} sx={{ mr: -0.5 }}>
+                        Apply
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }
               }}
             />
           )}

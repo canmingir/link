@@ -24,12 +24,15 @@ export default function KanbanDetailsCommentInput() {
       }}
     >
       <Avatar src={user?.photoURL} alt={user?.displayName} />
-
       <Paper variant="outlined" sx={{ p: 1, flexGrow: 1, bgcolor: 'transparent' }}>
         <InputBase fullWidth multiline rows={2} placeholder="Type a message" sx={{ px: 1 }} />
 
-        <Stack direction="row" alignItems="center">
-          <Stack direction="row" flexGrow={1}>
+        <Stack direction="row" sx={{
+          alignItems: "center"
+        }}>
+          <Stack direction="row" sx={{
+            flexGrow: 1
+          }}>
             <IconButton>
               <Iconify icon="solar:gallery-add-bold" />
             </IconButton>

@@ -30,16 +30,16 @@ export default function StretchOptions({ value, onChange }) {
     >
       <Stack
         direction="row"
-        alignItems="center"
-        justifyContent="space-between"
         sx={{
+          alignItems: "center",
+          justifyContent: "space-between",
           width: 0.24,
           transition: (theme) => theme.transitions.create(["width"]),
+
           ...(value && {
             width: 0.5,
-          }),
-        }}
-      >
+          })
+        }}>
         <Iconify
           icon={
             value ? "eva:arrow-ios-back-fill" : "eva:arrow-ios-forward-fill"

@@ -60,25 +60,29 @@ export default function OrderTableRow({ row, selected, onViewRow, onSelectRow, o
         <ListItemText
           primary={customer.name}
           secondary={customer.email}
-          primaryTypographyProps={{ typography: 'body2' }}
-          secondaryTypographyProps={{
-            component: 'span',
-            color: 'text.disabled',
-          }}
-        />
+          slotProps={{
+            primary: { typography: 'body2' },
+
+            secondary: {
+              component: 'span',
+              color: 'text.disabled',
+            }
+          }} />
       </TableCell>
 
       <TableCell>
         <ListItemText
           primary={format(new Date(createdAt), 'dd MMM yyyy')}
           secondary={format(new Date(createdAt), 'p')}
-          primaryTypographyProps={{ typography: 'body2', noWrap: true }}
-          secondaryTypographyProps={{
-            mt: 0.5,
-            component: 'span',
-            typography: 'caption',
-          }}
-        />
+          slotProps={{
+            primary: { typography: 'body2', noWrap: true },
+
+            secondary: {
+              mt: 0.5,
+              component: 'span',
+              typography: 'caption',
+            }
+          }} />
       </TableCell>
 
       <TableCell align="center"> {totalQuantity} </TableCell>
@@ -133,14 +137,14 @@ export default function OrderTableRow({ row, selected, onViewRow, onSelectRow, o
               <Stack
                 key={item.id}
                 direction="row"
-                alignItems="center"
                 sx={{
+                  alignItems: "center",
                   p: (theme) => theme.spacing(1.5, 2, 1.5, 1.5),
+
                   '&:not(:last-of-type)': {
                     borderBottom: (theme) => `solid 2px ${theme.palette.background.neutral}`,
-                  },
-                }}
-              >
+                  }
+                }}>
                 <Avatar
                   src={item.coverUrl}
                   variant="rounded"
@@ -150,15 +154,17 @@ export default function OrderTableRow({ row, selected, onViewRow, onSelectRow, o
                 <ListItemText
                   primary={item.name}
                   secondary={item.sku}
-                  primaryTypographyProps={{
-                    typography: 'body2',
-                  }}
-                  secondaryTypographyProps={{
-                    component: 'span',
-                    color: 'text.disabled',
-                    mt: 0.5,
-                  }}
-                />
+                  slotProps={{
+                    primary: {
+                      typography: 'body2',
+                    },
+
+                    secondary: {
+                      component: 'span',
+                      color: 'text.disabled',
+                      mt: 0.5,
+                    }
+                  }} />
 
                 <Box>x{item.quantity}</Box>
 

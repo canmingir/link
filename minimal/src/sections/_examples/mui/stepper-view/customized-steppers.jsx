@@ -200,21 +200,22 @@ export default function CustomizedSteppers() {
       <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
         {STEPS.map((label) => (
           <Step key={label}>
-            <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
+            <StepLabel slots={{
+              stepIcon: QontoStepIcon
+            }}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-
       <Box sx={{ mb: 5 }} />
-
       <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
         {STEPS.map((label) => (
           <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+            <StepLabel slots={{
+              stepIcon: ColorlibStepIcon
+            }}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-
       {activeStep === STEPS.length ? (
         <>
           <Paper

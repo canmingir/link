@@ -78,7 +78,9 @@ export default function AddressListDialog({
             },
           }}
         >
-          <Stack direction="row" alignItems="center" spacing={1}>
+          <Stack direction="row" spacing={1} sx={{
+            alignItems: "center"
+          }}>
             <Typography variant="subtitle2">{address.name}</Typography>
 
             {address.primary && <Label color="info">Default</Label>}
@@ -106,30 +108,32 @@ export default function AddressListDialog({
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
       <Stack
         direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ p: 3, pr: 1.5 }}
-      >
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          p: 3,
+          pr: 1.5
+        }}>
         <Typography variant="h6"> {title} </Typography>
 
         {action && action}
       </Stack>
-
       <Stack sx={{ p: 2, pt: 0 }}>
         <TextField
           value={searchAddress}
           onChange={handleSearchAddress}
           placeholder="Search..."
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                </InputAdornment>
+              ),
+            }
           }}
         />
       </Stack>
-
       {notFound ? (
         <SearchNotFound query={searchAddress} sx={{ px: 3, pt: 5, pb: 10 }} />
       ) : (

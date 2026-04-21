@@ -115,7 +115,15 @@ const columns = [
     headerAlign: 'center',
     width: 160,
     renderCell: (params) => (
-      <Stack spacing={1} direction="row" alignItems="center" sx={{ px: 1, width: 1, height: 1 }}>
+      <Stack
+        spacing={1}
+        direction="row"
+        sx={{
+          alignItems: "center",
+          px: 1,
+          width: 1,
+          height: 1
+        }}>
         <LinearProgress
           value={params.row.performance}
           variant="determinate"

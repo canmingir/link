@@ -47,13 +47,15 @@ export default function JobSearch({ query, results, onSearch, hrefItem }) {
           {...params}
           placeholder="Search..."
           onKeyUp={handleKeyUp}
-          InputProps={{
-            ...params.InputProps,
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon="eva:search-fill" sx={{ ml: 1, color: 'text.disabled' }} />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              ...params.InputProps,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="eva:search-fill" sx={{ ml: 1, color: 'text.disabled' }} />
+                </InputAdornment>
+              ),
+            }
           }}
         />
       )}

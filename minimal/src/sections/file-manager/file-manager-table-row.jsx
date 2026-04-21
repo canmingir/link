@@ -121,7 +121,9 @@ export default function FileManagerTableRow({ row, selected, onSelectRow, onDele
         </TableCell>
 
         <TableCell onClick={handleClick}>
-          <Stack direction="row" alignItems="center" spacing={2}>
+          <Stack direction="row" spacing={2} sx={{
+            alignItems: "center"
+          }}>
             <FileThumbnail file={type} sx={{ width: 36, height: 36 }} />
 
             <Typography
@@ -150,13 +152,15 @@ export default function FileManagerTableRow({ row, selected, onSelectRow, onDele
           <ListItemText
             primary={format(new Date(modifiedAt), 'dd MMM yyyy')}
             secondary={format(new Date(modifiedAt), 'p')}
-            primaryTypographyProps={{ typography: 'body2' }}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-            }}
-          />
+            slotProps={{
+              primary: { typography: 'body2' },
+
+              secondary: {
+                mt: 0.5,
+                component: 'span',
+                typography: 'caption',
+              }
+            }} />
         </TableCell>
 
         <TableCell align="right" onClick={handleClick}>
@@ -201,7 +205,6 @@ export default function FileManagerTableRow({ row, selected, onSelectRow, onDele
           </IconButton>
         </TableCell>
       </TableRow>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -241,7 +244,6 @@ export default function FileManagerTableRow({ row, selected, onSelectRow, onDele
           Delete
         </MenuItem>
       </CustomPopover>
-
       <FileManagerFileDetails
         item={row}
         favorited={favorite.value}
@@ -251,7 +253,6 @@ export default function FileManagerTableRow({ row, selected, onSelectRow, onDele
         onClose={details.onFalse}
         onDelete={onDeleteRow}
       />
-
       <FileManagerShareDialog
         open={share.value}
         shared={shared}
@@ -263,7 +264,6 @@ export default function FileManagerTableRow({ row, selected, onSelectRow, onDele
           setInviteEmail('');
         }}
       />
-
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}

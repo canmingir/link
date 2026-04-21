@@ -46,16 +46,15 @@ export default function UserTableToolbar({
     <>
       <Stack
         spacing={2}
-        alignItems={{ xs: 'flex-end', md: 'center' }}
         direction={{
           xs: 'column',
           md: 'row',
         }}
         sx={{
+          alignItems: { xs: 'flex-end', md: 'center' },
           p: 2.5,
-          pr: { xs: 2.5, md: 1 },
-        }}
-      >
+          pr: { xs: 2.5, md: 1 }
+        }}>
         <FormControl
           sx={{
             flexShrink: 0,
@@ -85,18 +84,27 @@ export default function UserTableToolbar({
           </Select>
         </FormControl>
 
-        <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            alignItems: "center",
+            flexGrow: 1,
+            width: 1
+          }}>
           <TextField
             fullWidth
             value={filters.name}
             onChange={handleFilterName}
             placeholder="Search..."
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                  </InputAdornment>
+                ),
+              }
             }}
           />
 
@@ -105,7 +113,6 @@ export default function UserTableToolbar({
           </IconButton>
         </Stack>
       </Stack>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}

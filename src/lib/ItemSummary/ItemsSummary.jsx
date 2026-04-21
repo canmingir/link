@@ -19,15 +19,15 @@ export default function ItemsSummary({ newItems }) {
       <DialogContentText sx={{ textAlign: "center", mb: 2 }}>
         Summary
       </DialogContentText>
-      <Grid container mb={4}>
+      <Grid container sx={{
+        mb: 4
+      }}>
         <Grid
-          item
-          xs={5}
           sx={{
             justifyContent: "center",
             display: "flex",
           }}
-        >
+          size={5}>
           <Stack
             sx={{
               height: "100%",
@@ -45,27 +45,34 @@ export default function ItemsSummary({ newItems }) {
             >
               <CardHeader
                 title={"Project Summary"}
-                titleTypographyProps={{
-                  variant: "subtitle1",
-                  textAlign: "center",
-                  color: "text.secondary",
+                slotProps={{
+                  title: {
+                    variant: "subtitle1",
+                    textAlign: "center",
+                    color: "text.secondary",
+                  }
                 }}
               />
               <CardContent
                 children={
                   <>
-                    <Typography variant="h6" textAlign={"center"} mb={2}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        textAlign: "center",
+                        mb: 2
+                      }}>
                       {newItems[0].details.name}
                     </Typography>
                     <Stack
-                      padding={1}
                       sx={{
+                        padding: 1,
+
                         "& .svg-color": {
                           background: (theme) =>
                             `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
-                        },
-                      }}
-                    >
+                        }
+                      }}>
                       <SvgColor
                         src={`https://api.iconify.design/${newItems[0].details.icon?.slice(
                           1,
@@ -87,17 +94,15 @@ export default function ItemsSummary({ newItems }) {
           </Stack>
         </Grid>
         <Grid
-          item
-          xs={2}
           sx={{
             display: "flex",
             alignContent: "center",
             justifyContent: "center",
           }}
-        >
+          size={2}>
           <Divider orientation="vertical" sx={{ borderStyle: "dashed" }} />
         </Grid>
-        <Grid item xs={5}>
+        <Grid size={5}>
           <Stack
             sx={{
               height: "100%",
@@ -108,27 +113,34 @@ export default function ItemsSummary({ newItems }) {
             <Card>
               <CardHeader
                 title={"Service Summary"}
-                titleTypographyProps={{
-                  variant: "subtitle1",
-                  textAlign: "center",
-                  color: "text.secondary",
+                slotProps={{
+                  title: {
+                    variant: "subtitle1",
+                    textAlign: "center",
+                    color: "text.secondary",
+                  }
                 }}
               />
               <CardContent
                 children={
                   <>
-                    <Typography variant="h6" textAlign={"center"} mb={2}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        textAlign: "center",
+                        mb: 2
+                      }}>
                       {newItems[1].details.name}
                     </Typography>
                     <Stack
-                      padding={1}
                       sx={{
+                        padding: 1,
+
                         "& .svg-color": {
                           background: (theme) =>
                             `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
-                        },
-                      }}
-                    >
+                        }
+                      }}>
                       <SvgColor
                         src={`https://api.iconify.design/${newItems[1].details.icon?.slice(
                           1,

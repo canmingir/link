@@ -39,9 +39,10 @@ AppTopAuthors.propTypes = {
 
 function AuthorItem({ author, index }) {
   return (
-    <Stack direction="row" alignItems="center" spacing={2}>
+    <Stack direction="row" spacing={2} sx={{
+      alignItems: "center"
+    }}>
       <Avatar alt={author.name} src={author.avatarUrl} />
-
       <Box sx={{ flexGrow: 1 }}>
         <Typography variant="subtitle2">{author.name}</Typography>
 
@@ -58,7 +59,6 @@ function AuthorItem({ author, index }) {
           {fShortenNumber(author.totalFavorites)}
         </Typography>
       </Box>
-
       <Iconify
         icon="solar:cup-star-bold"
         sx={{

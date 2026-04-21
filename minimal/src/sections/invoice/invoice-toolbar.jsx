@@ -38,10 +38,17 @@ export default function InvoiceToolbar({ invoice, currentStatus, statusOptions, 
       <Stack
         spacing={3}
         direction={{ xs: 'column', sm: 'row' }}
-        alignItems={{ xs: 'flex-end', sm: 'center' }}
-        sx={{ mb: { xs: 3, md: 5 } }}
-      >
-        <Stack direction="row" spacing={1} flexGrow={1} sx={{ width: 1 }}>
+        sx={{
+          alignItems: { xs: 'flex-end', sm: 'center' },
+          mb: { xs: 3, md: 5 }
+        }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            flexGrow: 1,
+            width: 1
+          }}>
           <Tooltip title="Edit">
             <IconButton onClick={handleEdit}>
               <Iconify icon="solar:pen-bold" />
@@ -108,7 +115,6 @@ export default function InvoiceToolbar({ invoice, currentStatus, statusOptions, 
           ))}
         </TextField>
       </Stack>
-
       <Dialog fullScreen open={view.value}>
         <Box sx={{ height: 1, display: 'flex', flexDirection: 'column' }}>
           <DialogActions

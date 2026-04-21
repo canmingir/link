@@ -94,7 +94,9 @@ export default function AccountChangePassword() {
             ),
           }}
           helperText={
-            <Stack component="span" direction="row" alignItems="center">
+            <Stack component="span" direction="row" sx={{
+              alignItems: "center"
+            }}>
               <Iconify icon="eva:info-fill" width={16} sx={{ mr: 0.5 }} /> Password must be minimum
               6+
             </Stack>

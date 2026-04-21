@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import React from "react";
 import { StyledLabel } from "./styles";
 import { forwardRef } from "react";
-import { useTheme } from "@mui/material/styles";
 
 const Label = forwardRef(
   (
@@ -17,8 +16,6 @@ const Label = forwardRef(
     },
     ref
   ) => {
-    const theme = useTheme();
-
     const iconStyles = {
       width: 16,
       height: 16,
@@ -35,7 +32,6 @@ const Label = forwardRef(
           ...(endIcon && { pr: 0.75 }),
           ...sx,
         }}
-        theme={theme}
         {...other}
       >
         {startIcon && <Box sx={{ mr: 0.75, ...iconStyles }}> {startIcon} </Box>}

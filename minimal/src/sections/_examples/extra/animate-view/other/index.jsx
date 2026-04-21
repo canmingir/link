@@ -20,13 +20,15 @@ export default function Other() {
     <Card>
       <CardContent>
         <Box
-          gap={3}
-          display="grid"
-          gridTemplateColumns={{
-            xs: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-          }}
-        >
+          sx={{
+            gap: 3,
+            display: "grid",
+
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+            }
+          }}>
           <ComponentBlock title="Button Click">
             <Buttons />
           </ComponentBlock>

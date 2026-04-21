@@ -61,7 +61,6 @@ export default function BookingAvailable({ title, subheader, chart, ...other }) 
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} sx={{ mb: 8 }} />
-
       <Chart
         dir="ltr"
         type="radialBar"
@@ -70,18 +69,16 @@ export default function BookingAvailable({ title, subheader, chart, ...other }) 
         width="100%"
         height={310}
       />
-
       <Stack spacing={2} sx={{ p: 5 }}>
         {series.map((item) => (
           <Stack
             key={item.label}
             spacing={1}
             direction="row"
-            alignItems="center"
             sx={{
-              typography: 'subtitle2',
-            }}
-          >
+              alignItems: "center",
+              typography: 'subtitle2'
+            }}>
             <Box
               sx={{
                 width: 16,

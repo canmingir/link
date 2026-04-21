@@ -17,13 +17,14 @@ function EmailInboxIcon({ ...other }) {
   return (
     <Box
       component="svg"
-      width="100%"
-      height="100%"
       fill="none"
       viewBox="0 0 96 97"
       xmlns="http://www.w3.org/2000/svg"
       {...other}
-    >
+      sx={[{
+        width: "100%",
+        height: "100%"
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       <g filter="url(#filter0_di_1870_133886)">
         <path
           fill={WARNING_LIGHT}

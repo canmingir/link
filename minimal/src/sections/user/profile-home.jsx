@@ -38,14 +38,18 @@ export default function ProfileHome({ info, posts }) {
         direction="row"
         divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
       >
-        <Stack width={1}>
+        <Stack sx={{
+          width: 1
+        }}>
           {fNumber(info.totalFollowers)}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
             Follower
           </Box>
         </Stack>
 
-        <Stack width={1}>
+        <Stack sx={{
+          width: 1
+        }}>
           {fNumber(info.totalFollowing)}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
             Following
@@ -118,8 +122,19 @@ export default function ProfileHome({ info, posts }) {
         }}
       />
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Stack direction="row" spacing={1} alignItems="center" sx={{ color: 'text.secondary' }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: "center",
+            color: 'text.secondary'
+          }}>
           <Fab size="small" color="inherit" variant="softExtended" onClick={handleAttach}>
             <Iconify icon="solar:gallery-wide-bold" width={24} sx={{ color: 'success.main' }} />
             Image/Video

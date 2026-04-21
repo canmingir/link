@@ -44,15 +44,14 @@ export default function FileThumbnail({ file, tooltip, imageView, onDownload, sx
     return (
       <Tooltip title={name}>
         <Stack
-          flexShrink={0}
           component="span"
-          alignItems="center"
-          justifyContent="center"
           sx={{
+            flexShrink: 0,
+            alignItems: "center",
+            justifyContent: "center",
             width: 'fit-content',
-            height: 'inherit',
-          }}
-        >
+            height: 'inherit'
+          }}>
           {renderContent}
           {onDownload && <DownloadButton onDownload={onDownload} />}
         </Stack>

@@ -2,6 +2,7 @@ import Iconify from "../components/Iconify";
 import config from "../config/config";
 import { useEvent } from "@nucleoidai/react-event";
 import useSettings from "../hooks/useSettings";
+import { useSettingsContext } from "../components/settings/context";
 import { useUser } from "../hooks/use-user";
 
 import {
@@ -20,6 +21,7 @@ import {
   ListItemText,
   NativeSelect,
   Stack,
+  Switch,
   Tab,
   Tabs,
   TextField,
@@ -165,11 +167,13 @@ function SettingsDialog({ handleClose, open }) {
       maxWidth={"md"}
       onClose={() => handleClose()}
       sx={{ bgcolor: "custom.darkDialogBg", zIndex: 2147483647 }}
-      PaperProps={{
-        style: {
-          color: "white",
-          minHeight: 600,
-        },
+      slotProps={{
+        paper: {
+          style: {
+            color: "white",
+            minHeight: 600,
+          },
+        }
       }}
     >
       <DialogContent>
@@ -210,9 +214,13 @@ const Permission = () => {
   }, [event, event2]);
 
   return (
-    <Stack direction="column" spacing={2} p={2}>
+    <Stack direction="column" spacing={2} sx={{
+      p: 2
+    }}>
       <Typography variant="h6">Users</Typography>
-      <Typography variant="subtitle2" color="text.secondary">
+      <Typography variant="subtitle2" sx={{
+        color: "text.secondary"
+      }}>
         Users with access to the project.
       </Typography>
       <List>
@@ -282,6 +290,7 @@ const Permission = () => {
 const Settings = () => {
   const projectId = localStorage.getItem("projectId");
   const { settings, updateSettings } = useSettings(projectId);
+  const { beta, onUpdate } = useSettingsContext();
 
   const timeZones = [
     "Asia/Kolkata",
@@ -297,9 +306,13 @@ const Settings = () => {
   };
 
   return (
-    <Stack direction="column" spacing={2} p={2}>
+    <Stack direction="column" spacing={2} sx={{
+      p: 2
+    }}>
       <Typography variant="h6">Settings</Typography>
-      <Typography variant="subtitle2" color="text.secondary">
+      <Typography variant="subtitle2" sx={{
+        color: "text.secondary"
+      }}>
         Configure your application settings.
       </Typography>
       <List>
@@ -333,6 +346,20 @@ const Settings = () => {
             </NativeSelect>
           </FormControl>
         </ListItem>
+        <ListItem
+          sx={{
+            backgroundColor: "background.paper",
+            boxShadow: 1,
+            borderRadius: 1,
+            m: 1,
+            p: 2,
+            ":hover": { boxShadow: 3 },
+            transition: "all 0.2s ease-in-out",
+          }}
+        >
+          <ListItemText primary="Beta" secondary="Enable beta features" />
+          <Switch checked={beta} onChange={() => onUpdate("beta", !beta)} />
+        </ListItem>
       </List>
     </Stack>
   );
@@ -346,7 +373,9 @@ const About = () => {
   const description = pkg.description;
 
   return (
-    <Stack direction="column" spacing={2} p={2}>
+    <Stack direction="column" spacing={2} sx={{
+      p: 2
+    }}>
       <Box
         sx={{
           p: 3,
@@ -357,7 +386,9 @@ const About = () => {
             "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01))",
         }}
       >
-        <Stack direction="row" spacing={2.5} alignItems="center">
+        <Stack direction="row" spacing={2.5} sx={{
+          alignItems: "center"
+        }}>
           <Avatar
             src={iconSrc}
             variant="rounded"
@@ -373,16 +404,20 @@ const About = () => {
           </Avatar>
 
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography variant="h5" fontWeight={600}>
+            <Typography variant="h5" sx={{
+              fontWeight: 600
+            }}>
               {appName.toUpperCase()}
             </Typography>
 
             {description && (
               <Typography
                 variant="body2"
-                color="text.secondary"
-                sx={{ mt: 0.5, maxWidth: 520 }}
-              >
+                sx={{
+                  color: "text.secondary",
+                  mt: 0.5,
+                  maxWidth: 520
+                }}>
                 {description}
               </Typography>
             )}
@@ -425,7 +460,9 @@ const About = () => {
             textAlign: "center",
           }}
         >
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" sx={{
+            color: "text.secondary"
+          }}>
             © 2026 greycollar.ai. All rights reserved.
           </Typography>
         </Box>
@@ -436,11 +473,17 @@ const About = () => {
 
 const InfoRow = ({ label, value, link }) => {
   return (
-    <Stack direction="row" spacing={1.5} alignItems="center">
-      <Typography variant="body2" color="text.secondary" sx={{ minWidth: 110 }}>
+    <Stack direction="row" spacing={1.5} sx={{
+      alignItems: "center"
+    }}>
+      <Typography
+        variant="body2"
+        sx={{
+          color: "text.secondary",
+          minWidth: 110
+        }}>
         {label}
       </Typography>
-
       {link ? (
         <Link href={link} target="_blank" rel="noreferrer" underline="hover">
           {value}

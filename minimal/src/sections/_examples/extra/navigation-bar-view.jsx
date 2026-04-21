@@ -70,15 +70,14 @@ export default function NavigationBarView() {
         <Typography variant="h6"> Nav Basic </Typography>
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
           sx={{
+            alignItems: "center",
+            justifyContent: "space-between",
             p: 2,
             borderRadius: 2,
             bgcolor: 'background.paper',
-            boxShadow: (theme) => theme.customShadows.z20,
-          }}
-        >
+            boxShadow: (theme) => theme.customShadows.z20
+          }}>
           <IconButton onClick={mobileOpen.onTrue}>
             <Iconify icon="carbon:menu" />
           </IconButton>
@@ -98,10 +97,12 @@ export default function NavigationBarView() {
       <Drawer
         open={mobileOpen.value}
         onClose={mobileOpen.onFalse}
-        PaperProps={{
-          sx: {
-            width: 260,
-          },
+        slotProps={{
+          paper: {
+            sx: {
+              width: 260,
+            },
+          }
         }}
       >
         <Logo sx={{ m: 2 }} />
@@ -272,7 +273,12 @@ export default function NavigationBarView() {
 function ControlsPanel({ config, onChangeConfig, canReset, onReset }) {
   return (
     <Stack component={Paper} spacing={3} variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
-      <Stack direction="row" alignItems="center" sx={{ width: 1 }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          width: 1
+        }}>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           ControlsPanel
         </Typography>
@@ -285,7 +291,6 @@ function ControlsPanel({ config, onChangeConfig, canReset, onReset }) {
           </IconButton>
         )}
       </Stack>
-
       {/* Gap */}
       <Stack spacing={1}>
         <Typography variant="subtitle2">Gap</Typography>
@@ -306,7 +311,6 @@ function ControlsPanel({ config, onChangeConfig, canReset, onReset }) {
           ))}
         </ToggleButtonGroup>
       </Stack>
-
       {/* Size */}
       <Stack spacing={1}>
         <Typography variant="subtitle2">Icon</Typography>
@@ -327,7 +331,6 @@ function ControlsPanel({ config, onChangeConfig, canReset, onReset }) {
           ))}
         </ToggleButtonGroup>
       </Stack>
-
       {/* Radius */}
       <Stack spacing={1}>
         <Typography variant="subtitle2">Radius</Typography>
@@ -348,7 +351,6 @@ function ControlsPanel({ config, onChangeConfig, canReset, onReset }) {
           ))}
         </ToggleButtonGroup>
       </Stack>
-
       {/* Role */}
       <Stack spacing={1}>
         <Typography variant="subtitle2">Role</Typography>
@@ -369,7 +371,6 @@ function ControlsPanel({ config, onChangeConfig, canReset, onReset }) {
           ))}
         </ToggleButtonGroup>
       </Stack>
-
       {/* Root Height */}
       <Stack spacing={1}>
         <Typography variant="subtitle2">Item Root Height</Typography>
@@ -390,7 +391,6 @@ function ControlsPanel({ config, onChangeConfig, canReset, onReset }) {
           ))}
         </ToggleButtonGroup>
       </Stack>
-
       {/* Sub Height */}
       <Stack spacing={1}>
         <Typography variant="subtitle2">Item Sub Height</Typography>
@@ -411,14 +411,12 @@ function ControlsPanel({ config, onChangeConfig, canReset, onReset }) {
           ))}
         </ToggleButtonGroup>
       </Stack>
-
       {/* Padding */}
       <TextField
         label="Item Padding"
         value={config.padding || ''}
         onChange={(event) => onChangeConfig('padding', event.target.value)}
       />
-
       <FormControlLabel
         control={
           <Switch
@@ -428,7 +426,6 @@ function ControlsPanel({ config, onChangeConfig, canReset, onReset }) {
         }
         label="Hidden Label"
       />
-
       <FormControlLabel
         control={
           <Switch

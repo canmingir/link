@@ -35,14 +35,16 @@ export default function TourList({ tours }) {
   return (
     <>
       <Box
-        gap={3}
-        display="grid"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          sm: 'repeat(2, 1fr)',
-          md: 'repeat(3, 1fr)',
-        }}
-      >
+        sx={{
+          gap: 3,
+          display: "grid",
+
+          gridTemplateColumns: {
+            xs: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+          }
+        }}>
         {tours.map((tour) => (
           <TourItem
             key={tour.id}
@@ -53,7 +55,6 @@ export default function TourList({ tours }) {
           />
         ))}
       </Box>
-
       {tours.length > 8 && (
         <Pagination
           count={8}

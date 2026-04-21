@@ -73,20 +73,19 @@ export default function NavList({ data, slotProps }) {
         className={active ? 'active' : ''}
         sx={slotProps?.rootItem}
       />
-
       {!!data.children && (
         <Drawer
           open={openMenu}
           onClose={handleCloseMenu}
           slotProps={{
             backdrop: { invisible: true },
-          }}
-          PaperProps={{
-            sx: {
-              width: rectWidth - 8,
-            },
-          }}
-        >
+
+            paper: {
+              sx: {
+                width: rectWidth - 8,
+              },
+            }
+          }}>
           <NavSubList
             title={data.title}
             onCloseMenu={handleCloseMenu}
@@ -113,7 +112,14 @@ function NavSubList({ data, slotProps, title, onCloseMenu }) {
 
   return (
     <>
-      <Stack direction="row" alignItems="center" px={1} py={1.5} spacing={1}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: "center",
+          px: 1,
+          py: 1.5
+        }}>
         <IconButton onClick={onCloseMenu}>
           <Iconify icon="eva:arrow-ios-back-fill" width={16} />
         </IconButton>
@@ -122,9 +128,7 @@ function NavSubList({ data, slotProps, title, onCloseMenu }) {
           {title}
         </Typography>
       </Stack>
-
       <Divider />
-
       <Scrollbar>
         {data.map((list, index) => (
           <List key={list.subheader + index} disablePadding>

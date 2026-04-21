@@ -120,24 +120,30 @@ export default function ChatMessageItem({ message, participants, onOpenLightbox 
   );
 
   return (
-    <Stack direction="row" justifyContent={me ? 'flex-end' : 'unset'} sx={{ mb: 5 }}>
+    <Stack
+      direction="row"
+      sx={{
+        justifyContent: me ? 'flex-end' : 'unset',
+        mb: 5
+      }}>
       {!me && <Avatar alt={firstName} src={avatarUrl} sx={{ width: 32, height: 32, mr: 2 }} />}
-
-      <Stack alignItems="flex-end">
+      <Stack sx={{
+        alignItems: "flex-end"
+      }}>
         {renderInfo}
 
         <Stack
           direction="row"
-          alignItems="center"
           sx={{
+            alignItems: "center",
             position: 'relative',
+
             '&:hover': {
               '& .message-actions': {
                 opacity: 1,
               },
-            },
-          }}
-        >
+            }
+          }}>
           {renderBody}
           {renderActions}
         </Stack>

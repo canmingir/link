@@ -52,7 +52,9 @@ export default function HeaderSimple({
           }),
         }}
       >
-        <Stack direction="row" alignItems="center" spacing={5}>
+        <Stack direction="row" spacing={5} sx={{
+          alignItems: "center"
+        }}>
           <Logo />
           <ProjectBar
             handleItemSelect={handleItemSelect}
@@ -60,7 +62,9 @@ export default function HeaderSimple({
             setSelectedItem={setSelectedItem}
           />
         </Stack>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{
+          alignItems: "center"
+        }}>
           {mdUp && <NavDesktop data={topMenu} />}
           <NotificationsPopover />
 
@@ -69,7 +73,6 @@ export default function HeaderSimple({
           <AccountPopover />
         </Stack>
       </Toolbar>
-
       {offsetTop && <HeaderShadow />}
     </AppBar>
   );

@@ -56,14 +56,14 @@ export default function PostListHomeView() {
       >
         Blog
       </Typography>
-
       <Stack
         spacing={3}
-        justifyContent="space-between"
-        alignItems={{ xs: 'flex-end', sm: 'center' }}
         direction={{ xs: 'column', sm: 'row' }}
-        sx={{ mb: { xs: 3, md: 5 } }}
-      >
+        sx={{
+          justifyContent: "space-between",
+          alignItems: { xs: 'flex-end', sm: 'center' },
+          mb: { xs: 3, md: 5 }
+        }}>
         <PostSearch
           query={debouncedQuery}
           results={searchResults}
@@ -74,7 +74,6 @@ export default function PostListHomeView() {
 
         <PostSort sort={sortBy} onSort={handleSortBy} sortOptions={POST_SORT_OPTIONS} />
       </Stack>
-
       <PostList posts={dataFiltered} loading={postsLoading} />
     </Container>
   );

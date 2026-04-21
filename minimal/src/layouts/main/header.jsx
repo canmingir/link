@@ -87,7 +87,9 @@ export default function Header() {
 
           {mdUp && <NavDesktop data={navConfig} />}
 
-          <Stack alignItems="center" direction={{ xs: 'row', md: 'row-reverse' }}>
+          <Stack direction={{ xs: 'row', md: 'row-reverse' }} sx={{
+            alignItems: "center"
+          }}>
             <Button variant="contained" target="_blank" rel="noopener" href={paths.minimalUI}>
               Purchase Now
             </Button>
@@ -105,7 +107,6 @@ export default function Header() {
           </Stack>
         </Container>
       </Toolbar>
-
       {offsetTop && <HeaderShadow />}
     </AppBar>
   );

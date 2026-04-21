@@ -94,34 +94,44 @@ function BookingItem({ item }) {
           pt: 2.5,
         }}
       >
-        <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack direction="row" spacing={2} sx={{
+          alignItems: "center"
+        }}>
           <Avatar alt={name} src={avatarUrl} />
           <ListItemText
             primary={name}
             secondary={fDateTime(bookedAt)}
-            secondaryTypographyProps={{
-              mt: 0.5,
-              component: 'span',
-              typography: 'caption',
-              color: 'text.disabled',
+            slotProps={{
+              secondary: {
+                mt: 0.5,
+                component: 'span',
+                typography: 'caption',
+                color: 'text.disabled',
+              }
             }}
           />
         </Stack>
 
         <Stack
-          rowGap={1.5}
-          columnGap={3}
-          flexWrap="wrap"
           direction="row"
-          alignItems="center"
-          sx={{ color: 'text.secondary', typography: 'caption' }}
-        >
-          <Stack direction="row" alignItems="center">
+          sx={{
+            rowGap: 1.5,
+            columnGap: 3,
+            flexWrap: "wrap",
+            alignItems: "center",
+            color: 'text.secondary',
+            typography: 'caption'
+          }}>
+          <Stack direction="row" sx={{
+            alignItems: "center"
+          }}>
             <Iconify width={16} icon="solar:calendar-date-bold" sx={{ mr: 0.5, flexShrink: 0 }} />
             {duration}
           </Stack>
 
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" sx={{
+            alignItems: "center"
+          }}>
             <Iconify
               width={16}
               icon="solar:users-group-rounded-bold"
@@ -131,7 +141,6 @@ function BookingItem({ item }) {
           </Stack>
         </Stack>
       </Stack>
-
       <Label
         variant="filled"
         sx={{
@@ -143,7 +152,6 @@ function BookingItem({ item }) {
       >
         {isHot && '🔥'} ${price}
       </Label>
-
       <Box sx={{ p: 1, position: 'relative' }}>
         <Image alt={coverUrl} src={coverUrl} ratio="1/1" sx={{ borderRadius: 1.5 }} />
       </Box>

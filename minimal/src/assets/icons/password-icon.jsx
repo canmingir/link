@@ -15,13 +15,14 @@ function PasswordIcon({ ...other }) {
   return (
     <Box
       component="svg"
-      width="100%"
-      height="100%"
       fill="none"
       viewBox="0 0 96 97"
       xmlns="http://www.w3.org/2000/svg"
       {...other}
-    >
+      sx={[{
+        width: "100%",
+        height: "100%"
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       <path
         fill={WARNING_LIGHT}
         d="M36.324 29.4v7.76a4.803 4.803 0 11-9.606 0V29.4c0-11.677 9.405-21.198 21.037-21.388l.353-.002c11.678 0 21.199 9.405 21.388 21.037l.003.353v7.76a4.803 4.803 0 11-9.606 0V29.4c0-6.433-5.181-11.678-11.59-11.783l-.194-.001c-6.499 0-11.785 5.286-11.785 11.784z"

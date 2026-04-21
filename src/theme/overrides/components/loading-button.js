@@ -1,4 +1,4 @@
-import { loadingButtonClasses } from "@mui/lab/LoadingButton";
+import { buttonClasses } from "@mui/material/Button";
 
 // ----------------------------------------------------------------------
 
@@ -8,17 +8,17 @@ export function loadingButton(theme) {
       styleOverrides: {
         root: ({ ownerState }) => ({
           ...(ownerState.variant === "soft" && {
-            [`& .${loadingButtonClasses.loadingIndicatorStart}`]: {
+            [`& .${buttonClasses.loadingIndicatorStart}`]: {
               left: 10,
             },
-            [`& .${loadingButtonClasses.loadingIndicatorEnd}`]: {
+            [`& .${buttonClasses.loadingIndicatorEnd}`]: {
               right: 14,
             },
             ...(ownerState.size === "small" && {
-              [`& .${loadingButtonClasses.loadingIndicatorStart}`]: {
+              [`& .${buttonClasses.loadingIndicatorStart}`]: {
                 left: 10,
               },
-              [`& .${loadingButtonClasses.loadingIndicatorEnd}`]: {
+              [`& .${buttonClasses.loadingIndicatorEnd}`]: {
                 right: 10,
               },
             }),

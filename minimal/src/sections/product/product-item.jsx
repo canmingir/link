@@ -50,10 +50,14 @@ export default function ProductItem({ product }) {
   const renderLabels = (newLabel.enabled || saleLabel.enabled) && (
     <Stack
       direction="row"
-      alignItems="center"
       spacing={1}
-      sx={{ position: 'absolute', zIndex: 9, top: 16, right: 16 }}
-    >
+      sx={{
+        alignItems: "center",
+        position: 'absolute',
+        zIndex: 9,
+        top: 16,
+        right: 16
+      }}>
       {newLabel.enabled && (
         <Label variant="filled" color="info">
           {newLabel.content}
@@ -115,7 +119,12 @@ export default function ProductItem({ product }) {
         {name}
       </Link>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}>
         <ColorPreview colors={colors} />
 
         <Stack direction="row" spacing={0.5} sx={{ typography: 'subtitle1' }}>

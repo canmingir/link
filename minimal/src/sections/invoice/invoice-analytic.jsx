@@ -17,11 +17,18 @@ export default function InvoiceAnalytic({ title, total, icon, color, percent, pr
     <Stack
       spacing={2.5}
       direction="row"
-      alignItems="center"
-      justifyContent="center"
-      sx={{ width: 1, minWidth: 200 }}
-    >
-      <Stack alignItems="center" justifyContent="center" sx={{ position: 'relative' }}>
+      sx={{
+        alignItems: "center",
+        justifyContent: "center",
+        width: 1,
+        minWidth: 200
+      }}>
+      <Stack
+        sx={{
+          alignItems: "center",
+          justifyContent: "center",
+          position: 'relative'
+        }}>
         <Iconify icon={icon} width={32} sx={{ color, position: 'absolute' }} />
 
         <CircularProgress
@@ -46,7 +53,6 @@ export default function InvoiceAnalytic({ title, total, icon, color, percent, pr
           }}
         />
       </Stack>
-
       <Stack spacing={0.5}>
         <Typography variant="subtitle1">{title}</Typography>
 

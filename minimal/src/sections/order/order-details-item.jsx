@@ -26,9 +26,12 @@ export default function OrderDetailsItems({
   const renderTotal = (
     <Stack
       spacing={2}
-      alignItems="flex-end"
-      sx={{ my: 3, textAlign: 'right', typography: 'body2' }}
-    >
+      sx={{
+        alignItems: "flex-end",
+        my: 3,
+        textAlign: 'right',
+        typography: 'body2'
+      }}>
       <Stack direction="row">
         <Box sx={{ color: 'text.secondary' }}>Subtotal</Box>
         <Box sx={{ width: 160, typography: 'subtitle2' }}>{fCurrency(subTotal) || '-'}</Box>
@@ -80,7 +83,6 @@ export default function OrderDetailsItems({
           </IconButton>
         }
       />
-
       <Stack
         sx={{
           px: 3,
@@ -91,27 +93,28 @@ export default function OrderDetailsItems({
             <Stack
               key={item.id}
               direction="row"
-              alignItems="center"
               sx={{
+                alignItems: "center",
                 py: 3,
                 minWidth: 640,
-                borderBottom: (theme) => `dashed 2px ${theme.palette.background.neutral}`,
-              }}
-            >
+                borderBottom: (theme) => `dashed 2px ${theme.palette.background.neutral}`
+              }}>
               <Avatar src={item.coverUrl} variant="rounded" sx={{ width: 48, height: 48, mr: 2 }} />
 
               <ListItemText
                 primary={item.name}
                 secondary={item.sku}
-                primaryTypographyProps={{
-                  typography: 'body2',
-                }}
-                secondaryTypographyProps={{
-                  component: 'span',
-                  color: 'text.disabled',
-                  mt: 0.5,
-                }}
-              />
+                slotProps={{
+                  primary: {
+                    typography: 'body2',
+                  },
+
+                  secondary: {
+                    component: 'span',
+                    color: 'text.disabled',
+                    mt: 0.5,
+                  }
+                }} />
 
               <Box sx={{ typography: 'body2' }}>x{item.quantity}</Box>
 

@@ -30,14 +30,16 @@ export default function TourDetailsBookers({ bookers }) {
 
   return (
     <Box
-      gap={3}
-      display="grid"
-      gridTemplateColumns={{
-        xs: 'repeat(1, 1fr)',
-        sm: 'repeat(2, 1fr)',
-        md: 'repeat(3, 1fr)',
-      }}
-    >
+      sx={{
+        gap: 3,
+        display: "grid",
+
+        gridTemplateColumns: {
+          xs: 'repeat(1, 1fr)',
+          sm: 'repeat(2, 1fr)',
+          md: 'repeat(3, 1fr)',
+        }
+      }}>
       {bookers.map((booker) => (
         <BookerItem
           key={booker.id}
@@ -60,21 +62,26 @@ function BookerItem({ booker, selected, onSelected }) {
   return (
     <Stack component={Card} direction="row" spacing={2} key={booker.id} sx={{ p: 3 }}>
       <Avatar alt={booker.name} src={booker.avatarUrl} sx={{ width: 48, height: 48 }} />
-
-      <Stack spacing={2} flexGrow={1}>
+      <Stack spacing={2} sx={{
+        flexGrow: 1
+      }}>
         <ListItemText
           primary={booker.name}
           secondary={
-            <Stack direction="row" alignItems="center" spacing={0.5}>
+            <Stack direction="row" spacing={0.5} sx={{
+              alignItems: "center"
+            }}>
               <Iconify icon="solar:users-group-rounded-bold" width={16} />
               {booker.guests} guests
             </Stack>
           }
-          secondaryTypographyProps={{
-            mt: 0.5,
-            component: 'span',
-            typography: 'caption',
-            color: 'text.disabled',
+          slotProps={{
+            secondary: {
+              mt: 0.5,
+              component: 'span',
+              typography: 'caption',
+              color: 'text.disabled',
+            }
           }}
         />
 
@@ -122,7 +129,6 @@ function BookerItem({ booker, selected, onSelected }) {
           </IconButton>
         </Stack>
       </Stack>
-
       <Button
         size="small"
         variant={selected ? 'text' : 'outlined'}

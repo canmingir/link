@@ -60,10 +60,12 @@ export default function PaymentCardListDialog({ open, list, onClose, selected, o
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
       <Stack
         direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ p: 3, pr: 1.5 }}
-      >
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          p: 3,
+          pr: 1.5
+        }}>
         <Typography variant="h6"> Cards </Typography>
 
         <Button
@@ -74,22 +76,22 @@ export default function PaymentCardListDialog({ open, list, onClose, selected, o
           New
         </Button>
       </Stack>
-
       <Stack sx={{ px: 3 }}>
         <TextField
           value={searchCard}
           onChange={handleSearchAddress}
           placeholder="Search..."
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                </InputAdornment>
+              ),
+            }
           }}
         />
       </Stack>
-
       {notFound ? <SearchNotFound query={searchCard} sx={{ px: 3, pt: 5, pb: 10 }} /> : renderList}
     </Dialog>
   );

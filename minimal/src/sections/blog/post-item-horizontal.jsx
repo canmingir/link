@@ -52,7 +52,13 @@ export default function PostItemHorizontal({ post }) {
             p: (theme) => theme.spacing(3, 3, 2, 3),
           }}
         >
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              justifyContent: "space-between",
+              mb: 2
+            }}>
             <Label variant="soft" color={(publish === 'published' && 'info') || 'default'}>
               {publish}
             </Label>
@@ -62,7 +68,9 @@ export default function PostItemHorizontal({ post }) {
             </Box>
           </Stack>
 
-          <Stack spacing={1} flexGrow={1}>
+          <Stack spacing={1} sx={{
+            flexGrow: 1
+          }}>
             <Link color="inherit" component={RouterLink} href={paths.dashboard.post.details(title)}>
               <TextMaxLine variant="subtitle2" line={2}>
                 {title}
@@ -74,33 +82,40 @@ export default function PostItemHorizontal({ post }) {
             </TextMaxLine>
           </Stack>
 
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" sx={{
+            alignItems: "center"
+          }}>
             <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
               <Iconify icon="eva:more-horizontal-fill" />
             </IconButton>
 
             <Stack
               spacing={1.5}
-              flexGrow={1}
               direction="row"
-              flexWrap="wrap"
-              justifyContent="flex-end"
               sx={{
+                flexGrow: 1,
+                flexWrap: "wrap",
+                justifyContent: "flex-end",
                 typography: 'caption',
-                color: 'text.disabled',
-              }}
-            >
-              <Stack direction="row" alignItems="center">
+                color: 'text.disabled'
+              }}>
+              <Stack direction="row" sx={{
+                alignItems: "center"
+              }}>
                 <Iconify icon="eva:message-circle-fill" width={16} sx={{ mr: 0.5 }} />
                 {fShortenNumber(totalComments)}
               </Stack>
 
-              <Stack direction="row" alignItems="center">
+              <Stack direction="row" sx={{
+                alignItems: "center"
+              }}>
                 <Iconify icon="solar:eye-bold" width={16} sx={{ mr: 0.5 }} />
                 {fShortenNumber(totalViews)}
               </Stack>
 
-              <Stack direction="row" alignItems="center">
+              <Stack direction="row" sx={{
+                alignItems: "center"
+              }}>
                 <Iconify icon="solar:share-bold" width={16} sx={{ mr: 0.5 }} />
                 {fShortenNumber(totalShares)}
               </Stack>
@@ -127,7 +142,6 @@ export default function PostItemHorizontal({ post }) {
           </Box>
         )}
       </Stack>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}

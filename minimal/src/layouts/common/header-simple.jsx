@@ -49,7 +49,9 @@ export default function HeaderSimple() {
       >
         <Logo />
 
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{
+          alignItems: "center"
+        }}>
           <SettingsButton />
 
           <Link
@@ -62,7 +64,6 @@ export default function HeaderSimple() {
           </Link>
         </Stack>
       </Toolbar>
-
       {offsetTop && <HeaderShadow />}
     </AppBar>
   );

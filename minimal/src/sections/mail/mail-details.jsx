@@ -48,8 +48,18 @@ export default function MailDetails({ mail, renderLabel }) {
   }
 
   const renderHead = (
-    <Stack direction="row" alignItems="center" flexShrink={0} sx={{ height: 56, pl: 2, pr: 1 }}>
-      <Stack direction="row" spacing={1} flexGrow={1}>
+    <Stack
+      direction="row"
+      sx={{
+        alignItems: "center",
+        flexShrink: 0,
+        height: 56,
+        pl: 2,
+        pr: 1
+      }}>
+      <Stack direction="row" spacing={1} sx={{
+        flexGrow: 1
+      }}>
         {mail.labelIds.map((labelId) => {
           const label = renderLabel(labelId);
 
@@ -70,7 +80,9 @@ export default function MailDetails({ mail, renderLabel }) {
         })}
       </Stack>
 
-      <Stack direction="row" alignItems="center">
+      <Stack direction="row" sx={{
+        alignItems: "center"
+      }}>
         <Checkbox
           color="warning"
           icon={<Iconify icon="eva:star-outline" />}
@@ -111,13 +123,24 @@ export default function MailDetails({ mail, renderLabel }) {
   );
 
   const renderSubject = (
-    <Stack spacing={2} direction="row" flexShrink={0} sx={{ p: 2 }}>
+    <Stack
+      spacing={2}
+      direction="row"
+      sx={{
+        flexShrink: 0,
+        p: 2
+      }}>
       <TextMaxLine variant="subtitle2" sx={{ flexGrow: 1 }}>
         Re: {mail.subject}
       </TextMaxLine>
 
       <Stack spacing={0.5}>
-        <Stack direction="row" alignItems="center" justifyContent="flex-end">
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: "center",
+            justifyContent: "flex-end"
+          }}>
           <IconButton size="small">
             <Iconify width={18} icon="solar:reply-bold" />
           </IconButton>
@@ -140,13 +163,12 @@ export default function MailDetails({ mail, renderLabel }) {
 
   const renderSender = (
     <Stack
-      flexShrink={0}
       direction="row"
-      alignItems="center"
       sx={{
-        p: (theme) => theme.spacing(2, 2, 1, 2),
-      }}
-    >
+        flexShrink: 0,
+        alignItems: "center",
+        p: (theme) => theme.spacing(2, 2, 1, 2)
+      }}>
       <Avatar
         alt={mail.from.name}
         src={mail.from.avatarUrl ? `${mail.from.avatarUrl}` : ''}
@@ -174,11 +196,13 @@ export default function MailDetails({ mail, renderLabel }) {
             ))}
           </>
         }
-        secondaryTypographyProps={{
-          mt: 0.5,
-          noWrap: true,
-          component: 'span',
-          typography: 'caption',
+        slotProps={{
+          secondary: {
+            mt: 0.5,
+            noWrap: true,
+            component: 'span',
+            typography: 'caption',
+          }
         }}
       />
     </Stack>
@@ -193,7 +217,12 @@ export default function MailDetails({ mail, renderLabel }) {
         bgcolor: 'background.neutral',
       }}
     >
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}>
         <ButtonBase
           onClick={showAttachments.onToggle}
           sx={{
@@ -217,22 +246,23 @@ export default function MailDetails({ mail, renderLabel }) {
       </Stack>
 
       <Collapse in={showAttachments.value} unmountOnExit timeout="auto">
-        <Stack direction="row" flexWrap="wrap" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{
+          flexWrap: "wrap"
+        }}>
           {mail.attachments.map((attachment) => (
             <Stack
               key={attachment.id}
-              alignItems="center"
-              justifyContent="center"
               sx={{
+                alignItems: "center",
+                justifyContent: "center",
                 width: 40,
                 height: 40,
                 flexShrink: 0,
                 borderRadius: 1,
                 overflow: 'hidden',
                 position: 'relative',
-                backgroundColor: 'background.neutral',
-              }}
-            >
+                backgroundColor: 'background.neutral'
+              }}>
               <FileThumbnail
                 tooltip
                 imageView
@@ -278,8 +308,15 @@ export default function MailDetails({ mail, renderLabel }) {
     >
       <Editor simple id="reply-mail" />
 
-      <Stack direction="row" alignItems="center">
-        <Stack direction="row" alignItems="center" flexGrow={1}>
+      <Stack direction="row" sx={{
+        alignItems: "center"
+      }}>
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: "center",
+            flexGrow: 1
+          }}>
           <IconButton>
             <Iconify icon="solar:gallery-add-bold" />
           </IconButton>
@@ -302,28 +339,20 @@ export default function MailDetails({ mail, renderLabel }) {
 
   return (
     <Stack
-      flexGrow={1}
       sx={{
+        flexGrow: 1,
         width: 1,
         minWidth: 0,
         borderRadius: 1.5,
-        bgcolor: 'background.default',
-      }}
-    >
+        bgcolor: 'background.default'
+      }}>
       {renderHead}
-
       <Divider sx={{ borderStyle: 'dashed' }} />
-
       {renderSubject}
-
       <Divider sx={{ borderStyle: 'dashed' }} />
-
       {renderSender}
-
       {!!mail.attachments.length && <Stack sx={{ px: 2 }}> {renderAttachments} </Stack>}
-
       {renderContent}
-
       {renderEditor}
     </Stack>
   );

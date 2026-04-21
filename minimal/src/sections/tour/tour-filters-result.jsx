@@ -52,8 +52,14 @@ export default function TourFiltersResult({
           results found
         </Box>
       </Box>
-
-      <Stack flexGrow={1} spacing={1} direction="row" flexWrap="wrap" alignItems="center">
+      <Stack
+        spacing={1}
+        direction="row"
+        sx={{
+          flexGrow: 1,
+          flexWrap: "wrap",
+          alignItems: "center"
+        }}>
         {filters.startDate && filters.endDate && (
           <Block label="Available:">
             <Chip size="small" label={shortLabel} onDelete={handleRemoveAvailable} />
@@ -143,8 +149,9 @@ function Block({ label, children, sx, ...other }) {
       <Box component="span" sx={{ typography: 'subtitle2' }}>
         {label}
       </Box>
-
-      <Stack spacing={1} direction="row" flexWrap="wrap">
+      <Stack spacing={1} direction="row" sx={{
+        flexWrap: "wrap"
+      }}>
         {children}
       </Stack>
     </Stack>

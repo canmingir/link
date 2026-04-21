@@ -32,14 +32,15 @@ export default function KanbanDetailsAttachments({ attachments }) {
   );
 
   return (
-    <Stack direction="row" flexWrap="wrap">
+    <Stack direction="row" sx={{
+      flexWrap: "wrap"
+    }}>
       <MultiFilePreview
         thumbnail
         files={files}
         onRemove={(file) => handleRemoveFile(file)}
         sx={{ width: 64, height: 64 }}
       />
-
       <UploadBox onDrop={handleDrop} />
     </Stack>
   );

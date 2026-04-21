@@ -100,19 +100,21 @@ export default function FileRecentItem({ file, onDelete, sx, ...other }) {
           {fDateTime(file.modifiedAt)}
         </>
       }
-      primaryTypographyProps={{
-        noWrap: true,
-        typography: 'subtitle2',
-      }}
-      secondaryTypographyProps={{
-        mt: 0.5,
-        component: 'span',
-        alignItems: 'center',
-        typography: 'caption',
-        color: 'text.disabled',
-        display: 'inline-flex',
-      }}
-    />
+      slotProps={{
+        primary: {
+          noWrap: true,
+          typography: 'subtitle2',
+        },
+
+        secondary: {
+          mt: 0.5,
+          component: 'span',
+          alignItems: 'center',
+          typography: 'caption',
+          color: 'text.disabled',
+          display: 'inline-flex',
+        }
+      }} />
   );
 
   const renderAvatar = (
@@ -141,21 +143,22 @@ export default function FileRecentItem({ file, onDelete, sx, ...other }) {
         variant="outlined"
         spacing={1}
         direction={{ xs: 'column', sm: 'row' }}
-        alignItems={{ xs: 'unset', sm: 'center' }}
-        sx={{
+        {...other}
+        sx={[{
+          alignItems: { xs: 'unset', sm: 'center' },
           borderRadius: 2,
           bgcolor: 'unset',
           cursor: 'pointer',
           position: 'relative',
           p: { xs: 2.5, sm: 2 },
+
           '&:hover': {
             bgcolor: 'background.paper',
             boxShadow: (theme) => theme.customShadows.z20,
           },
-          ...sx,
-        }}
-        {...other}
-      >
+
+          ...sx
+        }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
         <FileThumbnail file={file.type} sx={{ width: 36, height: 36, mr: 1 }} />
 
         {renderText}
@@ -164,7 +167,6 @@ export default function FileRecentItem({ file, onDelete, sx, ...other }) {
 
         {renderAction}
       </Stack>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -204,7 +206,6 @@ export default function FileRecentItem({ file, onDelete, sx, ...other }) {
           Delete
         </MenuItem>
       </CustomPopover>
-
       <FileManagerFileDetails
         item={file}
         favorited={favorite.value}
@@ -217,7 +218,6 @@ export default function FileRecentItem({ file, onDelete, sx, ...other }) {
           onDelete();
         }}
       />
-
       <FileManagerShareDialog
         open={share.value}
         shared={file.shared}

@@ -54,15 +54,15 @@ export default function MailNavItem({ selected, label, onClickNavItem, ...other 
           color,
         }}
       />
-
       <ListItemText
         primary={name}
-        primaryTypographyProps={{
-          textTransform: 'capitalize',
-          typography: selected ? 'subtitle2' : 'body2',
+        slotProps={{
+          primary: {
+            textTransform: 'capitalize',
+            typography: selected ? 'subtitle2' : 'body2',
+          }
         }}
       />
-
       {!!unreadCount && <Typography variant="caption">{unreadCount}</Typography>}
     </ListItemButton>
   );

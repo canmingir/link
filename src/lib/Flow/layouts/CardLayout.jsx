@@ -383,9 +383,10 @@ export function AvatarRoleCard({
       >
         <Stack
           direction="row"
-          justifyContent="space-between"
-          alignItems="flex-start"
-        >
+          sx={{
+            justifyContent: "space-between",
+            alignItems: "flex-start"
+          }}>
           {leftContent}
           {topRightContent}
         </Stack>

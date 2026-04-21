@@ -31,7 +31,6 @@ export default function FileManagerShareDialog({
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
       <DialogTitle> Invite </DialogTitle>
-
       <DialogContent sx={{ overflow: 'unset' }}>
         {onChangeInvite && (
           <TextField
@@ -39,21 +38,23 @@ export default function FileManagerShareDialog({
             value={inviteEmail}
             placeholder="Email"
             onChange={onChangeInvite}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Button
-                    color="inherit"
-                    variant="contained"
-                    disabled={!inviteEmail}
-                    sx={{ mr: -0.75 }}
-                  >
-                    Send Invite
-                  </Button>
-                </InputAdornment>
-              ),
-            }}
             sx={{ mb: 2 }}
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Button
+                      color="inherit"
+                      variant="contained"
+                      disabled={!inviteEmail}
+                      sx={{ mr: -0.75 }}
+                    >
+                      Send Invite
+                    </Button>
+                  </InputAdornment>
+                ),
+              }
+            }}
           />
         )}
 
@@ -67,7 +68,6 @@ export default function FileManagerShareDialog({
           </Scrollbar>
         )}
       </DialogContent>
-
       <DialogActions sx={{ justifyContent: 'space-between' }}>
         {onCopyLink && (
           <Button startIcon={<Iconify icon="eva:link-2-fill" />} onClick={onCopyLink}>

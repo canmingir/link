@@ -37,8 +37,8 @@ const APIPath = ({
   return (
     <Grid container sx={styles.root} data-cy="api-path">
       <Grid sx={styles.firstElement} />
-      <Grid item>
-        <Grid container item sx={styles.content}>
+      <Grid>
+        <Grid container sx={styles.content}>
           {isMethodDisabled ? (
             <Typography data-cy="method-text">{method}</Typography>
           ) : (

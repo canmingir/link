@@ -39,7 +39,13 @@ export default function AboutHero() {
 
           <br />
 
-          <Stack spacing={2} display="inline-flex" direction="row" sx={{ color: 'common.white' }}>
+          <Stack
+            spacing={2}
+            direction="row"
+            sx={{
+              display: "inline-flex",
+              color: 'common.white'
+            }}>
             <TextAnimate text="we" />
             <TextAnimate text="are?" />
           </Stack>

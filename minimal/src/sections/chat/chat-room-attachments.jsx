@@ -56,22 +56,22 @@ export default function ChatRoomAttachments({ attachments }) {
           key={attachment.name + index}
           spacing={1.5}
           direction="row"
-          alignItems="center"
-          sx={{ mb: 2 }}
-        >
+          sx={{
+            alignItems: "center",
+            mb: 2
+          }}>
           <Stack
-            alignItems="center"
-            justifyContent="center"
             sx={{
+              alignItems: "center",
+              justifyContent: "center",
               width: 40,
               height: 40,
               flexShrink: 0,
               borderRadius: 1,
               overflow: 'hidden',
               position: 'relative',
-              backgroundColor: 'background.neutral',
-            }}
-          >
+              backgroundColor: 'background.neutral'
+            }}>
             <FileThumbnail
               imageView
               file={attachment.preview}
@@ -83,18 +83,20 @@ export default function ChatRoomAttachments({ attachments }) {
           <ListItemText
             primary={attachment.name}
             secondary={fDateTime(attachment.createdAt)}
-            primaryTypographyProps={{
-              noWrap: true,
-              typography: 'body2',
-            }}
-            secondaryTypographyProps={{
-              mt: 0.25,
-              noWrap: true,
-              component: 'span',
-              typography: 'caption',
-              color: 'text.disabled',
-            }}
-          />
+            slotProps={{
+              primary: {
+                noWrap: true,
+                typography: 'body2',
+              },
+
+              secondary: {
+                mt: 0.25,
+                noWrap: true,
+                component: 'span',
+                typography: 'caption',
+                color: 'text.disabled',
+              }
+            }} />
         </Stack>
       ))}
     </Scrollbar>

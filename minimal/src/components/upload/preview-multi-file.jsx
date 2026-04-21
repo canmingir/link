@@ -28,10 +28,10 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }) {
               key={key}
               component={m.div}
               {...varFade().inUp}
-              alignItems="center"
-              display="inline-flex"
-              justifyContent="center"
               sx={{
+                alignItems: "center",
+                display: "inline-flex",
+                justifyContent: "center",
                 m: 0.5,
                 width: 80,
                 height: 80,
@@ -39,9 +39,8 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }) {
                 overflow: 'hidden',
                 position: 'relative',
                 border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.16)}`,
-                ...sx,
-              }}
-            >
+                ...sx
+              }}>
               <FileThumbnail
                 tooltip
                 imageView
@@ -49,7 +48,6 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }) {
                 sx={{ position: 'absolute' }}
                 imgSx={{ position: 'absolute' }}
               />
-
               {onRemove && (
                 <IconButton
                   size="small"
@@ -80,27 +78,26 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }) {
             {...varFade().inUp}
             spacing={2}
             direction="row"
-            alignItems="center"
             sx={{
+              alignItems: "center",
               my: 1,
               py: 1,
               px: 1.5,
               borderRadius: 1,
               border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.16)}`,
-              ...sx,
-            }}
-          >
+              ...sx
+            }}>
             <FileThumbnail file={file} />
-
             <ListItemText
               primary={isNotFormatFile ? file : name}
               secondary={isNotFormatFile ? '' : fData(size)}
-              secondaryTypographyProps={{
-                component: 'span',
-                typography: 'caption',
+              slotProps={{
+                secondary: {
+                  component: 'span',
+                  typography: 'caption',
+                }
               }}
             />
-
             {onRemove && (
               <IconButton size="small" onClick={() => onRemove(file)}>
                 <Iconify icon="mingcute:close-line" width={16} />

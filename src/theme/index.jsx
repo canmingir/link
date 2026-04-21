@@ -23,8 +23,9 @@ export default function ThemeProvider({ children }) {
   const contrast = createContrast(settings.themeContrast, settings.themeMode);
   const presets = createPresets(settings.themeColorPresets);
 
-  const memoizedValue = useMemo(
-    () => ({
+  const theme = useMemo(() => {
+    // 1. Define the base configuration
+    const baseOptions = {
       palette: {
         ...palette(settings.themeMode),
         ...presets.palette,
@@ -38,56 +39,54 @@ export default function ThemeProvider({ children }) {
       shadows: shadows(settings.themeMode),
       shape: { borderRadius: 8 },
       typography,
-    }),
-    [
-      settings.themeMode,
-      settings.themeDirection,
-      presets.palette,
-      presets.customShadows,
-      contrast.palette,
-    ]
-  );
+    };
 
-  const theme = createTheme(memoizedValue);
+    // 2. Create a temporary theme instance to generate overrides
+    // (Overrides often need access to the palette/spacing of the theme)
+    const tempTheme = createTheme(baseOptions);
 
-  theme.components = merge(componentsOverrides(theme), contrast.components, {
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          scrollbarColor:
-            theme.palette.mode === "dark"
-              ? `${theme.palette.grey[700]} ${theme.palette.background.default}`
-              : `${theme.palette.grey[500]} ${theme.palette.background.default}`,
-          scrollbarWidth: "thin",
-
-          "&::-webkit-scrollbar": {
-            width: 10,
-            height: 10,
-          },
-
-          "&::-webkit-scrollbar-track": {
-            backgroundColor: theme.palette.background.default,
-          },
-
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor:
-              theme.palette.mode === "dark"
-                ? theme.palette.grey[700]
-                : theme.palette.grey[500],
-            borderRadius: 8,
-            border: `2px solid ${theme.palette.background.default}`,
-          },
-
-          "&::-webkit-scrollbar-thumb:hover": {
-            backgroundColor:
-              theme.palette.mode === "dark"
-                ? theme.palette.grey[600]
-                : theme.palette.grey[700],
+    // 3. Merge components into the configuration
+    baseOptions.components = merge(
+      componentsOverrides(tempTheme),
+      contrast.components,
+      {
+        MuiCssBaseline: {
+          styleOverrides: {
+            body: {
+              scrollbarColor:
+                tempTheme.palette.mode === "dark"
+                  ? `${tempTheme.palette.grey[700]} ${tempTheme.palette.background.default}`
+                  : `${tempTheme.palette.grey[500]} ${tempTheme.palette.background.default}`,
+              scrollbarWidth: "thin",
+              "&::-webkit-scrollbar": { width: 10, height: 10 },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: tempTheme.palette.background.default,
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor:
+                  tempTheme.palette.mode === "dark"
+                    ? tempTheme.palette.grey[700]
+                    : tempTheme.palette.grey[500],
+                borderRadius: 8,
+                border: `2px solid ${tempTheme.palette.background.default}`,
+              },
+            },
           },
         },
-      },
-    },
-  });
+      }
+    );
+
+    // 4. Return the final, complete theme
+    return createTheme(baseOptions);
+  }, [
+    settings.themeMode,
+    settings.themeDirection,
+    settings.themeContrast, // Added this to the dependency array
+    presets.palette,
+    presets.customShadows,
+    contrast.palette,
+    contrast.components,
+  ]);
 
   return (
     <MuiThemeProvider theme={theme}>

@@ -59,16 +59,17 @@ export default function HomeMinimal() {
           </Typography>
         </m.div>
       </Stack>
-
       <Box
-        gap={{ xs: 3, lg: 10 }}
-        display="grid"
-        alignItems="center"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          md: 'repeat(3, 1fr)',
-        }}
-      >
+        sx={{
+          gap: { xs: 3, lg: 10 },
+          display: "grid",
+          alignItems: "center",
+
+          gridTemplateColumns: {
+            xs: 'repeat(1, 1fr)',
+            md: 'repeat(3, 1fr)',
+          }
+        }}>
         {CARDS.map((card, index) => (
           <m.div variants={varFade().inUp} key={card.title}>
             <Card

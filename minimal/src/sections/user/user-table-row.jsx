@@ -43,12 +43,14 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
           <ListItemText
             primary={name}
             secondary={email}
-            primaryTypographyProps={{ typography: 'body2' }}
-            secondaryTypographyProps={{
-              component: 'span',
-              color: 'text.disabled',
-            }}
-          />
+            slotProps={{
+              primary: { typography: 'body2' },
+
+              secondary: {
+                component: 'span',
+                color: 'text.disabled',
+              }
+            }} />
         </TableCell>
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{phoneNumber}</TableCell>
@@ -83,9 +85,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
           </IconButton>
         </TableCell>
       </TableRow>
-
       <UserQuickEditForm currentUser={row} open={quickEdit.value} onClose={quickEdit.onFalse} />
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -113,7 +113,6 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
           Edit
         </MenuItem>
       </CustomPopover>
-
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}

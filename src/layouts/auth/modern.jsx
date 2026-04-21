@@ -5,108 +5,72 @@ import { Outlet } from "react-router";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import { alpha } from "@mui/material/styles";
-import { useResponsive } from "../../hooks/use-responsive";
 
 // ----------------------------------------------------------------------
 
-export default function AuthModernLayout({ image }) {
-  const mdUp = useResponsive("up", "md");
-
-  const renderContent = (
+export default function AuthModernLayout() {
+  return (
     <Stack
+      component="main"
       sx={{
-        width: 1,
-        mx: "auto",
-        maxWidth: 600,
-        px: { xs: 3, md: 10 },
-        py: { xs: 4, md: 0 },
-        height: "100vh",
-        justifyContent: "center",
+        minHeight: "100vh",
         alignItems: "center",
-      }}
-    >
-      <Logo
-        maxSize={140}
-        sx={{
-          mb: { xs: 1, md: 2 },
-          width: 80,
-          height: 80,
-        }}
-      />
-
-      <Card
-        sx={{
-          width: 1,
-          py: { xs: 6, md: 8 },
-          px: { xs: 4, md: 6 },
-          boxShadow: {
-            xs: (theme) =>
-              `0 0 2px ${alpha(
-                theme.palette.grey[500],
-                0.16
-              )}, 0 12px 24px -4px ${alpha(theme.palette.grey[500], 0.12)}`,
-            md: "none",
-          },
-          overflow: { md: "unset" },
-          bgcolor: { md: "transparent" },
-          borderRadius: 2,
-        }}
-      >
-        <Outlet />
-      </Card>
-    </Stack>
-  );
-
-  const renderSection = (
-    <Stack
-      flexGrow={1}
-      sx={{
+        justifyContent: "center",
         position: "relative",
       }}
     >
       <Box
-        component="img"
-        alt="auth"
-        src={image || "/assets/background/overlay_3.jpg"}
         sx={{
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          objectFit: "cover",
-          position: "absolute",
-          width: "calc(60% - 32px)",
-          height: "calc(60% - 32px)",
-          borderRadius: 3,
+          position: "fixed",
+          inset: 0,
+          backgroundImage: (theme) => `
+                  radial-gradient(
+                    ${alpha(theme.palette.divider, 0.08)} 1px,
+                    transparent 1px
+                  )
+                `,
+          backgroundSize: "16px 16px",
+          pointerEvents: "none",
+          zIndex: 0,
         }}
       />
-    </Stack>
-  );
-
-  return (
-    <Stack
-      component="main"
-      direction="row"
-      sx={{
-        minHeight: "100vh",
-        position: "relative",
-        "&:before": {
+      <Stack
+        sx={{
           width: 1,
-          height: 1,
-          zIndex: -1,
-          content: "''",
-          position: "absolute",
-          backgroundSize: "cover",
-          opacity: { xs: 0.24, md: 0 },
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center center",
-          backgroundImage:
-            "url(https://minimals.cc/assets/background/overlay_4.jpg)",
-        },
-      }}
-    >
-      {renderContent}
+          mx: "auto",
+          maxWidth: 480,
+          px: { xs: 3, md: 6 },
+          py: { xs: 4, md: 0 },
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <Logo
+          maxSize={140}
+          sx={{
+            mb: 2,
+            width: 72,
+            height: 72,
+            alignSelf: "center",
+          }}
+        />
 
-      {mdUp && renderSection}
+        <Card
+          sx={{
+            width: 1,
+            py: { xs: 5, md: 5 },
+            px: { xs: 4, md: 5 },
+            boxShadow: (theme) =>
+              `0 0 2px ${alpha(
+                theme.palette.grey[500],
+                0.16
+              )}, 0 12px 24px -4px ${alpha(theme.palette.grey[500], 0.12)}`,
+            borderRadius: 2,
+          }}
+        >
+          <Outlet />
+        </Card>
+      </Stack>
     </Stack>
   );
 }

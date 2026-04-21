@@ -15,31 +15,13 @@ import {
   alpha,
 } from "@mui/material";
 import {
-  CheckOutlined,
-  EmailOutlined,
   LockOutlined,
   MarkEmailReadOutlined,
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
 import { confirmSignup, getTokens, login, signup } from "./amplifyAuth";
-
-const inputSx = {
-  "& .MuiOutlinedInput-root": {
-    fontSize: "1rem",
-    "& input": { py: 1.5 },
-    "&:hover fieldset": { borderColor: "primary.main" },
-  },
-};
-
-const primaryButtonSx = {
-  py: 1.5,
-  fontSize: "1rem",
-  fontWeight: 600,
-  textTransform: "none",
-  borderRadius: 1.5,
-  "&:active": { transform: "translateY(0px)" },
-};
+import { inputSx, primaryButtonSx } from "./styles";
 
 export default function CognitoLogin() {
   const [mode, setMode] = useState("login");
@@ -158,125 +140,108 @@ export default function CognitoLogin() {
   );
 
   return (
-    <Stack spacing={3}>
-      <Box sx={{ mb: 1, textAlign: "center" }}>
+    <Stack spacing={3} sx={{ mb: 2 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
         <Box
           sx={{
-            width: 52,
-            height: 52,
-            borderRadius: 2,
+            width: 40,
+            height: 40,
+            borderRadius: 1.5,
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
-            mb: 2,
+            flexShrink: 0,
             bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
             color: "primary.main",
           }}
         >
           {mode === "confirm" ? (
-            <MarkEmailReadOutlined sx={{ fontSize: 26 }} />
+            <MarkEmailReadOutlined sx={{ fontSize: 22 }} />
           ) : (
-            <LockOutlined sx={{ fontSize: 26 }} />
+            <LockOutlined sx={{ fontSize: 22 }} />
           )}
         </Box>
-
-        <Typography variant="h4" fontWeight={700} gutterBottom>
-          {titles[mode].heading}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {titles[mode].sub}
-        </Typography>
+        <Box>
+          <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+            {titles[mode].heading}
+          </Typography>
+          <Typography variant="caption" sx={{ color: "text.secondary" }}>
+            {titles[mode].sub}
+          </Typography>
+        </Box>
       </Box>
-
-      <Stack spacing={2}>
+      <Stack spacing={1.5}>
         <TextField
+          variant="filled"
           label="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailOutlined sx={{ color: "text.secondary", fontSize: 22 }} />
-              </InputAdornment>
-            ),
-          }}
           sx={inputSx}
+          slotProps={{ input: { disableUnderline: true } }}
         />
 
         {mode !== "confirm" && (
           <TextField
+            variant="filled"
             type={showPassword ? "text" : "password"}
             label="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockOutlined
-                    sx={{ color: "text.secondary", fontSize: 22 }}
-                  />
-                </InputAdornment>
-              ),
-              endAdornment: passwordAdornment,
-            }}
             sx={inputSx}
+            slotProps={{
+              input: {
+                disableUnderline: true,
+                endAdornment: passwordAdornment,
+              },
+            }}
           />
         )}
 
         {mode === "signup" && (
           <TextField
+            variant="filled"
             type={showConfirmPassword ? "text" : "password"}
             label="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockOutlined
-                    sx={{ color: "text.secondary", fontSize: 22 }}
-                  />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    edge="end"
-                    size="small"
-                    tabIndex={-1}
-                  >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
             sx={inputSx}
+            slotProps={{
+              input: {
+                disableUnderline: true,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      edge="end"
+                      size="small"
+                      tabIndex={-1}
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
           />
         )}
 
         {mode === "confirm" && (
           <TextField
+            variant="filled"
             label="Confirmation Code"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <CheckOutlined
-                    sx={{ color: "text.secondary", fontSize: 22 }}
-                  />
-                </InputAdornment>
-              ),
-            }}
             sx={inputSx}
+            slotProps={{ input: { disableUnderline: true } }}
           />
         )}
       </Stack>
-
       {mode === "login" && (
         <Stack spacing={1.5}>
           <Button
@@ -284,20 +249,24 @@ export default function CognitoLogin() {
             onClick={handleLogin}
             size="large"
             fullWidth
+            disableElevation
             sx={primaryButtonSx}
           >
-            Sign in
+            Sign in &rarr;
           </Button>
           <Button
             onClick={() => setMode("signup")}
             fullWidth
-            sx={{ textTransform: "none", fontWeight: 500 }}
+            sx={{
+              textTransform: "none",
+              fontWeight: 600,
+              color: "text.secondary",
+            }}
           >
-            Create an account
+            No account? Create one
           </Button>
         </Stack>
       )}
-
       {mode === "signup" && (
         <Stack spacing={1.5}>
           <Button
@@ -305,29 +274,34 @@ export default function CognitoLogin() {
             onClick={handleSignup}
             size="large"
             fullWidth
+            disableElevation
             sx={primaryButtonSx}
           >
-            Sign Up
+            Create account &rarr;
           </Button>
           <Button
             onClick={() => setMode("login")}
             fullWidth
-            sx={{ textTransform: "none", fontWeight: 500 }}
+            sx={{
+              textTransform: "none",
+              fontWeight: 600,
+              color: "text.secondary",
+            }}
           >
-            Back to login
+            &larr; Back to sign in
           </Button>
         </Stack>
       )}
-
       {mode === "confirm" && (
         <Button
           variant="contained"
           onClick={handleConfirm}
           size="large"
           fullWidth
+          disableElevation
           sx={primaryButtonSx}
         >
-          Confirm
+          Verify &rarr;
         </Button>
       )}
     </Stack>

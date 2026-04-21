@@ -207,7 +207,12 @@ export default function UserNewEditForm({ currentUser }) {
             />
 
             {currentUser && (
-              <Stack justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
+              <Stack
+                sx={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mt: 3
+                }}>
                 <Button variant="soft" color="error">
                   Delete User
                 </Button>
@@ -219,14 +224,16 @@ export default function UserNewEditForm({ currentUser }) {
         <Grid xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                sm: 'repeat(2, 1fr)',
-              }}
-            >
+              sx={{
+                rowGap: 3,
+                columnGap: 2,
+                display: "grid",
+
+                gridTemplateColumns: {
+                  xs: 'repeat(1, 1fr)',
+                  sm: 'repeat(2, 1fr)',
+                }
+              }}>
               <RHFTextField name="name" label="Full Name" />
               <RHFTextField name="email" label="Email Address" />
               <RHFTextField name="phoneNumber" label="Phone Number" />
@@ -268,7 +275,11 @@ export default function UserNewEditForm({ currentUser }) {
               <RHFTextField name="role" label="Role" />
             </Box>
 
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+            <Stack
+              sx={{
+                alignItems: "flex-end",
+                mt: 3
+              }}>
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                 {!currentUser ? 'Create User' : 'Save Changes'}
               </LoadingButton>

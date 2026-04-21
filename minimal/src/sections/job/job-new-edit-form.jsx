@@ -335,7 +335,12 @@ export default function JobNewEditForm({ currentJob }) {
                 name="salary.type"
                 control={control}
                 render={({ field }) => (
-                  <Box gap={2} display="grid" gridTemplateColumns="repeat(2, 1fr)">
+                  <Box
+                    sx={{
+                      gap: 2,
+                      display: "grid",
+                      gridTemplateColumns: "repeat(2, 1fr)"
+                    }}>
                     {[
                       {
                         label: 'Hourly',

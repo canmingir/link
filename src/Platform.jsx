@@ -51,6 +51,7 @@ const Platform = ({ routes }) => {
           themeLayout: "vertical",
           themeColorPresets: template.theme.colorPresets || "default",
           themeStretch: false,
+          beta: false,
         }}
       >
         <ThemeProvider>

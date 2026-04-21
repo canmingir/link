@@ -10,17 +10,17 @@ export function ChatNavItemSkeleton({ sx, ...other }) {
     <Stack
       spacing={2}
       direction="row"
-      alignItems="center"
-      sx={{
+      {...other}
+      sx={[{
+        alignItems: "center",
         px: 2.5,
         py: 1.5,
-        ...sx,
-      }}
-      {...other}
-    >
+        ...sx
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       <Skeleton variant="circular" sx={{ width: 48, height: 48 }} />
-
-      <Stack spacing={1} flexGrow={1}>
+      <Stack spacing={1} sx={{
+        flexGrow: 1
+      }}>
         <Skeleton sx={{ width: 0.75, height: 10 }} />
         <Skeleton sx={{ width: 0.5, height: 10 }} />
       </Stack>

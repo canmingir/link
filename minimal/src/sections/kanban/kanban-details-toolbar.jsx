@@ -44,11 +44,10 @@ export default function KanbanDetailsToolbar({
     <>
       <Stack
         direction="row"
-        alignItems="center"
         sx={{
-          p: (theme) => theme.spacing(2.5, 1, 2.5, 2.5),
-        }}
-      >
+          alignItems: "center",
+          p: (theme) => theme.spacing(2.5, 1, 2.5, 2.5)
+        }}>
         {!smUp && (
           <Tooltip title="Back">
             <IconButton onClick={onCloseDetails} sx={{ mr: 1 }}>
@@ -66,7 +65,12 @@ export default function KanbanDetailsToolbar({
           {status}
         </Button>
 
-        <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: "flex-end",
+            flexGrow: 1
+          }}>
           <Tooltip title="Like">
             <IconButton color={liked ? 'default' : 'primary'} onClick={onLike}>
               <Iconify icon="ic:round-thumb-up" />
@@ -84,7 +88,6 @@ export default function KanbanDetailsToolbar({
           </IconButton>
         </Stack>
       </Stack>
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -103,7 +106,6 @@ export default function KanbanDetailsToolbar({
           </MenuItem>
         ))}
       </CustomPopover>
-
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}

@@ -26,15 +26,16 @@ export default function PickerDateRange() {
           https://mui.com/x/react-date-pickers/date-range-picker/{' '}
         </Link>
       </Stack>
-
       <Box
-        gap={3}
-        display="grid"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          md: 'repeat(2, 1fr)',
-        }}
-      >
+        sx={{
+          gap: 3,
+          display: "grid",
+
+          gridTemplateColumns: {
+            xs: 'repeat(1, 1fr)',
+            md: 'repeat(2, 1fr)',
+          }
+        }}>
         <ComponentBlock title="Input">
           <Button variant="contained" onClick={rangeInputPicker.onOpen}>
             Click me!

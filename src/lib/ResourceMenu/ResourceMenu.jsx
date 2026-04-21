@@ -122,7 +122,9 @@ const ResourceMenu = (props) => {
           top: anchor?.clientY || 0,
           left: anchor?.clientX || 0,
         }}
-        TransitionComponent={Fade}
+        slots={{
+          transition: Fade
+        }}
       >
         <MenuItem onClick={addResource} data-cy="add-resource">
           <Source />

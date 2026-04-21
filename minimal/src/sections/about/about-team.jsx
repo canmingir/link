@@ -125,16 +125,19 @@ function MemberCard({ member }) {
       <Typography variant="subtitle1" sx={{ mt: 2.5, mb: 0.5 }}>
         {name}
       </Typography>
-
       <Typography variant="body2" sx={{ mb: 2.5, color: 'text.secondary' }}>
         {role}
       </Typography>
-
       <Box sx={{ px: 1 }}>
         <Image alt={name} src={avatarUrl} ratio="1/1" sx={{ borderRadius: 2 }} />
       </Box>
-
-      <Stack direction="row" alignItems="center" justifyContent="center" sx={{ p: 2 }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+          justifyContent: "center",
+          p: 2
+        }}>
         {_socials.map((social) => (
           <IconButton
             key={social.name}

@@ -107,7 +107,9 @@ function Searchbar() {
   };
 
   const renderButton = (
-    <Stack direction="row" alignItems="center">
+    <Stack direction="row" sx={{
+      alignItems: "center"
+    }}>
       <IconButton onClick={search.onTrue}>
         <Iconify icon="eva:search-fill" />
       </IconButton>
@@ -119,7 +121,6 @@ function Searchbar() {
   return (
     <>
       {renderButton}
-
       <Dialog
         fullWidth
         maxWidth="sm"
@@ -129,16 +130,18 @@ function Searchbar() {
           enter: theme.transitions.duration.shortest,
           exit: 0,
         }}
-        PaperProps={{
-          sx: {
-            mt: 15,
-            overflow: 'unset',
-          },
-        }}
         sx={{
           [`& .${dialogClasses.container}`]: {
             alignItems: 'flex-start',
           },
+        }}
+        slotProps={{
+          paper: {
+            sx: {
+              mt: 15,
+              overflow: 'unset',
+            },
+          }
         }}
       >
         <Box sx={{ p: 3, borderBottom: `solid 1px ${theme.palette.divider}` }}>

@@ -44,7 +44,13 @@ export default function FaqsHero() {
             <TextAnimate text="How" sx={{ color: 'primary.main' }} variants={varFade().inRight} />
             <br />
 
-            <Stack spacing={2} display="inline-flex" direction="row" sx={{ color: 'common.white' }}>
+            <Stack
+              spacing={2}
+              direction="row"
+              sx={{
+                display: "inline-flex",
+                color: 'common.white'
+              }}>
               <TextAnimate text="can" />
               <TextAnimate text="we" />
               <TextAnimate text="help" />
@@ -56,13 +62,6 @@ export default function FaqsHero() {
             <TextField
               fullWidth
               placeholder="Search support..."
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-                  </InputAdornment>
-                ),
-              }}
               sx={{
                 mt: 5,
                 maxWidth: 360,
@@ -72,6 +71,15 @@ export default function FaqsHero() {
                 [`& .${outlinedInputClasses.input}`]: {
                   typography: 'subtitle1',
                 },
+              }}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                    </InputAdornment>
+                  ),
+                }
               }}
             />
           </m.div>

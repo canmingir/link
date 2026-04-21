@@ -15,22 +15,22 @@ export default function FileUpgrade({ sx, ...other }) {
 
   return (
     <Stack
-      alignItems="center"
-      sx={{
+      {...other}
+      sx={[{
+        alignItems: "center",
+
         ...bgGradient({
           direction: '135deg',
           startColor: alpha(theme.palette.primary.light, 0.2),
           endColor: alpha(theme.palette.primary.main, 0.2),
         }),
+
         p: 5,
         borderRadius: 2,
         backgroundColor: 'common.white',
-        ...sx,
-      }}
-      {...other}
-    >
+        ...sx
+      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
       <UpgradeStorageIllustration />
-
       <Button
         size="large"
         color="inherit"
@@ -47,7 +47,6 @@ export default function FileUpgrade({ sx, ...other }) {
       >
         Upgrade Plan
       </Button>
-
       <Typography variant="caption" sx={{ color: 'primary.dark', textAlign: 'center' }}>
         Upgrade your plan and get more space
       </Typography>

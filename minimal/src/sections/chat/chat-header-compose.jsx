@@ -31,7 +31,6 @@ export default function ChatHeaderCompose({ contacts, onAddRecipients }) {
       <Typography variant="subtitle2" sx={{ color: 'text.primary', mr: 2 }}>
         To:
       </Typography>
-
       <Autocomplete
         sx={{ minWidth: 320 }}
         multiple
@@ -61,9 +60,9 @@ export default function ChatHeaderCompose({ contacts, onAddRecipients }) {
             >
               <Avatar alt={recipient.name} src={recipient.avatarUrl} sx={{ width: 1, height: 1 }} />
               <Stack
-                alignItems="center"
-                justifyContent="center"
                 sx={{
+                  alignItems: "center",
+                  justifyContent: "center",
                   top: 0,
                   left: 0,
                   width: 1,
@@ -71,17 +70,18 @@ export default function ChatHeaderCompose({ contacts, onAddRecipients }) {
                   opacity: 0,
                   position: 'absolute',
                   bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
+
                   transition: (theme) =>
                     theme.transitions.create(['opacity'], {
                       easing: theme.transitions.easing.easeInOut,
                       duration: theme.transitions.duration.shorter,
                     }),
+
                   ...(selected && {
                     opacity: 1,
                     color: 'primary.main',
-                  }),
-                }}
-              >
+                  })
+                }}>
                 <Iconify icon="eva:checkmark-fill" />
               </Stack>
             </Box>

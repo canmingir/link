@@ -102,11 +102,16 @@ export default function CarouselArrows({
   }
 
   return (
-    <Stack direction="row" alignItems="center" display="inline-flex" sx={sx} {...other}>
+    <Stack
+      direction="row"
+      {...other}
+      sx={[{
+        alignItems: "center",
+        display: "inline-flex"
+      }, ...(Array.isArray(sx) ? sx : [sx]), other.sx]}>
       <StyledIconButton filled={filled} shape={shape} onClick={onPrev} {...leftButtonProps}>
         <LeftIcon icon={icon} isRTL={isRTL} />
       </StyledIconButton>
-
       <StyledIconButton filled={filled} shape={shape} onClick={onNext} {...rightButtonProps}>
         <RightIcon icon={icon} isRTL={isRTL} />
       </StyledIconButton>

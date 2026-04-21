@@ -61,10 +61,14 @@ export default function ChatView() {
   const renderHead = (
     <Stack
       direction="row"
-      alignItems="center"
-      flexShrink={0}
-      sx={{ pr: 1, pl: 2.5, py: 1, minHeight: 72 }}
-    >
+      sx={{
+        alignItems: "center",
+        flexShrink: 0,
+        pr: 1,
+        pl: 2.5,
+        py: 1,
+        minHeight: 72
+      }}>
       {selectedConversationId ? (
         <>{details && <ChatHeaderDetail participants={participants} />}</>
       ) : (

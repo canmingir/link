@@ -27,19 +27,17 @@ export default function ComingSoonView() {
       <Typography variant="h3" sx={{ mb: 2 }}>
         Coming Soon!
       </Typography>
-
       <Typography sx={{ color: 'text.secondary' }}>
         We are currently working hard on this page!
       </Typography>
-
       <ComingSoonIllustration sx={{ my: 10, height: 240 }} />
-
       <Stack
         direction="row"
-        justifyContent="center"
         divider={<Box sx={{ mx: { xs: 1, sm: 2.5 } }}>:</Box>}
-        sx={{ typography: 'h2' }}
-      >
+        sx={{
+          justifyContent: "center",
+          typography: 'h2'
+        }}>
         <TimeBlock label="Days" value={days} />
 
         <TimeBlock label="Hours" value={hours} />
@@ -48,36 +46,42 @@ export default function ComingSoonView() {
 
         <TimeBlock label="Seconds" value={seconds} />
       </Stack>
-
       <TextField
         fullWidth
         placeholder="Enter your email"
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <Button variant="contained" size="large">
-                Notify Me
-              </Button>
-            </InputAdornment>
-          ),
-          sx: {
-            pr: 0.5,
-            [`&.${outlinedInputClasses.focused}`]: {
-              boxShadow: (theme) => theme.customShadows.z20,
-              transition: (theme) =>
-                theme.transitions.create(['box-shadow'], {
-                  duration: theme.transitions.duration.shorter,
-                }),
-              [`& .${outlinedInputClasses.notchedOutline}`]: {
-                border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.32)}`,
+        sx={{ my: 5 }}
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <Button variant="contained" size="large">
+                  Notify Me
+                </Button>
+              </InputAdornment>
+            ),
+            sx: {
+              pr: 0.5,
+              [`&.${outlinedInputClasses.focused}`]: {
+                boxShadow: (theme) => theme.customShadows.z20,
+                transition: (theme) =>
+                  theme.transitions.create(['box-shadow'], {
+                    duration: theme.transitions.duration.shorter,
+                  }),
+                [`& .${outlinedInputClasses.notchedOutline}`]: {
+                  border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.32)}`,
+                },
               },
             },
-          },
+          }
         }}
-        sx={{ my: 5 }}
       />
-
-      <Stack spacing={1} alignItems="center" justifyContent="center" direction="row">
+      <Stack
+        spacing={1}
+        direction="row"
+        sx={{
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
         {_socials.map((social) => (
           <IconButton
             key={social.name}

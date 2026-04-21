@@ -39,8 +39,14 @@ export default function OrderTableFiltersResult({
           results found
         </Box>
       </Box>
-
-      <Stack flexGrow={1} spacing={1} direction="row" flexWrap="wrap" alignItems="center">
+      <Stack
+        spacing={1}
+        direction="row"
+        sx={{
+          flexGrow: 1,
+          flexWrap: "wrap",
+          alignItems: "center"
+        }}>
         {filters.status !== 'all' && (
           <Block label="Status:">
             <Chip size="small" label={filters.status} onDelete={handleRemoveStatus} />
@@ -93,8 +99,9 @@ function Block({ label, children, sx, ...other }) {
       <Box component="span" sx={{ typography: 'subtitle2' }}>
         {label}
       </Box>
-
-      <Stack spacing={1} direction="row" flexWrap="wrap">
+      <Stack spacing={1} direction="row" sx={{
+        flexWrap: "wrap"
+      }}>
         {children}
       </Stack>
     </Stack>
