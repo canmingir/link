@@ -1,4 +1,4 @@
-import LanguageIcon from "@mui/icons-material/Language";
+import { Language } from "@mui/icons-material";
 import styles from "./styles";
 
 import {
@@ -72,7 +72,7 @@ const APIPath = ({
         </Grid>
       </Grid>
       <Button onClick={onTypesButtonClick} data-cy="types-button">
-        <LanguageIcon sx={styles.icon} />
+        <Language sx={styles.icon} />
         Types
       </Button>
     </Grid>

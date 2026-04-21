@@ -1,11 +1,10 @@
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
+import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { v4 as uuidv4 } from "uuid";
 
 import { Box, Typography } from "@mui/material";
+import { ChevronRight, ExpandMore } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
-import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-import { TreeItem } from "@mui/x-tree-view/TreeItem";
 
 const Schema = ({ initialData = {}, customTypes = [] }) => {
   const [schemaData, setSchemaData] = useState({});
@@ -159,8 +158,8 @@ const Schema = ({ initialData = {}, customTypes = [] }) => {
   return (
     <SimpleTreeView
       slots={{
-        collapseIcon: () => <ExpandMoreIcon />,
-        expandIcon: () => <ChevronRightIcon />,
+        collapseIcon: () => <ExpandMore />,
+        expandIcon: () => <ChevronRight />,
       }}
       defaultExpandedItems={["1"]}
       sx={{

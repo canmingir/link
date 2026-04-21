@@ -1,8 +1,6 @@
-import { Close } from "@mui/icons-material";
-import Fullscreen from "@mui/icons-material/Fullscreen";
-import FullscreenExit from "@mui/icons-material/FullscreenExit";
 import React from "react";
 
+import { Close, Fullscreen, FullscreenExit } from "@mui/icons-material";
 import {
   Dialog,
   DialogActions,
@@ -12,7 +10,7 @@ import {
 } from "@mui/material";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 
-export default function NucDialog({
+function NucDialog({
   title,
   minWidth = 600,
   children,
@@ -106,3 +104,5 @@ export default function NucDialog({
     </Dialog>
   );
 }
+
+export default NucDialog;

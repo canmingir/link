@@ -1,4 +1,4 @@
-import AddIcon from "@mui/icons-material/Add";
+import { Add } from "@mui/icons-material";
 import ParamTable from "../ParamTable";
 
 import { Box, Fab } from "@mui/material";
@@ -47,7 +47,7 @@ const APIParams = ({ types, paramsRef, addParams }) => {
           onClick={handleAddParams}
           data-cy="add-param-button"
         >
-          <AddIcon />
+          <Add />
         </Fab>
       </Box>
     </Box>

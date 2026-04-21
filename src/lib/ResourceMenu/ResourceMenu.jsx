@@ -1,14 +1,11 @@
 import AlertMassage from "./AlertMassage";
-import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteResourceDialog from "./DeleteResourceDialog";
-import Fade from "@mui/material/Fade";
-import HttpIcon from "@mui/icons-material/Http";
 import React from "react";
-import SourceIcon from "@mui/icons-material/Source";
 import styles from "./styles";
 import { useRef } from "react";
 
-import { Divider, Menu, MenuItem, Typography } from "@mui/material";
+import { Delete, Http, Source } from "@mui/icons-material";
+import { Divider, Fade, Menu, MenuItem, Typography } from "@mui/material";
 import { publish, useEvent } from "@nucleoidai/react-event";
 
 const ResourceMenu = (props) => {
@@ -130,7 +127,7 @@ const ResourceMenu = (props) => {
         }}
       >
         <MenuItem onClick={addResource} data-cy="add-resource">
-          <SourceIcon />
+          <Source />
           <Typography sx={styles.menuItemText}>Resource</Typography>
         </MenuItem>
         <MenuItem
@@ -138,7 +135,7 @@ const ResourceMenu = (props) => {
           disabled={methodDisabled}
           data-cy="add-method"
         >
-          <HttpIcon />
+          <Http />
           <Typography sx={styles.menuItemText}>Method</Typography>
         </MenuItem>
         <Divider />
@@ -147,7 +144,7 @@ const ResourceMenu = (props) => {
           disabled={selectedAPI?.path === "/"}
           data-cy="delete-resource"
         >
-          <DeleteIcon />
+          <Delete />
           <Typography sx={styles.menuItemText}>Delete</Typography>
         </MenuItem>
       </Menu>

@@ -1,6 +1,7 @@
 import FlowNode from "./FlowNode";
 import { useGraphOperations } from "../hooks/useGraphOperations";
 
+import { Box, alpha } from "@mui/material";
 import React, { useMemo, useState } from "react";
 import { assertLinkedGraph, buildTreeFromLinked } from "../utils/flowUtils";
 
@@ -62,19 +63,31 @@ export const Flow = ({
   }, [nodesById, roots]);
 
   return (
-    <FlowNode
-      node={treeData}
-      variant={variant}
-      style={style}
-      plugin={plugin}
-      isRoot={true}
-      nodesById={allNodesById}
-      onPaste={editable ? handlePaste : undefined}
-      onCut={editable ? handleCut : undefined}
-      onConnect={editable ? handleConnect : undefined}
-      floatingNodes={floatingNodes}
-      height={height}
-    />
+    <Box
+      sx={{
+        backgroundImage: (theme) => `
+                          radial-gradient(
+                            ${alpha(theme.palette.divider, 0.08)} 1px,
+                            transparent 1px
+                          )
+                        `,
+        backgroundSize: "16px 16px",
+      }}
+    >
+      <FlowNode
+        node={treeData}
+        variant={variant}
+        style={style}
+        plugin={plugin}
+        isRoot={true}
+        nodesById={allNodesById}
+        onPaste={editable ? handlePaste : undefined}
+        onCut={editable ? handleCut : undefined}
+        onConnect={editable ? handleConnect : undefined}
+        floatingNodes={floatingNodes}
+        height={height}
+      />
+    </Box>
   );
 };
 

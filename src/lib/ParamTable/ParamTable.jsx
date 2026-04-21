@@ -1,5 +1,5 @@
 import { DataGrid } from "@mui/x-data-grid";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { HighlightOff } from "@mui/icons-material";
 import React from "react";
 import TypeMenu from "./TypeMenu";
 import styles from "./styles";
@@ -100,7 +100,7 @@ const ParamTable = ({ types, params, setParams }) => {
             onClick={() => removeParam(id)}
             size="large"
           >
-            <HighlightOffIcon />
+            <HighlightOff />
           </IconButton>
         );
       },

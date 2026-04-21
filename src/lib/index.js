@@ -48,3 +48,4 @@ export { default as ResourceMenu } from "./ResourceMenu";
 export { default as Schema } from "./Schema";
 export { default as SchemaEditor } from "./SchemaEditor";
 export { default as ToggleableMenu } from "./ToggleableMenu";
+export { default as APIBody } from "./NewApiBody/NewAPIBody";
