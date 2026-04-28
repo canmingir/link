@@ -22,9 +22,6 @@ const MainContainer = styled("div", {
   const defaultFrom = alpha(theme.palette.secondary.light, 0.2);
   const defaultTo = alpha(theme.palette.primary.main, 0.3);
 
-  const hoveredFrom = alpha(theme.palette.primary.main, 0.3);
-  const hoveredTo = alpha(theme.palette.secondary.light, 0.2);
-
   return {
     display: "flex",
     flexDirection: "column",
