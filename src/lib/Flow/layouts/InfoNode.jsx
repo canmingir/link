@@ -22,9 +22,6 @@ const MainContainer = styled("div", {
   const defaultFrom = alpha(theme.palette.secondary.light, 0.2);
   const defaultTo = alpha(theme.palette.primary.main, 0.3);
 
-  const hoveredFrom = alpha(theme.palette.primary.main, 0.3);
-  const hoveredTo = alpha(theme.palette.secondary.light, 0.2);
-
   return {
     display: "flex",
     flexDirection: "column",
@@ -47,13 +44,6 @@ const MainContainer = styled("div", {
       bgTo || defaultTo
     })`,
     boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
-
-    '&[data-hovered="true"]': {
-      background: `linear-gradient(135deg, ${bgTo || hoveredFrom}, ${
-        bgFrom || hoveredTo
-      })`,
-      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
-    },
   };
 });
 
