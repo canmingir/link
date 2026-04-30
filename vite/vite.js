@@ -75,18 +75,6 @@ async function vite() {
             if (id.includes("config.js") && !id.includes("node_modules")) {
               return "config";
             }
-
-            if (id.includes("node_modules")) {
-              const packageName = id
-                .toString()
-                .split("node_modules/")[1]
-                .split("/")[0]
-                .toString();
-
-              if (packageName === "@emotion") return "@mui";
-
-              return packageName;
-            }
           },
         },
       },
