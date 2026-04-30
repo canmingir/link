@@ -83,7 +83,7 @@ async function vite() {
                 .split("/")[0]
                 .toString();
 
-              if (packageName === "@emotion") return undefined;
+              if (packageName === "@emotion") return "@mui";
 
               return packageName;
             }
