@@ -6,10 +6,16 @@ import { tableRowClasses } from "@mui/material/TableRow";
 
 export function table(theme) {
   return {
+    MuiTable: {
+      defaultProps: {
+        size: "small",
+      },
+    },
     MuiTableContainer: {
       styleOverrides: {
         root: {
           position: "relative",
+          borderRadius: 4,
         },
       },
     },
@@ -34,6 +40,9 @@ export function table(theme) {
       styleOverrides: {
         root: {
           borderBottomStyle: "dashed",
+        },
+        sizeSmall: {
+          padding: "6px 12px",
         },
         head: {
           fontSize: 14,
