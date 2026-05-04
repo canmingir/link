@@ -1,6 +1,3 @@
-import { formLabelClasses } from "@mui/material/FormLabel";
-import { inputLabelClasses } from "@mui/material/InputLabel";
-
 // ----------------------------------------------------------------------
 
 export function formControl(theme) {
