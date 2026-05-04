@@ -64,6 +64,7 @@ export function textField(theme) {
               color: theme.palette.text.disabled,
             },
           },
+          borderRadius: 0.5,
         },
         input: {
           ...font.value,
@@ -93,6 +94,7 @@ export function textField(theme) {
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
+          borderRadius: 0.5,
           [`&.${outlinedInputClasses.focused}`]: {
             [`& .${outlinedInputClasses.notchedOutline}`]: {
               borderColor: color.focused,
@@ -122,7 +124,7 @@ export function textField(theme) {
     MuiFilledInput: {
       styleOverrides: {
         root: {
-          borderRadius: theme.shape.borderRadius,
+          borderRadius: 0.5,
           backgroundColor: alpha(theme.palette.grey[500], 0.08),
           "&:hover": {
             backgroundColor: alpha(theme.palette.grey[500], 0.16),
