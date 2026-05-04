@@ -19,6 +19,7 @@ import { defaultProps } from "./default-props";
 import { dialog } from "./components/dialog";
 import { drawer } from "./components/drawer";
 import { fab } from "./components/fab";
+import { formControl } from "./components/form";
 import { list } from "./components/list";
 import { loadingButton } from "./components/loading-button";
 import { menu } from "./components/menu";
@@ -93,7 +94,8 @@ export function componentsOverrides(theme) {
     cssBaseline(theme),
     autocomplete(theme),
     toggleButton(theme),
-    loadingButton(theme)
+    loadingButton(theme),
+    formControl(theme)
   );
 
   return components;
