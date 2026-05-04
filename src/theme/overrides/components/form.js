@@ -4,8 +4,12 @@ export function formControl(theme) {
   return {
     MuiFormControl: {
       defaultProps: {
-        variant: "outlined",
         size: "small",
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        variant: "outlined",
       },
     },
     MuiInputBase: {
