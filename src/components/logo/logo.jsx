@@ -3,36 +3,56 @@ import Link from "@mui/material/Link";
 import { RouterLink } from "../../routes/components";
 import config from "../../config/config";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-const Logo = ({ disabledLink = false, sx, maxSize = 99 }) => {
+const resolvedDimensions = {};
+
+const Logo = ({ disabledLink = false, sx, maxSize = 65, isLogin = false }) => {
   const { icon } = config().template.login;
-  const [dimensions, setDimensions] = useState({
-    width: maxSize,
-    height: maxSize,
-  });
+  const key = `${icon}`;
+
+  const [dimensions, setDimensions] = useState(
+    resolvedDimensions[key] || { width: maxSize, height: maxSize }
+  );
 
   useEffect(() => {
-    if (icon) {
-      const img = new Image();
-      img.onload = () => {
-        const { naturalWidth, naturalHeight } = img;
-        const isSquare = naturalWidth === naturalHeight;
+    if (!icon || resolvedDimensions[key]) return;
 
-        if (naturalWidth > maxSize || naturalHeight > maxSize) {
-          setDimensions(
-            isSquare ? { width: 40, height: 40 } : { width: 60, height: 40 }
-          );
+    const img = new Image();
+    img.onload = () => {
+      const { naturalWidth, naturalHeight } = img;
+      const isSquare = naturalWidth === naturalHeight;
+      let newDimensions;
+
+      if (naturalWidth > maxSize || naturalHeight > maxSize) {
+        if (isSquare) {
+          newDimensions = {
+            width: isLogin ? maxSize : 40,
+            height: isLogin ? maxSize : 40,
+          };
         } else {
-          setDimensions({
-            width: naturalWidth,
-            height: naturalHeight,
-          });
+          const aspectRatio = naturalWidth / naturalHeight;
+          if (naturalWidth >= naturalHeight) {
+            newDimensions = {
+              width: maxSize,
+              height: Math.round(maxSize / aspectRatio),
+            };
+          } else {
+            newDimensions = {
+              width: Math.round(maxSize * aspectRatio),
+              height: maxSize,
+            };
+          }
         }
-      };
-      img.src = icon;
-    }
-  }, [icon, maxSize]);
+      } else {
+        newDimensions = { width: naturalWidth, height: naturalHeight };
+      }
+
+      resolvedDimensions[key] = newDimensions;
+      setDimensions(newDimensions);
+    };
+    img.src = icon;
+  }, [icon, maxSize, key]);
 
   const logo = (
     <Box
@@ -47,9 +67,7 @@ const Logo = ({ disabledLink = false, sx, maxSize = 99 }) => {
     />
   );
 
-  if (disabledLink) {
-    return logo;
-  }
+  if (disabledLink) return logo;
 
   return (
     <Link component={RouterLink} href="/" sx={{ display: "contents" }}>

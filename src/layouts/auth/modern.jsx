@@ -46,11 +46,10 @@ export default function AuthModernLayout() {
         }}
       >
         <Logo
+          isLogin={true}
           maxSize={140}
           sx={{
             mb: 2,
-            width: 72,
-            height: 72,
             alignSelf: "center",
           }}
         />

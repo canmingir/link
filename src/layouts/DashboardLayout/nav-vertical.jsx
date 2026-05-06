@@ -104,7 +104,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
             mt: 3,
           }}
         >
-          <Logo sx={{ ml: 4, mb: 1 }} />
+          <Logo sx={{ ml: 4 }} />
           <Typography
             sx={{
               ml: 1,
@@ -130,8 +130,9 @@ export default function NavVertical({ openNav, onCloseNav }) {
           marginBottom: lgUp ? 3 : 0,
           position: lgUp ? "static" : "fixed",
           bottom: lgUp ? "auto" : 66,
-          width: "100%"
-        }}>
+          width: "100%",
+        }}
+      >
         {actionButtons &&
           actionButtons?.map((Action, index) => (
             <Box key={index} component={Action}></Box>
@@ -190,7 +191,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
               sx: {
                 width: NAV.W_VERTICAL,
               },
-            }
+            },
           }}
         >
           {renderContent}
