@@ -241,7 +241,7 @@ const FlowViewport = ({
       ref={containerRef}
       onMouseDown={handleViewportMouseDown}
       sx={{
-        width: "100vw",
+        width: "100%",
         height: "100vh",
         overflow: "hidden",
         bgcolor: "none",
