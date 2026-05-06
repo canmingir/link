@@ -17,12 +17,12 @@ const Logo = ({ disabledLink = false, sx, maxSize = 99 }) => {
       const img = new Image();
       img.onload = () => {
         const { naturalWidth, naturalHeight } = img;
+        const isSquare = naturalWidth === naturalHeight;
 
         if (naturalWidth > maxSize || naturalHeight > maxSize) {
-          setDimensions({
-            width: 40,
-            height: 40,
-          });
+          setDimensions(
+            isSquare ? { width: 40, height: 40 } : { width: 60, height: 40 }
+          );
         } else {
           setDimensions({
             width: naturalWidth,
