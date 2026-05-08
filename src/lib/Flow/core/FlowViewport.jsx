@@ -26,10 +26,12 @@ const FlowViewport = ({
   const [zoom, setZoom] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
   const [selectionBox, setSelectionBox] = useState(null);
+  const [shouldCenter, setShouldCenter] = useState(true);
 
   const containerRef = useRef(null);
   const selectionBoxRef = useRef(null);
   const mousePositionRef = useRef({ x: 0, y: 0 });
+  const innerRef = useRef(null);
 
   const {
     clearSelection,
@@ -39,6 +41,28 @@ const FlowViewport = ({
     pasteNodes,
     selectedIds,
   } = useSelection();
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const inner = innerRef.current;
+    if (!container || !inner) return;
+
+    const observer = new ResizeObserver(() => {
+      const contentWidth = inner.scrollWidth;
+      const contentHeight = inner.scrollHeight;
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
+
+      const exceeds =
+        contentWidth > containerWidth || contentHeight > containerHeight;
+      setShouldCenter(!exceeds);
+    });
+
+    observer.observe(inner);
+    observer.observe(container);
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -252,6 +276,7 @@ const FlowViewport = ({
     >
       <SelectionOverlay box={selectionBox} selectionColor={selectionColor} />
       <Box
+        ref={innerRef}
         sx={{
           transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
           transformOrigin: "center center",
@@ -259,7 +284,7 @@ const FlowViewport = ({
           height: height,
           display: "flex",
           alignItems: "center",
-          justifyContent: variant === "horizontal" ? "flex-start" : "center",
+          justifyContent: shouldCenter ? "center" : "flex-start",
           transition: isDragging ? "none" : "transform 0.1s ease-out",
           pointerEvents: "auto",
           position: "relative",

@@ -20,6 +20,7 @@ const FlowNodeView = ({
   onConnect,
 }) => {
   const hasChildren = Array.isArray(node.children) && node.children.length > 0;
+  const isVirtualRoot = !!node.virtual;
 
   const {
     baseStyle,
@@ -145,6 +146,36 @@ const FlowNodeView = ({
       />
     );
   };
+
+  if (isVirtualRoot) {
+    return (
+      <Box
+        ref={containerRef}
+        sx={{
+          display: "flex",
+          flexDirection: isHorizontal ? "row" : "column",
+          alignItems: "flex-end",
+          gap,
+          position: "relative",
+        }}
+      >
+        {node.children.map((child) => (
+          <FlowNode
+            key={child.id}
+            node={child}
+            type={type}
+            variant={variant}
+            style={style}
+            plugin={plugin}
+            registerRef={(el) => (childRefs.current[child.id] = el)}
+            onDrag={() => setConnectorTick((t) => t + 1)}
+            isRoot={false}
+            onConnect={onConnect}
+          />
+        ))}
+      </Box>
+    );
+  }
 
   return (
     <Box

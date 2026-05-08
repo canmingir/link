@@ -58,7 +58,7 @@ export const Flow = ({
       .filter(Boolean);
 
     return children.length > 0
-      ? { id: "__root__", label: "Start", children }
+      ? { id: "__root__", label: "Start", virtual: true, children }
       : null;
   }, [nodesById, roots]);
 
