@@ -157,6 +157,9 @@ export function fab(theme) {
 
   return {
     MuiFab: {
+      defaultProps: {
+        size: "small",
+      },
       styleOverrides: {
         root: ({ ownerState }) => rootStyles(ownerState),
       },
