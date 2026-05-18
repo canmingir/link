@@ -1,4 +1,10 @@
-import { Box, Card, Divider, Typography } from "@mui/material";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Divider,
+} from "@mui/material";
 
 import React from "react";
 import { useTheme } from "@mui/material/styles";
@@ -25,82 +31,53 @@ const GlassCard = ({ children, sx = {}, ...props }) => {
   );
 };
 
-const GlassCardHeader = ({
-  title,
-  subheader,
-  action,
-  divider = true,
-  sx = {},
-}) => (
+const GlassCardHeader = ({ divider = true, sx = {}, ...props }) => (
   <>
-    <Box
+    <CardHeader
       sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
         px: 1.5,
         py: 0.75,
-        minHeight: 40,
-        flexShrink: 0,
+        "& .MuiCardHeader-title": {
+          fontSize: "0.8125rem",
+          fontWeight: 600,
+          lineHeight: 1.3,
+        },
+        "& .MuiCardHeader-subheader": {
+          fontSize: "0.75rem",
+          lineHeight: 1.3,
+        },
         ...sx,
       }}
-    >
-      <Box sx={{ minWidth: 0, flex: 1 }}>
-        {title && (
-          <Typography
-            variant="h6"
-            noWrap
-            sx={{ fontWeight: 600, lineHeight: 1.3, fontSize: "0.8125rem" }}
-          >
-            {title}
-          </Typography>
-        )}
-        {subheader && (
-          <Typography
-            variant="body2"
-            noWrap
-            sx={{ color: "text.secondary", lineHeight: 1.3, display: "block" }}
-          >
-            {subheader}
-          </Typography>
-        )}
-      </Box>
-      {action && <Box sx={{ ml: 1, flexShrink: 0 }}>{action}</Box>}
-    </Box>
+      {...props}
+    />
     {divider && <Divider />}
   </>
 );
 
-const GlassCardContent = ({ children, sx = {}, ...props }) => (
-  <Box
+const GlassCardContent = ({ sx = {}, ...props }) => (
+  <CardContent
     sx={{
       flex: 1,
       overflow: "auto",
       position: "relative",
       p: 0,
+      "&:last-child": { pb: 0 },
       ...sx,
     }}
     {...props}
-  >
-    {children}
-  </Box>
+  />
 );
 
-const GlassCardActions = ({ children, sx = {}, ...props }) => (
-  <Box
+const GlassCardActions = ({ sx = {}, ...props }) => (
+  <CardActions
     sx={{
-      display: "flex",
-      alignItems: "center",
-      gap: 1,
       px: 1.5,
       py: 0.75,
       flexShrink: 0,
       ...sx,
     }}
     {...props}
-  >
-    {children}
-  </Box>
+  />
 );
 
 export { GlassCardHeader, GlassCardContent, GlassCardActions };
