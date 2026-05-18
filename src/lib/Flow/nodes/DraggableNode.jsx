@@ -1,7 +1,7 @@
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
 import { Box } from "@mui/material";
 import { useSelection } from "../selection/SelectionContext";
-
-import React, { useCallback, useEffect, useRef, useState } from "react";
 
 const DraggableNode = ({
   children,
@@ -13,7 +13,7 @@ const DraggableNode = ({
   onConnect,
 }) => {
   const [offset, setOffset] = useState(() =>
-    initialPosition ? { ...initialPosition } : { x: 0, y: 0 }
+    initialPosition ? { ...initialPosition } : { x: 0, y: 0 },
   );
 
   useEffect(() => {
@@ -27,6 +27,7 @@ const DraggableNode = ({
   const localRef = useRef(null);
   const lastDeltaRef = useRef({ x: 0, y: 0 });
   const onDragRef = useRef(onDrag);
+  const didDragRef = useRef(false);
 
   const {
     isSelected,
@@ -58,13 +59,31 @@ const DraggableNode = ({
       localRef.current = el;
       registerRef?.(el);
     },
-    [registerRef]
+    [registerRef],
   );
+
+  useEffect(() => {
+    const el = localRef.current;
+    if (!el) return;
+
+    const onClickCapture = (e) => {
+      if (didDragRef.current) {
+        e.stopPropagation();
+        e.preventDefault();
+        didDragRef.current = false;
+      }
+    };
+
+    el.addEventListener("click", onClickCapture, true);
+    return () => el.removeEventListener("click", onClickCapture, true);
+  }, []);
 
   const handleMouseDown = useCallback(
     (e) => {
       if (e.button !== 0) return;
       e.stopPropagation();
+
+      didDragRef.current = false;
 
       if (onConnect && e.altKey) {
         e.preventDefault();
@@ -90,6 +109,10 @@ const DraggableNode = ({
       const handleMove = (ev) => {
         const dx = ev.clientX - startX;
         const dy = ev.clientY - startY;
+
+        if (!didDragRef.current && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
+          didDragRef.current = true;
+        }
 
         const deltaDx = dx - lastDeltaRef.current.x;
         const deltaDy = dy - lastDeltaRef.current.y;
@@ -125,7 +148,7 @@ const DraggableNode = ({
       clearSelection,
       moveSelectedNodes,
       onConnect,
-    ]
+    ],
   );
 
   return (
