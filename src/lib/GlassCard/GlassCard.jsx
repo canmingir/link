@@ -1,4 +1,4 @@
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Card, Divider, Typography } from "@mui/material";
 
 import React from "react";
 import { useTheme } from "@mui/material/styles";
@@ -7,7 +7,7 @@ const GlassCard = ({ children, sx = {}, ...props }) => {
   const theme = useTheme();
 
   return (
-    <Box
+    <Card
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -21,7 +21,7 @@ const GlassCard = ({ children, sx = {}, ...props }) => {
       {...props}
     >
       {children}
-    </Box>
+    </Card>
   );
 };
 
