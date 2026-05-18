@@ -1,1 +1,1 @@
-export { default } from "./GlassCard";
+export { default, GlassCardHeader, GlassCardContent, GlassCardActions } from "./GlassCard";
