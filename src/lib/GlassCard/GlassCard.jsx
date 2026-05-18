@@ -1,24 +1,20 @@
-import { Box, Card, Divider, Typography } from "@mui/material";
-import { alpha, useTheme } from "@mui/material/styles";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Divider,
+} from "@mui/material";
 
 import React from "react";
+import { useTheme } from "@mui/material/styles";
 
-const GlassCard = ({
-  width = "100%",
-  height = "85vh",
-  header,
-  content,
-  actions,
-  contentSx = {},
-}) => {
+const GlassCard = ({ children, sx = {}, ...props }) => {
   const theme = useTheme();
 
   return (
     <Card
       sx={{
-        width: width || "100%",
-        height: height || "85vh",
-        flexShrink: 0,
         display: "flex",
         flexDirection: "column",
         background: `linear-gradient(135deg, ${theme.palette.primary.main}08 0%, ${theme.palette.secondary.main}05 100%)`,
@@ -26,70 +22,63 @@ const GlassCard = ({
         border: `1px solid ${theme.palette.divider}`,
         borderRadius: 2,
         overflow: "hidden",
+        ...sx,
       }}
+      {...props}
     >
-      {header && (
-        <>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              px: 2,
-              py: 1.5,
-              minHeight: 52,
-              flexShrink: 0,
-            }}
-          >
-            <Box sx={{ minWidth: 0, flex: 1 }}>
-              <Typography
-                variant="subtitle2"
-                noWrap
-                sx={{
-                  fontWeight: 600,
-                  color: "text.primary",
-                  lineHeight: 1.3,
-                }}
-              >
-                {header.title}
-              </Typography>
-              {header.subtitle && (
-                <Typography
-                  variant="caption"
-                  noWrap
-                  sx={{
-                    color: "text.secondary",
-                    lineHeight: 1.3,
-                    display: "block",
-                  }}
-                >
-                  {header.subtitle}
-                </Typography>
-              )}
-            </Box>
-            {actions && <Box sx={{ ml: 1, flexShrink: 0 }}>{actions}</Box>}
-          </Box>
-          <Divider />
-        </>
-      )}
-
-      <Box
-        sx={{
-          flex: 1,
-          overflow: "auto",
-          position: "relative",
-          ...contentSx,
-        }}
-      >
-        {!header && actions && (
-          <Box sx={{ position: "absolute", top: 8, right: 8, zIndex: 1 }}>
-            {actions}
-          </Box>
-        )}
-        {content}
-      </Box>
+      {children}
     </Card>
   );
 };
 
+const GlassCardHeader = ({ divider = true, sx = {}, ...props }) => (
+  <>
+    <CardHeader
+      sx={{
+        px: 1.5,
+        py: 0.75,
+        "& .MuiCardHeader-title": {
+          fontSize: "0.8125rem",
+          fontWeight: 600,
+          lineHeight: 1.3,
+        },
+        "& .MuiCardHeader-subheader": {
+          fontSize: "0.75rem",
+          lineHeight: 1.3,
+        },
+        ...sx,
+      }}
+      {...props}
+    />
+    {divider && <Divider />}
+  </>
+);
+
+const GlassCardContent = ({ sx = {}, ...props }) => (
+  <CardContent
+    sx={{
+      flex: 1,
+      overflow: "auto",
+      position: "relative",
+      p: 0,
+      "&:last-child": { pb: 0 },
+      ...sx,
+    }}
+    {...props}
+  />
+);
+
+const GlassCardActions = ({ sx = {}, ...props }) => (
+  <CardActions
+    sx={{
+      px: 1.5,
+      py: 0.75,
+      flexShrink: 0,
+      ...sx,
+    }}
+    {...props}
+  />
+);
+
+export { GlassCardHeader, GlassCardContent, GlassCardActions };
 export default GlassCard;
