@@ -1,4 +1,5 @@
-import { Box, Card, Divider, Typography, alpha, useTheme } from "@mui/material";
+import { Box, Card, Divider, Typography } from "@mui/material";
+import { alpha, useTheme } from "@mui/material/styles";
 
 import React from "react";
 
