@@ -1,9 +1,9 @@
+import React, { useEffect, useRef, useState } from "react";
+
 import { Box } from "@mui/material";
 import FloatingGraph from "../graph/FloatingGraph";
 import SelectionOverlay from "../selection/SelectionOverlay";
 import { useSelection } from "../selection/SelectionContext";
-
-import React, { useEffect, useRef, useState } from "react";
 
 const FlowViewport = ({
   children,
@@ -32,6 +32,7 @@ const FlowViewport = ({
   const selectionBoxRef = useRef(null);
   const mousePositionRef = useRef({ x: 0, y: 0 });
   const innerRef = useRef(null);
+  const didDragRef = useRef(false);
 
   const {
     clearSelection,
@@ -168,12 +169,14 @@ const FlowViewport = ({
     if (e.target?.closest?.(".MuiCard-root") || e.target?.closest?.("button"))
       return;
 
-    if (e.button !== 0) return;
+    const isPan = e.button === 0 || e.button === 2;
+    if (!isPan) return;
 
     const startX = e.clientX;
     const startY = e.clientY;
+    didDragRef.current = false;
 
-    if (e.shiftKey || e.ctrlKey || e.metaKey) {
+    if (e.button === 0 && (e.shiftKey || e.ctrlKey || e.metaKey)) {
       setSelectionBox({ startX, startY, currentX: startX, currentY: startY });
       selectionBoxRef.current = {
         startX,
@@ -238,15 +241,20 @@ const FlowViewport = ({
       return;
     }
 
-    clearSelection();
+    if (e.button === 0) clearSelection();
 
     setIsDragging(true);
     const startOffset = { ...offset };
 
     const onMove = (ev) => {
+      const dx = ev.clientX - startX;
+      const dy = ev.clientY - startY;
+      if (!didDragRef.current && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
+        didDragRef.current = true;
+      }
       setOffset({
-        x: startOffset.x + (ev.clientX - startX),
-        y: startOffset.y + (ev.clientY - startY),
+        x: startOffset.x + dx,
+        y: startOffset.y + dy,
       });
     };
 
@@ -260,10 +268,27 @@ const FlowViewport = ({
     window.addEventListener("mouseup", onUp);
   };
 
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onClickCapture = (e) => {
+      if (didDragRef.current) {
+        e.stopPropagation();
+        e.preventDefault();
+        didDragRef.current = false;
+      }
+    };
+
+    container.addEventListener("click", onClickCapture, true);
+    return () => container.removeEventListener("click", onClickCapture, true);
+  }, []);
+
   return (
     <Box
       ref={containerRef}
       onMouseDown={handleViewportMouseDown}
+      onContextMenu={(e) => e.preventDefault()}
       sx={{
         width: "100%",
         height: "100vh",
