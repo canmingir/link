@@ -1,18 +1,18 @@
+import React, { useEffect, useRef, useState } from "react";
+
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { RouterLink } from "../../routes/components";
 import config from "../../config/config";
 
-import React, { useEffect, useRef, useState } from "react";
-
 const resolvedDimensions = {};
 
 const Logo = ({ disabledLink = false, sx, maxSize = 65, isLogin = false }) => {
   const { icon } = config().template.login;
-  const key = `${icon}`;
+  const key = `${icon}_${maxSize}_${isLogin}`;
 
   const [dimensions, setDimensions] = useState(
-    resolvedDimensions[key] || { width: maxSize, height: maxSize }
+    resolvedDimensions[key] || { width: maxSize, height: maxSize },
   );
 
   useEffect(() => {

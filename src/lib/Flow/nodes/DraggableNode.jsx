@@ -8,7 +8,7 @@ const DraggableNode = ({
   registerRef,
   onDrag,
   nodeId,
-  selectionColor = "#64748b",
+  selectionColor = "#373739",
   initialPosition,
   onConnect,
 }) => {
@@ -164,20 +164,55 @@ const DraggableNode = ({
         transform: `translate(${offset.x}px, ${offset.y}px)`,
         cursor: "grab",
         "&:active": { cursor: "grabbing" },
-        ...(selected && {
-          "&::after": {
-            content: '""',
-            position: "absolute",
-            inset: -6,
-            border: `2px solid ${selectionColor}`,
-            borderRadius: "12px",
-            pointerEvents: "none",
-            boxShadow: `0 0 8px ${selectionColor}66`,
-          },
-        }),
       }}
     >
       {children}
+      {selected &&
+        selectedIds.size > 1 &&
+        [
+          {
+            top: -10,
+            left: -6,
+            borderTop: 2,
+            borderLeft: 2,
+            color: selectionColor,
+          },
+          {
+            top: -8,
+            right: -12,
+            borderTop: 2,
+            borderRight: 2,
+            color: selectionColor,
+          },
+          {
+            bottom: -14,
+            left: -6,
+            borderBottom: 2,
+            borderLeft: 2,
+            color: selectionColor,
+          },
+          {
+            bottom: -16,
+            right: -12,
+            borderBottom: 2,
+            borderRight: 2,
+            color: selectionColor,
+          },
+        ].map((pos, i) => (
+          <Box
+            key={i}
+            sx={{
+              position: "absolute",
+              width: 10,
+              height: 10,
+              borderStyle: "solid",
+              borderColor: selectionColor,
+              borderWidth: 0,
+              pointerEvents: "none",
+              ...pos,
+            }}
+          />
+        ))}
     </Box>
   );
 };
