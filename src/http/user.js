@@ -120,7 +120,19 @@ instance.getPermittedUsers = async () => {
     }),
   );
 
-  return results.filter((r) => r.status === "fulfilled").map((r) => r.value);
+const fulfilled = results
+  .filter((r) => r.status === "fulfilled")
+  .map((r) => r.value);
+
+if (fulfilled.length !== results.length) {
+  console.warn("Some permitted users could not be loaded");
+}
+
+if (fulfilled.length === 0 && results.length > 0) {
+  throw new Error("Failed to fetch permitted users");
+}
+
+return fulfilled;
 };
 
 export default instance;
