@@ -43,7 +43,7 @@ instance.getUserDetails = async () => {
 
       if (isExpired) {
         console.log(
-          "Access token expired, refreshing before fetching user details..."
+          "Access token expired, refreshing before fetching user details...",
         );
         const { appId } = config();
         const projectId = storage.get("projectId");
@@ -54,12 +54,16 @@ instance.getUserDetails = async () => {
           appId,
           projectId,
           identityProvider,
+          ...(identityProvider === "DEMO" && {
+            username: "admin",
+            password: "admin",
+          }),
         });
 
         accessToken = data.accessToken;
         storage.set("link", "accessToken", accessToken);
         console.log(
-          "Access token refreshed successfully, now fetching user details"
+          "Access token refreshed successfully, now fetching user details",
         );
       }
     } catch (error) {
@@ -85,26 +89,38 @@ instance.getUserDetails = async () => {
   }
 };
 
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 instance.getPermittedUsers = async () => {
-  const userIds = [];
+  const { appId } = config();
+  const projectId = storage.get("projectId");
   const refreshToken = await storage.get("link", "refreshToken");
+
   const response = await http.get("/permissions");
 
-  response.data.forEach((permission) => {
-    userIds.push(permission.userId);
-  });
+  const uniqueUserIds = [
+    ...new Set(
+      response.data
+        .filter((p) => p.appId === appId && p.projectId === projectId)
+        .map((p) => p.userId),
+    ),
+  ];
 
-  const users = await Promise.all(
-    userIds.map(async (userId) => {
-      const response = await axios.get(
-        `https://api.github.com/user/${userId}`,
-        { headers: { Authorization: `Bearer ${refreshToken}` } }
-      );
-      return response.data;
-    })
+  const results = await Promise.allSettled(
+    uniqueUserIds.map(async (userId) => {
+      if (UUID_REGEX.test(userId)) {
+        return { id: userId, name: userId, avatarUrl: "" };
+      }
+      const userResponse = await http.get("/oauth/user", {
+        headers: { "X-Refresh-Token": refreshToken },
+        params: { userId },
+      });
+      return userResponse.data.user;
+    }),
   );
 
-  return users;
+  return results.filter((r) => r.status === "fulfilled").map((r) => r.value);
 };
 
 export default instance;
