@@ -155,9 +155,19 @@ refreshInterceptor(instance, refreshAuthLogic, {
       return false;
     }
 
-    if (identityProvider === "DEMO") {
-      return true;
-    }
+if (identityProvider === "DEMO") {
+  if (statusCode !== 500) {
+    return true;
+  }
+
+  try {
+    const decodedToken = jwtDecode(token);
+    return decodedToken.exp * 1000 < Date.now();
+  } catch (_) {
+    // If we can't decode, attempt refresh once.
+    return true;
+  }
+}
 
     if (statusCode === 500) {
       return false;
