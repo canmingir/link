@@ -89,13 +89,10 @@ instance.getUserDetails = async () => {
   }
 };
 
-const UUID_REGEX =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
 instance.getPermittedUsers = async () => {
   const { appId } = config();
   const projectId = storage.get("projectId");
-  const refreshToken = await storage.get("link", "refreshToken");
+  const identityProvider = storage.get("link", "identityProvider");
 
   const response = await http.get("/permissions");
 
@@ -107,32 +104,42 @@ instance.getPermittedUsers = async () => {
     ),
   ];
 
-  const results = await Promise.allSettled(
-    uniqueUserIds.map(async (userId) => {
-      if (UUID_REGEX.test(userId)) {
-        return { id: userId, name: userId, avatarUrl: "" };
-      }
-      const userResponse = await http.get("/oauth/user", {
-        headers: { "X-Refresh-Token": refreshToken },
-        params: { userId },
-      });
-      return userResponse.data.user;
-    }),
-  );
+  const UUID_REGEX =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-const fulfilled = results
-  .filter((r) => r.status === "fulfilled")
-  .map((r) => r.value);
+  if (identityProvider?.toUpperCase() === "GITHUB") {
+    const results = await Promise.allSettled(
+      uniqueUserIds.map(async (userId) => {
+        if (UUID_REGEX.test(userId)) {
+          return null;
+        }
+        const { data } = await axios.get(
+          `https://api.github.com/user/${userId}`,
+          { headers: { Accept: "application/vnd.github+json" } },
+        );
+        return {
+          id: String(data.id),
+          identityProvider: "GITHUB",
+          name: data.login,
+          displayName: data.name || null,
+          avatarUrl: data.avatar_url || null,
+          email: data.email || null,
+        };
+      }),
+    );
 
-if (fulfilled.length !== results.length) {
-  console.warn("Some permitted users could not be loaded");
-}
+    return results
+      .filter((r) => r.status === "fulfilled" && r.value !== null)
+      .map((r) => r.value);
+  }
 
-if (fulfilled.length === 0 && results.length > 0) {
-  throw new Error("Failed to fetch permitted users");
-}
+  const refreshToken = await storage.get("link", "refreshToken");
 
-return fulfilled;
+  const usersResponse = await http.get("/oauth/users", {
+    headers: { "X-Refresh-Token": refreshToken },
+  });
+
+  return usersResponse.data.users;
 };
 
 export default instance;
