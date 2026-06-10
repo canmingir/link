@@ -133,13 +133,41 @@ instance.getPermittedUsers = async () => {
       .map((r) => r.value);
   }
 
-  const refreshToken = await storage.get("link", "refreshToken");
+  if (identityProvider?.toUpperCase() === "DEMO") {
+    return [
+      {
+        id: "1001",
+        identityProvider: "DEMO",
+        name: "admin",
+        displayName: "Demo Admin",
+        avatarUrl: `https://api.dicebear.com/7.x/bottts/svg?seed=1001`,
+        email: "admin@demo.local",
+      },
+    ];
+  }
 
-  const usersResponse = await http.get("/oauth/users", {
-    headers: { "X-Refresh-Token": refreshToken },
-  });
+  if (identityProvider?.toUpperCase() === "COGNITO") {
+    const accessToken = await storage.get("link", "accessToken");
+    let currentUserId = null;
 
-  return usersResponse.data.users;
+    try {
+      const decoded = jwtDecode(accessToken);
+      currentUserId = decoded.sub;
+    } catch (_) {}
+
+    return uniqueUserIds
+      .filter((id) => !UUID_REGEX.test(id))
+      .map((id) => ({
+        id: String(id),
+        identityProvider: "COGNITO",
+        name: id === currentUserId ? "You" : "Cognito User",
+        displayName: id === currentUserId ? "Cognito Admin" : null,
+        avatarUrl: `https://api.dicebear.com/7.x/bottts/svg?seed=${id}`,
+        email: null,
+      }));
+  }
+
+  return [];
 };
 
 export default instance;
