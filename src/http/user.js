@@ -111,7 +111,14 @@ instance.getPermittedUsers = async () => {
     const results = await Promise.allSettled(
       uniqueUserIds.map(async (userId) => {
         if (UUID_REGEX.test(userId)) {
-          return null;
+          return {
+            id: String(userId),
+            identityProvider,
+            name: String(userId),
+            displayName: null,
+            avatarUrl: `https://api.dicebear.com/7.x/bottts/svg?seed=${userId}`,
+            email: null,
+          };
         }
         const { data } = await axios.get(
           `https://api.github.com/user/${userId}`,
