@@ -15,6 +15,7 @@ if (error) {
 
 async function vite() {
   const base = value.base;
+  const api = value.api;
 
   return {
     plugins: [
@@ -31,6 +32,17 @@ async function vite() {
         },
       }),
     ],
+    server: {
+      port: 3000,
+      proxy: {
+        "/api": {
+          target: api?.split("/api")?.[0],
+          rewrite: (path) => path.replace(/^\/api/, ""),
+          changeOrigin: true,
+          timeout: 120_000,
+        },
+      },
+    },
     base,
     optimizeDeps: {
       esbuildOptions: {
@@ -55,7 +67,7 @@ async function vite() {
           find: /^src(.+)/,
           replacement: path.join(
             process.cwd(),
-            "/node_modules/@nucleoidai/platform/minimal/src/$1"
+            "/node_modules/@nucleoidai/platform/minimal/src/$1",
           ),
         },
       ],
