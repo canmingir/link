@@ -65,13 +65,13 @@ export const MenuConfigSchema = Joi.object({
                     path: Joi.string().required(),
                     icon: Joi.string().required(),
                     external: Joi.boolean().optional().default(false),
-                  })
+                  }),
                 )
                 .optional(),
-            })
+            }),
           )
           .required(),
-      })
+      }),
     )
     .optional()
     .default([]),
@@ -81,7 +81,7 @@ export const MenuConfigSchema = Joi.object({
         title: Joi.string().required(),
         icon: Joi.string().required(),
         path: Joi.string().required(),
-      })
+      }),
     )
     .optional()
     .default([]),
@@ -90,11 +90,12 @@ export const MenuConfigSchema = Joi.object({
       Joi.object({
         label: Joi.string().required(),
         linkTo: Joi.string().required(),
-      })
+      }),
     )
     .optional()
     .default([]),
   actionButtons: Joi.array().items(Joi.any()).optional().default([]),
+  topBar: Joi.any().optional(),
   fullScreenLayout: Joi.string()
     .valid("left", "right")
     .optional()
@@ -139,7 +140,7 @@ export const TemplateConfigSchema = Joi.object({
         Joi.object({
           label: Joi.string().required(),
           panel: Joi.any().required(),
-        })
+        }),
       )
       .optional()
       .default([]),

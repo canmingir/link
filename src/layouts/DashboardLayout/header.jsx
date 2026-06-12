@@ -2,6 +2,7 @@ import { HEADER, NAV } from "../config-layout";
 
 import AccountPopover from "../common/account-popover";
 import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Iconify from "../../components/Iconify";
 import Logo from "../../components/logo";
@@ -23,6 +24,7 @@ export default function Header({ onOpenNav }) {
   const settings = useSettingsContext();
 
   const projectBar = config().template?.projectBar;
+  const TopBar = config().menu?.topBar;
 
   const isNavHorizontal = settings.themeLayout === "horizontal";
 
@@ -44,15 +46,21 @@ export default function Header({ onOpenNav }) {
         </IconButton>
       )}
       {projectBar && <ProjectBar />}
+      {TopBar && (
+        <Box sx={{ flexGrow: 1, mx: 2 }}>
+          <TopBar />
+        </Box>
+      )}
 
       <Stack
         direction="row"
         spacing={{ xs: 0.5, sm: 1 }}
         sx={{
-          flexGrow: 1,
+          ...(!TopBar && { flexGrow: 1 }),
           alignItems: "center",
-          justifyContent: "flex-end"
-        }}>
+          justifyContent: "flex-end",
+        }}
+      >
         <NotificationsPopover />
 
         <SettingsButton />
@@ -67,7 +75,7 @@ export default function Header({ onOpenNav }) {
       data-cy="dashboard-layout-header"
       sx={{
         height: HEADER.H_MOBILE,
-        zIndex: 0,
+        zIndex: theme.zIndex.appBar,
         ...bgBlur({
           color: theme.palette.background.default,
         }),
