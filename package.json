@@ -2,6 +2,9 @@
   "name": "@canmingir/link",
   "version": "1.2.48",
   "type": "module",
+  "bin": {
+    "link-server": "./server/server.ts"
+  },
   "exports": {
     ".": "./index.js",
     "./layouts": "./src/layouts/index.js",
