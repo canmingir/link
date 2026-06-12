@@ -1,6 +1,8 @@
 import {
+  confirmResetPassword,
   confirmSignUp,
   fetchAuthSession,
+  resetPassword,
   signIn,
   signOut,
   signUp,
@@ -26,6 +28,18 @@ export async function confirmSignup(email, code) {
   return confirmSignUp({
     username: email,
     confirmationCode: code,
+  });
+}
+
+export async function forgotPassword(email) {
+  return resetPassword({ username: email });
+}
+
+export async function confirmForgotPassword(email, code, newPassword) {
+  return confirmResetPassword({
+    username: email,
+    confirmationCode: code,
+    newPassword,
   });
 }
 
