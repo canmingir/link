@@ -1,9 +1,3 @@
-import config from "../../config/config";
-import { publish } from "@nucleoidai/react-event";
-import { storage } from "@nucleoidjs/webstorage";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-
 import {
   Box,
   Button,
@@ -20,8 +14,21 @@ import {
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
-import { confirmSignup, getTokens, login, signup } from "./amplifyAuth";
+import {
+  confirmForgotPassword,
+  confirmSignup,
+  forgotPassword,
+  getTokens,
+  login,
+  signup,
+} from "./amplifyAuth";
 import { inputSx, primaryButtonSx } from "./styles";
+
+import config from "../../config/config";
+import { publish } from "@nucleoidai/react-event";
+import { storage } from "@nucleoidjs/webstorage";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function CognitoLogin() {
   const [mode, setMode] = useState("login");
@@ -96,6 +103,42 @@ export default function CognitoLogin() {
     }
   };
 
+  const handleForgotPassword = async () => {
+    try {
+      await forgotPassword(email);
+      publish("GLOBAL_MESSAGE_POSTED", {
+        status: true,
+        message: "Reset code sent! Check your email.",
+        severity: "success",
+      });
+      setMode("resetPassword");
+    } catch (e) {
+      publish("GLOBAL_MESSAGE_POSTED", {
+        status: true,
+        message: e.message || "Failed to send reset code",
+        severity: "error",
+      });
+    }
+  };
+
+  const handleResetPassword = async () => {
+    try {
+      await confirmForgotPassword(email, code, password);
+      publish("GLOBAL_MESSAGE_POSTED", {
+        status: true,
+        message: "Password reset successful! You can now sign in.",
+        severity: "success",
+      });
+      setMode("login");
+    } catch (e) {
+      publish("GLOBAL_MESSAGE_POSTED", {
+        status: true,
+        message: e.message || "Password reset failed",
+        severity: "error",
+      });
+    }
+  };
+
   const handleConfirm = async () => {
     try {
       await confirmSignup(email, code);
@@ -123,6 +166,14 @@ export default function CognitoLogin() {
     confirm: {
       heading: "Verify your email",
       sub: "Enter the confirmation code sent to your inbox.",
+    },
+    forgotPassword: {
+      heading: "Reset password",
+      sub: "Enter your email to receive a reset code.",
+    },
+    resetPassword: {
+      heading: "Set new password",
+      sub: "Enter the code from your email and your new password.",
     },
   };
 
@@ -155,7 +206,7 @@ export default function CognitoLogin() {
             color: "primary.main",
           }}
         >
-          {mode === "confirm" ? (
+          {mode === "confirm" || mode === "resetPassword" ? (
             <MarkEmailReadOutlined sx={{ fontSize: 22 }} />
           ) : (
             <LockOutlined sx={{ fontSize: 22 }} />
@@ -181,11 +232,11 @@ export default function CognitoLogin() {
           slotProps={{ input: { disableUnderline: true } }}
         />
 
-        {mode !== "confirm" && (
+        {mode !== "confirm" && mode !== "forgotPassword" && (
           <TextField
             variant="filled"
             type={showPassword ? "text" : "password"}
-            label="Password"
+            label={mode === "resetPassword" ? "New Password" : "Password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             fullWidth
@@ -230,7 +281,7 @@ export default function CognitoLogin() {
           />
         )}
 
-        {mode === "confirm" && (
+        {(mode === "confirm" || mode === "resetPassword") && (
           <TextField
             variant="filled"
             label="Confirmation Code"
@@ -253,6 +304,17 @@ export default function CognitoLogin() {
             sx={primaryButtonSx}
           >
             Sign in &rarr;
+          </Button>
+          <Button
+            onClick={() => setMode("forgotPassword")}
+            fullWidth
+            sx={{
+              textTransform: "none",
+              fontWeight: 600,
+              color: "text.secondary",
+            }}
+          >
+            Forgot password?
           </Button>
           <Button
             onClick={() => setMode("signup")}
@@ -303,6 +365,56 @@ export default function CognitoLogin() {
         >
           Verify &rarr;
         </Button>
+      )}
+      {mode === "forgotPassword" && (
+        <Stack spacing={1.5}>
+          <Button
+            variant="contained"
+            onClick={handleForgotPassword}
+            size="large"
+            fullWidth
+            disableElevation
+            sx={primaryButtonSx}
+          >
+            Send reset code &rarr;
+          </Button>
+          <Button
+            onClick={() => setMode("login")}
+            fullWidth
+            sx={{
+              textTransform: "none",
+              fontWeight: 600,
+              color: "text.secondary",
+            }}
+          >
+            &larr; Back to sign in
+          </Button>
+        </Stack>
+      )}
+      {mode === "resetPassword" && (
+        <Stack spacing={1.5}>
+          <Button
+            variant="contained"
+            onClick={handleResetPassword}
+            size="large"
+            fullWidth
+            disableElevation
+            sx={primaryButtonSx}
+          >
+            Reset password &rarr;
+          </Button>
+          <Button
+            onClick={() => setMode("login")}
+            fullWidth
+            sx={{
+              textTransform: "none",
+              fontWeight: 600,
+              color: "text.secondary",
+            }}
+          >
+            &larr; Back to sign in
+          </Button>
+        </Stack>
       )}
     </Stack>
   );
