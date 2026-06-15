@@ -40,6 +40,20 @@ instance.interceptors.response.use(
   async (error) => {
     publish("LOADED", { loading: false });
     const statusCode = error.response?.status;
+    const identityProvider = storage.get("link", "identityProvider");
+
+    if (statusCode === 500 && identityProvider === "DEMO") {
+      const token = storage.get("link", "accessToken");
+      try {
+        const decodedToken = jwtDecode(token);
+        if (decodedToken.exp * 1000 < Date.now()) {
+          return Promise.reject(error);
+        }
+      } catch (_) {
+        return Promise.reject(error);
+      }
+    }
+
     switch (statusCode) {
       case 400:
         publish("GLOBAL_MESSAGE_POSTED", {
@@ -78,7 +92,7 @@ instance.interceptors.response.use(
         break;
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export const fetcher = (url) => instance.get(url).then((res) => res.data);
@@ -128,13 +142,34 @@ const refreshInterceptor =
     : createAuthRefreshInterceptor.default;
 
 refreshInterceptor(instance, refreshAuthLogic, {
-  statusCodes: [401, 403],
-  shouldRefresh: () => {
-    const { name, base } = config();
+  statusCodes: [401, 403, 500],
+  pauseInstanceWhileRefreshing: true,
+  shouldRefresh: (error) => {
+    const { base } = config();
     const token = storage.get("link", "accessToken");
+    const identityProvider = storage.get("link", "identityProvider");
+    const statusCode = error.response?.status;
 
     if (!token) {
       window.location.href = `${window.location.origin}${base}/login`;
+      return false;
+    }
+
+if (identityProvider === "DEMO") {
+  if (statusCode !== 500) {
+    return true;
+  }
+
+  try {
+    const decodedToken = jwtDecode(token);
+    return decodedToken.exp * 1000 < Date.now();
+  } catch (_) {
+    // If we can't decode, attempt refresh once.
+    return true;
+  }
+}
+
+    if (statusCode === 500) {
       return false;
     }
 
@@ -142,12 +177,6 @@ refreshInterceptor(instance, refreshAuthLogic, {
       const decodedToken = jwtDecode(token);
       if (decodedToken.exp * 1000 < Date.now()) {
         return true;
-      } else {
-        publish("GLOBAL_MESSAGE_POSTED", {
-          status: true,
-          message: "UNAUTHORIZED",
-          severity: "warning",
-        });
       }
     } catch (err) {
       window.location.href = `${window.location.origin}${base}/login`;
