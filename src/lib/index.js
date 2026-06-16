@@ -23,7 +23,7 @@ export { default as useTable } from "./useTable/useTable";
 export { default as useChart } from "./useChart/useChart";
 
 export { default as Flow } from "./Flow/core/Flow";
-
+export { default as FlowBoard } from "./Flow/core/FlowBoard";
 export {
   HeaderCard,
   MediaAvatarCard,
