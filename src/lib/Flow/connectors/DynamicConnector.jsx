@@ -1,6 +1,6 @@
-import { Box } from "@mui/material";
-
 import React, { useId, useLayoutEffect, useMemo, useState } from "react";
+
+import { Box } from "@mui/material";
 
 const DynamicConnector = ({
   containerEl,
@@ -43,41 +43,48 @@ const DynamicConnector = ({
       const cRect = containerEl.getBoundingClientRect();
       const pRect = parentEl.getBoundingClientRect();
 
+      const scaleX = containerEl.offsetWidth
+        ? cRect.width / containerEl.offsetWidth || 1
+        : 1;
+      const scaleY = containerEl.offsetHeight
+        ? cRect.height / containerEl.offsetHeight || 1
+        : 1;
+
       let parentPoint;
       let childPoints = [];
 
       if (isHorizontal) {
         parentPoint = {
-          x: pRect.right - cRect.left,
-          y: pRect.top + pRect.height / 2 - cRect.top,
+          x: (pRect.right - cRect.left) / scaleX,
+          y: (pRect.top + pRect.height / 2 - cRect.top) / scaleY,
         };
 
         childPoints = childEls.map((el) => {
           if (!el) return { x: parentPoint.x + 100, y: parentPoint.y };
           const r = el.getBoundingClientRect();
           return {
-            x: r.left - cRect.left,
-            y: r.top + r.height / 2 - cRect.top,
+            x: (r.left - cRect.left) / scaleX,
+            y: (r.top + r.height / 2 - cRect.top) / scaleY,
           };
         });
       } else {
         parentPoint = {
-          x: pRect.left + pRect.width / 2 - cRect.left,
-          y: pRect.bottom - cRect.top,
+          x: (pRect.left + pRect.width / 2 - cRect.left) / scaleX,
+          y: (pRect.bottom - cRect.top) / scaleY,
         };
 
         childPoints = childEls.map((el) => {
           if (!el) return { x: parentPoint.x, y: parentPoint.y + 100 };
           const r = el.getBoundingClientRect();
           return {
-            x: r.left + r.width / 2 - cRect.left,
-            y: r.top - cRect.top,
+            x: (r.left + r.width / 2 - cRect.left) / scaleX,
+            y: (r.top - cRect.top) / scaleY,
           };
         });
       }
 
       setPoints({ parent: parentPoint, children: childPoints });
-      setDims({ w: cRect.width, h: cRect.height });
+      setDims({ w: cRect.width / scaleX, h: cRect.height / scaleY });
     };
 
     update();
@@ -95,7 +102,7 @@ const DynamicConnector = ({
       gradient: `gradient-${uniqueId}`,
       arrow: `arrow-${uniqueId}`,
     }),
-    [uniqueId]
+    [uniqueId],
   );
 
   const getPath = (from, to) => {
