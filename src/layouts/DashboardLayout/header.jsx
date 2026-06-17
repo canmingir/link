@@ -46,11 +46,7 @@ export default function Header({ onOpenNav }) {
         </IconButton>
       )}
       {projectBar && <ProjectBar />}
-      {TopBar && (
-        <Box sx={{ flexGrow: 1, mx: 2 }}>
-          <TopBar />
-        </Box>
-      )}
+      {TopBar && <TopBar />}
 
       <Stack
         direction="row"

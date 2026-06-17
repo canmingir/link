@@ -26,7 +26,7 @@ export default function NavToggleButton({ sx, ...other }) {
       onClick={() =>
         settings.onUpdate(
           "themeLayout",
-          settings.themeLayout === "vertical" ? "mini" : "vertical"
+          settings.themeLayout === "vertical" ? "mini" : "vertical",
         )
       }
       sx={{
@@ -34,7 +34,7 @@ export default function NavToggleButton({ sx, ...other }) {
         top: 32,
         position: "fixed",
         left: NAV.W_VERTICAL - 12,
-        zIndex: 0,
+        zIndex: theme.zIndex.appBar + 1,
         border: `dashed 1px ${theme.palette.divider}`,
         ...bgBlur({ opacity: 0.48, color: theme.palette.background.default }),
         "&:hover": {

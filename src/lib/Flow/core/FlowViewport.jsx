@@ -17,13 +17,14 @@ const FlowViewport = ({
   style,
   plugin,
   height = "100vh",
+  initialZoom = 1,
   sx = {},
   ...rest
 }) => {
   const clampZoom = (zoom) => Math.min(2.5, Math.max(0.25, zoom));
 
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(initialZoom);
   const [isDragging, setIsDragging] = useState(false);
   const [selectionBox, setSelectionBox] = useState(null);
   const [shouldCenter, setShouldCenter] = useState(true);
@@ -291,7 +292,7 @@ const FlowViewport = ({
       onContextMenu={(e) => e.preventDefault()}
       sx={{
         width: "100%",
-        height: "100vh",
+        height: height,
         overflow: "hidden",
         bgcolor: "none",
         cursor: isDragging ? "grabbing" : "default",

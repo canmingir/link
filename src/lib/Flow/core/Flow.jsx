@@ -1,9 +1,9 @@
-import FlowNode from "./FlowNode";
-import { useGraphOperations } from "../hooks/useGraphOperations";
-
 import { Box, alpha } from "@mui/material";
 import React, { useMemo, useState } from "react";
 import { assertLinkedGraph, buildTreeFromLinked } from "../utils/flowUtils";
+
+import FlowNode from "./FlowNode";
+import { useGraphOperations } from "../hooks/useGraphOperations";
 
 export const Flow = ({
   data,
@@ -13,6 +13,7 @@ export const Flow = ({
   editable = false,
   onChange,
   height,
+  initialZoom,
 }) => {
   const [floatingNodes, setFloatingNodes] = useState([]);
 
@@ -65,6 +66,8 @@ export const Flow = ({
   return (
     <Box
       sx={{
+        height,
+        flexShrink: 0,
         backgroundImage: (theme) => `
                           radial-gradient(
                             ${alpha(theme.palette.divider, 0.08)} 1px,
@@ -86,6 +89,7 @@ export const Flow = ({
         onConnect={editable ? handleConnect : undefined}
         floatingNodes={floatingNodes}
         height={height}
+        initialZoom={initialZoom}
       />
     </Box>
   );
