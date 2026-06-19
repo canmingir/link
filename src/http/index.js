@@ -40,9 +40,8 @@ instance.interceptors.response.use(
   async (error) => {
     publish("LOADED", { loading: false });
     const statusCode = error.response?.status;
-    const identityProvider = storage.get("link", "identityProvider");
 
-    if (statusCode === 500 && identityProvider === "DEMO") {
+    if (statusCode === 500) {
       const token = storage.get("link", "accessToken");
       try {
         const decodedToken = jwtDecode(token);
@@ -155,22 +154,18 @@ refreshInterceptor(instance, refreshAuthLogic, {
       return false;
     }
 
-if (identityProvider === "DEMO") {
-  if (statusCode !== 500) {
-    return true;
-  }
+    if (identityProvider === "DEMO") {
+      if (statusCode !== 500) {
+        return true;
+      }
 
-  try {
-    const decodedToken = jwtDecode(token);
-    return decodedToken.exp * 1000 < Date.now();
-  } catch (_) {
-    // If we can't decode, attempt refresh once.
-    return true;
-  }
-}
-
-    if (statusCode === 500) {
-      return false;
+      try {
+        const decodedToken = jwtDecode(token);
+        return decodedToken.exp * 1000 < Date.now();
+      } catch (_) {
+        // If we can't decode, attempt refresh once.
+        return true;
+      }
     }
 
     try {
