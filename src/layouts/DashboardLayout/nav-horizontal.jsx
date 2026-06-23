@@ -11,8 +11,6 @@ import { memo } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useUser } from "../../hooks/use-user";
 
-// ----------------------------------------------------------------------
-
 function NavHorizontal() {
   const theme = useTheme();
 

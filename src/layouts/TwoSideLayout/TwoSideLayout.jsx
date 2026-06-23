@@ -2,7 +2,6 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import React from "react";
 import Typography from "@mui/material/Typography";
-// ----------------------------------------------------------------------
 
 export default function TwoSideLayout({ rows, title }) {
   const rowData = rows;

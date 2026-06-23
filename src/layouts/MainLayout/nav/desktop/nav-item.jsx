@@ -9,8 +9,6 @@ import { forwardRef } from "react";
 import { motion } from "framer-motion";
 import { styled } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export const NavItem = forwardRef(
   (
     { title, path, open, active, hasChild, externalLink, subItem, ...other },
@@ -63,8 +61,6 @@ export const NavItem = forwardRef(
     );
   }
 );
-
-// ----------------------------------------------------------------------
 
 const StyledNavItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== "active" && prop !== "subItem",
@@ -144,8 +140,6 @@ const StyledNavItem = styled(ListItemButton, {
     }),
   };
 });
-
-// ----------------------------------------------------------------------
 
 export function NavItemDashboard({ path, sx, ...other }) {
   return (

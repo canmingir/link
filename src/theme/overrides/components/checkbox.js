@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function checkbox(theme) {
   return {
     MuiCheckbox: {

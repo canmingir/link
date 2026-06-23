@@ -8,8 +8,6 @@ import { forwardRef } from "react";
 
 import { alpha, styled } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export const NavItem = forwardRef(
   (
     { title, path, icon, open, active, hasChild, externalLink, ...other },
@@ -62,8 +60,6 @@ export const NavItem = forwardRef(
     );
   }
 );
-
-// ----------------------------------------------------------------------
 
 const StyledNavItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== "active",

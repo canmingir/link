@@ -11,8 +11,6 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { fToNow } from "../../../utils/format-time";
 
-// ----------------------------------------------------------------------
-
 export default function NotificationItem({ notification }) {
   const renderAvatar = (
     <ListItemAvatar>
@@ -29,8 +27,9 @@ export default function NotificationItem({ notification }) {
             width: 40,
             height: 40,
             borderRadius: "50%",
-            bgcolor: "background.neutral"
-          }}>
+            bgcolor: "background.neutral",
+          }}
+        >
           <Box
             component="img"
             src={`/assets/icons/notification/${
@@ -67,8 +66,9 @@ export default function NotificationItem({ notification }) {
           sx={{
             alignItems: "center",
             typography: "caption",
-            color: "text.disabled"
-          }}>
+            color: "text.disabled",
+          }}
+        >
           {fToNow(notification.createdAt)}
           {notification.category}
         </Stack>
@@ -102,9 +102,11 @@ export default function NotificationItem({ notification }) {
   );
 
   const projectAction = (
-    <Stack sx={{
-      alignItems: "flex-start"
-    }}>
+    <Stack
+      sx={{
+        alignItems: "flex-start",
+      }}
+    >
       <Box
         sx={{
           p: 1.5,
@@ -147,8 +149,9 @@ export default function NotificationItem({ notification }) {
         direction={{ xs: "column", sm: "row" }}
         sx={{
           flexGrow: 1,
-          minWidth: 0
-        }}>
+          minWidth: 0,
+        }}
+      >
         <ListItemText
           disableTypography
           primary={
@@ -178,8 +181,9 @@ export default function NotificationItem({ notification }) {
               sx={{
                 alignItems: "center",
                 typography: "caption",
-                color: "text.disabled"
-              }}>
+                color: "text.disabled",
+              }}
+            >
               <span>2.3 GB</span>
               <span>30 min ago</span>
             </Stack>
@@ -199,8 +203,9 @@ export default function NotificationItem({ notification }) {
       spacing={0.75}
       sx={{
         flexWrap: "wrap",
-        mt: 1.5
-      }}>
+        mt: 1.5,
+      }}
+    >
       <Label variant="outlined" color="info">
         Design
       </Label>
@@ -246,8 +251,6 @@ export default function NotificationItem({ notification }) {
     </ListItemButton>
   );
 }
-
-// ----------------------------------------------------------------------
 
 function reader(data) {
   return (

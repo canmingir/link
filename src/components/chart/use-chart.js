@@ -3,8 +3,6 @@ import { useResponsive } from "../../hooks/use-responsive";
 
 import { alpha, useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export default function useChart(options) {
   const theme = useTheme();
 

@@ -1,7 +1,5 @@
 import { alpha } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 // SETUP COLORS
 
 export const grey = {
@@ -98,8 +96,6 @@ const base = {
   divider: alpha(grey[500], 0.2),
   action,
 };
-
-// ----------------------------------------------------------------------
 
 export function palette(mode) {
   const light = {

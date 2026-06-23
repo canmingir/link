@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function radio(theme) {
   return {
     // CHECKBOX, RADIO, SWITCH

@@ -13,8 +13,6 @@ import { useTheme } from "@mui/material/styles";
 import { NavItem, NavItemDashboard } from "./nav-item";
 import { useCallback, useEffect, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 export default function NavList({ data }) {
   const theme = useTheme();
 
@@ -93,8 +91,6 @@ export default function NavList({ data }) {
   );
 }
 
-// ----------------------------------------------------------------------
-
 function NavSubList({ data, subheader, sx, ...other }) {
   const pathname = usePathname();
 
@@ -104,18 +100,22 @@ function NavSubList({ data, subheader, sx, ...other }) {
     <Stack
       spacing={2}
       {...other}
-      sx={[{
-        flexGrow: 1,
-        alignItems: "flex-start",
-        pb: 2,
+      sx={[
+        {
+          flexGrow: 1,
+          alignItems: "flex-start",
+          pb: 2,
 
-        ...(dashboard && {
-          pb: 0,
-          maxWidth: { md: 1 / 3, lg: 540 },
-        }),
+          ...(dashboard && {
+            pb: 0,
+            maxWidth: { md: 1 / 3, lg: 540 },
+          }),
 
-        ...sx
-      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
+          ...sx,
+        },
+        ...(Array.isArray(other.sx) ? other.sx : [other.sx]),
+      ]}
+    >
       <ListSubheader
         disableSticky
         sx={{

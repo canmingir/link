@@ -2,8 +2,6 @@ import NavList from "./nav-list";
 import React from "react";
 import Stack from "@mui/material/Stack";
 
-// ----------------------------------------------------------------------
-
 export default function NavDesktop({ data }) {
   return (
     <Stack

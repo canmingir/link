@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function svgIcon(theme) {
   return {
     MuiSvgIcon: {

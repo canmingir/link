@@ -1,7 +1,5 @@
 import { menuItem } from "../../css";
 
-// ----------------------------------------------------------------------
-
 export function menu(theme) {
   return {
     MuiMenuItem: {

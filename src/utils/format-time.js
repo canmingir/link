@@ -1,7 +1,5 @@
 import { format, formatDistanceToNow, getTime } from "date-fns";
 
-// ----------------------------------------------------------------------
-
 export function fDate(date, newFormat) {
   const fm = newFormat || "dd MMM yyyy";
 

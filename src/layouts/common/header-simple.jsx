@@ -16,8 +16,6 @@ import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export default function HeaderSimple({
   handleItemSelect,
   selectedItem,
@@ -52,9 +50,13 @@ export default function HeaderSimple({
           }),
         }}
       >
-        <Stack direction="row" spacing={5} sx={{
-          alignItems: "center"
-        }}>
+        <Stack
+          direction="row"
+          spacing={5}
+          sx={{
+            alignItems: "center",
+          }}
+        >
           <Logo />
           <ProjectBar
             handleItemSelect={handleItemSelect}
@@ -62,9 +64,13 @@ export default function HeaderSimple({
             setSelectedItem={setSelectedItem}
           />
         </Stack>
-        <Stack direction="row" spacing={1} sx={{
-          alignItems: "center"
-        }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: "center",
+          }}
+        >
           {mdUp && <NavDesktop data={topMenu} />}
           <NotificationsPopover />
 

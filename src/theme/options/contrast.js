@@ -1,8 +1,6 @@
 import { customShadows } from "../custom-shadows";
 import { grey } from "../palette";
 
-// ----------------------------------------------------------------------
-
 export function createContrast(contrast, mode) {
   const theme = {
     ...(contrast === "bold" &&

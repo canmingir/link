@@ -6,8 +6,6 @@ import { paper } from "../../css";
 import { paperClasses } from "@mui/material/Paper";
 import { tablePaginationClasses } from "@mui/material/TablePagination";
 
-// ----------------------------------------------------------------------
-
 export function dataGrid(theme) {
   const paperStyles = paper({ theme, dropdown: true });
 

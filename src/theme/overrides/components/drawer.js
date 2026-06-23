@@ -2,8 +2,6 @@ import { alpha } from "@mui/material/styles";
 import { drawerClasses } from "@mui/material/Drawer";
 import { paper } from "../../css";
 
-// ----------------------------------------------------------------------
-
 export function drawer(theme) {
   const lightMode = theme.palette.mode === "light";
 

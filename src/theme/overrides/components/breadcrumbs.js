@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function breadcrumbs(theme) {
   return {
     MuiBreadcrumbs: {

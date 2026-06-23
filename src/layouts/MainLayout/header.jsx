@@ -19,8 +19,6 @@ import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export default function Header() {
   const { topMenu } = config().menu;
   const projectBar = config().template?.projectBar;
@@ -63,7 +61,7 @@ export default function Header() {
           <Stack
             direction={{ xs: "row", md: "row-reverse" }}
             sx={{
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             <NotificationsPopover />

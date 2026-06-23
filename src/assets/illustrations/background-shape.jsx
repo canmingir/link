@@ -2,8 +2,6 @@ import React from "react";
 import { memo } from "react";
 import { useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 function BackgroundShape() {
   const theme = useTheme();
 

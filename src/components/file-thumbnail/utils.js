@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 // Define more types here
 const FORMAT_PDF = ["pdf"];
 const FORMAT_TEXT = ["txt"];
@@ -14,8 +12,6 @@ const FORMAT_IMG = ["jpg", "jpeg", "gif", "bmp", "png", "svg"];
 const FORMAT_VIDEO = ["m4v", "avi", "mpg", "mp4", "webm"];
 
 const iconUrl = (icon) => `/assets/icons/files/${icon}.svg`;
-
-// ----------------------------------------------------------------------
 
 export function fileFormat(fileUrl) {
   let format;
@@ -60,8 +56,6 @@ export function fileFormat(fileUrl) {
 
   return format;
 }
-
-// ----------------------------------------------------------------------
 
 export function fileThumb(fileUrl) {
   let thumb;
@@ -109,19 +103,13 @@ export function fileThumb(fileUrl) {
   return thumb;
 }
 
-// ----------------------------------------------------------------------
-
 export function fileTypeByUrl(fileUrl = "") {
   return (fileUrl && fileUrl.split(".").pop()) || "";
 }
 
-// ----------------------------------------------------------------------
-
 export function fileNameByUrl(fileUrl) {
   return fileUrl.split("/").pop();
 }
-
-// ----------------------------------------------------------------------
 
 export function fileData(file) {
   // Url

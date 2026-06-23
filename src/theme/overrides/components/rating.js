@@ -2,8 +2,6 @@ import { alpha } from "@mui/material/styles";
 import { ratingClasses } from "@mui/material/Rating";
 import { svgIconClasses } from "@mui/material/SvgIcon";
 
-// ----------------------------------------------------------------------
-
 export function rating(theme) {
   return {
     MuiRating: {

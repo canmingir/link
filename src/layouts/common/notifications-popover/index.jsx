@@ -18,8 +18,6 @@ import { varHover } from "../../../components/animate";
 
 import { useCallback, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 const TABS = [
   {
     value: "all",
@@ -37,8 +35,6 @@ const TABS = [
     count: 0,
   },
 ];
-
-// ----------------------------------------------------------------------
 
 export default function NotificationsPopover() {
   const drawer = useBoolean();
@@ -74,8 +70,9 @@ export default function NotificationsPopover() {
         py: 2,
         pl: 2.5,
         pr: 1,
-        minHeight: 68
-      }}>
+        minHeight: 68,
+      }}
+    >
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
         Notifications
       </Typography>
@@ -153,8 +150,9 @@ export default function NotificationsPopover() {
 
           paper: {
             sx: { width: 1, maxWidth: 420 },
-          }
-        }}>
+          },
+        }}
+      >
         {renderHead}
 
         <Divider />
@@ -165,8 +163,9 @@ export default function NotificationsPopover() {
             alignItems: "center",
             justifyContent: "space-between",
             pl: 2.5,
-            pr: 1
-          }}>
+            pr: 1,
+          }}
+        >
           {renderTabs}
           <IconButton onClick={handleMarkAllAsRead}>
             <Iconify icon="solar:settings-bold-duotone" />

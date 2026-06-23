@@ -2,8 +2,6 @@ import { alpha } from "@mui/material/styles";
 
 import { grey, primary } from "../palette";
 
-// ----------------------------------------------------------------------
-
 export function createPresets(preset) {
   const primaryColor = getPrimary(preset);
 
@@ -20,8 +18,6 @@ export function createPresets(preset) {
     ...theme,
   };
 }
-
-// ----------------------------------------------------------------------
 
 const cyan = {
   lighter: "#CCF4FE",

@@ -1,7 +1,5 @@
 import { badgeClasses } from "@mui/material/Badge";
 
-// ----------------------------------------------------------------------
-
 export function badge(theme) {
   return {
     MuiBadge: {

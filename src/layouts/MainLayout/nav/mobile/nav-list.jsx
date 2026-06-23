@@ -8,8 +8,6 @@ import { useActiveLink } from "../../../../routes/hooks/use-active-link";
 
 import { useCallback, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 export default function NavList({ data }) {
   const active = useActiveLink(data.path, !!data.children);
 
