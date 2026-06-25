@@ -1,7 +1,6 @@
 import axios from "axios";
 import axiosRetry from "axios-retry";
 import config from "../config/config.js";
-import qs from "qs";
 
 const instance = axios.create({
   baseURL: config().api,
@@ -12,16 +11,6 @@ const instance = axios.create({
   },
 });
 
-axiosRetry(instance, { retries: 3 });
-
-instance.interceptors.response.use(
-  (response) => {
-    response.data = qs.parse(response.data);
-    return response;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+axiosRetry(instance, { retries: 2 });
 
 export default instance;

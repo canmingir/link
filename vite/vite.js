@@ -51,7 +51,6 @@ async function vite() {
       include: [
         "@mui/material",
         "@nucleoidai/platform",
-        "axios-auth-refresh",
         "@emotion/react",
         "@emotion/styled",
         "@emotion/css",
@@ -67,7 +66,7 @@ async function vite() {
           find: /^src(.+)/,
           replacement: path.join(
             process.cwd(),
-            "/node_modules/@nucleoidai/platform/minimal/src/$1",
+            "/node_modules/@nucleoidai/platform/minimal/src/$1"
           ),
         },
       ],
