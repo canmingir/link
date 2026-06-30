@@ -18,6 +18,7 @@ const FlowNode = ({
   node,
   height,
   initialZoom,
+  centered,
   ...props
 }) => {
   if (!isRoot) {
@@ -52,6 +53,7 @@ const FlowNode = ({
         plugin={plugin}
         height={height}
         initialZoom={initialZoom}
+        centered={centered}
       >
         {node && (
           <FlowNodeView

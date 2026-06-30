@@ -1,66 +1,30 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { RouterLink } from "../../routes/components";
 import config from "../../config/config";
 
-const resolvedDimensions = {};
-
 const Logo = ({ disabledLink = false, sx, maxSize = 65, isLogin = false }) => {
   const { icon } = config().template.login;
-  const key = `${icon}_${maxSize}_${isLogin}`;
 
-  const [dimensions, setDimensions] = useState(
-    resolvedDimensions[key] || { width: maxSize, height: maxSize },
-  );
-
-  useEffect(() => {
-    if (!icon || resolvedDimensions[key]) return;
-
-    const img = new Image();
-    img.onload = () => {
-      const { naturalWidth, naturalHeight } = img;
-      const isSquare = naturalWidth === naturalHeight;
-      let newDimensions;
-
-      if (naturalWidth > maxSize || naturalHeight > maxSize) {
-        if (isSquare) {
-          newDimensions = {
-            width: isLogin ? maxSize : 40,
-            height: isLogin ? maxSize : 40,
-          };
-        } else {
-          const aspectRatio = naturalWidth / naturalHeight;
-          if (naturalWidth >= naturalHeight) {
-            newDimensions = {
-              width: maxSize,
-              height: Math.round(maxSize / aspectRatio),
-            };
-          } else {
-            newDimensions = {
-              width: Math.round(maxSize * aspectRatio),
-              height: maxSize,
-            };
-          }
-        }
-      } else {
-        newDimensions = { width: naturalWidth, height: naturalHeight };
-      }
-
-      resolvedDimensions[key] = newDimensions;
-      setDimensions(newDimensions);
-    };
-    img.src = icon;
-  }, [icon, maxSize, key]);
+  const [isSquare, setIsSquare] = useState(false);
+  const squareCap = isSquare && !isLogin ? 40 : maxSize;
 
   const logo = (
     <Box
       component="img"
       src={icon}
+      onLoad={(e) => {
+        const { naturalWidth, naturalHeight } = e.currentTarget;
+        setIsSquare(naturalWidth === naturalHeight);
+      }}
       sx={{
-        width: dimensions.width,
-        height: dimensions.height,
+        maxWidth: squareCap,
+        maxHeight: squareCap,
+        width: "auto",
+        height: "auto",
+        objectFit: "contain",
         cursor: "pointer",
         ...sx,
       }}
