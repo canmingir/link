@@ -14,6 +14,7 @@ export const Flow = ({
   onChange,
   height,
   initialZoom,
+  centered = false,
 }) => {
   const [floatingNodes, setFloatingNodes] = useState([]);
 
@@ -90,6 +91,7 @@ export const Flow = ({
         floatingNodes={floatingNodes}
         height={height}
         initialZoom={initialZoom}
+        centered={centered}
       />
     </Box>
   );

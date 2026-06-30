@@ -18,6 +18,7 @@ const FlowViewport = ({
   plugin,
   height = "100vh",
   initialZoom = 1,
+  centered = false,
   sx = {},
   ...rest
 }) => {
@@ -45,6 +46,8 @@ const FlowViewport = ({
   } = useSelection();
 
   useEffect(() => {
+    if (centered) return;
+
     const container = containerRef.current;
     const inner = innerRef.current;
     if (!container || !inner) return;
@@ -64,7 +67,7 @@ const FlowViewport = ({
     observer.observe(container);
 
     return () => observer.disconnect();
-  }, []);
+  }, [centered]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -310,11 +313,11 @@ const FlowViewport = ({
           height: height,
           display: "flex",
           alignItems: "center",
-          justifyContent: shouldCenter ? "center" : "flex-start",
+          justifyContent: centered || shouldCenter ? "center" : "flex-start",
           transition: isDragging ? "none" : "transform 0.1s ease-out",
           pointerEvents: "auto",
           position: "relative",
-          pl: variant === "horizontal" ? 4 : 0,
+          pl: centered ? 0 : variant === "horizontal" ? 4 : 0,
         }}
       >
         {children}
