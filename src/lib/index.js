@@ -58,7 +58,7 @@ export {
 export { default as DevTool } from "./DevTool";
 
 export { default as SidebarChat } from "./SidebarChat/SidebarChat";
-export { default as BlueprintSelector } from "./BlueprintSelector/BlueprintSelector";
+export { default as PresetSelector } from "./PresetSelector/PresetSelector";
 export {
   AIMessage,
   ErrorMessage,

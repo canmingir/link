@@ -23,9 +23,9 @@ interface SidebarChatProps {
   sound?: boolean;
   agent?: { id: string; name: string; icon: string };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Blueprints?: any[];
-  selectedBlueprint?: string;
-  onBlueprintChange?: (blueprint: string) => void;
+  Presets?: any[];
+  selectedPreset?: string;
+  onPresetChange?: (preset: string) => void;
   onSessionSelect?: (sessionId: string, cachedMessages?: Message[]) => void;
   onNewSession?: () => void;
   beta?: boolean;
@@ -47,9 +47,9 @@ const SidebarChat = ({
   readOnly,
   sound,
   agent,
-  Blueprints = [],
-  selectedBlueprint,
-  onBlueprintChange,
+  Presets = [],
+  selectedPreset,
+  onPresetChange,
   onSessionSelect,
   onNewSession,
   beta,
@@ -206,9 +206,9 @@ const SidebarChat = ({
         onMuteToggle={() => setMute((prev) => !prev)}
         showLoading={showLoading()}
         onSend={handleSend}
-        Blueprints={Blueprints}
-        selectedBlueprint={selectedBlueprint}
-        onBlueprintChange={onBlueprintChange}
+        Presets={Presets}
+        selectedPreset={selectedPreset}
+        onPresetChange={onPresetChange}
         messagesEndRef={messagesEndRef}
         highlightedMessage={highlightedMessage}
         onNewSession={onNewSession}

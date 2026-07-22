@@ -11,18 +11,18 @@ import {
   Typography,
 } from "@mui/material";
 
-const BlueprintSelector = ({
-  Blueprints,
-  selectedBlueprint,
-  onBlueprintChange,
+const PresetSelector = ({
+  Presets,
+  selectedPreset,
+  onPresetChange,
 }: {
-  Blueprints: Array<{
+  Presets: Array<{
     id: string;
     title: string;
     description?: string;
   }>;
-  selectedBlueprint?: string;
-  onBlueprintChange: (blueprintId: string) => void;
+  selectedPreset?: string;
+  onPresetChange: (presetId: string) => void;
 }) => {
   return (
     <Box
@@ -43,12 +43,12 @@ const BlueprintSelector = ({
             },
           }}
         >
-          Blueprint
+          Preset
         </InputLabel>
         <Select
-          value={selectedBlueprint || "Automatic"}
-          onChange={(e) => onBlueprintChange(e.target.value)}
-          label="Blueprint"
+          value={selectedPreset || "Automatic"}
+          onChange={(e) => onPresetChange(e.target.value)}
+          label="Preset"
           sx={{
             color: "white",
             "& .MuiOutlinedInput-notchedOutline": {
@@ -88,8 +88,8 @@ const BlueprintSelector = ({
           <MenuItem value="Automatic">
             <Typography sx={{ color: "white" }}>Automatic</Typography>
           </MenuItem>
-          {Blueprints.map((Blueprint) => (
-            <MenuItem key={Blueprint.id} value={Blueprint.id}>
+          {Presets.map((Preset) => (
+            <MenuItem key={Preset.id} value={Preset.id}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Iconify
                   icon="healthicons:crisis-response-center-person-outline"
@@ -98,7 +98,7 @@ const BlueprintSelector = ({
                   sx={{ color: "white" }}
                 />
                 <Typography sx={{ color: "white" }}>
-                  {Blueprint.title}
+                  {Preset.title}
                 </Typography>
               </Box>
             </MenuItem>
@@ -109,4 +109,4 @@ const BlueprintSelector = ({
   );
 };
 
-export default BlueprintSelector;
+export default PresetSelector;

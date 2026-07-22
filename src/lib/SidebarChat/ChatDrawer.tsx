@@ -1,4 +1,4 @@
-import BlueprintSelector from "../BlueprintSelector/BlueprintSelector";
+import PresetSelector from "../PresetSelector/PresetSelector";
 import Editor from "@monaco-editor/react";
 import { Iconify } from "@canmingir/link/platform/components";
 import { Scrollbar } from "@canmingir/link/platform/components";
@@ -35,9 +35,9 @@ interface ChatDrawerProps {
   showLoading: boolean;
   onSend: (content: string) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Blueprints?: any[];
-  selectedBlueprint?: string;
-  onBlueprintChange?: (blueprint: string) => void;
+  Presets?: any[];
+  selectedPreset?: string;
+  onPresetChange?: (preset: string) => void;
   messagesEndRef: React.RefObject<HTMLDivElement>;
   highlightedMessage: React.RefObject<HTMLDivElement>;
   onNewSession?: () => void;
@@ -58,9 +58,9 @@ const ChatDrawer = ({
   onMuteToggle,
   showLoading,
   onSend,
-  Blueprints = [],
-  selectedBlueprint,
-  onBlueprintChange,
+  Presets = [],
+  selectedPreset,
+  onPresetChange,
   messagesEndRef,
   highlightedMessage,
   toolRenderers,
@@ -186,12 +186,12 @@ const ChatDrawer = ({
           </Stack>
         </Box>
 
-        {Blueprints.length > 0 && !readOnly && (
+        {Presets.length > 0 && !readOnly && (
           <Box sx={{ px: 2, pt: 1 }}>
-            <BlueprintSelector
-              Blueprints={Blueprints}
-              selectedBlueprint={selectedBlueprint}
-              onBlueprintChange={onBlueprintChange}
+            <PresetSelector
+              Presets={Presets}
+              selectedPreset={selectedPreset}
+              onPresetChange={onPresetChange}
             />
           </Box>
         )}
