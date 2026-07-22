@@ -1,10 +1,17 @@
 import { ConfigSchema } from "../src/config/schemas.js";
 import checker from "vite-plugin-checker";
-import config from "../../../../config.js";
 import path from "path";
 import react from "@vitejs/plugin-react";
 import { splitVendorChunkPlugin } from "vite";
 import svgr from "vite-plugin-svgr";
+import { pathToFileURL } from "url";
+
+// Resolved against the consumer's cwd (not a relative import) so this keeps
+// working whether @canmingir/link is a real copy or a symlinked/linked package.
+const configUrl = pathToFileURL(
+  path.join(process.cwd(), "config.js")
+).href;
+const { default: config } = await import(configUrl);
 
 const { value, error } = ConfigSchema.validate(config);
 
