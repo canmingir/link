@@ -1,11 +1,7 @@
 import { alpha } from "@mui/material/styles";
 import { chipClasses } from "@mui/material/Chip";
 
-// ----------------------------------------------------------------------
-
 const COLORS = ["primary", "secondary", "info", "success", "warning", "error"];
-
-// ----------------------------------------------------------------------
 
 export function chip(theme) {
   const lightMode = theme.palette.mode === "light";

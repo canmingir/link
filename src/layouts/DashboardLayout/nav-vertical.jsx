@@ -20,8 +20,6 @@ import { useUser } from "../../hooks/use-user";
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 export default function NavVertical({ openNav, onCloseNav }) {
   const { user } = useUser();
   const pathname = usePathname();

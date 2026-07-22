@@ -1,7 +1,5 @@
 import { tabClasses } from "@mui/material/Tab";
 
-// ----------------------------------------------------------------------
-
 export function tabs(theme) {
   return {
     MuiTabs: {

@@ -1,11 +1,7 @@
 import { alpha } from "@mui/material/styles";
 import { paginationItemClasses } from "@mui/material/PaginationItem";
 
-// ----------------------------------------------------------------------
-
 const COLORS = ["primary", "secondary", "info", "success", "warning", "error"];
-
-// ----------------------------------------------------------------------
 
 export function pagination(theme) {
   const lightMode = theme.palette.mode === "light";

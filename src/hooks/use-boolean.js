@@ -1,7 +1,5 @@
 import { useCallback, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 export function useBoolean(defaultValue) {
   const [value, setValue] = useState(!!defaultValue);
 

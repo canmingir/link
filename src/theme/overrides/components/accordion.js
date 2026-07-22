@@ -2,8 +2,6 @@ import { accordionClasses } from "@mui/material/Accordion";
 import { accordionSummaryClasses } from "@mui/material/AccordionSummary";
 import { typographyClasses } from "@mui/material/Typography";
 
-// ----------------------------------------------------------------------
-
 export function accordion(theme) {
   return {
     MuiAccordion: {

@@ -6,8 +6,6 @@ import SettingsDialog from "../../widgets/SettingsDialog";
 import { motion } from "framer-motion";
 import { varHover } from "../../components/animate";
 
-// ----------------------------------------------------------------------
-
 export default function SettingsButton({ sx }) {
   const [settingsOpen, setSettingsOpen] = React.useState(false);
 

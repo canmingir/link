@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function skeleton(theme) {
   return {
     MuiSkeleton: {

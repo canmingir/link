@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function tooltip(theme) {
   const lightMode = theme.palette.mode === "light";
 

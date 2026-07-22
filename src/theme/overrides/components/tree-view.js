@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function treeView(theme) {
   return {
     MuiTreeItem: {

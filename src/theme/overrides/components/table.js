@@ -2,8 +2,6 @@ import { alpha } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { tableRowClasses } from "@mui/material/TableRow";
 
-// ----------------------------------------------------------------------
-
 export function table(theme) {
   return {
     MuiTable: {

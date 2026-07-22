@@ -8,8 +8,6 @@ import { storage } from "@nucleoidjs/webstorage";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// ----------------------------------------------------------------------
-
 export default function Auth0LoginView() {
   const { name, project } = config();
 

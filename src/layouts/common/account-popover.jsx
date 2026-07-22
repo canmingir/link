@@ -16,8 +16,6 @@ import { varHover } from "../../components/animate";
 
 import CustomPopover, { usePopover } from "../../components/custom-popover";
 
-// ----------------------------------------------------------------------
-
 export default function AccountPopover() {
   const { options } = config().menu;
   const router = useRouter();

@@ -1,11 +1,7 @@
 import { alertClasses } from "@mui/material/Alert";
 import { alpha } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 const COLORS = ["info", "success", "warning", "error"];
-
-// ----------------------------------------------------------------------
 
 export function alert(theme) {
   const lightMode = theme.palette.mode === "light";

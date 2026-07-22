@@ -1,7 +1,5 @@
 import { matchPath, useLocation } from "react-router-dom";
 
-// ----------------------------------------------------------------------
-
 export function useActiveLink(path, deep = true) {
   const { pathname } = useLocation();
 

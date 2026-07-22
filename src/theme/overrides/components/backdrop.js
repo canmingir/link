@@ -1,7 +1,5 @@
 import { alpha } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export function backdrop(theme) {
   return {
     MuiBackdrop: {

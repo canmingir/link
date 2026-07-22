@@ -9,7 +9,6 @@ import Toolbar from "@mui/material/Toolbar";
 import { bgBlur } from "../../theme/css";
 import { useOffSetTop } from "../../hooks/use-off-set-top";
 import { useTheme } from "@mui/material/styles";
-// ----------------------------------------------------------------------
 
 export default function HeaderSim() {
   const theme = useTheme();
@@ -41,9 +40,13 @@ export default function HeaderSim() {
       >
         <Logo />
 
-        <Stack direction="row" spacing={1} sx={{
-          alignItems: "center"
-        }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: "center",
+          }}
+        >
           <SettingsButton />
         </Stack>
       </Toolbar>

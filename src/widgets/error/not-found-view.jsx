@@ -7,8 +7,6 @@ import { motion } from "framer-motion";
 
 import { MotionContainer, varBounce } from "../../components/animate";
 
-// ----------------------------------------------------------------------
-
 export default function NotFoundView() {
   return (
     <MotionContainer>

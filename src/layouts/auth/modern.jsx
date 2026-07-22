@@ -6,8 +6,6 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import { alpha } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export default function AuthModernLayout() {
   return (
     <Stack

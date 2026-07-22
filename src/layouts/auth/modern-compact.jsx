@@ -4,8 +4,6 @@ import Header from "../common/header-sim";
 import { Outlet } from "react-router";
 import React from "react";
 
-// ----------------------------------------------------------------------
-
 export default function AuthModernCompactLayout() {
   return (
     <>

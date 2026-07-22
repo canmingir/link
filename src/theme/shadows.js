@@ -2,8 +2,6 @@ import { alpha } from "@mui/material/styles";
 
 import { common, grey } from "./palette";
 
-// ----------------------------------------------------------------------
-
 export function shadows(mode) {
   const color = mode === "light" ? grey[500] : common.black;
 

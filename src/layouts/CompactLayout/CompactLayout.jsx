@@ -4,8 +4,6 @@ import { Outlet } from "react-router";
 import React from "react";
 import Stack from "@mui/material/Stack";
 
-// ----------------------------------------------------------------------
-
 const CompactLayout = () => {
   return (
     <>

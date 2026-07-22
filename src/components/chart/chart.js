@@ -4,8 +4,6 @@ import { memo } from "react";
 
 import { alpha, styled } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 const Chart = styled(ApexChart)(({ theme }) => ({
   "& .apexcharts-canvas": {
     // Tooltip

@@ -7,8 +7,6 @@ import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
 import { useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export default function NavToggleButton({ sx, ...other }) {
   const theme = useTheme();
 
@@ -26,7 +24,7 @@ export default function NavToggleButton({ sx, ...other }) {
       onClick={() =>
         settings.onUpdate(
           "themeLayout",
-          settings.themeLayout === "vertical" ? "mini" : "vertical",
+          settings.themeLayout === "vertical" ? "mini" : "vertical"
         )
       }
       sx={{
