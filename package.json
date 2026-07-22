@@ -42,7 +42,7 @@
     "@nucleoidjs/webstorage": "^1.0.5",
     "autosuggest-highlight": "^3.3.4",
     "aws-amplify": "^6.16.0",
-    "axios": "^1.10.0",
+    "axios": "^1.18.1",
     "axios-retry": "^4.4.1",
     "cypress": "^15.3.0",
     "date-fns": "^3.6.0",
