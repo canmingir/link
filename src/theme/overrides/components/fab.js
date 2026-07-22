@@ -1,11 +1,7 @@
 import { alpha } from "@mui/material/styles";
 import { fabClasses } from "@mui/material/Fab";
 
-// ----------------------------------------------------------------------
-
 const COLORS = ["primary", "secondary", "info", "success", "warning", "error"];
-
-// ----------------------------------------------------------------------
 
 export function fab(theme) {
   const lightMode = theme.palette.mode === "light";

@@ -1,7 +1,5 @@
 import { buttonClasses } from "@mui/material/Button";
 
-// ----------------------------------------------------------------------
-
 export function loadingButton(theme) {
   return {
     MuiLoadingButton: {

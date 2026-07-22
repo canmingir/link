@@ -9,8 +9,6 @@ import { usePathname } from "../../../../routes/hooks";
 
 import { useCallback, useEffect, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 export default function NavMobile({ data }) {
   const pathname = usePathname();
 
@@ -45,7 +43,7 @@ export default function NavMobile({ data }) {
               pb: 5,
               width: 260,
             },
-          }
+          },
         }}
       >
         <Scrollbar>

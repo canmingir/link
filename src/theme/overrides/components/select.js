@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function select(theme) {
   return {
     MuiSelect: {

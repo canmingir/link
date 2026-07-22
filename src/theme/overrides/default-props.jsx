@@ -1,7 +1,6 @@
 import Iconify from "../../components/Iconify";
 import React from "react";
 import SvgIcon from "@mui/material/SvgIcon";
-// ----------------------------------------------------------------------
 
 const ArrowDownIcon = (props) => (
   <SvgIcon {...props}>
@@ -63,8 +62,6 @@ const TreeViewEndIcon = (props) => (
   </SvgIcon>
 );
 
-// ----------------------------------------------------------------------
-
 export function defaultProps(theme) {
   return {
     MuiAlert: {
@@ -111,8 +108,8 @@ export function defaultProps(theme) {
           subheader: {
             variant: "body2",
             marginTop: theme.spacing(0.5),
-          }
-        }
+          },
+        },
       },
     },
     MuiChip: {
@@ -144,8 +141,8 @@ export function defaultProps(theme) {
 
           secondary: {
             component: "span",
-          }
-        }
+          },
+        },
       },
     },
     MuiPaper: {

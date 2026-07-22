@@ -4,8 +4,6 @@ import { inputBaseClasses } from "@mui/material/InputBase";
 import { inputLabelClasses } from "@mui/material/InputLabel";
 import { outlinedInputClasses } from "@mui/material/OutlinedInput";
 
-// ----------------------------------------------------------------------
-
 export function textField(theme) {
   const color = {
     focused: theme.palette.text.primary,

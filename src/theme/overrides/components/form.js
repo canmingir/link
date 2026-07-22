@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function formControl(theme) {
   return {
     MuiFormControl: {

@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function stepper(theme) {
   return {
     MuiStepConnector: {

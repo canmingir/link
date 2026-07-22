@@ -9,8 +9,6 @@ import { useResponsive } from "../../hooks/use-responsive";
 
 import { alpha, useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export default function AuthClassicLayout({ image, title }) {
   const theme = useTheme();
 
@@ -56,8 +54,9 @@ export default function AuthClassicLayout({ image, title }) {
             theme.palette.mode === "light" ? 0.88 : 0.94
           ),
           imgUrl: "https://minimals.cc/assets/background/overlay_2.jpg",
-        })
-      }}>
+        }),
+      }}
+    >
       <Typography variant="h3" sx={{ maxWidth: 480, textAlign: "center" }}>
         {title || "Hi, Welcome back"}
       </Typography>

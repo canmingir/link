@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import { Icon } from "@iconify/react";
 import React from "react";
 import { forwardRef } from "react";
-// ----------------------------------------------------------------------
 
 const Iconify = forwardRef(({ icon, width = 20, sx, ...other }, ref) => (
   <Box

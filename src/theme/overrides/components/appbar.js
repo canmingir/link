@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function appBar(theme) {
   return {
     MuiAppBar: {

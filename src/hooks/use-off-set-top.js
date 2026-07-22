@@ -2,8 +2,6 @@ import { useScroll } from "framer-motion";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 export function useOffSetTop(top = 0, options) {
   const { scrollY } = useScroll(options);
 

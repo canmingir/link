@@ -4,8 +4,6 @@ import React from "react";
 import { memo } from "react";
 import { useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 function SeverErrorIllustration({ ...other }) {
   const theme = useTheme();
 
@@ -25,10 +23,14 @@ function SeverErrorIllustration({ ...other }) {
       viewBox="0 0 480 360"
       xmlns="http://www.w3.org/2000/svg"
       {...other}
-      sx={[{
-        width: "100%",
-        height: "100%"
-      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
+      sx={[
+        {
+          width: "100%",
+          height: "100%",
+        },
+        ...(Array.isArray(other.sx) ? other.sx : [other.sx]),
+      ]}
+    >
       <BackgroundShape />
       <image
         href="/assets/illustrations/characters/character_8.png"

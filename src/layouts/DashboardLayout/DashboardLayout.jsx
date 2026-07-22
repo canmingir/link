@@ -10,8 +10,6 @@ import { useBoolean } from "../../hooks/use-boolean";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useSettingsContext } from "../../components/settings";
 
-// ----------------------------------------------------------------------
-
 export default function DashboardLayout() {
   const settings = useSettingsContext();
 

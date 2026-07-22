@@ -10,8 +10,6 @@ import { useResponsive } from "../../hooks/use-responsive";
 
 import React, { useEffect, useState } from "react";
 
-// ----------------------------------------------------------------------
-
 export default function FullScreenLayout() {
   const { fullScreenLayout } = config().menu;
 
@@ -66,8 +64,9 @@ export default function FullScreenLayout() {
             <Stack
               sx={{
                 width: "100%",
-                mt: 7
-              }}>
+                mt: 7,
+              }}
+            >
               <Outlet />
             </Stack>
           </>

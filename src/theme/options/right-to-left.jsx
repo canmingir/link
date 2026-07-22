@@ -4,8 +4,6 @@ import createCache from "@emotion/cache";
 import rtlPlugin from "stylis-plugin-rtl";
 import { useEffect } from "react";
 
-// ----------------------------------------------------------------------
-
 export default function RTL({ children, themeDirection }) {
   useEffect(() => {
     document.dir = themeDirection;

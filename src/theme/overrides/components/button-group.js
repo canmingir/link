@@ -1,11 +1,7 @@
 import { alpha } from "@mui/material/styles";
 import { buttonGroupClasses } from "@mui/material/ButtonGroup";
 
-// ----------------------------------------------------------------------
-
 const COLORS = ["primary", "secondary", "info", "success", "warning", "error"];
-
-// ----------------------------------------------------------------------
 
 export function buttonGroup(theme) {
   const rootStyles = (ownerState) => {

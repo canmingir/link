@@ -5,8 +5,6 @@ import { useSettingsContext } from "../../components/settings";
 
 import { HEADER, NAV } from "../config-layout";
 
-// ----------------------------------------------------------------------
-
 const SPACING = 8;
 
 export default function Main({ children, sx, ...other }) {

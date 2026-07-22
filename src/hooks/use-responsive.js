@@ -1,8 +1,6 @@
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export function useResponsive(query, start, end) {
   const theme = useTheme();
 
@@ -28,8 +26,6 @@ export function useResponsive(query, start, end) {
 
   return mediaOnly;
 }
-
-// ----------------------------------------------------------------------
 
 export function useWidth() {
   const theme = useTheme();

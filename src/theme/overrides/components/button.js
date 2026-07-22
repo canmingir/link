@@ -1,11 +1,7 @@
 import { alpha } from "@mui/material/styles";
 import { buttonClasses } from "@mui/material/Button";
 
-// ----------------------------------------------------------------------
-
 const COLORS = ["primary", "secondary", "info", "success", "warning", "error"];
-
-// ----------------------------------------------------------------------
 
 export function button(theme) {
   const lightMode = theme.palette.mode === "light";

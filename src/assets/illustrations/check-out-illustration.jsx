@@ -3,8 +3,6 @@ import React from "react";
 import { memo } from "react";
 import { useTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 function CheckoutIllustration({ ...other }) {
   const theme = useTheme();
 
@@ -22,10 +20,14 @@ function CheckoutIllustration({ ...other }) {
       viewBox="0 0 200 200"
       xmlns="http://www.w3.org/2000/svg"
       {...other}
-      sx={[{
-        width: "100%",
-        height: "100%"
-      }, ...(Array.isArray(other.sx) ? other.sx : [other.sx])]}>
+      sx={[
+        {
+          width: "100%",
+          height: "100%",
+        },
+        ...(Array.isArray(other.sx) ? other.sx : [other.sx]),
+      ]}
+    >
       <path
         fill="url(#a)"
         d="M85.6 134.7c-3.7-5.5-33-10.5-35.3-12 0 0-5.4-2-7.8 3.4-2.4 5.4-16.6 49.8-16.6 49.8s27.8 14.9 36 16.5c3.3.4 6.9-1.1 9.7-2.9l15.8-47.2c-.1 0 2.1-5.2-1.8-7.6z"
