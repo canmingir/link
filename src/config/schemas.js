@@ -105,7 +105,7 @@ export const MenuConfigSchema = Joi.object({
 export const TemplateConfigSchema = Joi.object({
   login: Joi.object({
     variant: Joi.string()
-      .valid("classic", "modern")
+      .valid("classic", "modern", "special")
       .optional()
       .default("classic"),
     image: Joi.string()
