@@ -1,3 +1,6 @@
+import { Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Iconify from "../../components/Iconify";
@@ -17,8 +20,7 @@ import { usePathname } from "../../routes/hooks/use-pathname";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useUser } from "../../hooks/use-user";
 
-import { Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+// ----------------------------------------------------------------------
 
 export default function NavVertical({ openNav, onCloseNav }) {
   const { user } = useUser();
@@ -31,7 +33,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
 
   useEffect(() => {
     const index = sideMenu.findIndex(
-      (item) => item.subheader === hideSubheader.subheader
+      (item) => item.subheader === hideSubheader.subheader,
     );
 
     if (index !== -1) {
@@ -98,6 +100,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
           sx={{
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             ml: 1,
             mt: 3,
           }}
@@ -105,7 +108,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
           <Logo sx={{ ml: 4 }} />
           <Typography
             sx={{
-              ml: 1,
+              ml: 2,
             }}
           >
             {name}
