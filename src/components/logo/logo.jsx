@@ -5,7 +5,7 @@ import Link from "@mui/material/Link";
 import { RouterLink } from "../../routes/components";
 import config from "../../config/config";
 
-const Logo = ({ disabledLink = false, sx, maxSize = 65, isLogin = false }) => {
+const Logo = ({ disabledLink = false, sx, maxSize = 100, isLogin = false }) => {
   const { icon } = config().template.login;
 
   const [isSquare, setIsSquare] = useState(false);
