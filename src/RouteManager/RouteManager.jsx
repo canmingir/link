@@ -10,14 +10,20 @@ import React from "react";
 import classicLoginLayout from "../layouts/auth/classic";
 import config from "../config/config";
 import modernLoginLayout from "../layouts/auth/modern";
+import specialLoginLayout from "../layouts/auth/special";
+
+const loginLayouts = {
+  classic: classicLoginLayout,
+  modern: modernLoginLayout,
+  special: specialLoginLayout,
+};
 
 export default function RouteManager({ routes }) {
   const loginConfig = config().template?.login;
 
   const isLoginConfigured = config().project && loginConfig;
 
-  const LoginLayout =
-    loginConfig?.variant === "classic" ? classicLoginLayout : modernLoginLayout;
+  const LoginLayout = loginLayouts[loginConfig?.variant] || modernLoginLayout;
 
   return (
     <HelmetProvider>
