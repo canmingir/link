@@ -2,7 +2,7 @@ import Joi from "joi";
 
 export const ConfigSchema = Joi.object({
   appId: Joi.string().uuid().required(),
-  name: Joi.string().optional(),
+  name: Joi.string().optional().default(""),
   beta: Joi.boolean().optional(),
   base: Joi.string().required(),
   api: Joi.string().uri().required(),
