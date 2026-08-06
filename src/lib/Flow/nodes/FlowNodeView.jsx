@@ -1,3 +1,5 @@
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+
 import { Box } from "@mui/material";
 import DefaultNodeCard from "./DefaultCard";
 import DraggableNode from "./DraggableNode";
@@ -6,8 +8,6 @@ import FlowNode from "../core/FlowNode";
 import { getContentParts } from "../utils/flowUtils";
 import { toPxNumber } from "../styles";
 import { useNodeStyle } from "../hooks/useNodeStyle";
-
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const FlowNodeView = ({
   node,
@@ -59,6 +59,8 @@ const FlowNodeView = ({
     gradient = baseStyle.gradient ?? null,
     curvature = baseStyle.curvature ?? 0.5,
     connectorType = baseStyle.connectorType ?? "curved",
+    startGap = baseStyle.startGap ?? 8,
+    endGap = baseStyle.endGap ?? 10,
     selectionColor = baseStyle.selectionColor ?? "#64748b",
   } = nodeStyle;
 
@@ -76,6 +78,8 @@ const FlowNodeView = ({
     gradient: edgeStyle.gradient ?? gradient,
     curvature: edgeStyle.curvature ?? curvature,
     connectorType: edgeStyle.connectorType ?? connectorType,
+    startGap: edgeStyle.startGap ?? startGap,
+    endGap: edgeStyle.endGap ?? endGap,
   };
 
   const isHorizontal = direction === "horizontal";
@@ -241,6 +245,9 @@ const FlowNodeView = ({
                   connectorType:
                     childSpecificStyle.connectorType ??
                     childEdgeProps.connectorType,
+                  startGap:
+                    childSpecificStyle.startGap ?? childEdgeProps.startGap,
+                  endGap: childSpecificStyle.endGap ?? childEdgeProps.endGap,
                   label: childSpecificStyle.label,
                   labelStyle: childSpecificStyle.labelStyle,
                   labelPosition: childSpecificStyle.labelPosition,
@@ -278,6 +285,8 @@ const FlowNodeView = ({
                 gradient={childEdgeProps.gradient}
                 curvature={childEdgeProps.curvature}
                 connectorType={childEdgeProps.connectorType}
+                startGap={childEdgeProps.startGap}
+                endGap={childEdgeProps.endGap}
                 label={childEdgeProps.label}
                 labelStyle={childEdgeProps.labelStyle}
                 labelPosition={childEdgeProps.labelPosition}

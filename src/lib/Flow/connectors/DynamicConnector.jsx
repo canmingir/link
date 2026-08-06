@@ -26,6 +26,8 @@ const DynamicConnector = ({
   labelPosition = 0.5,
   labelOffsetX = 0,
   labelOffsetY = -10,
+  startGap = 8,
+  endGap = 10,
 }) => {
   const uniqueId = useId();
   const [dims, setDims] = useState(null);
@@ -53,32 +55,38 @@ const DynamicConnector = ({
       let parentPoint;
       let childPoints = [];
 
+      const headRoom = showArrow ? arrowSize * strokeWidth * 0.5 : 0;
+      const tailInset = startGap;
+      const headInset = endGap + headRoom;
+
       if (isHorizontal) {
         parentPoint = {
-          x: (pRect.right - cRect.left) / scaleX,
+          x: (pRect.right - cRect.left) / scaleX + tailInset,
           y: (pRect.top + pRect.height / 2 - cRect.top) / scaleY,
         };
 
         childPoints = childEls.map((el) => {
           if (!el) return { x: parentPoint.x + 100, y: parentPoint.y };
           const r = el.getBoundingClientRect();
+          const x = (r.left - cRect.left) / scaleX - headInset;
           return {
-            x: (r.left - cRect.left) / scaleX,
+            x: Math.max(x, parentPoint.x),
             y: (r.top + r.height / 2 - cRect.top) / scaleY,
           };
         });
       } else {
         parentPoint = {
           x: (pRect.left + pRect.width / 2 - cRect.left) / scaleX,
-          y: (pRect.bottom - cRect.top) / scaleY,
+          y: (pRect.bottom - cRect.top) / scaleY + tailInset,
         };
 
         childPoints = childEls.map((el) => {
           if (!el) return { x: parentPoint.x, y: parentPoint.y + 100 };
           const r = el.getBoundingClientRect();
+          const y = (r.top - cRect.top) / scaleY - headInset;
           return {
             x: (r.left + r.width / 2 - cRect.left) / scaleX,
-            y: (r.top - cRect.top) / scaleY,
+            y: Math.max(y, parentPoint.y),
           };
         });
       }
@@ -95,7 +103,18 @@ const DynamicConnector = ({
     childEls.forEach((el) => el && ro.observe(el));
 
     return () => ro.disconnect();
-  }, [containerEl, parentEl, childEls, tick, isHorizontal]);
+  }, [
+    containerEl,
+    parentEl,
+    childEls,
+    tick,
+    isHorizontal,
+    showArrow,
+    arrowSize,
+    strokeWidth,
+    startGap,
+    endGap,
+  ]);
 
   const ids = useMemo(
     () => ({
@@ -189,15 +208,18 @@ const DynamicConnector = ({
             <marker
               id={ids.arrow}
               viewBox="0 0 10 10"
-              refX="9"
+              refX="10"
               refY="5"
               markerWidth={arrowSize}
               markerHeight={arrowSize}
               orient="auto-start-reverse"
             >
               <path
-                d="M 0 0 L 10 5 L 0 10 z"
+                d="M 0.5 1 L 10 5 L 0.5 9 Z"
                 fill={gradient ? `url(#${ids.gradient})` : stroke}
+                stroke={gradient ? `url(#${ids.gradient})` : stroke}
+                strokeWidth="1"
+                strokeLinejoin="round"
               />
             </marker>
           )}
@@ -209,15 +231,6 @@ const DynamicConnector = ({
           const pathD = getPath(points.parent, child);
           const pathStroke = gradient ? `url(#${ids.gradient})` : stroke;
 
-          const labelX =
-            points.parent.x +
-            (child.x - points.parent.x) * labelPosition +
-            labelOffsetX;
-          const labelY =
-            points.parent.y +
-            (child.y - points.parent.y) * labelPosition +
-            labelOffsetY;
-
           return (
             <g key={i}>
               <path
@@ -226,7 +239,7 @@ const DynamicConnector = ({
                 stroke={pathStroke}
                 strokeWidth={strokeWidth}
                 strokeDasharray={animated ? "8,4" : dashArray}
-                strokeLinecap="round"
+                strokeLinecap={dashArray || animated ? "round" : "butt"}
                 strokeLinejoin="round"
                 markerEnd={showArrow ? `url(#${ids.arrow})` : undefined}
                 style={{
@@ -258,24 +271,25 @@ const DynamicConnector = ({
               }}
             />
 
-            {points.children.map((child, i) => {
-              const dotFill = gradient ? gradient.to : effectiveDotColor;
+            {!showArrow &&
+              points.children.map((child, i) => {
+                const dotFill = gradient ? gradient.to : effectiveDotColor;
 
-              return (
-                <circle
-                  key={i}
-                  cx={child.x}
-                  cy={child.y}
-                  r={dotRadius}
-                  fill={dotFill}
-                  stroke="#fff"
-                  strokeWidth={1.5}
-                  style={{
-                    filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.15))",
-                  }}
-                />
-              );
-            })}
+                return (
+                  <circle
+                    key={i}
+                    cx={child.x}
+                    cy={child.y}
+                    r={dotRadius}
+                    fill={dotFill}
+                    stroke="#fff"
+                    strokeWidth={1.5}
+                    style={{
+                      filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.15))",
+                    }}
+                  />
+                );
+              })}
           </>
         )}
       </svg>
