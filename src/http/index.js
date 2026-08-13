@@ -14,7 +14,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use((request) => {
   const { base } = config();
-  const accessToken = storage.get("link", "accessToken");
+  const accessToken = storage.get("link", "accesstoken");
 
   if (!accessToken) {
     window.location.href = base === "/" ? "/login" : `${base}/login`;
@@ -40,11 +40,11 @@ function processQueue(error, token = null) {
 
 async function doRefresh() {
   const { appId } = config();
-  const projectId = storage.get("projectId");
-  const identityProvider = storage.get("link", "identityProvider");
+  const projectId = storage.get("link", "projectid");
+  const identityProvider = storage.get("link", "identityprovider");
 
   const { data } = await oauth.post("/oauth", {
-    refreshToken: storage.get("link", "refreshToken"),
+    refreshToken: storage.get("link", "refreshtoken"),
     appId,
     projectId,
     identityProvider,
@@ -54,9 +54,9 @@ async function doRefresh() {
     }),
   });
 
-  storage.set("link", "accessToken", data.accessToken);
+  storage.set("link", "accesstoken", data.accessToken);
   if (data.refreshToken) {
-    storage.set("link", "refreshToken", data.refreshToken);
+    storage.set("link", "refreshtoken", data.refreshToken);
   }
   return data.accessToken;
 }
@@ -81,7 +81,7 @@ instance.interceptors.response.use(
         "Bearer ",
         ""
       );
-      const storedToken = storage.get("link", "accessToken");
+      const storedToken = storage.get("link", "accesstoken");
 
       if (storedToken && storedToken !== usedToken) {
         originalRequest.headers["Authorization"] = `Bearer ${storedToken}`;
@@ -107,8 +107,8 @@ instance.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError, null);
         const { base } = config();
-        storage.remove("link", "accessToken");
-        storage.remove("link", "refreshToken");
+        storage.remove("link", "accesstoken");
+        storage.remove("link", "refreshtoken");
         window.location.href = `${window.location.origin}${base}/login`;
         return Promise.reject(refreshError);
       } finally {

@@ -20,7 +20,14 @@ function NucDialog({
   maximizedDimensions = { width: "65rem", height: "50rem" },
   minimizedDimensions = { width: "55rem", height: "40rem" },
 }) {
-  const [maximized] = useStorage("platform", title, "maximized", false);
+  const dialogKey = String(title).toLowerCase();
+  const [maximized] = useStorage(
+    "link",
+    "platform",
+    dialogKey,
+    "maximized",
+    false,
+  );
   const currentDimensions = maximized
     ? maximizedDimensions
     : minimizedDimensions;
@@ -63,7 +70,9 @@ function NucDialog({
       {maximized ? (
         <IconButton
           aria-label="collapse"
-          onClick={() => storage.set("platform", title, "maximized", false)}
+          onClick={() =>
+            storage.set("link", "platform", dialogKey, "maximized", false)
+          }
           sx={{
             position: "absolute",
             right: 48,
@@ -76,7 +85,9 @@ function NucDialog({
       ) : (
         <IconButton
           aria-label="expand"
-          onClick={() => storage.set("platform", title, "maximized", true)}
+          onClick={() =>
+            storage.set("link", "platform", dialogKey, "maximized", true)
+          }
           sx={{
             position: "absolute",
             right: 48,

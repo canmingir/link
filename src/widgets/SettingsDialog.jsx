@@ -25,6 +25,7 @@ import React, { useEffect, useState } from "react";
 
 import Iconify from "../components/Iconify";
 import config from "../config/config";
+import { storage } from "@nucleoidjs/webstorage";
 import { useEvent } from "@nucleoidai/react-event";
 import useSettings from "../hooks/useSettings";
 import { useSettingsContext } from "../components/settings/context";
@@ -296,7 +297,7 @@ const Permission = () => {
 };
 
 const Settings = () => {
-  const projectId = localStorage.getItem("projectId");
+  const projectId = storage.get("link", "projectid");
   const { settings, updateSettings } = useSettings(projectId);
   const { beta, onUpdate } = useSettingsContext();
 

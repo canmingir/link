@@ -16,8 +16,8 @@ function LoginPage() {
 
   function token() {
     if (
-      storage.get("link", "refreshToken") &&
-      storage.get("link", "accessToken")
+      storage.get("link", "refreshtoken") &&
+      storage.get("link", "accesstoken")
     ) {
       return true;
     } else {

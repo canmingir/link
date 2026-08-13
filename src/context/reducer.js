@@ -6,9 +6,9 @@ import { storage } from "@nucleoidjs/webstorage";
 import { v4 as uuid } from "uuid";
 
 let login = true;
-const itemId = storage.get("itemId");
+const itemId = storage.get("link", "itemid");
 try {
-  const token = storage.get("link", "accessToken");
+  const token = storage.get("link", "accesstoken");
   const decodedToken = jwtDecode(token);
 
   if (decodedToken.exp * 1000 < Date.now()) {
@@ -84,12 +84,12 @@ export const reducer = (context, action) => {
 
     case "ITEM_SELECT": {
       context.itemId = action.payload;
-      storage.set("itemId", context.itemId);
+      storage.set("link", "itemid", context.itemId);
       break;
     }
 
     case "ITEM_DELETE": {
-      storage.remove("itemId");
+      storage.remove("link", "itemid");
       context.itemId = null;
       break;
     }

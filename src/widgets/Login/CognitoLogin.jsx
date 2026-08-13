@@ -69,9 +69,9 @@ export default function CognitoLogin() {
 
       const data = await res.json();
 
-      storage.set("link", "accessToken", data.accessToken);
-      storage.set("link", "refreshToken", data.refreshToken);
-      storage.set("link", "identityProvider", "COGNITO");
+      storage.set("link", "accesstoken", data.accessToken);
+      storage.set("link", "refreshtoken", data.refreshToken);
+      storage.set("link", "identityprovider", "COGNITO");
 
       navigate("/");
     } catch (e) {
