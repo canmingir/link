@@ -1,26 +1,37 @@
 import FlowNodeView from "../nodes/FlowNodeView";
 import FlowViewport from "./FlowViewport";
-import React from "react";
+import React, { forwardRef } from "react";
 import { SelectionProvider } from "../selection/SelectionContext";
 import { getBaseStyleForVariant } from "../styles";
 
-const FlowNode = ({
-  isRoot = false,
-  onAddNode,
-  variant,
-  nodesById,
-  onPaste,
-  onCut,
-  onConnect,
-  floatingNodes,
-  style,
-  plugin,
-  node,
-  height,
-  initialZoom,
-  centered,
-  ...props
-}) => {
+const FlowNode = forwardRef(function FlowNode(
+  {
+    isRoot = false,
+    onAddNode,
+    variant,
+    nodesById,
+    onPaste,
+    onCut,
+    onConnect,
+    floatingNodes,
+    style,
+    plugin,
+    node,
+    height,
+    initialZoom,
+    centered,
+    minZoom,
+    maxZoom,
+    fitViewPadding,
+    fitViewMaxZoom,
+    fitViewOnMount,
+    fitViewOnResize,
+    fitViewOnNodesChange,
+    onInit,
+    ...props
+  },
+  ref,
+) {
   if (!isRoot) {
     if (!node) return null;
     return (
@@ -42,6 +53,7 @@ const FlowNode = ({
   return (
     <SelectionProvider>
       <FlowViewport
+        ref={ref}
         selectionColor={selectionColor}
         nodesById={nodesById}
         onPaste={onPaste}
@@ -54,6 +66,14 @@ const FlowNode = ({
         height={height}
         initialZoom={initialZoom}
         centered={centered}
+        minZoom={minZoom}
+        maxZoom={maxZoom}
+        fitViewPadding={fitViewPadding}
+        fitViewMaxZoom={fitViewMaxZoom}
+        fitViewOnMount={fitViewOnMount}
+        fitViewOnResize={fitViewOnResize}
+        fitViewOnNodesChange={fitViewOnNodesChange}
+        onInit={onInit}
       >
         {node && (
           <FlowNodeView
@@ -69,6 +89,6 @@ const FlowNode = ({
       </FlowViewport>
     </SelectionProvider>
   );
-};
+});
 
 export default FlowNode;
