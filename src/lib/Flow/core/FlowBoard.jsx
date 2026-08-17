@@ -1,20 +1,31 @@
-import React, { useMemo } from "react";
+import React, { forwardRef, useMemo } from "react";
 
 import FlowBoardItem from "./FlowBoardItem";
 import FlowViewport from "./FlowViewport";
 import { SelectionProvider } from "../selection/SelectionContext";
 import { getBaseStyleForVariant } from "../styles";
 
-export const FlowBoard = ({
-  flows = [],
-  variant = "simple",
-  style,
-  plugin,
-  initialZoom = 1,
-  height = "100vh",
-  gap = 480,
-  onFlowPositionChange,
-}) => {
+export const FlowBoard = forwardRef(function FlowBoard(
+  {
+    flows = [],
+    variant = "simple",
+    style,
+    plugin,
+    initialZoom = 1,
+    height = "100vh",
+    gap = 480,
+    onFlowPositionChange,
+    minZoom,
+    maxZoom,
+    fitViewPadding,
+    fitViewMaxZoom,
+    fitViewOnMount,
+    fitViewOnResize,
+    fitViewOnNodesChange,
+    onInit,
+  },
+  ref,
+) {
   const baseStyle = getBaseStyleForVariant(variant);
   const selectionColor = baseStyle.selectionColor ?? "#64748b";
 
@@ -44,6 +55,7 @@ export const FlowBoard = ({
   return (
     <SelectionProvider>
       <FlowViewport
+        ref={ref}
         selectionColor={selectionColor}
         nodesById={mergedNodesById}
         variant={variant}
@@ -51,6 +63,14 @@ export const FlowBoard = ({
         plugin={plugin}
         height={height}
         initialZoom={initialZoom}
+        minZoom={minZoom}
+        maxZoom={maxZoom}
+        fitViewPadding={fitViewPadding}
+        fitViewMaxZoom={fitViewMaxZoom}
+        fitViewOnMount={fitViewOnMount}
+        fitViewOnResize={fitViewOnResize}
+        fitViewOnNodesChange={fitViewOnNodesChange}
+        onInit={onInit}
       >
         {positionedFlows.map(({ flow, id, position }) => (
           <FlowBoardItem
@@ -73,6 +93,6 @@ export const FlowBoard = ({
       </FlowViewport>
     </SelectionProvider>
   );
-};
+});
 
 export default FlowBoard;

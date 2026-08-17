@@ -1,21 +1,32 @@
 import { Box, alpha } from "@mui/material";
-import React, { useMemo, useState } from "react";
+import React, { forwardRef, useMemo, useState } from "react";
 import { assertLinkedGraph, buildTreeFromLinked } from "../utils/flowUtils";
 
 import FlowNode from "./FlowNode";
 import { useGraphOperations } from "../hooks/useGraphOperations";
 
-export const Flow = ({
-  data,
-  variant = "simple",
-  style,
-  plugin,
-  editable = false,
-  onChange,
-  height,
-  initialZoom,
-  centered = false,
-}) => {
+export const Flow = forwardRef(function Flow(
+  {
+    data,
+    variant = "simple",
+    style,
+    plugin,
+    editable = false,
+    onChange,
+    height,
+    initialZoom,
+    centered = false,
+    minZoom,
+    maxZoom,
+    fitViewPadding,
+    fitViewMaxZoom,
+    fitViewOnMount,
+    fitViewOnResize,
+    fitViewOnNodesChange,
+    onInit,
+  },
+  ref,
+) {
   const [floatingNodes, setFloatingNodes] = useState([]);
 
   const { nodesById, roots } = useMemo(() => assertLinkedGraph(data), [data]);
@@ -79,6 +90,7 @@ export const Flow = ({
       }}
     >
       <FlowNode
+        ref={ref}
         node={treeData}
         variant={variant}
         style={style}
@@ -92,9 +104,17 @@ export const Flow = ({
         height={height}
         initialZoom={initialZoom}
         centered={centered}
+        minZoom={minZoom}
+        maxZoom={maxZoom}
+        fitViewPadding={fitViewPadding}
+        fitViewMaxZoom={fitViewMaxZoom}
+        fitViewOnMount={fitViewOnMount}
+        fitViewOnResize={fitViewOnResize}
+        fitViewOnNodesChange={fitViewOnNodesChange}
+        onInit={onInit}
       />
     </Box>
   );
-};
+});
 
 export default Flow;

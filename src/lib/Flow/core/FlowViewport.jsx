@@ -1,28 +1,55 @@
-import React, { useEffect, useRef, useState } from "react";
+import {
+  DEFAULT_FIT_VIEW_PADDING,
+  DEFAULT_MAX_ZOOM,
+  DEFAULT_MIN_ZOOM,
+  clampZoomValue,
+  computeFitViewState,
+} from "../utils/viewportUtils";
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 
 import { Box } from "@mui/material";
 import FloatingGraph from "../graph/FloatingGraph";
 import SelectionOverlay from "../selection/SelectionOverlay";
 import { useSelection } from "../selection/SelectionContext";
 
-const FlowViewport = ({
-  children,
-  selectionColor = "#64748b",
-  nodesById,
-  onPaste,
-  onCut,
-  onConnect,
-  floatingNodes = [],
-  variant,
-  style,
-  plugin,
-  height = "100vh",
-  initialZoom = 1,
-  centered = false,
-  sx = {},
-  ...rest
-}) => {
-  const clampZoom = (zoom) => Math.min(2.5, Math.max(0.25, zoom));
+const FlowViewport = forwardRef(function FlowViewport(
+  {
+    children,
+    selectionColor = "#64748b",
+    nodesById,
+    onPaste,
+    onCut,
+    onConnect,
+    floatingNodes = [],
+    variant,
+    style,
+    plugin,
+    height = "100vh",
+    initialZoom = 1,
+    centered = false,
+    minZoom = DEFAULT_MIN_ZOOM,
+    maxZoom = DEFAULT_MAX_ZOOM,
+    fitViewPadding = DEFAULT_FIT_VIEW_PADDING,
+    fitViewMaxZoom = 1,
+    fitViewOnMount = false,
+    fitViewOnResize = false,
+    fitViewOnNodesChange = false,
+    onInit,
+    sx = {},
+    ...rest
+  },
+  ref,
+) {
+  const clampZoom = (z) => clampZoomValue(z, minZoom, maxZoom);
+
+  const usesFitView = fitViewOnMount || fitViewOnResize || fitViewOnNodesChange;
 
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(initialZoom);
@@ -46,7 +73,7 @@ const FlowViewport = ({
   } = useSelection();
 
   useEffect(() => {
-    if (centered) return;
+    if (centered || usesFitView) return;
 
     const container = containerRef.current;
     const inner = innerRef.current;
@@ -67,7 +94,123 @@ const FlowViewport = ({
     observer.observe(container);
 
     return () => observer.disconnect();
-  }, [centered]);
+  }, [centered, usesFitView]);
+
+  const runFitView = useCallback(
+    (options = {}) => {
+      const fit = computeFitViewState(containerRef.current, {
+        zoom,
+        offset,
+        padding: options.padding ?? fitViewPadding,
+        minZoom: options.minZoom ?? minZoom,
+        maxZoom: options.maxZoom ?? fitViewMaxZoom,
+      });
+      if (!fit) return;
+      setZoom(fit.zoom);
+      setOffset(fit.offset);
+    },
+    [zoom, offset, fitViewPadding, minZoom, fitViewMaxZoom],
+  );
+
+  const zoomIn = useCallback(
+    (step = 1.2) => setZoom((z) => clampZoom(z * step)),
+    [minZoom, maxZoom],
+  );
+
+  const zoomOut = useCallback(
+    (step = 1.2) => setZoom((z) => clampZoom(z / step)),
+    [minZoom, maxZoom],
+  );
+
+  const setZoomPublic = useCallback(
+    (z) => setZoom(clampZoom(z)),
+    [minZoom, maxZoom],
+  );
+
+  const setCenter = useCallback(
+    (x, y, options = {}) => {
+      const targetZoom = clampZoom(options.zoom ?? zoom);
+      setZoom(targetZoom);
+      setOffset({ x: -targetZoom * x, y: -targetZoom * y });
+    },
+    [zoom, minZoom, maxZoom],
+  );
+
+  const getZoom = useCallback(() => zoom, [zoom]);
+
+  const runFitViewRef = useRef(runFitView);
+  useEffect(() => {
+    runFitViewRef.current = runFitView;
+  }, [runFitView]);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      fitView: runFitView,
+      zoomIn,
+      zoomOut,
+      setZoom: setZoomPublic,
+      setCenter,
+      getZoom,
+    }),
+    [runFitView, zoomIn, zoomOut, setZoomPublic, setCenter, getZoom],
+  );
+
+  useEffect(() => {
+    if (!fitViewOnMount) return;
+    runFitView();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!fitViewOnResize) return;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    let frame = null;
+    let isFirstCallback = true;
+    const observer = new ResizeObserver(() => {
+      if (isFirstCallback) {
+        isFirstCallback = false;
+        return;
+      }
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => runFitViewRef.current());
+    });
+
+    observer.observe(container);
+
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [fitViewOnResize]);
+
+  const nodeCount = nodesById ? Object.keys(nodesById).length : 0;
+  const previousNodeCountRef = useRef(nodeCount);
+
+  useEffect(() => {
+    if (!fitViewOnNodesChange) return;
+
+    if (previousNodeCountRef.current !== nodeCount) {
+      previousNodeCountRef.current = nodeCount;
+      const frame = requestAnimationFrame(() => runFitViewRef.current());
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [fitViewOnNodesChange, nodeCount]);
+
+  useEffect(() => {
+    onInit?.({
+      fitView: runFitView,
+      zoomIn,
+      zoomOut,
+      setZoom: setZoomPublic,
+      setCenter,
+      getZoom,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -313,11 +456,19 @@ const FlowViewport = ({
           height: height,
           display: "flex",
           alignItems: "center",
-          justifyContent: centered || shouldCenter ? "center" : "flex-start",
+          justifyContent:
+            centered || (!usesFitView && shouldCenter)
+              ? "center"
+              : "flex-start",
           transition: isDragging ? "none" : "transform 0.1s ease-out",
           pointerEvents: "auto",
           position: "relative",
-          pl: centered ? 0 : variant === "horizontal" ? 4 : 0,
+          pl:
+            centered || (!usesFitView && shouldCenter)
+              ? 0
+              : variant === "horizontal"
+                ? 4
+                : 0,
         }}
       >
         {children}
@@ -340,6 +491,6 @@ const FlowViewport = ({
       </Box>
     </Box>
   );
-};
+});
 
 export default FlowViewport;
