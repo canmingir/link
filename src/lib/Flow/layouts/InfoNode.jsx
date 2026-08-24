@@ -1,7 +1,7 @@
-import { Iconify } from "@canmingir/link/platform/components";
-
 import React, { useEffect, useState } from "react";
 import { alpha, styled } from "@mui/material/styles";
+
+import { Iconify } from "@canmingir/link/platform/components";
 
 const ANIMATION_DELAY_MS = 200;
 
@@ -33,7 +33,7 @@ const MainContainer = styled("div", {
     border: `1px solid ${borderColor}`,
     backdropFilter: "blur(10px)",
     transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-    cursor: "pointer",
+    cursor: "inherit",
     position: "relative",
     overflow: "hidden",
     minWidth,
