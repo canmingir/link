@@ -257,13 +257,15 @@ const ChatDrawer = ({
                 />
                 Chat
               </ToggleButton>
-              <ToggleButton value="json">
-                <Iconify
-                  icon="solar:code-bold-duotone"
-                  sx={{ width: 14, height: 14, mr: 0.5 }}
-                />
-                JSON
-              </ToggleButton>
+              {!embedded && (
+                <ToggleButton value="json">
+                  <Iconify
+                    icon="solar:code-bold-duotone"
+                    sx={{ width: 14, height: 14, mr: 0.5 }}
+                  />
+                  JSON
+                </ToggleButton>
+              )}
             </ToggleButtonGroup>
           </Box>
 
@@ -403,7 +405,6 @@ const ChatDrawer = ({
           width: "100%",
           height: "100%",
           overflow: "hidden",
-          borderRadius: 1.5,
           boxShadow: (theme) => theme.shadows[4],
         }}
       >
