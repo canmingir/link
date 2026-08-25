@@ -31,15 +31,9 @@ export default function NavVertical({ openNav, onCloseNav }) {
   const lgUp = useResponsive("up", "lg");
   const { beta, name } = config();
 
-  useEffect(() => {
-    const index = sideMenu.findIndex(
-      (item) => item.subheader === hideSubheader.subheader
-    );
-
-    if (index !== -1) {
-      sideMenu.splice(index, 1);
-    }
-  }, [hideSubheader]);
+  const filteredSideMenu = sideMenu.filter(
+    (item) => item.subheader !== hideSubheader.subheader
+  );
 
   useEffect(() => {
     if (openNav) {
@@ -117,7 +111,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
         </Box>
       )}
       <NavSectionVertical
-        data={sideMenu}
+        data={filteredSideMenu}
         slotProps={{
           currentRole: user?.role,
         }}
