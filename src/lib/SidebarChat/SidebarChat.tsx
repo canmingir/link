@@ -1,13 +1,13 @@
 import ChatDrawer from "./ChatDrawer";
+import MessageSfx from "./messageSFX.mp3";
 import SessionPopover from "./SessionPopover";
 import SidebarSessionList from "./SidebarSessionList";
 import { StoredSession } from "./types";
-import { ToolDecision, ToolRenderers } from "../ChatMessage/ToolMessage";
 import { useEvent } from "@nucleoidai/react-event";
 import useSound from "use-sound";
 
-import MessageSfx from "./messageSFX.mp3";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import { ToolDecision, ToolRenderers } from "../ChatMessage/ToolMessage";
 
 type Message = { id?: string; content: string; role: string };
 
@@ -34,6 +34,8 @@ interface SidebarChatProps {
   clearAllSessions?: () => void;
   toolRenderers?: ToolRenderers;
   onToolDecision?: (toolCallId: string, decision: ToolDecision) => void;
+  embedded?: boolean;
+  footer?: React.ReactNode;
 }
 
 const SidebarChat = ({
@@ -58,6 +60,8 @@ const SidebarChat = ({
   clearAllSessions = () => {},
   toolRenderers,
   onToolDecision,
+  embedded,
+  footer,
 }: SidebarChatProps) => {
   const [aiResponded] = useEvent("AI_RESPONDED", null);
   const [conversationSent] = useEvent("CONVERSATION_SENT", null);
@@ -169,7 +173,7 @@ const SidebarChat = ({
 
   return (
     <>
-      {!open && (
+      {!open && !embedded && (
         <SidebarSessionList
           sessions={storedSessions}
           currentSessionId={currentSessionId}
@@ -183,17 +187,19 @@ const SidebarChat = ({
         />
       )}
 
-      <SessionPopover
-        anchorEl={popoverAnchor}
-        onClose={() => setPopoverAnchor(null)}
-        onOpenFullChat={handleOpenFromPopover}
-        sessions={storedSessions}
-        activeSessionId={activeLogSessionId}
-        currentSessionId={currentSessionId}
-        selectedConversationId={selectedConversationId}
-        messagesEndRef={messagesEndRef}
-        highlightedMessage={highlightedMessage}
-      />
+      {!embedded && (
+        <SessionPopover
+          anchorEl={popoverAnchor}
+          onClose={() => setPopoverAnchor(null)}
+          onOpenFullChat={handleOpenFromPopover}
+          sessions={storedSessions}
+          activeSessionId={activeLogSessionId}
+          currentSessionId={currentSessionId}
+          selectedConversationId={selectedConversationId}
+          messagesEndRef={messagesEndRef}
+          highlightedMessage={highlightedMessage}
+        />
+      )}
 
       <ChatDrawer
         title={title}
@@ -214,6 +220,8 @@ const SidebarChat = ({
         onNewSession={onNewSession}
         toolRenderers={toolRenderers}
         onToolDecision={onToolDecision}
+        embedded={embedded}
+        footer={footer}
       />
     </>
   );
