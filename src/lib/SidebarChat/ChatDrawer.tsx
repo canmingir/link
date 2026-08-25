@@ -226,38 +226,40 @@ const ChatDrawer = ({
               gap: 1,
             }}
           >
-            <ToggleButtonGroup
-              value={inputMode}
-              exclusive
-              onChange={handleModeChange}
-              size="small"
-              sx={{
-                "& .MuiToggleButton-root": {
-                  px: 1.5,
-                  py: 0.5,
-                  fontSize: "0.7rem",
-                  fontWeight: 600,
-                  letterSpacing: 0.5,
-                  textTransform: "uppercase",
-                  color: (theme) => alpha(theme.palette.text.secondary, 0.7),
-                  borderColor: (theme) => alpha(theme.palette.divider, 0.3),
-                  "&.Mui-selected": {
-                    color: (theme) => theme.palette.primary.light,
-                    bgcolor: (theme) => alpha(theme.palette.primary.main, 0.15),
-                    borderColor: (theme) =>
-                      alpha(theme.palette.primary.main, 0.4),
+            {!embedded && (
+              <ToggleButtonGroup
+                value={inputMode}
+                exclusive
+                onChange={handleModeChange}
+                size="small"
+                sx={{
+                  "& .MuiToggleButton-root": {
+                    px: 1.5,
+                    py: 0.5,
+                    fontSize: "0.7rem",
+                    fontWeight: 600,
+                    letterSpacing: 0.5,
+                    textTransform: "uppercase",
+                    color: (theme) => alpha(theme.palette.text.secondary, 0.7),
+                    borderColor: (theme) => alpha(theme.palette.divider, 0.3),
+                    "&.Mui-selected": {
+                      color: (theme) => theme.palette.primary.light,
+                      bgcolor: (theme) =>
+                        alpha(theme.palette.primary.main, 0.15),
+                      borderColor: (theme) =>
+                        alpha(theme.palette.primary.main, 0.4),
+                    },
                   },
-                },
-              }}
-            >
-              <ToggleButton value="chat">
-                <Iconify
-                  icon="solar:chat-round-line-bold-duotone"
-                  sx={{ width: 14, height: 14, mr: 0.5 }}
-                />
-                Chat
-              </ToggleButton>
-              {!embedded && (
+                }}
+              >
+                <ToggleButton value="chat">
+                  <Iconify
+                    icon="solar:chat-round-line-bold-duotone"
+                    sx={{ width: 14, height: 14, mr: 0.5 }}
+                  />
+                  Chat
+                </ToggleButton>
+
                 <ToggleButton value="json">
                   <Iconify
                     icon="solar:code-bold-duotone"
@@ -265,8 +267,8 @@ const ChatDrawer = ({
                   />
                   JSON
                 </ToggleButton>
-              )}
-            </ToggleButtonGroup>
+              </ToggleButtonGroup>
+            )}
           </Box>
 
           {/* Chat Input */}
@@ -276,6 +278,8 @@ const ChatDrawer = ({
                 variant="outlined"
                 autoComplete="off"
                 fullWidth
+                multiline
+                maxRows={9}
                 placeholder="Type a message..."
                 inputRef={inputRef}
                 onKeyDown={handleKeyDown}
@@ -290,6 +294,10 @@ const ChatDrawer = ({
                   input: {
                     endAdornment: (
                       <IconButton
+                        sx={{
+                          alignSelf: "flex-end",
+                          mb: 0.5,
+                        }}
                         onClick={() => {
                           const content = inputRef.current?.value?.trim();
                           if (content) {
