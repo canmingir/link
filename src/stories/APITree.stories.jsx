@@ -80,7 +80,8 @@ export default {
       description: {
         component:
           "APITree displays API endpoints in a tree structure grouped by path segments. " +
-          "It supports context menus for editing/deleting methods and a resource menu for adding new endpoints.",
+          "It is a controlled component: selection and expansion are driven by the " +
+          "selected/expanded props and reported via onSelect/onExpand.",
       },
     },
     layout: "centered",
@@ -92,6 +93,8 @@ const ALL_METHODS = ["GET", "POST", "PUT", "DELETE", "PATCH"];
 const APIWorkspace = () => {
   const [view, setView] = useState("PARAMS");
   const [dialogKey, setDialogKey] = useState(0);
+  const [expanded, setExpanded] = useState(["/", "/items"]);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const methodRef = useRef("GET");
   const pathRef = useRef("/");
@@ -337,7 +340,14 @@ const APIWorkspace = () => {
   return (
     <Box sx={{ display: "flex", height: "100%", gap: 2 }}>
       <Box sx={{ width: 280, flexShrink: 0, height: "100%" }}>
-        <APITree />
+        <APITree
+          api={api}
+          theme={theme}
+          expanded={expanded}
+          selected={selectedItem}
+          onExpand={(_event, itemIds) => setExpanded(itemIds)}
+          onSelect={(_event, itemId) => setSelectedItem(itemId)}
+        />
       </Box>
 
       <NucDialog
@@ -420,9 +430,9 @@ export const APITreeWorkspace = {
     docs: {
       description: {
         story:
-          "Full workspace: right-click a path node or click the + FAB to open the ResourceMenu, " +
-          "then choose Resource, Method, or Delete. Adding a resource or method opens the API dialog " +
-          "where you can configure the path, method, params, and body before saving.",
+          "Full workspace: click a method node to select it, then use the API dialog " +
+          "events (API_DIALOG_OPEN) to add or edit endpoints, configuring the path, " +
+          "method, params, and body before saving.",
       },
     },
   },
