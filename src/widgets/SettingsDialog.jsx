@@ -1,3 +1,11 @@
+import Iconify from "../components/Iconify";
+import config from "../config/config";
+import { useEvent } from "@nucleoidai/react-event";
+import useSettings from "../hooks/useSettings";
+import { useSettingsContext } from "../components/settings/context";
+import { useStorage } from "@nucleoidjs/webstorage";
+import { useUser } from "../hooks/use-user";
+
 import {
   Avatar,
   Box,
@@ -22,14 +30,6 @@ import {
 } from "@mui/material";
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
 import React, { useEffect, useState } from "react";
-
-import Iconify from "../components/Iconify";
-import config from "../config/config";
-import { storage } from "@nucleoidjs/webstorage";
-import { useEvent } from "@nucleoidai/react-event";
-import useSettings from "../hooks/useSettings";
-import { useSettingsContext } from "../components/settings/context";
-import { useUser } from "../hooks/use-user";
 
 let pkg = {
   name: "",
@@ -297,7 +297,7 @@ const Permission = () => {
 };
 
 const Settings = () => {
-  const projectId = storage.get("link", "projectid");
+  const projectId = useStorage("link", "projectid");
   const { settings, updateSettings } = useSettings(projectId);
   const { beta, onUpdate } = useSettingsContext();
 
