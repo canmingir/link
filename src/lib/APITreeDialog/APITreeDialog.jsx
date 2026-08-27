@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Close, Fullscreen, FullscreenExit } from "@mui/icons-material";
 import {
   Dialog,
@@ -8,7 +6,7 @@ import {
   DialogTitle,
   IconButton,
 } from "@mui/material";
-import { storage, useStorage } from "@nucleoidjs/webstorage";
+import React, { useState } from "react";
 
 function APITreeDialog({
   title,
@@ -20,14 +18,7 @@ function APITreeDialog({
   maximizedDimensions = { width: "65rem", height: "50rem" },
   minimizedDimensions = { width: "55rem", height: "40rem" },
 }) {
-  const dialogKey = String(title).toLowerCase();
-  const [maximized] = useStorage(
-    "link",
-    "platform",
-    dialogKey,
-    "maximized",
-    false
-  );
+  const [maximized, setMaximized] = useState(false);
   const currentDimensions = maximized
     ? maximizedDimensions
     : minimizedDimensions;
@@ -70,9 +61,7 @@ function APITreeDialog({
       {maximized ? (
         <IconButton
           aria-label="collapse"
-          onClick={() =>
-            storage.set("link", "platform", dialogKey, "maximized", false)
-          }
+          onClick={() => setMaximized(false)}
           sx={{
             position: "absolute",
             right: 48,
@@ -85,9 +74,7 @@ function APITreeDialog({
       ) : (
         <IconButton
           aria-label="expand"
-          onClick={() =>
-            storage.set("link", "platform", dialogKey, "maximized", true)
-          }
+          onClick={() => setMaximized(true)}
           sx={{
             position: "absolute",
             right: 48,
