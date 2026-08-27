@@ -42,7 +42,7 @@ export { default as APIPath } from "./APIPath";
 export { default as APITypes } from "./APITypes";
 export { default as BlankTreeMessage } from "./BlankTreeMessage";
 export { default as DialogTooltip } from "./DialogTootip";
-export { default as NucDialog } from "./NucDialog";
+export { default as APITreeDialog } from "./APITreeDialog";
 export { default as ParamTable } from "./ParamTable";
 export { default as ResourceMenu } from "./ResourceMenu";
 export { default as Schema } from "./Schema";

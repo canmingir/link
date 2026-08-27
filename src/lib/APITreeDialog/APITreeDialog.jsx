@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Close, Fullscreen, FullscreenExit } from "@mui/icons-material";
 import {
   Dialog,
@@ -8,9 +6,9 @@ import {
   DialogTitle,
   IconButton,
 } from "@mui/material";
-import { storage, useStorage } from "@nucleoidjs/webstorage";
+import React, { useState } from "react";
 
-function NucDialog({
+function APITreeDialog({
   title,
   minWidth = 600,
   children,
@@ -20,7 +18,7 @@ function NucDialog({
   maximizedDimensions = { width: "65rem", height: "50rem" },
   minimizedDimensions = { width: "55rem", height: "40rem" },
 }) {
-  const [maximized] = useStorage("platform", title, "maximized", false);
+  const [maximized, setMaximized] = useState(false);
   const currentDimensions = maximized
     ? maximizedDimensions
     : minimizedDimensions;
@@ -63,7 +61,7 @@ function NucDialog({
       {maximized ? (
         <IconButton
           aria-label="collapse"
-          onClick={() => storage.set("platform", title, "maximized", false)}
+          onClick={() => setMaximized(false)}
           sx={{
             position: "absolute",
             right: 48,
@@ -76,7 +74,7 @@ function NucDialog({
       ) : (
         <IconButton
           aria-label="expand"
-          onClick={() => storage.set("platform", title, "maximized", true)}
+          onClick={() => setMaximized(true)}
           sx={{
             position: "absolute",
             right: 48,
@@ -105,4 +103,4 @@ function NucDialog({
   );
 }
 
-export default NucDialog;
+export default APITreeDialog;

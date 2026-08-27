@@ -72,10 +72,10 @@ function Callback() {
     const defaultProjectId = "05708cf7-b9bf-4209-95fe-68d9138d2032";
 
     if (projectBar) {
-      projectId = storage.get("projectId");
+      projectId = storage.get("link", "projectid");
     } else {
       projectId = defaultProjectId;
-      storage.set("projectId", projectId);
+      storage.set("link", "projectid", projectId);
     }
 
     oauth
@@ -91,10 +91,10 @@ function Callback() {
         const accessToken = data.accessToken;
         const refreshToken = data.refreshToken;
 
-        storage.set("link", "accessToken", accessToken);
-        storage.set("link", "refreshToken", refreshToken);
+        storage.set("link", "accesstoken", accessToken);
+        storage.set("link", "refreshtoken", refreshToken);
         // TODO - update provider info
-        storage.set("link", "identityProvider", identityProvider);
+        storage.set("link", "identityprovider", identityProvider);
 
         publish("LOGIN", { data: data });
 

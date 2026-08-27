@@ -43,9 +43,9 @@ export default function DemoLogin() {
 
     const data = await res.json();
 
-    storage.set("link", "accessToken", data.accessToken);
-    storage.set("link", "refreshToken", data.refreshToken);
-    storage.set("link", "identityProvider", "DEMO");
+    storage.set("link", "accesstoken", data.accessToken);
+    storage.set("link", "refreshtoken", data.refreshToken);
+    storage.set("link", "identityprovider", "DEMO");
 
     navigate("/");
   }

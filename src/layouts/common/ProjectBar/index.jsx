@@ -45,7 +45,7 @@ function ProjectBar() {
   }, [projectCreated]);
 
   const id = window.matchMedia("projectId").matches;
-  const [selectedProjectId] = useStorage("projectId", id);
+  const [selectedProjectId] = useStorage("link", "projectid", id);
 
   const [selectedProject, setSelectedProject] = useState();
 
@@ -91,7 +91,7 @@ function ProjectBar() {
   const handleSelect = (project) => {
     const { id: projectId } = project;
 
-    const identityProviderRaw = storage.get("link", "identityProvider");
+    const identityProviderRaw = storage.get("link", "identityprovider");
     const identityProvider = identityProviderRaw?.toUpperCase();
 
     const payload = {
@@ -104,7 +104,7 @@ function ProjectBar() {
       payload.username = "admin";
       payload.password = "admin";
     } else {
-      payload.refreshToken = storage.get("link", "refreshToken");
+      payload.refreshToken = storage.get("link", "refreshtoken");
     }
 
     const request = oauth.post("/oauth", payload);
@@ -112,9 +112,9 @@ function ProjectBar() {
     request
       .then(({ data }) => {
         const { refreshToken, accessToken } = data;
-        storage.set("link", "accessToken", accessToken);
-        storage.set("link", "refreshToken", refreshToken);
-        storage.set("projectId", projectId);
+        storage.set("link", "accesstoken", accessToken);
+        storage.set("link", "refreshtoken", refreshToken);
+        storage.set("link", "projectid", projectId);
       })
       .finally(() => {
         setSelectedProject(project);
