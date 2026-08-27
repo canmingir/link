@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { storage, useStorage } from "@nucleoidjs/webstorage";
 
-function NucDialog({
+function APITreeDialog({
   title,
   minWidth = 600,
   children,
@@ -26,7 +26,7 @@ function NucDialog({
     "platform",
     dialogKey,
     "maximized",
-    false,
+    false
   );
   const currentDimensions = maximized
     ? maximizedDimensions
@@ -116,4 +116,4 @@ function NucDialog({
   );
 }
 
-export default NucDialog;
+export default APITreeDialog;
