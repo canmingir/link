@@ -2,10 +2,10 @@ import APIDialogAction from "../lib/APIDialogAction/APIDialogAction";
 import APIParams from "../lib/APIParams/APIParams";
 import APIPath from "../lib/APIPath/APIPath";
 import APITree from "../lib/APITree/APITree";
+import APITreeDialog from "../lib/APITreeDialog/APITreeDialog";
 import APITypes from "../lib/APITypes/APITypes";
 import CssBaseline from "@mui/material/CssBaseline";
 import NewAPIBody from "../lib/NewApiBody/NewAPIBody";
-import NucDialog from "../lib/NucDialog/NucDialog";
 
 import { Box, Divider } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
@@ -350,7 +350,7 @@ const APIWorkspace = () => {
         />
       </Box>
 
-      <NucDialog
+      <APITreeDialog
         title={dialogTitle}
         open={dialog.open}
         handleClose={handleCloseDialog}
@@ -408,7 +408,7 @@ const APIWorkspace = () => {
             <APITypes tstypes={[]} nuctypes={types} typesRef={typesRef} />
           )}
         </Box>
-      </NucDialog>
+      </APITreeDialog>
     </Box>
   );
 };
