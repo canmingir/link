@@ -297,7 +297,7 @@ const Permission = () => {
 };
 
 const Settings = () => {
-  const projectId = useStorage("link", "projectid");
+  const [projectId] = useStorage("link", "projectid");
   const { settings, updateSettings } = useSettings(projectId);
   const { beta, onUpdate } = useSettingsContext();
 
