@@ -1,7 +1,7 @@
+import { Iconify } from "@canmingir/link/platform/components";
+
 import React, { useEffect, useState } from "react";
 import { alpha, styled } from "@mui/material/styles";
-
-import { Iconify } from "@canmingir/link/platform/components";
 
 const ANIMATION_DELAY_MS = 200;
 
@@ -79,6 +79,10 @@ const IconContainer = styled("div", {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    boxShadow: `
+            4px 4px 0 rgba(255, 255, 255, 0.1),
+            5px 5px 5px rgba(0, 0, 0, 0.5)
+          `,
 
     '[data-hovered="true"] &': {
       backgroundColor: hoverBg,
