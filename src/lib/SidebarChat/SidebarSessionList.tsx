@@ -1,11 +1,19 @@
+import DevToolFrame from "../DevTool/DevToolFrame";
+import { Iconify } from "@canmingir/link/platform/components";
 import type { StoredSession } from "./types";
 import { alpha } from "@mui/material/styles";
 import { cleanIconName } from "./cleanIconName";
 import { publish } from "@nucleoidai/react-event";
 
 import { Badge, Box, Tooltip, Typography } from "@mui/material";
-import { DevTool, Iconify } from "@canmingir/link/platform/components";
 import React, { memo } from "react";
+
+export interface DevToolTopAction {
+  icon: string;
+  label: string;
+  onClick: () => void;
+  tooltip?: string;
+}
 
 interface SidebarSessionListProps {
   sessions: StoredSession[];
@@ -20,6 +28,7 @@ interface SidebarSessionListProps {
   onNewSession?: () => void;
   wrapperRef?: React.Ref<HTMLDivElement>;
   beta?: boolean;
+  topAction?: DevToolTopAction;
 }
 
 const btnBase = {
@@ -47,8 +56,47 @@ const SidebarSessionList = ({
   onNewSession,
   wrapperRef,
   beta,
+  topAction,
 }: SidebarSessionListProps) => {
   const sidebarSessions = sessions;
+
+  const contextRailContent = topAction ? (
+    <Tooltip
+      title={topAction.tooltip ?? topAction.label}
+      placement="left"
+      enterDelay={1000}
+      enterNextDelay={1000}
+    >
+      <Box
+        onClick={topAction.onClick}
+        sx={{
+          ...btnBase,
+          flexDirection: "column",
+          gap: 0.5,
+          color: "text.secondary",
+          "&:hover": {
+            color: "primary.main",
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
+            borderColor: (theme) => alpha(theme.palette.primary.main, 0.2),
+            transform: "scale(1.08)",
+          },
+        }}
+      >
+        <Iconify icon={topAction.icon} sx={{ width: 20, height: 20 }} />
+        <Typography
+          sx={{
+            fontSize: "0.5rem",
+            fontWeight: 500,
+            letterSpacing: 0.5,
+            lineHeight: 1,
+            textTransform: "capitalize",
+          }}
+        >
+          {topAction.label}
+        </Typography>
+      </Box>
+    </Tooltip>
+  ) : null;
 
   const header = (
     <>
@@ -291,13 +339,28 @@ const SidebarSessionList = ({
   );
 
   return (
-    <DevTool
-      width={45}
-      height={310}
-      header={header}
-      content={content}
-      footer={footer}
-    />
+    <>
+      {contextRailContent && (
+        <DevToolFrame
+          width={45}
+          height="auto"
+          content={contextRailContent}
+          sx={{
+            top: "calc(50% - 155px)",
+            transform: "translateY(calc(-100% - 12px))",
+            py: 1,
+          }}
+        />
+      )}
+
+      <DevToolFrame
+        width={45}
+        height={310}
+        header={header}
+        content={content}
+        footer={footer}
+      />
+    </>
   );
 };
 
