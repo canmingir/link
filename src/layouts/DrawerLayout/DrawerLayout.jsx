@@ -27,6 +27,9 @@ const DrawerLayout = ({
   paperSx,
   titleSx,
   mode = "fullscreen",
+  disableEnforceFocus = true,
+  slotProps: slotPropsProp,
+  ...rest
 }) => {
   const width = modeWidth[mode];
 
@@ -36,7 +39,10 @@ const DrawerLayout = ({
       open={open}
       onClose={onClose}
       sx={sx}
+      disableEnforceFocus={disableEnforceFocus}
+      {...rest}
       slotProps={{
+        ...(slotPropsProp ?? {}),
         paper: {
           sx: {
             backgroundColor: (theme) =>

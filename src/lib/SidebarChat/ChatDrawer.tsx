@@ -428,6 +428,7 @@ const ChatDrawer = ({
       onClose={onClose}
       variant="persistent"
       sx={{
+        zIndex: (theme) => theme.zIndex.modal + 3,
         width: open ? DRAWER_WIDTH : 0,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
