@@ -1,4 +1,4 @@
-import DevTool from "../DevTool/DevTool";
+import DevToolFrame from "../DevTool/DevToolFrame";
 import { Iconify } from "@canmingir/link/platform/components";
 import type { StoredSession } from "./types";
 import { alpha } from "@mui/material/styles";
@@ -341,7 +341,7 @@ const SidebarSessionList = ({
   return (
     <>
       {contextRailContent && (
-        <DevTool
+        <DevToolFrame
           width={45}
           height="auto"
           content={contextRailContent}
@@ -353,7 +353,7 @@ const SidebarSessionList = ({
         />
       )}
 
-      <DevTool
+      <DevToolFrame
         width={45}
         height={310}
         header={header}
