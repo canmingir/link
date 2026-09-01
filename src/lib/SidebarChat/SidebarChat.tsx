@@ -1,8 +1,5 @@
 import ChatDrawer from "./ChatDrawer";
 import MessageSfx from "./messageSFX.mp3";
-import SessionPopover from "./SessionPopover";
-import SidebarSessionList from "./SidebarSessionList";
-import { StoredSession } from "./types";
 import { useEvent } from "@nucleoidai/react-event";
 import useSound from "use-sound";
 
@@ -21,17 +18,11 @@ interface SidebarChatProps {
   history?: Message[];
   readOnly?: boolean;
   sound?: boolean;
-  agent?: { id: string; name: string; icon: string };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Presets?: any[];
   selectedPreset?: string;
   onPresetChange?: (preset: string) => void;
-  onSessionSelect?: (sessionId: string, cachedMessages?: Message[]) => void;
   onNewSession?: () => void;
-  beta?: boolean;
-  storedSessions?: StoredSession[];
-  refreshSessions?: () => void;
-  clearAllSessions?: () => void;
   toolRenderers?: ToolRenderers;
   onToolDecision?: (toolCallId: string, decision: ToolDecision) => void;
   embedded?: boolean;
@@ -40,7 +31,6 @@ interface SidebarChatProps {
 
 const SidebarChat = ({
   selectedConversationId,
-  sessionId,
   title,
   open,
   handleToggle,
@@ -48,16 +38,10 @@ const SidebarChat = ({
   history = [],
   readOnly,
   sound,
-  agent,
   Presets = [],
   selectedPreset,
   onPresetChange,
-  onSessionSelect,
   onNewSession,
-  beta,
-  storedSessions = [],
-  refreshSessions = () => {},
-  clearAllSessions = () => {},
   toolRenderers,
   onToolDecision,
   embedded,
@@ -66,20 +50,12 @@ const SidebarChat = ({
   const [aiResponded] = useEvent("AI_RESPONDED", null);
   const [conversationSent] = useEvent("CONVERSATION_SENT", null);
 
-  const currentSessionId = sessionId || selectedConversationId;
-
   const [mute, setMute] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
   const [play] = useSound(MessageSfx);
 
   const messagesEndRef = useRef(null);
   const highlightedMessage = useRef(null);
-  const lastSeenCountRef = useRef(0);
-  const sidebarRef = useRef<HTMLDivElement>(null);
-
-  const [popoverAnchor, setPopoverAnchor] = useState<HTMLElement | null>(null);
-  const [activeLogSessionId, setActiveLogSessionId] = useState("");
 
   const scrollToBottom = useCallback(() => {
     highlightedMessage.current?.scrollIntoView({
@@ -87,20 +63,6 @@ const SidebarChat = ({
       block: "center",
     });
   }, []);
-
-  useEffect(() => {
-    if (open) {
-      lastSeenCountRef.current = history.length;
-      setUnreadCount(0);
-      setPopoverAnchor(null);
-    }
-  }, [open, history.length]);
-
-  useEffect(() => {
-    if (!open && history.length > lastSeenCountRef.current) {
-      setUnreadCount(history.length - lastSeenCountRef.current);
-    }
-  }, [history, open]);
 
   useEffect(() => {
     if (open) {
@@ -144,86 +106,29 @@ const SidebarChat = ({
     return false;
   }, [conversationSent, aiResponded, loading]);
 
-  const handleSessionClick = useCallback(
-    (event: React.MouseEvent<HTMLElement>, sid: string) => {
-      refreshSessions();
-      setActiveLogSessionId(sid);
-      setPopoverAnchor(event.currentTarget);
-    },
-    [refreshSessions]
-  );
-
-  const handleOpenFromPopover = useCallback(() => {
-    setPopoverAnchor(null);
-    if (activeLogSessionId && activeLogSessionId !== currentSessionId) {
-      const cached = storedSessions.find(
-        (s) => s.sessionId === activeLogSessionId
-      );
-      onSessionSelect?.(activeLogSessionId, cached?.messages);
-    }
-    if (!open) handleToggle();
-  }, [
-    handleToggle,
-    open,
-    activeLogSessionId,
-    currentSessionId,
-    onSessionSelect,
-    storedSessions,
-  ]);
-
   return (
-    <>
-      {!open && !embedded && (
-        <SidebarSessionList
-          sessions={storedSessions}
-          currentSessionId={currentSessionId}
-          unreadCount={unreadCount}
-          onToggleChat={handleToggle}
-          onSessionClick={handleSessionClick}
-          onClearAll={clearAllSessions}
-          wrapperRef={sidebarRef}
-          beta={beta}
-          onNewSession={onNewSession}
-        />
-      )}
-
-      {!embedded && (
-        <SessionPopover
-          anchorEl={popoverAnchor}
-          onClose={() => setPopoverAnchor(null)}
-          onOpenFullChat={handleOpenFromPopover}
-          sessions={storedSessions}
-          activeSessionId={activeLogSessionId}
-          currentSessionId={currentSessionId}
-          selectedConversationId={selectedConversationId}
-          messagesEndRef={messagesEndRef}
-          highlightedMessage={highlightedMessage}
-        />
-      )}
-
-      <ChatDrawer
-        title={title}
-        open={open}
-        onClose={handleToggle}
-        history={history}
-        selectedConversationId={selectedConversationId}
-        readOnly={readOnly}
-        mute={mute}
-        onMuteToggle={() => setMute((prev) => !prev)}
-        showLoading={showLoading()}
-        onSend={handleSend}
-        Presets={Presets}
-        selectedPreset={selectedPreset}
-        onPresetChange={onPresetChange}
-        messagesEndRef={messagesEndRef}
-        highlightedMessage={highlightedMessage}
-        onNewSession={onNewSession}
-        toolRenderers={toolRenderers}
-        onToolDecision={onToolDecision}
-        embedded={embedded}
-        footer={footer}
-      />
-    </>
+    <ChatDrawer
+      title={title}
+      open={open}
+      onClose={handleToggle}
+      history={history}
+      selectedConversationId={selectedConversationId}
+      readOnly={readOnly}
+      mute={mute}
+      onMuteToggle={() => setMute((prev) => !prev)}
+      showLoading={showLoading()}
+      onSend={handleSend}
+      Presets={Presets}
+      selectedPreset={selectedPreset}
+      onPresetChange={onPresetChange}
+      messagesEndRef={messagesEndRef}
+      highlightedMessage={highlightedMessage}
+      onNewSession={onNewSession}
+      toolRenderers={toolRenderers}
+      onToolDecision={onToolDecision}
+      embedded={embedded}
+      footer={footer}
+    />
   );
 };
 
