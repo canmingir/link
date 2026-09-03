@@ -135,10 +135,11 @@ export function FlowMiniMap({
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
+return () => {
+  window.removeEventListener("mousemove", handleMouseMove);
+  window.removeEventListener("mouseup", handleMouseUp);
+  if (flowContainerRef.current) flowContainerRef.current.style.pointerEvents = "";
+};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDragging, svgW, flowContainerRef]);
 
