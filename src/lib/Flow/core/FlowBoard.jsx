@@ -18,7 +18,9 @@ export const FlowBoard = forwardRef(function FlowBoard(
     minZoom,
     maxZoom,
     fitViewPadding,
+    fitViewMinZoom,
     fitViewMaxZoom,
+    fitViewAlign,
     fitViewOnMount,
     fitViewOnResize,
     fitViewOnNodesChange,
@@ -66,7 +68,9 @@ export const FlowBoard = forwardRef(function FlowBoard(
         minZoom={minZoom}
         maxZoom={maxZoom}
         fitViewPadding={fitViewPadding}
+        fitViewMinZoom={fitViewMinZoom}
         fitViewMaxZoom={fitViewMaxZoom}
+        fitViewAlign={fitViewAlign}
         fitViewOnMount={fitViewOnMount}
         fitViewOnResize={fitViewOnResize}
         fitViewOnNodesChange={fitViewOnNodesChange}

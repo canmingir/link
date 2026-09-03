@@ -67,7 +67,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
             mt: 3,
           }}
         >
-          <Logo maxSize={name ? 100 : 200} sx={{ ml: 4, mb: 1 }} />
+          <Logo maxSize={name ? 100 : 200} sx={{ ml: 2, mb: 1 }} />
           <Link to="/" style={{ textDecoration: "none", color: "white" }}>
             <Typography
               sx={{

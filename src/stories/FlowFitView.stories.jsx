@@ -108,7 +108,9 @@ export const FitViewDemo = {
           minZoom={0.25}
           maxZoom={2.5}
           fitViewPadding={60}
+          fitViewMinZoom={0.5}
           fitViewMaxZoom={1}
+          fitViewAlign="start"
           fitViewOnMount
         />
       </Stack>
@@ -163,7 +165,9 @@ export const FitViewOnNodesChangeDemo = {
           minZoom={0.25}
           maxZoom={2.5}
           fitViewPadding={60}
+          fitViewMinZoom={0.5}
           fitViewMaxZoom={1}
+          fitViewAlign="start"
           fitViewOnMount
           fitViewOnNodesChange
         />

@@ -1,4 +1,6 @@
 import {
+  DEFAULT_FIT_VIEW_MAX_ZOOM,
+  DEFAULT_FIT_VIEW_MIN_ZOOM,
   DEFAULT_FIT_VIEW_PADDING,
   DEFAULT_MAX_ZOOM,
   DEFAULT_MIN_ZOOM,
@@ -37,7 +39,9 @@ const FlowViewport = forwardRef(function FlowViewport(
     minZoom = DEFAULT_MIN_ZOOM,
     maxZoom = DEFAULT_MAX_ZOOM,
     fitViewPadding = DEFAULT_FIT_VIEW_PADDING,
-    fitViewMaxZoom = 1,
+    fitViewMinZoom = DEFAULT_FIT_VIEW_MIN_ZOOM,
+    fitViewMaxZoom = DEFAULT_FIT_VIEW_MAX_ZOOM,
+    fitViewAlign = "start",
     fitViewOnMount = false,
     fitViewOnResize = false,
     fitViewOnNodesChange = false,
@@ -102,14 +106,15 @@ const FlowViewport = forwardRef(function FlowViewport(
         zoom,
         offset,
         padding: options.padding ?? fitViewPadding,
-        minZoom: options.minZoom ?? minZoom,
+        minZoom: options.minZoom ?? fitViewMinZoom,
         maxZoom: options.maxZoom ?? fitViewMaxZoom,
+        align: options.align ?? fitViewAlign,
       });
       if (!fit) return;
       setZoom(fit.zoom);
       setOffset(fit.offset);
     },
-    [zoom, offset, fitViewPadding, minZoom, fitViewMaxZoom],
+    [zoom, offset, fitViewPadding, fitViewMinZoom, fitViewMaxZoom, fitViewAlign],
   );
 
   const zoomIn = useCallback(
