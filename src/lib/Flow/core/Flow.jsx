@@ -19,7 +19,9 @@ export const Flow = forwardRef(function Flow(
     minZoom,
     maxZoom,
     fitViewPadding,
+    fitViewMinZoom,
     fitViewMaxZoom,
+    fitViewAlign,
     fitViewOnMount,
     fitViewOnResize,
     fitViewOnNodesChange,
@@ -107,7 +109,9 @@ export const Flow = forwardRef(function Flow(
         minZoom={minZoom}
         maxZoom={maxZoom}
         fitViewPadding={fitViewPadding}
+        fitViewMinZoom={fitViewMinZoom}
         fitViewMaxZoom={fitViewMaxZoom}
+        fitViewAlign={fitViewAlign}
         fitViewOnMount={fitViewOnMount}
         fitViewOnResize={fitViewOnResize}
         fitViewOnNodesChange={fitViewOnNodesChange}

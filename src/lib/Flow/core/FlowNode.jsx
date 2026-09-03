@@ -23,7 +23,9 @@ const FlowNode = forwardRef(function FlowNode(
     minZoom,
     maxZoom,
     fitViewPadding,
+    fitViewMinZoom,
     fitViewMaxZoom,
+    fitViewAlign,
     fitViewOnMount,
     fitViewOnResize,
     fitViewOnNodesChange,
@@ -69,7 +71,9 @@ const FlowNode = forwardRef(function FlowNode(
         minZoom={minZoom}
         maxZoom={maxZoom}
         fitViewPadding={fitViewPadding}
+        fitViewMinZoom={fitViewMinZoom}
         fitViewMaxZoom={fitViewMaxZoom}
+        fitViewAlign={fitViewAlign}
         fitViewOnMount={fitViewOnMount}
         fitViewOnResize={fitViewOnResize}
         fitViewOnNodesChange={fitViewOnNodesChange}

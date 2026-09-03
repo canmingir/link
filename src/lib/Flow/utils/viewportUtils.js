@@ -1,6 +1,8 @@
 export const DEFAULT_MIN_ZOOM = 0.25;
 export const DEFAULT_MAX_ZOOM = 2.5;
 export const DEFAULT_FIT_VIEW_PADDING = 40;
+export const DEFAULT_FIT_VIEW_MIN_ZOOM = 0.5;
+export const DEFAULT_FIT_VIEW_MAX_ZOOM = 1;
 
 export const clampZoomValue = (zoom, minZoom, maxZoom) =>
   Math.min(maxZoom, Math.max(minZoom, zoom));
@@ -12,6 +14,7 @@ export const computeFitTransform = ({
   padding = DEFAULT_FIT_VIEW_PADDING,
   minZoom = DEFAULT_MIN_ZOOM,
   maxZoom = DEFAULT_MAX_ZOOM,
+  align = "center",
 }) => {
   const availableWidth = Math.max(0, containerWidth - 2 * padding);
   const availableHeight = Math.max(0, containerHeight - 2 * padding);
@@ -25,11 +28,23 @@ export const computeFitTransform = ({
   const centerX = bounds.x + bounds.width / 2;
   const centerY = bounds.y + bounds.height / 2;
 
+  const overflowsX = bounds.width * zoom > availableWidth + 0.5;
+  const overflowsY = bounds.height * zoom > availableHeight + 0.5;
+
+  const offsetX =
+    align === "start" && overflowsX
+      ? -containerWidth / 2 + padding - zoom * bounds.x
+      : -zoom * centerX;
+  const offsetY =
+    align === "start" && overflowsY
+      ? -containerHeight / 2 + padding - zoom * bounds.y
+      : -zoom * centerY;
+
   return {
     zoom,
     offset: {
-      x: -zoom * centerX,
-      y: -zoom * centerY,
+      x: offsetX,
+      y: offsetY,
     },
   };
 };
@@ -65,7 +80,7 @@ export const computeContentBounds = (containerEl, { zoom, offset }) => {
 
 export const computeFitViewState = (
   containerEl,
-  { zoom, offset, padding, minZoom, maxZoom },
+  { zoom, offset, padding, minZoom, maxZoom, align }
 ) => {
   const bounds = computeContentBounds(containerEl, { zoom, offset });
   if (!bounds) return null;
@@ -77,5 +92,6 @@ export const computeFitViewState = (
     padding,
     minZoom,
     maxZoom,
+    align,
   });
 };
