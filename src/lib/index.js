@@ -24,6 +24,9 @@ export { default as useChart } from "./useChart/useChart";
 
 export { default as Flow } from "./Flow/core/Flow";
 export { default as FlowBoard } from "./Flow/core/FlowBoard";
+export { default as FlowMiniMap } from "./Flow/mini/FlowMiniMap";
+export { FlowSvgContent } from "./Flow/mini/FlowSvgContent";
+export { layoutFlow } from "./Flow/mini/layoutFlow";
 export {
   HeaderCard,
   MediaAvatarCard,
