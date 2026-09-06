@@ -28,8 +28,6 @@ function LoginPage() {
   useEffect(() => {
     if (token()) {
       navigate("/");
-    } else {
-      storage.clear();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);

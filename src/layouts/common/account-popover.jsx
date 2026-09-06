@@ -8,6 +8,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { alpha } from "@mui/material/styles";
 import config from "../../config/config";
+import { logout } from "../../widgets/Login/amplifyAuth";
 import { motion } from "framer-motion";
 import { storage } from "@nucleoidjs/webstorage";
 import { useRouter } from "../../routes/hooks";
@@ -25,11 +26,13 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
+      await logout();
+    } catch (error) {
+      console.error(error);
+    } finally {
       storage.clear();
       popover.onClose();
       router.replace("/login");
-    } catch (error) {
-      console.error(error);
     }
   };
 
