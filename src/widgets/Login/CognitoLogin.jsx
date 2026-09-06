@@ -1,3 +1,9 @@
+import config from "../../config/config";
+import { publish } from "@nucleoidai/react-event";
+import { storage } from "@nucleoidjs/webstorage";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import {
   Box,
   Button,
@@ -24,12 +30,6 @@ import {
 } from "./amplifyAuth";
 import { inputSx, primaryButtonSx } from "./styles";
 
-import config from "../../config/config";
-import { publish } from "@nucleoidai/react-event";
-import { storage } from "@nucleoidjs/webstorage";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-
 export default function CognitoLogin() {
   const [mode, setMode] = useState("login");
 
@@ -42,7 +42,8 @@ export default function CognitoLogin() {
 
   const navigate = useNavigate();
 
-  const { appId, credentials } = config();
+  const { appId, credentials, template } = config();
+  const projectBar = template?.projectBar;
 
   const handleLogin = async () => {
     try {
@@ -54,12 +55,21 @@ export default function CognitoLogin() {
 
       const requestUrl = credentials.requestUrl || "/api/oauth";
 
+      let projectId;
+      const defaultProjectId = "05708cf7-b9bf-4209-95fe-68d9138d2032";
+
+      if (projectBar) {
+        projectId = storage.get("link", "projectid");
+      } else {
+        projectId = defaultProjectId;
+      }
+
       const res = await fetch(requestUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          ...(projectId && { projectId }),
           appId,
-          projectId: "cb16e069-6214-47f1-9922-1f7fe7629525",
           identityProvider: "COGNITO",
           refreshToken: tokens.accessToken,
         }),
@@ -72,6 +82,9 @@ export default function CognitoLogin() {
       storage.set("link", "accesstoken", data.accessToken);
       storage.set("link", "refreshtoken", data.refreshToken);
       storage.set("link", "identityprovider", "COGNITO");
+      if (projectId) {
+        storage.set("link", "projectid", projectId);
+      }
 
       navigate("/");
     } catch (e) {

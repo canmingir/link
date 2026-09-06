@@ -22,17 +22,27 @@ export default function DemoLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const { appId, credentials } = config();
+  const { appId, credentials, template } = config();
+  const projectBar = template?.projectBar;
 
   async function handleLogin() {
     const requestUrl = credentials.requestUrl || "/api/oauth";
+
+    let projectId;
+    const defaultProjectId = "05708cf7-b9bf-4209-95fe-68d9138d2032";
+
+    if (projectBar) {
+      projectId = storage.get("link", "projectid");
+    } else {
+      projectId = defaultProjectId;
+    }
 
     const res = await fetch(requestUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        ...(projectId && { projectId }),
         appId: appId,
-        projectId: "cb16e069-6214-47f1-9922-1f7fe7629525",
         username,
         password,
         identityProvider: "DEMO",
@@ -46,6 +56,9 @@ export default function DemoLogin() {
     storage.set("link", "accesstoken", data.accessToken);
     storage.set("link", "refreshtoken", data.refreshToken);
     storage.set("link", "identityprovider", "DEMO");
+    if (projectId) {
+      storage.set("link", "projectid", projectId);
+    }
 
     navigate("/");
   }
