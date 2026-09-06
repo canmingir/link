@@ -44,7 +44,7 @@ export async function confirmForgotPassword(email, code, newPassword) {
 }
 
 export async function logout() {
-  await signOut();
+  await signOut({ global: true });
 }
 
 export async function getTokens() {
