@@ -30,6 +30,9 @@ const FlowNode = forwardRef(function FlowNode(
     fitViewOnResize,
     fitViewOnNodesChange,
     onInit,
+    impliedConnections,
+    showImpliedConnections,
+    labelForImpliedConnection,
     ...props
   },
   ref,
@@ -78,6 +81,9 @@ const FlowNode = forwardRef(function FlowNode(
         fitViewOnResize={fitViewOnResize}
         fitViewOnNodesChange={fitViewOnNodesChange}
         onInit={onInit}
+        impliedConnections={impliedConnections}
+        showImpliedConnections={showImpliedConnections}
+        labelForImpliedConnection={labelForImpliedConnection}
       >
         {node && (
           <FlowNodeView
