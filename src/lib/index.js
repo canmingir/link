@@ -24,6 +24,7 @@ export { default as useChart } from "./useChart/useChart";
 
 export { default as Flow } from "./Flow/core/Flow";
 export { default as FlowBoard } from "./Flow/core/FlowBoard";
+export { default as ImpliedConnections } from "./Flow/connectors/ImpliedConnections";
 export { default as FlowMiniMap } from "./Flow/mini/FlowMiniMap";
 export { FlowSvgContent } from "./Flow/mini/FlowSvgContent";
 export { layoutFlow } from "./Flow/mini/layoutFlow";
@@ -62,6 +63,11 @@ export { default as DevTool } from "./DevTool";
 
 export { default as SidebarChat } from "./SidebarChat/SidebarChat";
 export { default as PresetSelector } from "./PresetSelector/PresetSelector";
+export { default as LinkSwipe } from "./LinkSwipe/LinkSwipe";
+export {
+  default as ConnectionsPanel,
+  handleDataAttrs,
+} from "./ConnectionsPanel/ConnectionsPanel";
 export {
   AIMessage,
   ErrorMessage,
