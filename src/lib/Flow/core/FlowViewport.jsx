@@ -1,3 +1,9 @@
+import { Box } from "@mui/material";
+import FloatingGraph from "../graph/FloatingGraph";
+import ImpliedConnections from "../connectors/ImpliedConnections";
+import SelectionOverlay from "../selection/SelectionOverlay";
+import { useSelection } from "../selection/SelectionContext";
+
 import {
   DEFAULT_FIT_VIEW_MAX_ZOOM,
   DEFAULT_FIT_VIEW_MIN_ZOOM,
@@ -15,11 +21,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-
-import { Box } from "@mui/material";
-import FloatingGraph from "../graph/FloatingGraph";
-import SelectionOverlay from "../selection/SelectionOverlay";
-import { useSelection } from "../selection/SelectionContext";
 
 const FlowViewport = forwardRef(function FlowViewport(
   {
@@ -46,10 +47,13 @@ const FlowViewport = forwardRef(function FlowViewport(
     fitViewOnResize = false,
     fitViewOnNodesChange = false,
     onInit,
+    impliedConnections,
+    showImpliedConnections = false,
+    labelForImpliedConnection,
     sx = {},
     ...rest
   },
-  ref,
+  ref
 ) {
   const clampZoom = (z) => clampZoomValue(z, minZoom, maxZoom);
 
@@ -114,22 +118,22 @@ const FlowViewport = forwardRef(function FlowViewport(
       setZoom(fit.zoom);
       setOffset(fit.offset);
     },
-    [zoom, offset, fitViewPadding, fitViewMinZoom, fitViewMaxZoom, fitViewAlign],
+    [zoom, offset, fitViewPadding, fitViewMinZoom, fitViewMaxZoom, fitViewAlign]
   );
 
   const zoomIn = useCallback(
     (step = 1.2) => setZoom((z) => clampZoom(z * step)),
-    [minZoom, maxZoom],
+    [minZoom, maxZoom]
   );
 
   const zoomOut = useCallback(
     (step = 1.2) => setZoom((z) => clampZoom(z / step)),
-    [minZoom, maxZoom],
+    [minZoom, maxZoom]
   );
 
   const setZoomPublic = useCallback(
     (z) => setZoom(clampZoom(z)),
-    [minZoom, maxZoom],
+    [minZoom, maxZoom]
   );
 
   const setCenter = useCallback(
@@ -138,7 +142,7 @@ const FlowViewport = forwardRef(function FlowViewport(
       setZoom(targetZoom);
       setOffset({ x: -targetZoom * x, y: -targetZoom * y });
     },
-    [zoom, minZoom, maxZoom],
+    [zoom, minZoom, maxZoom]
   );
 
   const getZoom = useCallback(() => zoom, [zoom]);
@@ -158,7 +162,7 @@ const FlowViewport = forwardRef(function FlowViewport(
       setCenter,
       getZoom,
     }),
-    [runFitView, zoomIn, zoomOut, setZoomPublic, setCenter, getZoom],
+    [runFitView, zoomIn, zoomOut, setZoomPublic, setCenter, getZoom]
   );
 
   useEffect(() => {
@@ -472,11 +476,19 @@ const FlowViewport = forwardRef(function FlowViewport(
             centered || (!usesFitView && shouldCenter)
               ? 0
               : variant === "horizontal"
-                ? 4
-                : 0,
+              ? 4
+              : 0,
         }}
       >
         {children}
+        {showImpliedConnections && (
+          <ImpliedConnections
+            containerEl={innerRef.current}
+            bindings={impliedConnections}
+            labelForBinding={labelForImpliedConnection}
+            tick={`${offset.x},${offset.y},${zoom}`}
+          />
+        )}
         {floatingNodes.map((structure, index) => {
           const structureKey =
             (structure && (structure.id || structure.key)) ??

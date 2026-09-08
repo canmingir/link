@@ -26,6 +26,9 @@ export const Flow = forwardRef(function Flow(
     fitViewOnResize,
     fitViewOnNodesChange,
     onInit,
+    impliedConnections,
+    showImpliedConnections = false,
+    labelForImpliedConnection,
   },
   ref,
 ) {
@@ -116,6 +119,9 @@ export const Flow = forwardRef(function Flow(
         fitViewOnResize={fitViewOnResize}
         fitViewOnNodesChange={fitViewOnNodesChange}
         onInit={onInit}
+        impliedConnections={impliedConnections}
+        showImpliedConnections={showImpliedConnections}
+        labelForImpliedConnection={labelForImpliedConnection}
       />
     </Box>
   );
