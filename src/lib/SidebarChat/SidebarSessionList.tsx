@@ -30,7 +30,6 @@ interface SidebarSessionListProps {
   onNewSession?: () => void;
   wrapperRef?: React.Ref<HTMLDivElement>;
   beta?: boolean;
-  topAction?: DevToolTopAction;
   topActions?: DevToolTopAction[];
 }
 
@@ -59,15 +58,11 @@ const SidebarSessionList = ({
   onNewSession,
   wrapperRef,
   beta,
-  topAction,
   topActions,
 }: SidebarSessionListProps) => {
   const sidebarSessions = sessions;
 
-  const resolvedTopActions: DevToolTopAction[] = [
-    ...(topActions ?? []),
-    ...(topAction ? [topAction] : []),
-  ];
+  const resolvedTopActions = topActions ?? [];
 
   const contextRailContent = resolvedTopActions.length ? (
     <Box

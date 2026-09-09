@@ -24,7 +24,6 @@ const DevTool = ({
   onSessionSelect,
   onNewSession,
   beta,
-  topAction,
   topActions,
 }) => {
   const isShell = typeof children === "function";
@@ -57,7 +56,6 @@ const DevTool = ({
       onSessionSelect={onSessionSelect}
       onNewSession={onNewSession}
       beta={beta}
-      topAction={topAction}
       topActions={topActions}
     >
       {children}
@@ -77,7 +75,6 @@ const DevToolShell = ({
   onSessionSelect,
   onNewSession,
   beta,
-  topAction,
   topActions,
   children,
 }) => {
@@ -156,7 +153,6 @@ const DevToolShell = ({
           wrapperRef={sidebarRef}
           beta={beta}
           onNewSession={onNewSession}
-          topAction={topAction}
           topActions={topActions}
         />
       )}
