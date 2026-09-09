@@ -65,6 +65,7 @@ const PresetSelector = ({
             },
           }}
           MenuProps={{
+            sx: { zIndex: (theme) => theme.zIndex.modal + 4 },
             PaperProps: {
               sx: {
                 bgcolor: (theme) => alpha(theme.palette.grey[900], 0.95),
@@ -90,16 +91,20 @@ const PresetSelector = ({
           </MenuItem>
           {Presets.map((Preset) => (
             <MenuItem key={Preset.id} value={Preset.id}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
                 <Iconify
                   icon="healthicons:crisis-response-center-person-outline"
                   width={20}
                   height={20}
                   sx={{ color: "white" }}
                 />
-                <Typography sx={{ color: "white" }}>
-                  {Preset.title}
-                </Typography>
+                <Typography sx={{ color: "white" }}>{Preset.title}</Typography>
               </Box>
             </MenuItem>
           ))}
