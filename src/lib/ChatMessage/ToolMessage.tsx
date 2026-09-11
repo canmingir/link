@@ -1,4 +1,4 @@
-import { Iconify } from "@canmingir/link/platform/components";
+import Iconify from "../Iconify";
 import { alpha } from "@mui/material/styles";
 
 import { Box, Button, Collapse, Stack, Typography } from "@mui/material";
@@ -247,7 +247,9 @@ const ToolMessage: React.FC<{
         backgroundColor: (theme) => alpha(theme.palette.grey[800], 0.4),
         border: (theme) =>
           `1px solid ${alpha(
-            awaitingApproval ? theme.palette.warning.main : theme.palette.grey[500],
+            awaitingApproval
+              ? theme.palette.warning.main
+              : theme.palette.grey[500],
             awaitingApproval ? 0.4 : 0.2
           )}`,
       }}

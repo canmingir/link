@@ -1,5 +1,5 @@
 import DevToolFrame from "../DevTool/DevToolFrame";
-import { Iconify } from "@canmingir/link/platform/components";
+import Iconify from "../Iconify";
 import type { StoredSession } from "./types";
 import { alpha } from "@mui/material/styles";
 import { cleanIconName } from "./cleanIconName";
@@ -19,12 +19,12 @@ interface SidebarSessionListProps {
   sessions: StoredSession[];
   currentSessionId?: string;
   unreadCount: number;
-  onToggleChat: () => void;
+  onToggleChat?: () => void;
   onSessionClick: (
     event: React.MouseEvent<HTMLElement>,
     sessionId: string
   ) => void;
-  onClearAll: () => void;
+  onClearAll?: () => void;
   onNewSession?: () => void;
   wrapperRef?: React.Ref<HTMLDivElement>;
   beta?: boolean;
@@ -109,7 +109,7 @@ const SidebarSessionList = ({
         <Box
           onClick={() => {
             onNewSession?.();
-            onToggleChat();
+            onToggleChat?.();
           }}
           sx={{
             ...btnBase,

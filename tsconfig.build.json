@@ -1,0 +1,33 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": false,
+    "outDir": "dist",
+    "rootDir": ".",
+    "isolatedModules": false
+  },
+  "include": [
+    "index.ts",
+    "src/layouts/index.ts",
+    "src/lib/index.ts",
+    "src/hooks/index.ts",
+    "src/http/index.ts",
+    "vite/vite.ts",
+    "cypress/cypress.ts",
+    "commands/index.ts",
+    "cypress/index.d.ts",
+    "types"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.stories.tsx",
+    "**/*.cy.tsx",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
+}

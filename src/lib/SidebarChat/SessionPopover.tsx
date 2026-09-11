@@ -1,6 +1,6 @@
-import { Iconify } from "@canmingir/link/platform/components";
+import Iconify from "../Iconify";
 import { MessageList } from "../ChatMessage";
-import { Scrollbar } from "@canmingir/link/platform/components";
+import Scrollbar from "../Scrollbar/Scrollbar";
 import Stack from "@mui/material/Stack";
 import { StoredSession } from "./types";
 import { alpha } from "@mui/material/styles";
