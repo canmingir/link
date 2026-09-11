@@ -29,7 +29,7 @@ interface DevToolShellProps {
   onSessionSelect?: (sessionId: string, messages?: Message[]) => void;
   onNewSession?: () => void;
   beta?: boolean;
-  topAction?: DevToolTopAction;
+  topActions?: DevToolTopAction[];
   children: (args: DevToolShellRenderArgs) => ReactNode;
 }
 
