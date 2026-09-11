@@ -1,7 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 // TODO(ts-migration): orphan Jest test — depends on @testing-library/* which are
-// not in package.json, and the test runner is not wired up (scripts.test = "exit 0").
-// Type this properly once the test setup is revived (see migration plan Faz 6).
 import "@testing-library/jest-dom";
 
 import React from "react";
