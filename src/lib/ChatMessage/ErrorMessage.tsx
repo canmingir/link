@@ -1,4 +1,5 @@
-import { Iconify } from "@canmingir/link/platform/components";
+import Iconify from "../Iconify";
+import type { Theme } from "@mui/material/styles";
 import { alpha } from "@mui/material/styles";
 
 import { Box, IconButton, Stack } from "@mui/material";
@@ -29,7 +30,7 @@ const ErrorMessage: React.FC<{
         sx={{
           width: 20,
           height: 20,
-          color: (theme) => theme.palette.error.main,
+          color: (theme: Theme) => theme.palette.error.main,
         }}
       />
       <Box

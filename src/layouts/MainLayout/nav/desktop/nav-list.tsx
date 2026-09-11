@@ -1,0 +1,151 @@
+import Fade from "@mui/material/Fade";
+import { HEADER } from "../../../config-layout";
+import ListSubheader from "@mui/material/ListSubheader";
+import Paper from "@mui/material/Paper";
+import Portal from "@mui/material/Portal";
+import React from "react";
+import Stack from "@mui/material/Stack";
+import { paper } from "../../../../theme/css";
+import { useActiveLink } from "../../../../routes/hooks/use-active-link";
+import { usePathname } from "../../../../routes/hooks";
+import { useTheme } from "@mui/material/styles";
+
+import { NavItem, NavItemDashboard } from "./nav-item";
+import type { NavItemData, NavListData } from "../types";
+import type { SxProps, Theme } from "@mui/material/styles";
+import { useCallback, useEffect, useState } from "react";
+
+export default function NavList({ data }: { data: NavListData }) {
+  const theme = useTheme();
+
+  const pathname = usePathname();
+
+  const active = useActiveLink(data.path, !!data.children);
+
+  const [openMenu, setOpenMenu] = useState(false);
+
+  useEffect(() => {
+    if (openMenu) {
+      handleCloseMenu();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  const handleOpenMenu = useCallback(() => {
+    if (data.children) {
+      setOpenMenu(true);
+    }
+  }, [data.children]);
+
+  const handleCloseMenu = useCallback(() => {
+    setOpenMenu(false);
+  }, []);
+
+  return (
+    <>
+      <NavItem
+        open={openMenu}
+        onMouseEnter={handleOpenMenu}
+        onMouseLeave={handleCloseMenu}
+        title={data.title}
+        path={data.path}
+        hasChild={!!data.children}
+        externalLink={data.path?.includes("http")}
+        active={active}
+      />
+
+      {!!data.children && openMenu && (
+        <Portal>
+          <Fade in={openMenu}>
+            <Paper
+              onMouseEnter={handleOpenMenu}
+              onMouseLeave={handleCloseMenu}
+              sx={{
+                ...paper({ theme }),
+                left: 0,
+                right: 0,
+                m: "auto",
+                display: "flex",
+                borderRadius: 2,
+                position: "fixed",
+                zIndex: theme.zIndex.modal,
+                p: theme.spacing(5, 1, 1, 3),
+                top: HEADER.H_DESKTOP_OFFSET,
+                maxWidth: theme.breakpoints.values.lg,
+                boxShadow: theme.customShadows.dropdown,
+              }}
+            >
+              {data.children?.map((list) => (
+                <NavSubList
+                  key={list.subheader}
+                  subheader={list.subheader}
+                  data={list.items}
+                />
+              ))}
+            </Paper>
+          </Fade>
+        </Portal>
+      )}
+    </>
+  );
+}
+
+interface NavSubListProps {
+  data?: NavItemData[];
+  subheader?: string;
+  sx?: SxProps<Theme>;
+  [key: string]: unknown;
+}
+
+function NavSubList({ data, subheader, sx, ...other }: NavSubListProps) {
+  const pathname = usePathname();
+
+  const dashboard = subheader === "Dashboard";
+
+  return (
+    <Stack
+      spacing={2}
+      {...other}
+      sx={[
+        {
+          flexGrow: 1,
+          alignItems: "flex-start",
+          pb: 2,
+
+          ...(dashboard && {
+            pb: 0,
+            maxWidth: { md: 1 / 3, lg: 540 },
+          }),
+
+          ...sx,
+        },
+        ...(Array.isArray(other.sx) ? other.sx : [other.sx]),
+      ]}
+    >
+      <ListSubheader
+        disableSticky
+        sx={{
+          p: 0,
+          typography: "overline",
+          fontSize: 11,
+          color: "text.primary",
+        }}
+      >
+        {subheader}
+      </ListSubheader>
+      {data?.map((item) =>
+        dashboard ? (
+          <NavItemDashboard key={item.title} path={item.path} />
+        ) : (
+          <NavItem
+            key={item.title}
+            title={item.title}
+            path={item.path}
+            active={pathname === item.path || pathname === `${item.path}/`}
+            subItem
+          />
+        )
+      )}
+    </Stack>
+  );
+}

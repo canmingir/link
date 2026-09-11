@@ -1,0 +1,117 @@
+import DialogTooltip from "../DialogTootip/DialogTooltip";
+
+import { Box, Button, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Delete, Save } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+
+interface APIDialogActionProps {
+  view?: string;
+  setApiDialogView: (view: string) => void;
+  saveApiDialog: () => void;
+  saveDisable?: boolean;
+  deleteDisable?: boolean;
+  deleteMethod: () => void;
+}
+
+function APIDialogAction({
+  view,
+  setApiDialogView,
+  saveApiDialog,
+  saveDisable,
+  deleteDisable,
+  deleteMethod,
+}: APIDialogActionProps) {
+  const [alignment, setAlignment] = useState<string | undefined>();
+  const [openToolTip, setOpenToolTip] = useState(false);
+
+  const handleTooltipClose = () => {
+    setOpenToolTip(false);
+  };
+
+  const handleTooltipOpen = () => {
+    setOpenToolTip(true);
+  };
+
+  useEffect(() => {
+    setAlignment(view);
+  }, [view]);
+
+  return (
+    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box>
+        <ToggleButtonGroup
+          value={alignment}
+          exclusive
+          size={"small"}
+          onChange={(event, newAlignment) => {
+            if (!newAlignment) return;
+            setAlignment(newAlignment);
+            setApiDialogView(newAlignment);
+          }}
+          sx={{
+            "& .MuiToggleButton-root": {
+              borderRadius: 1,
+              textTransform: "none",
+              fontWeight: "normal",
+            },
+          }}
+        >
+          <ToggleButton value={"PARAMS"} data-cy="params-toggle">
+            PARAMS
+          </ToggleButton>
+          <ToggleButton value={"BODY"} data-cy="body-toggle">
+            BODY
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+      <Box sx={{ display: "flex", gap: 1 }}>
+        <DialogTooltip
+          placement="top"
+          open={openToolTip}
+          title={<b>Delete method</b>}
+          message={
+            <>
+              This method will be <b>deleted.</b>
+              <br /> Do you want to continue?
+            </>
+          }
+          footer={
+            <Button
+              variant="contained"
+              color="error"
+              onClick={deleteMethod}
+              startIcon={<Delete />}
+              data-cy="delete-api-button-yes"
+            >
+              Delete
+            </Button>
+          }
+          handleTooltipClose={handleTooltipClose}
+        >
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={handleTooltipOpen}
+            disabled={deleteDisable}
+            startIcon={<Delete />}
+            data-cy="delete-api-button"
+          >
+            Delete
+          </Button>
+        </DialogTooltip>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={saveApiDialog}
+          disabled={saveDisable}
+          startIcon={<Save />}
+          data-cy="save-api-button"
+        >
+          Save
+        </Button>
+      </Box>
+    </Box>
+  );
+}
+
+export default APIDialogAction;

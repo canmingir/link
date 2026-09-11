@@ -1,0 +1,23 @@
+import axios from "axios";
+import config from "../../../../config";
+import templateConfig from "../../../../config.template";
+import useSWR from "swr";
+
+const instance = axios.create({
+  baseURL: config.api,
+});
+
+const fetcher = (url: string) => instance.get(url).then((res) => res.data);
+
+export const useProject = () => {
+  const GetItems = () => {
+    const path = templateConfig.projectBar.path;
+    const { data, error } = useSWR(path, fetcher);
+
+    return { items: data || [], loading: !error && !data };
+  };
+
+  return {
+    GetItems,
+  };
+};

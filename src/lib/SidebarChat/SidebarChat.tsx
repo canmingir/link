@@ -1,5 +1,6 @@
 import ChatDrawer from "./ChatDrawer";
 import MessageSfx from "./messageSFX.mp3";
+import type { Preset } from "../PresetSelector/PresetSelector";
 import { useEvent } from "@nucleoidai/react-event";
 import useSound from "use-sound";
 
@@ -18,8 +19,7 @@ interface SidebarChatProps {
   history?: Message[];
   readOnly?: boolean;
   sound?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Presets?: any[];
+  Presets?: Preset[];
   selectedPreset?: string;
   onPresetChange?: (preset: string) => void;
   onNewSession?: () => void;
@@ -47,15 +47,21 @@ const SidebarChat = ({
   embedded,
   footer,
 }: SidebarChatProps) => {
-  const [aiResponded] = useEvent("AI_RESPONDED", null);
-  const [conversationSent] = useEvent("CONVERSATION_SENT", null);
+  const [aiResponded] = useEvent<{ createdAt?: number } | null>(
+    "AI_RESPONDED",
+    null
+  );
+  const [conversationSent] = useEvent<{ createdAt?: number } | null>(
+    "CONVERSATION_SENT",
+    null
+  );
 
   const [mute, setMute] = useState(false);
   const [loading, setLoading] = useState(false);
   const [play] = useSound(MessageSfx);
 
-  const messagesEndRef = useRef(null);
-  const highlightedMessage = useRef(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const highlightedMessage = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
     highlightedMessage.current?.scrollIntoView({
@@ -100,7 +106,8 @@ const SidebarChat = ({
   );
 
   const showLoading = useCallback(() => {
-    if (conversationSent?.createdAt > aiResponded?.createdAt) return true;
+    if ((conversationSent?.createdAt ?? 0) > (aiResponded?.createdAt ?? 0))
+      return true;
     if (loading) return true;
     if (conversationSent && aiResponded === null) return true;
     return false;

@@ -1,7 +1,8 @@
 import Editor from "@monaco-editor/react";
-import { Iconify } from "@canmingir/link/platform/components";
+import Iconify from "../Iconify";
+import type { Preset } from "../PresetSelector/PresetSelector";
 import PresetSelector from "../PresetSelector/PresetSelector";
-import { Scrollbar } from "@canmingir/link/platform/components";
+import Scrollbar from "../Scrollbar/Scrollbar";
 import Stack from "@mui/material/Stack";
 import { alpha } from "@mui/material/styles";
 
@@ -34,8 +35,7 @@ interface ChatDrawerProps {
   onMuteToggle: () => void;
   showLoading: boolean;
   onSend: (content: string) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Presets?: any[];
+  Presets?: Preset[];
   selectedPreset?: string;
   onPresetChange?: (preset: string) => void;
   messagesEndRef: React.RefObject<HTMLDivElement>;
@@ -70,7 +70,7 @@ const ChatDrawer = ({
   embedded,
   footer,
 }: ChatDrawerProps) => {
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const [inputMode, setInputMode] = useState<InputMode>("chat");
   const [jsonValue, setJsonValue] = useState(DEFAULT_JSON);
   const [jsonError, setJsonError] = useState<string | null>(null);
@@ -89,7 +89,7 @@ const ChatDrawer = ({
         const content = inputRef.current?.value?.trim();
         if (content) {
           onSend(content);
-          inputRef.current.value = "";
+          if (inputRef.current) inputRef.current.value = "";
         }
       }
     },
@@ -182,7 +182,7 @@ const ChatDrawer = ({
           <PresetSelector
             Presets={Presets}
             selectedPreset={selectedPreset}
-            onPresetChange={onPresetChange}
+            onPresetChange={onPresetChange ?? (() => {})}
           />
         </Box>
       )}
@@ -302,7 +302,7 @@ const ChatDrawer = ({
                           const content = inputRef.current?.value?.trim();
                           if (content) {
                             onSend(content);
-                            inputRef.current.value = "";
+                            if (inputRef.current) inputRef.current.value = "";
                           }
                         }}
                         size="small"
@@ -432,6 +432,7 @@ const ChatDrawer = ({
         width: open ? DRAWER_WIDTH : 0,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
+          zIndex: (theme) => theme.zIndex.modal + 3,
           width: DRAWER_WIDTH,
           boxSizing: "border-box",
           border: "none",
