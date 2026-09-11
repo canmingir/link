@@ -1,9 +1,12 @@
+import type { ApexOptions } from "apexcharts";
 import merge from "lodash/merge";
 import { useResponsive } from "../../hooks/use-responsive";
 
 import { alpha, useTheme } from "@mui/material/styles";
 
-export default function useChart(options?: Record<string, unknown>) {
+export default function useChart(
+  options?: Record<string, unknown>
+): ApexOptions {
   const theme = useTheme();
 
   const smUp = useResponsive("up", "sm");
@@ -175,5 +178,5 @@ export default function useChart(options?: Record<string, unknown>) {
     ],
   };
 
-  return merge(baseOptions, options);
+  return merge({}, baseOptions, options) as unknown as ApexOptions;
 }

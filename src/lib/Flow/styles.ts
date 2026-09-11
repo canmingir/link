@@ -6,7 +6,7 @@ export type FlowVariant = "card" | "pill" | "n8n" | "simple";
 export interface FlowStyle {
   direction?: "vertical" | "horizontal";
   lineColor?: string;
-  lineWidth?: string;
+  lineWidth?: string | number;
   lineStyle?: string;
   gap?: number;
   levelGap?: number;

@@ -10,13 +10,13 @@ import type {
   Point,
 } from "../types";
 import type { FlowPluginArg, FlowStyleResolver } from "../hooks/useNodeStyle";
-import { forwardRef, useMemo } from "react";
+import { ReactNode, forwardRef, useMemo } from "react";
 
 /** One flow in a board: a linked-graph plus board-level placement metadata. */
 export interface BoardFlow {
   id?: string;
-  label?: string;
-  divider?: boolean;
+  label?: ReactNode;
+  divider?: ReactNode;
   variant?: string;
   position?: Point;
   nodes?: FlowNodeMap;
