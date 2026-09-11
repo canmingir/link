@@ -238,18 +238,20 @@ export const ShellCollapsedBeta = {
 };
 
 export const ShellCollapsedWithTopAction = {
-  name: "Shell — collapsed rail + topAction button",
+  name: "Shell — collapsed rail + topActions button",
   render: () => (
     <Frame>
       <DevTool
         {...shellProps}
         open={false}
-        topAction={{
-          icon: "solar:folder-with-files-bold-duotone",
-          label: "Context",
-          tooltip: "Open context panel",
-          onClick: noop,
-        }}
+        topActions={[
+          {
+            icon: "solar:folder-with-files-bold-duotone",
+            label: "Context",
+            tooltip: "Open context panel",
+            onClick: noop,
+          },
+        ]}
       >
         {renderChat()}
       </DevTool>

@@ -7,12 +7,14 @@ import { publish } from "@nucleoidai/react-event";
 
 import { Badge, Box, Tooltip, Typography } from "@mui/material";
 import React, { memo } from "react";
+import type { SxProps, Theme } from "@mui/material/styles";
 
 export interface DevToolTopAction {
   icon: string;
   label: string;
   onClick: () => void;
   tooltip?: string;
+  sx?: SxProps<Theme>;
 }
 
 interface SidebarSessionListProps {
@@ -28,7 +30,7 @@ interface SidebarSessionListProps {
   onNewSession?: () => void;
   wrapperRef?: React.Ref<HTMLDivElement>;
   beta?: boolean;
-  topAction?: DevToolTopAction;
+  topActions?: DevToolTopAction[];
 }
 
 const btnBase = {
@@ -56,46 +58,64 @@ const SidebarSessionList = ({
   onNewSession,
   wrapperRef,
   beta,
-  topAction,
+  topActions,
 }: SidebarSessionListProps) => {
   const sidebarSessions = sessions;
 
-  const contextRailContent = topAction ? (
-    <Tooltip
-      title={topAction.tooltip ?? topAction.label}
-      placement="left"
-      enterDelay={1000}
-      enterNextDelay={1000}
+  const resolvedTopActions = topActions ?? [];
+
+  const contextRailContent = resolvedTopActions.length ? (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 0.75,
+      }}
     >
-      <Box
-        onClick={topAction.onClick}
-        sx={{
-          ...btnBase,
-          flexDirection: "column",
-          gap: 0.5,
-          color: "text.secondary",
-          "&:hover": {
-            color: "primary.main",
-            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
-            borderColor: (theme) => alpha(theme.palette.primary.main, 0.2),
-            transform: "scale(1.08)",
-          },
-        }}
-      >
-        <Iconify icon={topAction.icon} sx={{ width: 20, height: 20 }} />
-        <Typography
-          sx={{
-            fontSize: "0.5rem",
-            fontWeight: 500,
-            letterSpacing: 0.5,
-            lineHeight: 1,
-            textTransform: "capitalize",
-          }}
+      {resolvedTopActions.map((action, idx) => (
+        <Tooltip
+          key={`${action.label}-${idx}`}
+          title={action.tooltip ?? action.label}
+          placement="left"
+          enterDelay={1000}
+          enterNextDelay={1000}
         >
-          {topAction.label}
-        </Typography>
-      </Box>
-    </Tooltip>
+          <Box
+            onClick={action.onClick}
+            sx={[
+              {
+                ...btnBase,
+                flexDirection: "column",
+                gap: 0.5,
+                color: "text.secondary",
+                "&:hover": {
+                  color: "primary.main",
+                  bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
+                  borderColor: (theme) =>
+                    alpha(theme.palette.primary.main, 0.2),
+                  transform: "scale(1.08)",
+                },
+              },
+              ...(Array.isArray(action.sx) ? action.sx : [action.sx ?? {}]),
+            ]}
+          >
+            <Iconify icon={action.icon} sx={{ width: 20, height: 20 }} />
+            <Typography
+              sx={{
+                fontSize: "0.5rem",
+                fontWeight: 500,
+                letterSpacing: 0.5,
+                lineHeight: 1,
+                textTransform: "capitalize",
+              }}
+            >
+              {action.label}
+            </Typography>
+          </Box>
+        </Tooltip>
+      ))}
+    </Box>
   ) : null;
 
   const header = (
