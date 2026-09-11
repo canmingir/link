@@ -432,6 +432,7 @@ const ChatDrawer = ({
         width: open ? DRAWER_WIDTH : 0,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
+          zIndex: (theme) => theme.zIndex.modal + 3,
           width: DRAWER_WIDTH,
           boxSizing: "border-box",
           border: "none",
