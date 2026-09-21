@@ -97,7 +97,7 @@ export function FlowMiniMap({
   useEffect(() => {
     if (!isDragging) return;
 
-    const handleMouseMove = (e) => {
+    const handlePointerMove = (e) => {
       if (!dragStartRef.current || !viewportInfoRef.current) return;
 
       const dx_css = e.clientX - dragStartRef.current.x;
@@ -126,24 +126,27 @@ export function FlowMiniMap({
       dragStartRef.current = { x: e.clientX, y: e.clientY };
     };
 
-    const handleMouseUp = () => {
+    const handlePointerUp = () => {
       setIsDragging(false);
       if (flowContainerRef.current) {
         flowContainerRef.current.style.pointerEvents = "";
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
-return () => {
-  window.removeEventListener("mousemove", handleMouseMove);
-  window.removeEventListener("mouseup", handleMouseUp);
-  if (flowContainerRef.current) flowContainerRef.current.style.pointerEvents = "";
-};
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerUp);
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerUp);
+      if (flowContainerRef.current)
+        flowContainerRef.current.style.pointerEvents = "";
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDragging, svgW, flowContainerRef]);
 
-  const handleViewportMouseDown = (e) => {
+  const handleViewportPointerDown = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(true);
@@ -177,6 +180,8 @@ return () => {
         zIndex: 10,
         cursor: isDragging ? "grabbing" : "default",
         userSelect: "none",
+        touchAction: "none",
+        WebkitTouchCallout: "none",
       }}
     >
       <FlowSvgContent
@@ -187,7 +192,7 @@ return () => {
         svgH={svgH}
         uid="minimap"
         viewportRect={viewportRect}
-        onViewportMouseDown={handleViewportMouseDown}
+        onViewportPointerDown={handleViewportPointerDown}
         isDragging={isDragging}
         type={type}
         variant={variant}

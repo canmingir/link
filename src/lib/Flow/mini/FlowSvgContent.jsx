@@ -25,7 +25,7 @@ export function FlowSvgContent({
   svgH,
   uid,
   viewportRect,
-  onViewportMouseDown,
+  onViewportPointerDown,
   isDragging,
   type,
   variant,
@@ -53,7 +53,7 @@ export function FlowSvgContent({
       style={{
         display: "block",
         height: "100%",
-        pointerEvents: onViewportMouseDown ? "auto" : "none",
+        pointerEvents: onViewportPointerDown ? "auto" : "none",
       }}
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -257,9 +257,10 @@ export function FlowSvgContent({
           rx={4}
           style={{
             cursor: isDragging ? "grabbing" : "grab",
-            pointerEvents: onViewportMouseDown ? "all" : "none",
+            pointerEvents: onViewportPointerDown ? "all" : "none",
+            touchAction: "none",
           }}
-          onMouseDown={onViewportMouseDown}
+          onPointerDown={onViewportPointerDown}
         />
       )}
     </svg>

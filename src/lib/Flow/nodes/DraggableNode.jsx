@@ -13,7 +13,7 @@ const DraggableNode = ({
   onConnect,
 }) => {
   const [offset, setOffset] = useState(() =>
-    initialPosition ? { ...initialPosition } : { x: 0, y: 0 },
+    initialPosition ? { ...initialPosition } : { x: 0, y: 0 }
   );
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const DraggableNode = ({
       localRef.current = el;
       registerRef?.(el);
     },
-    [registerRef],
+    [registerRef]
   );
 
   useEffect(() => {
@@ -78,20 +78,21 @@ const DraggableNode = ({
     return () => el.removeEventListener("click", onClickCapture, true);
   }, []);
 
-  const handleMouseDown = useCallback(
+  const handlePointerDown = useCallback(
     (e) => {
-      if (e.button !== 0) return;
+      const isTouch = e.pointerType === "touch";
+      if (!isTouch && e.button !== 0) return;
       e.stopPropagation();
 
       didDragRef.current = false;
 
-      if (onConnect && e.altKey) {
+      if (onConnect && !isTouch && e.altKey) {
         e.preventDefault();
         onConnect(nodeId, [...selectedIds]);
         return;
       }
 
-      if (e.shiftKey || e.ctrlKey || e.metaKey) {
+      if (!isTouch && (e.shiftKey || e.ctrlKey || e.metaKey)) {
         toggleSelection(nodeId);
         return;
       }
@@ -131,12 +132,14 @@ const DraggableNode = ({
       };
 
       const handleUp = () => {
-        window.removeEventListener("mousemove", handleMove);
-        window.removeEventListener("mouseup", handleUp);
+        window.removeEventListener("pointermove", handleMove);
+        window.removeEventListener("pointerup", handleUp);
+        window.removeEventListener("pointercancel", handleUp);
       };
 
-      window.addEventListener("mousemove", handleMove);
-      window.addEventListener("mouseup", handleUp);
+      window.addEventListener("pointermove", handleMove);
+      window.addEventListener("pointerup", handleUp);
+      window.addEventListener("pointercancel", handleUp);
     },
     [
       nodeId,
@@ -148,14 +151,15 @@ const DraggableNode = ({
       clearSelection,
       moveSelectedNodes,
       onConnect,
-    ],
+    ]
   );
 
   return (
     <Box
       ref={setRef}
       data-node-id={nodeId}
-      onMouseDown={handleMouseDown}
+      onPointerDown={handlePointerDown}
+      onContextMenu={(e) => e.preventDefault()}
       sx={{
         display: "inline-flex",
         flexDirection: "column",
@@ -163,6 +167,9 @@ const DraggableNode = ({
         position: "relative",
         transform: `translate(${offset.x}px, ${offset.y}px)`,
         cursor: "grab",
+        touchAction: "none",
+        userSelect: "none",
+        WebkitTouchCallout: "none",
         "&:active": { cursor: "grabbing" },
       }}
     >

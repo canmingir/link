@@ -4,8 +4,34 @@ export const DEFAULT_FIT_VIEW_PADDING = 40;
 export const DEFAULT_FIT_VIEW_MIN_ZOOM = 0.5;
 export const DEFAULT_FIT_VIEW_MAX_ZOOM = 1;
 
+export const LONG_PRESS_DELAY_MS = 450;
+export const LONG_PRESS_MOVE_TOLERANCE = 10;
+
 export const clampZoomValue = (zoom, minZoom, maxZoom) =>
   Math.min(maxZoom, Math.max(minZoom, zoom));
+
+export const getTouchDistance = (p1, p2) =>
+  Math.hypot(p2.x - p1.x, p2.y - p1.y);
+
+export const getTouchMidpoint = (p1, p2) => ({
+  x: (p1.x + p2.x) / 2,
+  y: (p1.y + p2.y) / 2,
+});
+
+export const computePinchZoomOffset = ({
+  prevZoom,
+  nextZoom,
+  offset,
+  prevMidpoint,
+  nextMidpoint,
+}) => {
+  const scaleRatio = prevZoom !== 0 ? nextZoom / prevZoom : 1;
+
+  return {
+    x: nextMidpoint.x - (prevMidpoint.x - offset.x) * scaleRatio,
+    y: nextMidpoint.y - (prevMidpoint.y - offset.y) * scaleRatio,
+  };
+};
 
 export const computeFitTransform = ({
   bounds,

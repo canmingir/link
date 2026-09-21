@@ -10,8 +10,13 @@ import {
   DEFAULT_FIT_VIEW_PADDING,
   DEFAULT_MAX_ZOOM,
   DEFAULT_MIN_ZOOM,
+  LONG_PRESS_DELAY_MS,
+  LONG_PRESS_MOVE_TOLERANCE,
   clampZoomValue,
   computeFitViewState,
+  computePinchZoomOffset,
+  getTouchDistance,
+  getTouchMidpoint,
 } from "../utils/viewportUtils";
 import React, {
   forwardRef,
@@ -70,6 +75,20 @@ const FlowViewport = forwardRef(function FlowViewport(
   const mousePositionRef = useRef({ x: 0, y: 0 });
   const innerRef = useRef(null);
   const didDragRef = useRef(false);
+
+  const zoomRef = useRef(zoom);
+  const offsetRef = useRef(offset);
+  useEffect(() => {
+    zoomRef.current = zoom;
+  }, [zoom]);
+  useEffect(() => {
+    offsetRef.current = offset;
+  }, [offset]);
+
+  const activePointersRef = useRef(new Map());
+  const pinchStateRef = useRef(null);
+  const longPressTimerRef = useRef(null);
+  const gestureModeRef = useRef(null);
 
   const {
     clearSelection,
@@ -222,14 +241,14 @@ const FlowViewport = forwardRef(function FlowViewport(
   }, []);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handlePointerMove = (e) => {
       mousePositionRef.current = { x: e.clientX, y: e.clientY };
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("pointermove", handlePointerMove);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("pointermove", handlePointerMove);
     };
   }, []);
 
@@ -321,108 +340,229 @@ const FlowViewport = forwardRef(function FlowViewport(
     zoom,
   ]);
 
-  const handleViewportMouseDown = (e) => {
+  const clearLongPressTimer = () => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
+
+  const finishSelectionGesture = (e) => {
+    if (containerRef.current && selectionBoxRef.current) {
+      const box = selectionBoxRef.current;
+      const nodes = containerRef.current.querySelectorAll("[data-node-id]");
+      const selectedNodeIds = [];
+
+      const boxLeft = Math.min(box.startX, box.currentX);
+      const boxRight = Math.max(box.startX, box.currentX);
+      const boxTop = Math.min(box.startY, box.currentY);
+      const boxBottom = Math.max(box.startY, box.currentY);
+
+      nodes.forEach((node) => {
+        const rect = node.getBoundingClientRect();
+
+        if (
+          rect.left < boxRight &&
+          rect.right > boxLeft &&
+          rect.top < boxBottom &&
+          rect.bottom > boxTop
+        ) {
+          const nodeId = node.getAttribute("data-node-id");
+          if (nodeId) selectedNodeIds.push(nodeId);
+        }
+      });
+
+      if (selectedNodeIds.length > 0) {
+        if (e.shiftKey) {
+          addToSelection(selectedNodeIds);
+        } else {
+          selectMultiple(selectedNodeIds);
+        }
+      }
+    }
+
+    setSelectionBox(null);
+    selectionBoxRef.current = null;
+  };
+
+  const startSelectionGesture = (startX, startY) => {
+    gestureModeRef.current = "select";
+    setIsDragging(false);
+    const box = { startX, startY, currentX: startX, currentY: startY };
+    setSelectionBox(box);
+    selectionBoxRef.current = box;
+  };
+
+  const startPanGesture = (startX, startY) => {
+    gestureModeRef.current = "pan";
+    didDragRef.current = false;
+    setIsDragging(true);
+    pinchStateRef.current = {
+      panStartX: startX,
+      panStartY: startY,
+      panStartOffset: { ...offsetRef.current },
+    };
+  };
+
+  const startPinchGesture = () => {
+    clearLongPressTimer();
+    setSelectionBox(null);
+    selectionBoxRef.current = null;
+    setIsDragging(true);
+
+    const points = [...activePointersRef.current.values()];
+    const midpoint = getTouchMidpoint(points[0], points[1]);
+    gestureModeRef.current = "pinch";
+    pinchStateRef.current = {
+      lastDistance: getTouchDistance(points[0], points[1]),
+      lastMidpoint: midpoint,
+    };
+  };
+
+  const handleViewportPointerDown = (e) => {
     if (e.target?.closest?.(".MuiCard-root") || e.target?.closest?.("button"))
       return;
 
-    const isPan = e.button === 0 || e.button === 2;
+    const isTouch = e.pointerType === "touch";
+    const isPan = isTouch || e.button === 0 || e.button === 2;
     if (!isPan) return;
+
+    activePointersRef.current.set(e.pointerId, {
+      x: e.clientX,
+      y: e.clientY,
+    });
+
+    if (activePointersRef.current.size >= 2) {
+      startPinchGesture();
+      return;
+    }
 
     const startX = e.clientX;
     const startY = e.clientY;
     didDragRef.current = false;
 
     if (e.button === 0 && (e.shiftKey || e.ctrlKey || e.metaKey)) {
-      setSelectionBox({ startX, startY, currentX: startX, currentY: startY });
-      selectionBoxRef.current = {
-        startX,
-        startY,
-        currentX: startX,
-        currentY: startY,
-      };
-
-      const onMove = (ev) => {
-        const newBox = {
-          startX,
-          startY,
-          currentX: ev.clientX,
-          currentY: ev.clientY,
-        };
-        setSelectionBox(newBox);
-        selectionBoxRef.current = newBox;
-      };
-
-      const onUp = () => {
-        if (containerRef.current && selectionBoxRef.current) {
-          const box = selectionBoxRef.current;
-          const nodes = containerRef.current.querySelectorAll("[data-node-id]");
-          const selectedNodeIds = [];
-
-          const boxLeft = Math.min(box.startX, box.currentX);
-          const boxRight = Math.max(box.startX, box.currentX);
-          const boxTop = Math.min(box.startY, box.currentY);
-          const boxBottom = Math.max(box.startY, box.currentY);
-
-          nodes.forEach((node) => {
-            const rect = node.getBoundingClientRect();
-
-            if (
-              rect.left < boxRight &&
-              rect.right > boxLeft &&
-              rect.top < boxBottom &&
-              rect.bottom > boxTop
-            ) {
-              const nodeId = node.getAttribute("data-node-id");
-              if (nodeId) selectedNodeIds.push(nodeId);
-            }
-          });
-
-          if (selectedNodeIds.length > 0) {
-            if (e.shiftKey) {
-              addToSelection(selectedNodeIds);
-            } else {
-              selectMultiple(selectedNodeIds);
-            }
-          }
-        }
-
-        setSelectionBox(null);
-        selectionBoxRef.current = null;
-        window.removeEventListener("mousemove", onMove);
-        window.removeEventListener("mouseup", onUp);
-      };
-
-      window.addEventListener("mousemove", onMove);
-      window.addEventListener("mouseup", onUp);
+      startSelectionGesture(startX, startY);
       return;
     }
 
     if (e.button === 0) clearSelection();
 
-    setIsDragging(true);
-    const startOffset = { ...offset };
+    if (isTouch) {
+      longPressTimerRef.current = setTimeout(() => {
+        longPressTimerRef.current = null;
+        startSelectionGesture(startX, startY);
+      }, LONG_PRESS_DELAY_MS);
+    }
 
-    const onMove = (ev) => {
-      const dx = ev.clientX - startX;
-      const dy = ev.clientY - startY;
-      if (!didDragRef.current && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
-        didDragRef.current = true;
-      }
-      setOffset({
-        x: startOffset.x + dx,
-        y: startOffset.y + dy,
-      });
-    };
-
-    const onUp = () => {
-      setIsDragging(false);
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseup", onUp);
-    };
-
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
+    startPanGesture(startX, startY);
   };
+
+  useEffect(() => {
+    const onWindowPointerMove = (e) => {
+      if (!activePointersRef.current.has(e.pointerId)) return;
+      activePointersRef.current.set(e.pointerId, {
+        x: e.clientX,
+        y: e.clientY,
+      });
+
+      if (gestureModeRef.current === "pinch") {
+        const points = [...activePointersRef.current.values()];
+        if (points.length < 2 || !pinchStateRef.current) return;
+
+        const nextDistance = getTouchDistance(points[0], points[1]);
+        const nextMidpoint = getTouchMidpoint(points[0], points[1]);
+        const { lastDistance, lastMidpoint } = pinchStateRef.current;
+
+        const scaleFactor = lastDistance > 0 ? nextDistance / lastDistance : 1;
+        const nextZoom = clampZoom(zoomRef.current * scaleFactor);
+
+        const nextOffset = computePinchZoomOffset({
+          prevZoom: zoomRef.current,
+          nextZoom,
+          offset: offsetRef.current,
+          prevMidpoint: lastMidpoint,
+          nextMidpoint,
+        });
+
+        setZoom(nextZoom);
+        setOffset(nextOffset);
+        pinchStateRef.current = {
+          lastDistance: nextDistance,
+          lastMidpoint: nextMidpoint,
+        };
+        return;
+      }
+
+      if (gestureModeRef.current === "select") {
+        const start = selectionBoxRef.current;
+        if (!start) return;
+        const newBox = {
+          startX: start.startX,
+          startY: start.startY,
+          currentX: e.clientX,
+          currentY: e.clientY,
+        };
+        setSelectionBox(newBox);
+        selectionBoxRef.current = newBox;
+        return;
+      }
+
+      if (gestureModeRef.current === "pan") {
+        if (!pinchStateRef.current) return;
+        const { panStartX, panStartY, panStartOffset } = pinchStateRef.current;
+        const dx = e.clientX - panStartX;
+        const dy = e.clientY - panStartY;
+
+        const tolerance =
+          e.pointerType === "touch" ? LONG_PRESS_MOVE_TOLERANCE : 3;
+        if (!didDragRef.current && Math.hypot(dx, dy) > tolerance) {
+          didDragRef.current = true;
+          clearLongPressTimer();
+        }
+
+        setOffset({
+          x: panStartOffset.x + dx,
+          y: panStartOffset.y + dy,
+        });
+      }
+    };
+
+    const endPointer = (e) => {
+      activePointersRef.current.delete(e.pointerId);
+
+      if (activePointersRef.current.size >= 2) return;
+
+      if (activePointersRef.current.size === 1) {
+        if (gestureModeRef.current === "pinch") {
+          const [remaining] = [...activePointersRef.current.values()];
+          startPanGesture(remaining.x, remaining.y);
+        }
+        return;
+      }
+
+      clearLongPressTimer();
+
+      if (gestureModeRef.current === "select") {
+        finishSelectionGesture(e);
+      }
+
+      setIsDragging(false);
+      gestureModeRef.current = null;
+      pinchStateRef.current = null;
+    };
+
+    window.addEventListener("pointermove", onWindowPointerMove);
+    window.addEventListener("pointerup", endPointer);
+    window.addEventListener("pointercancel", endPointer);
+
+    return () => {
+      window.removeEventListener("pointermove", onWindowPointerMove);
+      window.removeEventListener("pointerup", endPointer);
+      window.removeEventListener("pointercancel", endPointer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -443,7 +583,7 @@ const FlowViewport = forwardRef(function FlowViewport(
   return (
     <Box
       ref={containerRef}
-      onMouseDown={handleViewportMouseDown}
+      onPointerDown={handleViewportPointerDown}
       onContextMenu={(e) => e.preventDefault()}
       sx={{
         width: "100%",
@@ -452,6 +592,8 @@ const FlowViewport = forwardRef(function FlowViewport(
         bgcolor: "none",
         cursor: isDragging ? "grabbing" : "default",
         userSelect: "none",
+        touchAction: "none",
+        WebkitTouchCallout: "none",
         position: "relative",
       }}
     >
