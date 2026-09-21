@@ -16,7 +16,7 @@ const FlowBoardItem = ({
   divider,
 }) => {
   const [position, setPosition] = useState(
-    () => initialPosition || { x: 0, y: 0 },
+    () => initialPosition || { x: 0, y: 0 }
   );
 
   useEffect(() => {
@@ -36,8 +36,8 @@ const FlowBoardItem = ({
       const nextArr = Array.isArray(node.next)
         ? node.next.map((n) => (typeof n === "string" ? ns(n) : n))
         : node.next != null
-          ? ns(node.next)
-          : undefined;
+        ? ns(node.next)
+        : undefined;
       nodes[ns(id)] = {
         ...node,
         id: ns(id),
@@ -51,7 +51,7 @@ const FlowBoardItem = ({
 
   const { nodesById, roots } = useMemo(
     () => assertLinkedGraph(namespacedFlow),
-    [namespacedFlow],
+    [namespacedFlow]
   );
 
   const treesData = useMemo(() => {
@@ -61,8 +61,8 @@ const FlowBoardItem = ({
       .filter(Boolean);
   }, [nodesById, roots]);
 
-  const handleMouseDown = (e) => {
-    if (e.button !== 0) return;
+  const handlePointerDown = (e) => {
+    if (e.pointerType !== "touch" && e.button !== 0) return;
     if (e.target?.closest?.(".MuiCard-root") || e.target?.closest?.("button"))
       return;
 
@@ -85,13 +85,15 @@ const FlowBoardItem = ({
     };
 
     const onUp = () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
       if (didDragRef.current) onPositionChange?.(lastPosition);
     };
 
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
   };
 
   if (!treesData.length) return null;
@@ -99,13 +101,17 @@ const FlowBoardItem = ({
   return (
     <Box
       data-flow-id={label}
-      onMouseDown={handleMouseDown}
+      onPointerDown={handlePointerDown}
+      onContextMenu={(e) => e.preventDefault()}
       sx={{
         position: "absolute",
         left: "50%",
         top: "50%",
         transform: `translate(${position.x}px, ${position.y}px)`,
         cursor: "grab",
+        touchAction: "none",
+        userSelect: "none",
+        WebkitTouchCallout: "none",
         "&:active": { cursor: "grabbing" },
       }}
     >
