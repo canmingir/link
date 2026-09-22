@@ -96,6 +96,8 @@ const DraggableNode = ({
 
   const handlePointerDown = useCallback(
     (e) => {
+      if (e.target?.closest?.("[data-handle-type]")) return;
+
       const isTouch = e.pointerType === "touch";
       if (!isTouch && e.button !== 0) return;
       e.stopPropagation();

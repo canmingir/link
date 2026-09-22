@@ -75,9 +75,7 @@ const Dot = styled("div", {
   const isBound = bound === "true";
   const disabled = interactive === "false";
   const accent =
-    variant === "out"
-      ? theme.palette.secondary.main
-      : theme.palette.primary.main;
+    variant === "out" ? theme.palette.secondary.main : theme.palette.grey[600];
 
   return {
     position: "relative",
