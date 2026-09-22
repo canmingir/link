@@ -89,6 +89,7 @@ const FlowNode = forwardRef(function FlowNode(
         impliedConnections={impliedConnections}
         showImpliedConnections={showImpliedConnections}
         labelForImpliedConnection={labelForImpliedConnection}
+        positions={positions}
       >
         {layout === "dag" ? (
           <DagCanvas
