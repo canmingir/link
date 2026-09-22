@@ -63,7 +63,7 @@ export function useDagLayout({
       positions
         ? { positions, edges: layoutEdges ?? [], bounds: layoutBounds }
         : null,
-    [positions, layoutEdges, layoutBounds],
+    [positions, layoutEdges, layoutBounds]
   );
 
   const sizeFor = useMemo(() => {
@@ -77,6 +77,17 @@ export function useDagLayout({
 
   const onLayoutErrorRef = useRef(onLayoutError);
   onLayoutErrorRef.current = onLayoutError;
+
+  const sizesKey = useMemo(() => {
+    if (!enabled || !nodesById) return "";
+    return Object.keys(nodesById)
+      .sort()
+      .map((id) => {
+        const { width, height } = sizeFor(nodesById[id]);
+        return `${id}:${width}x${height}`;
+      })
+      .join("|");
+  }, [enabled, nodesById, sizeFor]);
 
   useEffect(() => {
     if (!enabled || externalLayout || !nodesById) return;
@@ -96,7 +107,7 @@ export function useDagLayout({
         if (onLayoutErrorRef.current) onLayoutErrorRef.current(error);
         else console.error("Flow: DAG layout failed", error);
       });
-  }, [enabled, externalLayout, nodesById, direction]);
+  }, [enabled, externalLayout, nodesById, direction, sizesKey]);
 
   return externalLayout ?? computed;
 }

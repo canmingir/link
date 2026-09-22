@@ -431,7 +431,11 @@ const FlowViewport = forwardRef(function FlowViewport(
   };
 
   const handleViewportPointerDown = (e) => {
-    if (e.target?.closest?.(".MuiCard-root") || e.target?.closest?.("button"))
+    if (
+      e.target?.closest?.(".MuiCard-root") ||
+      e.target?.closest?.("button") ||
+      e.target?.closest?.("[data-handle-type]")
+    )
       return;
 
     const isTouch = e.pointerType === "touch";
