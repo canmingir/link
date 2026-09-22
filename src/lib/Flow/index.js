@@ -6,3 +6,4 @@ export { FlowSvgContent } from "./mini/FlowSvgContent";
 export { layoutFlow } from "./mini/layoutFlow";
 export { resolveNodeVisual } from "./mini/resolveNodeVisual";
 export { getFlowColors } from "./flowColors";
+export { buildLayoutEdges, computeDagLayout } from "./utils/dagLayout";
