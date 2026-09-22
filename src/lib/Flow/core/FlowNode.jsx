@@ -1,3 +1,4 @@
+import DagCanvas from "../nodes/DagCanvas";
 import FlowNodeView from "../nodes/FlowNodeView";
 import FlowViewport from "./FlowViewport";
 import React, { forwardRef } from "react";
@@ -33,6 +34,10 @@ const FlowNode = forwardRef(function FlowNode(
     impliedConnections,
     showImpliedConnections,
     labelForImpliedConnection,
+    layout,
+    positions,
+    layoutEdges,
+    layoutBounds,
     ...props
   },
   ref,
@@ -84,17 +89,32 @@ const FlowNode = forwardRef(function FlowNode(
         impliedConnections={impliedConnections}
         showImpliedConnections={showImpliedConnections}
         labelForImpliedConnection={labelForImpliedConnection}
+        positions={positions}
       >
-        {node && (
-          <FlowNodeView
-            node={node}
-            onAddNode={onAddNode}
+        {layout === "dag" ? (
+          <DagCanvas
+            nodesById={nodesById}
+            positions={positions}
+            layoutEdges={layoutEdges}
+            layoutBounds={layoutBounds}
             variant={variant}
             style={style}
             plugin={plugin}
             onConnect={onConnect}
             {...props}
           />
+        ) : (
+          node && (
+            <FlowNodeView
+              node={node}
+              onAddNode={onAddNode}
+              variant={variant}
+              style={style}
+              plugin={plugin}
+              onConnect={onConnect}
+              {...props}
+            />
+          )
         )}
       </FlowViewport>
     </SelectionProvider>

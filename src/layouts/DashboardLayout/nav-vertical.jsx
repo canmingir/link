@@ -22,6 +22,16 @@ import { useEffect, useState } from "react";
 
 // ----------------------------------------------------------------------
 
+let pkg = {
+  version: "",
+};
+
+try {
+  pkg = require("../../../../../../../package.json");
+} catch (error) {
+  console.error("Failed to load package.json:", error);
+}
+
 export default function NavVertical({ openNav, onCloseNav }) {
   const { user } = useUser();
   const pathname = usePathname();
@@ -86,7 +96,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
               fontSize: 12,
             }}
           >
-            Beta
+            v{pkg.version}
           </Typography>
         </Box>
       ) : (

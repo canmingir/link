@@ -55,6 +55,7 @@ const FlowViewport = forwardRef(function FlowViewport(
     impliedConnections,
     showImpliedConnections = false,
     labelForImpliedConnection,
+    positions,
     sx = {},
     ...rest
   },
@@ -184,11 +185,15 @@ const FlowViewport = forwardRef(function FlowViewport(
     [runFitView, zoomIn, zoomOut, setZoomPublic, setCenter, getZoom]
   );
 
+  const didFitOnMountRef = useRef(false);
+  const hasPositions = positions ? Object.keys(positions).length > 0 : true;
+
   useEffect(() => {
-    if (!fitViewOnMount) return;
-    runFitView();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (!fitViewOnMount || didFitOnMountRef.current || !hasPositions) return;
+
+    didFitOnMountRef.current = true;
+    runFitViewRef.current();
+  }, [fitViewOnMount, hasPositions]);
 
   useEffect(() => {
     if (!fitViewOnResize) return;
@@ -216,17 +221,23 @@ const FlowViewport = forwardRef(function FlowViewport(
   }, [fitViewOnResize]);
 
   const nodeCount = nodesById ? Object.keys(nodesById).length : 0;
-  const previousNodeCountRef = useRef(nodeCount);
+
+  const contentKey = positions
+    ? `${nodeCount}:${Object.entries(positions)
+        .map(([id, box]) => `${id}@${box.x},${box.y},${box.width},${box.height}`)
+        .join("|")}`
+    : `${nodeCount}`;
+  const previousContentKeyRef = useRef(contentKey);
 
   useEffect(() => {
     if (!fitViewOnNodesChange) return;
 
-    if (previousNodeCountRef.current !== nodeCount) {
-      previousNodeCountRef.current = nodeCount;
+    if (previousContentKeyRef.current !== contentKey) {
+      previousContentKeyRef.current = contentKey;
       const frame = requestAnimationFrame(() => runFitViewRef.current());
       return () => cancelAnimationFrame(frame);
     }
-  }, [fitViewOnNodesChange, nodeCount]);
+  }, [fitViewOnNodesChange, contentKey]);
 
   useEffect(() => {
     onInit?.({

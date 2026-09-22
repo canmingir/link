@@ -11,18 +11,34 @@ const DraggableNode = ({
   selectionColor = "#373739",
   initialPosition,
   onConnect,
+  dragResetKey,
 }) => {
   const [offset, setOffset] = useState(() =>
     initialPosition ? { ...initialPosition } : { x: 0, y: 0 }
   );
 
+  const offsetRef = useRef(offset);
+
+  const applyOffset = useCallback((next) => {
+    setOffset((prev) => {
+      const resolved = typeof next === "function" ? next(prev) : next;
+      offsetRef.current = resolved;
+      return resolved;
+    });
+  }, []);
+
   useEffect(() => {
     if (initialPosition) {
-      setOffset({ ...initialPosition });
+      applyOffset({ ...initialPosition });
     } else {
-      setOffset({ x: 0, y: 0 });
+      applyOffset({ x: 0, y: 0 });
     }
-  }, [initialPosition]);
+  }, [initialPosition, applyOffset]);
+
+  useEffect(() => {
+    if (dragResetKey === undefined) return;
+    applyOffset({ x: 0, y: 0 });
+  }, [dragResetKey, applyOffset]);
 
   const localRef = useRef(null);
   const lastDeltaRef = useRef({ x: 0, y: 0 });
@@ -49,10 +65,10 @@ const DraggableNode = ({
     if (!nodeId) return;
 
     return registerNodeHandlers(nodeId, {
-      setOffset,
-      onDrag: () => onDragRef.current?.(),
+      setOffset: applyOffset,
+      onDrag: () => onDragRef.current?.(offsetRef.current),
     });
-  }, [nodeId, registerNodeHandlers]);
+  }, [nodeId, registerNodeHandlers, applyOffset]);
 
   const setRef = useCallback(
     (el) => {
@@ -107,9 +123,14 @@ const DraggableNode = ({
       const startOffset = { ...offset };
       lastDeltaRef.current = { x: 0, y: 0 };
 
+      const el = localRef.current;
+      const rect = el?.getBoundingClientRect();
+      const scale =
+        el && rect && el.offsetWidth ? rect.width / el.offsetWidth || 1 : 1;
+
       const handleMove = (ev) => {
-        const dx = ev.clientX - startX;
-        const dy = ev.clientY - startY;
+        const dx = (ev.clientX - startX) / scale;
+        const dy = (ev.clientY - startY) / scale;
 
         if (!didDragRef.current && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
           didDragRef.current = true;
@@ -119,16 +140,18 @@ const DraggableNode = ({
         const deltaDy = dy - lastDeltaRef.current.y;
         lastDeltaRef.current = { x: dx, y: dy };
 
-        setOffset({
+        const nextOffset = {
           x: startOffset.x + dx,
           y: startOffset.y + dy,
-        });
+        };
+
+        applyOffset(nextOffset);
 
         if (selectedIds.size > 1) {
           moveSelectedNodes(deltaDx, deltaDy, nodeId);
         }
 
-        onDragRef.current?.();
+        onDragRef.current?.(nextOffset);
       };
 
       const handleUp = () => {
@@ -151,6 +174,7 @@ const DraggableNode = ({
       clearSelection,
       moveSelectedNodes,
       onConnect,
+      applyOffset,
     ]
   );
 
