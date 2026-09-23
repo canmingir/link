@@ -4,7 +4,7 @@ export const DEFAULT_FIT_VIEW_PADDING = 40;
 export const DEFAULT_FIT_VIEW_MIN_ZOOM = 0.5;
 export const DEFAULT_FIT_VIEW_MAX_ZOOM = 1;
 
-export const LONG_PRESS_DELAY_MS = 450;
+export const LONG_PRESS_DELAY_MS = 1000;
 export const LONG_PRESS_MOVE_TOLERANCE = 10;
 
 export const clampZoomValue = (zoom, minZoom, maxZoom) =>
