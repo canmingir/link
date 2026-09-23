@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-
 import { Box } from "@mui/material";
 import { useSelection } from "../selection/SelectionContext";
+
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 const DraggableNode = ({
   children,
@@ -44,6 +44,7 @@ const DraggableNode = ({
   const lastDeltaRef = useRef({ x: 0, y: 0 });
   const onDragRef = useRef(onDrag);
   const didDragRef = useRef(false);
+  const activeDragRef = useRef(null);
 
   const {
     isSelected,
@@ -53,6 +54,7 @@ const DraggableNode = ({
     registerNodeHandlers,
     moveSelectedNodes,
     selectedIds,
+    pinchBridgeRef,
   } = useSelection();
 
   const selected = isSelected(nodeId);
@@ -100,6 +102,8 @@ const DraggableNode = ({
 
       const isTouch = e.pointerType === "touch";
       if (!isTouch && e.button !== 0) return;
+      if (isTouch && activeDragRef.current) return;
+
       e.stopPropagation();
 
       didDragRef.current = false;
@@ -131,6 +135,14 @@ const DraggableNode = ({
         el && rect && el.offsetWidth ? rect.width / el.offsetWidth || 1 : 1;
 
       const handleMove = (ev) => {
+        if (dragToken.lastPointer) {
+          dragToken.lastPointer = {
+            pointerId: ev.pointerId,
+            x: ev.clientX,
+            y: ev.clientY,
+          };
+        }
+
         const dx = (ev.clientX - startX) / scale;
         const dy = (ev.clientY - startY) / scale;
 
@@ -156,11 +168,45 @@ const DraggableNode = ({
         onDragRef.current?.(nextOffset);
       };
 
+      const dragToken = {
+        lastPointer: isTouch
+          ? { pointerId: e.pointerId, x: e.clientX, y: e.clientY }
+          : null,
+      };
+
       const handleUp = () => {
         window.removeEventListener("pointermove", handleMove);
         window.removeEventListener("pointerup", handleUp);
         window.removeEventListener("pointercancel", handleUp);
+        window.removeEventListener("pointerdown", handleSecondPointerDown);
+        if (activeDragRef.current === dragToken) {
+          activeDragRef.current = null;
+        }
       };
+
+      dragToken.cancel = () => {
+        didDragRef.current = false;
+        handleUp();
+      };
+
+      const handleSecondPointerDown = (ev) => {
+        if (ev.pointerType !== "touch" || ev.pointerId === e.pointerId) return;
+        const firstPointer = dragToken.lastPointer;
+        dragToken.cancel();
+
+        if (firstPointer && pinchBridgeRef?.current) {
+          pinchBridgeRef.current(firstPointer, {
+            pointerId: ev.pointerId,
+            x: ev.clientX,
+            y: ev.clientY,
+          });
+        }
+      };
+
+      if (isTouch) {
+        activeDragRef.current = dragToken;
+        window.addEventListener("pointerdown", handleSecondPointerDown);
+      }
 
       window.addEventListener("pointermove", handleMove);
       window.addEventListener("pointerup", handleUp);
@@ -177,6 +223,7 @@ const DraggableNode = ({
       moveSelectedNodes,
       onConnect,
       applyOffset,
+      pinchBridgeRef,
     ]
   );
 

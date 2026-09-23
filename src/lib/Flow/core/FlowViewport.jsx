@@ -98,6 +98,7 @@ const FlowViewport = forwardRef(function FlowViewport(
     cutSelectedNodes,
     pasteNodes,
     selectedIds,
+    pinchBridgeRef,
   } = useSelection();
 
   useEffect(() => {
@@ -224,7 +225,9 @@ const FlowViewport = forwardRef(function FlowViewport(
 
   const contentKey = positions
     ? `${nodeCount}:${Object.entries(positions)
-        .map(([id, box]) => `${id}@${box.x},${box.y},${box.width},${box.height}`)
+        .map(
+          ([id, box]) => `${id}@${box.x},${box.y},${box.width},${box.height}`
+        )
         .join("|")}`
     : `${nodeCount}`;
   const previousContentKeyRef = useRef(contentKey);
@@ -429,6 +432,22 @@ const FlowViewport = forwardRef(function FlowViewport(
       lastMidpoint: midpoint,
     };
   };
+
+  useEffect(() => {
+    if (!pinchBridgeRef) return;
+    pinchBridgeRef.current = (pointerA, pointerB) => {
+      activePointersRef.current.clear();
+      activePointersRef.current.set(pointerA.pointerId, {
+        x: pointerA.x,
+        y: pointerA.y,
+      });
+      activePointersRef.current.set(pointerB.pointerId, {
+        x: pointerB.x,
+        y: pointerB.y,
+      });
+      startPinchGesture();
+    };
+  }, [pinchBridgeRef]);
 
   const handleViewportPointerDown = (e) => {
     if (
