@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import FloatingGraph from "../graph/FloatingGraph";
 import ImpliedConnections from "../connectors/ImpliedConnections";
-import SelectionOverlay from "../selection/SelectionOverlay";
 import { useSelection } from "../selection/SelectionContext";
 
 import {
@@ -10,7 +9,6 @@ import {
   DEFAULT_FIT_VIEW_PADDING,
   DEFAULT_MAX_ZOOM,
   DEFAULT_MIN_ZOOM,
-  LONG_PRESS_DELAY_MS,
   LONG_PRESS_MOVE_TOLERANCE,
   clampZoomValue,
   computeFitViewState,
@@ -68,11 +66,9 @@ const FlowViewport = forwardRef(function FlowViewport(
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(initialZoom);
   const [isDragging, setIsDragging] = useState(false);
-  const [selectionBox, setSelectionBox] = useState(null);
   const [shouldCenter, setShouldCenter] = useState(true);
 
   const containerRef = useRef(null);
-  const selectionBoxRef = useRef(null);
   const mousePositionRef = useRef({ x: 0, y: 0 });
   const innerRef = useRef(null);
   const didDragRef = useRef(false);
@@ -88,17 +84,15 @@ const FlowViewport = forwardRef(function FlowViewport(
 
   const activePointersRef = useRef(new Map());
   const pinchStateRef = useRef(null);
-  const longPressTimerRef = useRef(null);
   const gestureModeRef = useRef(null);
 
   const {
     clearSelection,
-    selectMultiple,
-    addToSelection,
     cutSelectedNodes,
     pasteNodes,
     selectedIds,
     pinchBridgeRef,
+    nodeTouchDragRef,
   } = useSelection();
 
   useEffect(() => {
@@ -354,59 +348,6 @@ const FlowViewport = forwardRef(function FlowViewport(
     zoom,
   ]);
 
-  const clearLongPressTimer = () => {
-    if (longPressTimerRef.current) {
-      clearTimeout(longPressTimerRef.current);
-      longPressTimerRef.current = null;
-    }
-  };
-
-  const finishSelectionGesture = (e) => {
-    if (containerRef.current && selectionBoxRef.current) {
-      const box = selectionBoxRef.current;
-      const nodes = containerRef.current.querySelectorAll("[data-node-id]");
-      const selectedNodeIds = [];
-
-      const boxLeft = Math.min(box.startX, box.currentX);
-      const boxRight = Math.max(box.startX, box.currentX);
-      const boxTop = Math.min(box.startY, box.currentY);
-      const boxBottom = Math.max(box.startY, box.currentY);
-
-      nodes.forEach((node) => {
-        const rect = node.getBoundingClientRect();
-
-        if (
-          rect.left < boxRight &&
-          rect.right > boxLeft &&
-          rect.top < boxBottom &&
-          rect.bottom > boxTop
-        ) {
-          const nodeId = node.getAttribute("data-node-id");
-          if (nodeId) selectedNodeIds.push(nodeId);
-        }
-      });
-
-      if (selectedNodeIds.length > 0) {
-        if (e.shiftKey) {
-          addToSelection(selectedNodeIds);
-        } else {
-          selectMultiple(selectedNodeIds);
-        }
-      }
-    }
-
-    setSelectionBox(null);
-    selectionBoxRef.current = null;
-  };
-
-  const startSelectionGesture = (startX, startY) => {
-    gestureModeRef.current = "select";
-    setIsDragging(false);
-    const box = { startX, startY, currentX: startX, currentY: startY };
-    setSelectionBox(box);
-    selectionBoxRef.current = box;
-  };
-
   const startPanGesture = (startX, startY) => {
     gestureModeRef.current = "pan";
     didDragRef.current = false;
@@ -419,9 +360,6 @@ const FlowViewport = forwardRef(function FlowViewport(
   };
 
   const startPinchGesture = () => {
-    clearLongPressTimer();
-    setSelectionBox(null);
-    selectionBoxRef.current = null;
     setIsDragging(true);
 
     const points = [...activePointersRef.current.values()];
@@ -471,23 +409,16 @@ const FlowViewport = forwardRef(function FlowViewport(
       return;
     }
 
+    // A node is already being touch-dragged elsewhere: this second finger
+    // is a pinch partner, not a new pan gesture. DraggableNode's own
+    // second-pointer listener will start the pinch via pinchBridgeRef.
+    if (isTouch && nodeTouchDragRef?.current) return;
+
     const startX = e.clientX;
     const startY = e.clientY;
     didDragRef.current = false;
 
-    if (e.button === 0 && (e.shiftKey || e.ctrlKey || e.metaKey)) {
-      startSelectionGesture(startX, startY);
-      return;
-    }
-
     if (e.button === 0) clearSelection();
-
-    if (isTouch) {
-      longPressTimerRef.current = setTimeout(() => {
-        longPressTimerRef.current = null;
-        startSelectionGesture(startX, startY);
-      }, LONG_PRESS_DELAY_MS);
-    }
 
     startPanGesture(startX, startY);
   };
@@ -528,20 +459,6 @@ const FlowViewport = forwardRef(function FlowViewport(
         return;
       }
 
-      if (gestureModeRef.current === "select") {
-        const start = selectionBoxRef.current;
-        if (!start) return;
-        const newBox = {
-          startX: start.startX,
-          startY: start.startY,
-          currentX: e.clientX,
-          currentY: e.clientY,
-        };
-        setSelectionBox(newBox);
-        selectionBoxRef.current = newBox;
-        return;
-      }
-
       if (gestureModeRef.current === "pan") {
         if (!pinchStateRef.current) return;
         const { panStartX, panStartY, panStartOffset } = pinchStateRef.current;
@@ -552,7 +469,6 @@ const FlowViewport = forwardRef(function FlowViewport(
           e.pointerType === "touch" ? LONG_PRESS_MOVE_TOLERANCE : 3;
         if (!didDragRef.current && Math.hypot(dx, dy) > tolerance) {
           didDragRef.current = true;
-          clearLongPressTimer();
         }
 
         setOffset({
@@ -573,12 +489,6 @@ const FlowViewport = forwardRef(function FlowViewport(
           startPanGesture(remaining.x, remaining.y);
         }
         return;
-      }
-
-      clearLongPressTimer();
-
-      if (gestureModeRef.current === "select") {
-        finishSelectionGesture(e);
       }
 
       setIsDragging(false);
@@ -631,7 +541,6 @@ const FlowViewport = forwardRef(function FlowViewport(
         position: "relative",
       }}
     >
-      <SelectionOverlay box={selectionBox} selectionColor={selectionColor} />
       <Box
         ref={innerRef}
         sx={{
