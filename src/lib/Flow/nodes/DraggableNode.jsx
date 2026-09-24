@@ -234,7 +234,7 @@ const DraggableNode = ({
         if (nodeTouchDragRef) nodeTouchDragRef.current = true;
         window.addEventListener("pointerdown", handleSecondPointerDown);
 
-        const el = localRef.current;
+        const dispatchTarget = e.target ?? localRef.current;
         longPressTimerRef.current = setTimeout(() => {
           longPressTimerRef.current = null;
           if (didDragRef.current) return;
@@ -245,7 +245,7 @@ const DraggableNode = ({
             clientY: startY,
           });
           contextMenuEvent.__fromLongPress = true;
-          el?.dispatchEvent(contextMenuEvent);
+          dispatchTarget?.dispatchEvent(contextMenuEvent);
         }, LONG_PRESS_DELAY_MS);
       }
 
