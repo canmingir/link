@@ -404,6 +404,32 @@ const FlowViewport = forwardRef(function FlowViewport(
     };
   }, [pinchBridgeRef]);
 
+  useEffect(() => {
+    const onPointerDownCapture = (e) => {
+      if (e.pointerType !== "touch") return;
+      if (activePointersRef.current.has(e.pointerId)) return;
+
+      const wasTracking = activePointersRef.current.size;
+      activePointersRef.current.set(e.pointerId, {
+        x: e.clientX,
+        y: e.clientY,
+      });
+
+      if (wasTracking !== 1) return;
+
+      if (nodeTouchDragRef?.current) {
+        nodeTouchDragRef.current.cancel();
+      }
+      startPinchGesture();
+      e.stopPropagation();
+    };
+
+    window.addEventListener("pointerdown", onPointerDownCapture, true);
+    return () =>
+      window.removeEventListener("pointerdown", onPointerDownCapture, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodeTouchDragRef]);
+
   const handleViewportPointerDown = (e) => {
     if (
       e.target?.closest?.(".MuiCard-root") ||

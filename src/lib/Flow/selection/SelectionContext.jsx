@@ -24,7 +24,7 @@ const DEFAULT_CONTEXT = {
   pasteNodes: () => {},
   hasClipboard: false,
   pinchBridgeRef: { current: null },
-  nodeTouchDragRef: { current: false },
+  nodeTouchDragRef: { current: null },
 };
 
 const filterNextToSelection = (next, selectedSet) => {
@@ -96,7 +96,7 @@ export const SelectionProvider = ({ children }) => {
   const nodeHandlersRef = useRef(new Map());
   const isPastingRef = useRef(false);
   const pinchBridgeRef = useRef(null);
-  const nodeTouchDragRef = useRef(false);
+  const nodeTouchDragRef = useRef(null);
 
   const selectNode = useCallback((id, addToSelection = false) => {
     setSelectedIds((prev) => {
