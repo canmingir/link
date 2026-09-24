@@ -283,7 +283,24 @@ const FlowViewport = forwardRef(function FlowViewport(
         const maxDelta = 15;
         const clamped = Math.max(-maxDelta, Math.min(maxDelta, deltaY));
         const factor = Math.exp(-clamped * 0.007);
-        setZoom((z) => clampZoom(z * factor));
+        const prevZoom = zoomRef.current;
+        const nextZoom = clampZoom(prevZoom * factor);
+        const containerRect = container.getBoundingClientRect();
+        const cursor = {
+          x: e.clientX - (containerRect.left + containerRect.width / 2),
+          y: e.clientY - (containerRect.top + containerRect.height / 2),
+        };
+
+        const nextOffset = computePinchZoomOffset({
+          prevZoom,
+          nextZoom,
+          offset: offsetRef.current,
+          prevMidpoint: cursor,
+          nextMidpoint: cursor,
+        });
+
+        setZoom(nextZoom);
+        setOffset(nextOffset);
       } else if (e.shiftKey) {
         const delta = deltaX !== 0 ? deltaX : deltaY;
         setOffset((prev) => ({
@@ -387,6 +404,32 @@ const FlowViewport = forwardRef(function FlowViewport(
     };
   }, [pinchBridgeRef]);
 
+  useEffect(() => {
+    const onPointerDownCapture = (e) => {
+      if (e.pointerType !== "touch") return;
+      if (activePointersRef.current.has(e.pointerId)) return;
+
+      const wasTracking = activePointersRef.current.size;
+      activePointersRef.current.set(e.pointerId, {
+        x: e.clientX,
+        y: e.clientY,
+      });
+
+      if (wasTracking !== 1) return;
+
+      if (nodeTouchDragRef?.current) {
+        nodeTouchDragRef.current.cancel();
+      }
+      startPinchGesture();
+      e.stopPropagation();
+    };
+
+    window.addEventListener("pointerdown", onPointerDownCapture, true);
+    return () =>
+      window.removeEventListener("pointerdown", onPointerDownCapture, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodeTouchDragRef]);
+
   const handleViewportPointerDown = (e) => {
     if (
       e.target?.closest?.(".MuiCard-root") ||
@@ -409,9 +452,6 @@ const FlowViewport = forwardRef(function FlowViewport(
       return;
     }
 
-    // A node is already being touch-dragged elsewhere: this second finger
-    // is a pinch partner, not a new pan gesture. DraggableNode's own
-    // second-pointer listener will start the pinch via pinchBridgeRef.
     if (isTouch && nodeTouchDragRef?.current) return;
 
     const startX = e.clientX;
@@ -442,12 +482,26 @@ const FlowViewport = forwardRef(function FlowViewport(
         const scaleFactor = lastDistance > 0 ? nextDistance / lastDistance : 1;
         const nextZoom = clampZoom(zoomRef.current * scaleFactor);
 
+        const containerRect = containerRef.current?.getBoundingClientRect();
+        const originX = containerRect
+          ? containerRect.left + containerRect.width / 2
+          : 0;
+        const originY = containerRect
+          ? containerRect.top + containerRect.height / 2
+          : 0;
+
         const nextOffset = computePinchZoomOffset({
           prevZoom: zoomRef.current,
           nextZoom,
           offset: offsetRef.current,
-          prevMidpoint: lastMidpoint,
-          nextMidpoint,
+          prevMidpoint: {
+            x: lastMidpoint.x - originX,
+            y: lastMidpoint.y - originY,
+          },
+          nextMidpoint: {
+            x: nextMidpoint.x - originX,
+            y: nextMidpoint.y - originY,
+          },
         });
 
         setZoom(nextZoom);

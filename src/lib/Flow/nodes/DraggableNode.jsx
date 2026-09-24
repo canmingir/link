@@ -59,7 +59,6 @@ const DraggableNode = ({
     registerNodeHandlers,
     moveSelectedNodes,
     selectedIds,
-    pinchBridgeRef,
     nodeTouchDragRef,
   } = useSelection();
 
@@ -109,6 +108,7 @@ const DraggableNode = ({
       const isTouch = e.pointerType === "touch";
       if (!isTouch && e.button !== 0) return;
       if (isTouch && activeDragRef.current) return;
+      if (isTouch && nodeTouchDragRef?.current) return;
 
       e.stopPropagation();
 
@@ -203,10 +203,11 @@ const DraggableNode = ({
         window.removeEventListener("pointermove", handleMove);
         window.removeEventListener("pointerup", handleUp);
         window.removeEventListener("pointercancel", handleUp);
-        window.removeEventListener("pointerdown", handleSecondPointerDown);
         if (activeDragRef.current === dragToken) {
           activeDragRef.current = null;
-          if (nodeTouchDragRef) nodeTouchDragRef.current = false;
+          if (nodeTouchDragRef?.current === dragToken) {
+            nodeTouchDragRef.current = null;
+          }
         }
       };
 
@@ -215,26 +216,11 @@ const DraggableNode = ({
         handleUp();
       };
 
-      const handleSecondPointerDown = (ev) => {
-        if (ev.pointerType !== "touch" || ev.pointerId === e.pointerId) return;
-        const firstPointer = dragToken.lastPointer;
-        dragToken.cancel();
-
-        if (firstPointer && pinchBridgeRef?.current) {
-          pinchBridgeRef.current(firstPointer, {
-            pointerId: ev.pointerId,
-            x: ev.clientX,
-            y: ev.clientY,
-          });
-        }
-      };
-
       if (isTouch) {
         activeDragRef.current = dragToken;
-        if (nodeTouchDragRef) nodeTouchDragRef.current = true;
-        window.addEventListener("pointerdown", handleSecondPointerDown);
+        if (nodeTouchDragRef) nodeTouchDragRef.current = dragToken;
 
-        const el = localRef.current;
+        const dispatchTarget = e.target ?? localRef.current;
         longPressTimerRef.current = setTimeout(() => {
           longPressTimerRef.current = null;
           if (didDragRef.current) return;
@@ -245,7 +231,7 @@ const DraggableNode = ({
             clientY: startY,
           });
           contextMenuEvent.__fromLongPress = true;
-          el?.dispatchEvent(contextMenuEvent);
+          dispatchTarget?.dispatchEvent(contextMenuEvent);
         }, LONG_PRESS_DELAY_MS);
       }
 
@@ -264,7 +250,6 @@ const DraggableNode = ({
       moveSelectedNodes,
       onConnect,
       applyOffset,
-      pinchBridgeRef,
       nodeTouchDragRef,
     ]
   );
