@@ -37,6 +37,7 @@ const FlowNodeView = ({
 
   const {
     direction = "vertical",
+    childrenLayout = "parallel",
     lineColor = baseStyle.lineColor,
     lineWidth = baseStyle.lineWidth,
     lineStyle = baseStyle.lineStyle,
@@ -83,6 +84,9 @@ const FlowNodeView = ({
   };
 
   const isHorizontal = direction === "horizontal";
+  const isChain = childrenLayout === "chain";
+  const isStack = childrenLayout === "stack";
+  const stackOverlap = nodeStyle.stackOverlap ?? 24;
 
   const strokeWidth = toPxNumber(edgeProps.lineWidth, 1.5);
   const dashStyle =
@@ -264,11 +268,21 @@ const FlowNodeView = ({
                 ? childEdgeProps.lineStyle
                 : "solid";
 
+            const connectorParentEl =
+              isChain || isStack
+                ? index === 0
+                  ? parentRef.current
+                  : childElList[index - 1]
+                : parentRef.current;
+
+            if ((isChain || isStack) && index > 0 && !connectorParentEl)
+              return null;
+
             return (
               <DynamicConnector
                 key={child.id}
                 containerEl={containerRef.current}
-                parentEl={parentRef.current}
+                parentEl={connectorParentEl}
                 childEls={[childElList[index]]}
                 stroke={childEdgeProps.lineColor}
                 strokeWidth={childStrokeWidth}
@@ -278,7 +292,9 @@ const FlowNodeView = ({
                 showDots={childEdgeProps.showDots}
                 dotRadius={childEdgeProps.dotRadius}
                 dotColor={childEdgeProps.dotColor}
-                showArrow={childEdgeProps.showArrow}
+                showArrow={
+                  isStack && index > 0 ? false : childEdgeProps.showArrow
+                }
                 arrowSize={childEdgeProps.arrowSize}
                 animated={childEdgeProps.animated}
                 animationSpeed={childEdgeProps.animationSpeed}
@@ -299,35 +315,66 @@ const FlowNodeView = ({
           <Box
             sx={{
               display: "flex",
-              flexDirection: isHorizontal ? "column" : "row",
-              ...(isHorizontal
-                ? {
-                    marginLeft: levelGap,
-                    rowGap: gap,
-                  }
-                : {
-                    marginTop: levelGap,
-                    columnGap: gap,
-                  }),
+              flexDirection: isStack
+                ? "column"
+                : isChain
+                ? isHorizontal
+                  ? "row"
+                  : "column"
+                : isHorizontal
+                ? "column"
+                : "row",
+              ...(isStack
+                ? { marginTop: levelGap }
+                : isChain
+                ? isHorizontal
+                  ? { marginLeft: levelGap, columnGap: gap }
+                  : { marginTop: levelGap, rowGap: gap }
+                : isHorizontal
+                ? { marginLeft: levelGap, rowGap: gap }
+                : { marginTop: levelGap, columnGap: gap }),
               position: "relative",
-              alignItems: "flex-start",
+              alignItems: isChain || isStack ? "center" : "flex-start",
               justifyContent: "center",
             }}
           >
-            {node.children.map((child) => (
-              <FlowNode
-                key={child.id}
-                node={child}
-                type={type}
-                variant={variant}
-                style={style}
-                plugin={plugin}
-                registerRef={(el) => (childRefs.current[child.id] = el)}
-                onDrag={() => setConnectorTick((t) => t + 1)}
-                isRoot={false}
-                onConnect={onConnect}
-              />
-            ))}
+            {node.children.map((child, index) =>
+              isStack ? (
+                <Box
+                  key={child.id}
+                  sx={{
+                    marginTop: index === 0 ? 0 : `${-stackOverlap}px`,
+                    zIndex: index + 1,
+                    position: "relative",
+                  }}
+                >
+                  <FlowNode
+                    node={child}
+                    type={type}
+                    variant={variant}
+                    style={style}
+                    plugin={plugin}
+                    registerRef={(el) => (childRefs.current[child.id] = el)}
+                    onDrag={() => setConnectorTick((t) => t + 1)}
+                    isRoot={false}
+                    onConnect={onConnect}
+                  />
+                </Box>
+              ) : (
+                <FlowNode
+                  key={child.id}
+                  node={child}
+                  type={type}
+                  variant={variant}
+                  style={style}
+                  plugin={plugin}
+                  registerRef={(el) => (childRefs.current[child.id] = el)}
+                  onDrag={() => setConnectorTick((t) => t + 1)}
+                  isRoot={false}
+                  onConnect={onConnect}
+                />
+              )
+            )}
           </Box>
         </>
       )}
