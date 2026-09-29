@@ -463,14 +463,10 @@ const FlowViewport = forwardRef(function FlowViewport(
     startPanGesture(startX, startY);
   };
 
-  useEffect(() => {
-    const onWindowPointerMove = (e) => {
-      if (!activePointersRef.current.has(e.pointerId)) return;
-      activePointersRef.current.set(e.pointerId, {
-        x: e.clientX,
-        y: e.clientY,
-      });
+  const pendingFrameRef = useRef(null);
 
+  useEffect(() => {
+    const applyPinchOrPan = (e) => {
       if (gestureModeRef.current === "pinch") {
         const points = [...activePointersRef.current.values()];
         if (points.length < 2 || !pinchStateRef.current) return;
@@ -479,7 +475,16 @@ const FlowViewport = forwardRef(function FlowViewport(
         const nextMidpoint = getTouchMidpoint(points[0], points[1]);
         const { lastDistance, lastMidpoint } = pinchStateRef.current;
 
-        const scaleFactor = lastDistance > 0 ? nextDistance / lastDistance : 1;
+        const distanceDelta =
+          lastDistance > 0
+            ? Math.abs(nextDistance - lastDistance) / lastDistance
+            : 0;
+        const withinDeadzone = lastDistance > 0 && distanceDelta <= 0.003;
+        const scaleFactor = withinDeadzone
+          ? 1
+          : lastDistance > 0
+          ? nextDistance / lastDistance
+          : 1;
         const nextZoom = clampZoom(zoomRef.current * scaleFactor);
 
         const containerRect = containerRef.current?.getBoundingClientRect();
@@ -507,7 +512,7 @@ const FlowViewport = forwardRef(function FlowViewport(
         setZoom(nextZoom);
         setOffset(nextOffset);
         pinchStateRef.current = {
-          lastDistance: nextDistance,
+          lastDistance: withinDeadzone ? lastDistance : nextDistance,
           lastMidpoint: nextMidpoint,
         };
         return;
@@ -532,7 +537,30 @@ const FlowViewport = forwardRef(function FlowViewport(
       }
     };
 
+    const onWindowPointerMove = (e) => {
+      if (!activePointersRef.current.has(e.pointerId)) return;
+      activePointersRef.current.set(e.pointerId, {
+        x: e.clientX,
+        y: e.clientY,
+      });
+
+      if (gestureModeRef.current !== "pinch") {
+        applyPinchOrPan(e);
+        return;
+      }
+
+      if (pendingFrameRef.current) return;
+      pendingFrameRef.current = requestAnimationFrame(() => {
+        pendingFrameRef.current = null;
+        applyPinchOrPan(e);
+      });
+    };
+
     const endPointer = (e) => {
+      if (pendingFrameRef.current) {
+        cancelAnimationFrame(pendingFrameRef.current);
+        pendingFrameRef.current = null;
+      }
       activePointersRef.current.delete(e.pointerId);
 
       if (activePointersRef.current.size >= 2) return;
@@ -592,6 +620,7 @@ const FlowViewport = forwardRef(function FlowViewport(
         userSelect: "none",
         touchAction: "none",
         WebkitTouchCallout: "none",
+        WebkitTapHighlightColor: "transparent",
         position: "relative",
       }}
     >
@@ -600,6 +629,7 @@ const FlowViewport = forwardRef(function FlowViewport(
         sx={{
           transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
           transformOrigin: "center center",
+          willChange: "transform",
           width: "100%",
           height: height,
           display: "flex",
@@ -609,7 +639,7 @@ const FlowViewport = forwardRef(function FlowViewport(
               ? "center"
               : "flex-start",
           transition: isDragging ? "none" : "transform 0.1s ease-out",
-          pointerEvents: "auto",
+          pointerEvents: isDragging ? "none" : "auto",
           position: "relative",
           pl:
             centered || (!usesFitView && shouldCenter)
