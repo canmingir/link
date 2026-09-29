@@ -406,7 +406,11 @@ const FlowViewport = forwardRef(function FlowViewport(
 
   useEffect(() => {
     const onPointerDownCapture = (e) => {
-      if (e.pointerType !== "touch") return;
+      if (
+        e.pointerType !== "touch" ||
+        !containerRef.current?.contains(e.target)
+      )
+        return;
       if (activePointersRef.current.has(e.pointerId)) return;
 
       const wasTracking = activePointersRef.current.size;
