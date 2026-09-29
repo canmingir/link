@@ -626,6 +626,7 @@ const FlowViewport = forwardRef(function FlowViewport(
     >
       <Box
         ref={innerRef}
+        data-flow-dragging={isDragging}
         sx={{
           transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
           transformOrigin: "center center",

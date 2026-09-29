@@ -31,6 +31,7 @@ const MainContainer = styled("div", {
     borderRadius,
     padding: "24px",
     border: `1px solid ${borderColor}`,
+    backdropFilter: "blur(10px)",
     transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
     cursor: "inherit",
     position: "relative",
@@ -43,6 +44,9 @@ const MainContainer = styled("div", {
       bgTo || defaultTo
     })`,
     boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+    '[data-flow-dragging="true"] &': {
+      backdropFilter: "none",
+    },
   };
 });
 
@@ -72,6 +76,7 @@ const IconContainer = styled("div", {
     borderRadius,
     padding,
     transition: "all 0.4s ease",
+    backdropFilter: "blur(5px)",
     border: `1px solid ${borderColor}`,
     flexShrink: 0,
     display: "flex",
@@ -81,6 +86,10 @@ const IconContainer = styled("div", {
             4px 4px 0 rgba(255, 255, 255, 0.1),
             5px 5px 5px rgba(0, 0, 0, 0.5)
           `,
+
+    '[data-flow-dragging="true"] &': {
+      backdropFilter: "none",
+    },
 
     '[data-hovered="true"] &': {
       backgroundColor: hoverBg,
