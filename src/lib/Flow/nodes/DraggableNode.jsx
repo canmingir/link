@@ -272,6 +272,7 @@ const DraggableNode = ({
         touchAction: "none",
         userSelect: "none",
         WebkitTouchCallout: "none",
+        WebkitTapHighlightColor: "transparent",
         "&:active": { cursor: "grabbing" },
       }}
     >
