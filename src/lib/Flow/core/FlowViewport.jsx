@@ -283,7 +283,24 @@ const FlowViewport = forwardRef(function FlowViewport(
         const maxDelta = 15;
         const clamped = Math.max(-maxDelta, Math.min(maxDelta, deltaY));
         const factor = Math.exp(-clamped * 0.007);
-        setZoom((z) => clampZoom(z * factor));
+        const prevZoom = zoomRef.current;
+        const nextZoom = clampZoom(prevZoom * factor);
+        const containerRect = container.getBoundingClientRect();
+        const cursor = {
+          x: e.clientX - (containerRect.left + containerRect.width / 2),
+          y: e.clientY - (containerRect.top + containerRect.height / 2),
+        };
+
+        const nextOffset = computePinchZoomOffset({
+          prevZoom,
+          nextZoom,
+          offset: offsetRef.current,
+          prevMidpoint: cursor,
+          nextMidpoint: cursor,
+        });
+
+        setZoom(nextZoom);
+        setOffset(nextOffset);
       } else if (e.shiftKey) {
         const delta = deltaX !== 0 ? deltaX : deltaY;
         setOffset((prev) => ({
@@ -387,6 +404,36 @@ const FlowViewport = forwardRef(function FlowViewport(
     };
   }, [pinchBridgeRef]);
 
+  useEffect(() => {
+    const onPointerDownCapture = (e) => {
+      if (
+        e.pointerType !== "touch" ||
+        !containerRef.current?.contains(e.target)
+      )
+        return;
+      if (activePointersRef.current.has(e.pointerId)) return;
+
+      const wasTracking = activePointersRef.current.size;
+      activePointersRef.current.set(e.pointerId, {
+        x: e.clientX,
+        y: e.clientY,
+      });
+
+      if (wasTracking !== 1) return;
+
+      if (nodeTouchDragRef?.current) {
+        nodeTouchDragRef.current.cancel();
+      }
+      startPinchGesture();
+      e.stopPropagation();
+    };
+
+    window.addEventListener("pointerdown", onPointerDownCapture, true);
+    return () =>
+      window.removeEventListener("pointerdown", onPointerDownCapture, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodeTouchDragRef]);
+
   const handleViewportPointerDown = (e) => {
     if (
       e.target?.closest?.(".MuiCard-root") ||
@@ -409,9 +456,6 @@ const FlowViewport = forwardRef(function FlowViewport(
       return;
     }
 
-    // A node is already being touch-dragged elsewhere: this second finger
-    // is a pinch partner, not a new pan gesture. DraggableNode's own
-    // second-pointer listener will start the pinch via pinchBridgeRef.
     if (isTouch && nodeTouchDragRef?.current) return;
 
     const startX = e.clientX;
@@ -423,14 +467,10 @@ const FlowViewport = forwardRef(function FlowViewport(
     startPanGesture(startX, startY);
   };
 
-  useEffect(() => {
-    const onWindowPointerMove = (e) => {
-      if (!activePointersRef.current.has(e.pointerId)) return;
-      activePointersRef.current.set(e.pointerId, {
-        x: e.clientX,
-        y: e.clientY,
-      });
+  const pendingFrameRef = useRef(null);
 
+  useEffect(() => {
+    const applyPinchOrPan = (e) => {
       if (gestureModeRef.current === "pinch") {
         const points = [...activePointersRef.current.values()];
         if (points.length < 2 || !pinchStateRef.current) return;
@@ -439,21 +479,44 @@ const FlowViewport = forwardRef(function FlowViewport(
         const nextMidpoint = getTouchMidpoint(points[0], points[1]);
         const { lastDistance, lastMidpoint } = pinchStateRef.current;
 
-        const scaleFactor = lastDistance > 0 ? nextDistance / lastDistance : 1;
+        const distanceDelta =
+          lastDistance > 0
+            ? Math.abs(nextDistance - lastDistance) / lastDistance
+            : 0;
+        const withinDeadzone = lastDistance > 0 && distanceDelta <= 0.003;
+        const scaleFactor = withinDeadzone
+          ? 1
+          : lastDistance > 0
+          ? nextDistance / lastDistance
+          : 1;
         const nextZoom = clampZoom(zoomRef.current * scaleFactor);
+
+        const containerRect = containerRef.current?.getBoundingClientRect();
+        const originX = containerRect
+          ? containerRect.left + containerRect.width / 2
+          : 0;
+        const originY = containerRect
+          ? containerRect.top + containerRect.height / 2
+          : 0;
 
         const nextOffset = computePinchZoomOffset({
           prevZoom: zoomRef.current,
           nextZoom,
           offset: offsetRef.current,
-          prevMidpoint: lastMidpoint,
-          nextMidpoint,
+          prevMidpoint: {
+            x: lastMidpoint.x - originX,
+            y: lastMidpoint.y - originY,
+          },
+          nextMidpoint: {
+            x: nextMidpoint.x - originX,
+            y: nextMidpoint.y - originY,
+          },
         });
 
         setZoom(nextZoom);
         setOffset(nextOffset);
         pinchStateRef.current = {
-          lastDistance: nextDistance,
+          lastDistance: withinDeadzone ? lastDistance : nextDistance,
           lastMidpoint: nextMidpoint,
         };
         return;
@@ -478,7 +541,30 @@ const FlowViewport = forwardRef(function FlowViewport(
       }
     };
 
+    const onWindowPointerMove = (e) => {
+      if (!activePointersRef.current.has(e.pointerId)) return;
+      activePointersRef.current.set(e.pointerId, {
+        x: e.clientX,
+        y: e.clientY,
+      });
+
+      if (gestureModeRef.current !== "pinch") {
+        applyPinchOrPan(e);
+        return;
+      }
+
+      if (pendingFrameRef.current) return;
+      pendingFrameRef.current = requestAnimationFrame(() => {
+        pendingFrameRef.current = null;
+        applyPinchOrPan(e);
+      });
+    };
+
     const endPointer = (e) => {
+      if (pendingFrameRef.current) {
+        cancelAnimationFrame(pendingFrameRef.current);
+        pendingFrameRef.current = null;
+      }
       activePointersRef.current.delete(e.pointerId);
 
       if (activePointersRef.current.size >= 2) return;
@@ -538,14 +624,17 @@ const FlowViewport = forwardRef(function FlowViewport(
         userSelect: "none",
         touchAction: "none",
         WebkitTouchCallout: "none",
+        WebkitTapHighlightColor: "transparent",
         position: "relative",
       }}
     >
       <Box
         ref={innerRef}
+        data-flow-dragging={isDragging}
         sx={{
           transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
           transformOrigin: "center center",
+          willChange: "transform",
           width: "100%",
           height: height,
           display: "flex",
@@ -555,7 +644,7 @@ const FlowViewport = forwardRef(function FlowViewport(
               ? "center"
               : "flex-start",
           transition: isDragging ? "none" : "transform 0.1s ease-out",
-          pointerEvents: "auto",
+          pointerEvents: isDragging ? "none" : "auto",
           position: "relative",
           pl:
             centered || (!usesFitView && shouldCenter)
