@@ -1,5 +1,4 @@
 import ELK from "elkjs/lib/elk.bundled.js";
-
 import { toNextArray } from "./flowUtils";
 
 const elk = new ELK();
@@ -28,9 +27,12 @@ export function buildLayoutEdges(nodesById) {
 
     if (trueNext.length || falseNext.length) continue;
 
-    for (const nxt of toNextArray(node.next)) {
+    const nextTargets = toNextArray(node.next);
+    const branch = nextTargets.length > 1 ? "case" : "next";
+
+    for (const nxt of nextTargets) {
       const target = typeof nxt === "string" ? nxt : nxt?.id;
-      push(node.id, target, "next");
+      push(node.id, target, branch);
     }
   }
 
@@ -57,6 +59,17 @@ function analyzeEdges(edges) {
     maxMergingFactor,
     hasMergePoints: maxMergingFactor > 1,
   };
+}
+
+function withExtraSpacing(options, extraSpacing, direction) {
+  if (!extraSpacing) return options;
+
+  const key =
+    direction === "RIGHT"
+      ? "elk.spacing.nodeNode"
+      : "elk.layered.spacing.nodeNodeBetweenLayers";
+
+  return { ...options, [key]: String(Number(options[key]) + extraSpacing) };
 }
 
 function buildElkOptions(stats, direction) {
@@ -92,11 +105,11 @@ function buildElkOptions(stats, direction) {
       ...options,
       "elk.layered.spacing.nodeNodeBetweenLayers": Math.max(
         120,
-        stats.maxBranchingFactor * 30,
+        stats.maxBranchingFactor * 30
       ).toString(),
       "elk.spacing.nodeNode": Math.max(
         100,
-        stats.maxBranchingFactor * 25,
+        stats.maxBranchingFactor * 25
       ).toString(),
     };
   }
@@ -162,17 +175,23 @@ export async function computeDagLayout(nodesById, options = {}) {
   const stats = analyzeEdges(edges);
 
   const sizes = {};
+  let extraSpacing = 0;
   for (const id of nodeIds) {
     const size = options.sizeFor?.(nodesById[id]) ?? {};
     sizes[id] = {
       width: size.width ?? DEFAULT_NODE_WIDTH,
       height: size.height ?? DEFAULT_NODE_HEIGHT,
     };
+    extraSpacing = Math.max(extraSpacing, size.extraSpacing ?? 0);
   }
 
   const layouted = await elk.layout({
     id: "root",
-    layoutOptions: buildElkOptions(stats, direction),
+    layoutOptions: withExtraSpacing(
+      buildElkOptions(stats, direction),
+      extraSpacing,
+      direction
+    ),
     children: nodeIds.map((id) => ({
       id,
       width: sizes[id].width,
