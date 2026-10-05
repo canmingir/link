@@ -8,6 +8,28 @@ export function dialog(theme) {
           ...(!ownerState.fullScreen && {
             margin: theme.spacing(2),
           }),
+          ...(ownerState.type === "large" && {
+            width: "100%",
+            maxWidth: "none",
+            height: "100%",
+            outline: "none",
+          }),
+          ...(ownerState.type === "medium" && {
+            width: "80%",
+            maxWidth: "none",
+            height: "80vh",
+            outline: "none",
+          }),
+          ...(ownerState.type === "small" && {
+            height: "50vh",
+            width: "50%",
+            outline: "none",
+          }),
+            ...(ownerState.type === "xsmall" && {
+            width: 350,
+            height: "18vh",
+            outline: "none",
+        }),
         }),
         paperFullScreen: {
           borderRadius: 0,
