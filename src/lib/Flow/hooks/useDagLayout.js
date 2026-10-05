@@ -39,6 +39,7 @@ function sizeFromTokens(tokens) {
   return {
     width: toPxNumber(width, DEFAULT_NODE_WIDTH),
     height: toPxNumber(height, DEFAULT_NODE_HEIGHT),
+    extraSpacing: Math.max(0, toPxNumber(tokens.layoutExtraSpacing, 0)),
   };
 }
 
@@ -83,8 +84,8 @@ export function useDagLayout({
     return Object.keys(nodesById)
       .sort()
       .map((id) => {
-        const { width, height } = sizeFor(nodesById[id]);
-        return `${id}:${width}x${height}`;
+        const { width, height, extraSpacing } = sizeFor(nodesById[id]);
+        return `${id}:${width}x${height}+${extraSpacing}`;
       })
       .join("|");
   }, [enabled, nodesById, sizeFor]);
