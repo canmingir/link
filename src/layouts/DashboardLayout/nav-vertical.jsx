@@ -1,3 +1,4 @@
+import { APP_VERSION_LABEL } from "../../utils/app-version";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Iconify from "../../components/Iconify";
@@ -21,16 +22,6 @@ import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 // ----------------------------------------------------------------------
-
-let pkg = {
-  version: "",
-};
-
-try {
-  pkg = require("../../../../../../../package.json");
-} catch (error) {
-  console.error("Failed to load package.json:", error);
-}
 
 export default function NavVertical({ openNav, onCloseNav }) {
   const { user } = useUser();
@@ -96,7 +87,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
               fontSize: 12,
             }}
           >
-            v{pkg.version}
+            {APP_VERSION_LABEL}
           </Typography>
         </Box>
       ) : (
