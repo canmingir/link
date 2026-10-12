@@ -443,7 +443,7 @@ const FlowViewport = forwardRef(function FlowViewport(
       return;
 
     const isTouch = e.pointerType === "touch";
-    const isPan = isTouch || e.button === 0 || e.button === 2;
+    const isPan = isTouch || e.button === 0;
     if (!isPan) return;
 
     activePointersRef.current.set(e.pointerId, {
@@ -614,7 +614,10 @@ const FlowViewport = forwardRef(function FlowViewport(
     <Box
       ref={containerRef}
       onPointerDown={handleViewportPointerDown}
-      onContextMenu={(e) => e.preventDefault()}
+      onContextMenu={(e) => {
+        const isMouseRightClick = e.button === 2 || e.nativeEvent?.button === 2;
+        if (!isMouseRightClick) e.preventDefault();
+      }}
       sx={{
         width: "100%",
         height: height,
