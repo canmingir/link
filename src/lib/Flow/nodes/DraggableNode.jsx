@@ -260,7 +260,10 @@ const DraggableNode = ({
       data-node-id={nodeId}
       onPointerDown={handlePointerDown}
       onContextMenu={(e) => {
-        if (!e.nativeEvent?.__fromLongPress) e.preventDefault();
+        const isMouseRightClick = e.button === 2 || e.nativeEvent?.button === 2;
+        if (!isMouseRightClick && !e.nativeEvent?.__fromLongPress) {
+          e.preventDefault();
+        }
       }}
       sx={{
         display: "inline-flex",
