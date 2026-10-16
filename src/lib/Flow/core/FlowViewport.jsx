@@ -231,8 +231,10 @@ const FlowViewport = forwardRef(function FlowViewport(
 
     if (previousContentKeyRef.current !== contentKey) {
       previousContentKeyRef.current = contentKey;
-      const frame = requestAnimationFrame(() => runFitViewRef.current());
-      return () => cancelAnimationFrame(frame);
+      const timeout = setTimeout(() => {
+        requestAnimationFrame(() => runFitViewRef.current());
+      }, 100);
+      return () => clearTimeout(timeout);
     }
   }, [fitViewOnNodesChange, contentKey]);
 
