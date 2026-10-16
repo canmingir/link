@@ -31,7 +31,14 @@ export function resolveNodeVisual({ node, type, variant, style, plugin }) {
     ...pluginTokens,
   };
 
-  const fill = merged.gradient || merged.bg || null;
+  const gradientStops =
+    merged.gradient && typeof merged.gradient === "object"
+      ? merged.gradient
+      : null;
+  const fill =
+    (typeof merged.gradient === "string" ? merged.gradient : null) ||
+    merged.bg ||
+    null;
   let stroke = merged.borderColor || null;
   if (
     typeof merged.border === "string" &&
@@ -40,5 +47,5 @@ export function resolveNodeVisual({ node, type, variant, style, plugin }) {
     stroke = merged.border;
   }
 
-  return { fill, stroke };
+  return { fill, stroke, gradientStops };
 }
