@@ -268,8 +268,8 @@ const InfoNode = ({ node, nodeStyle = {}, children }) => {
   const variant = nodeStyle.layoutVariant;
   const isSplit = variant === "split-icon-panel";
   const isReversed = isSplit && (node.action === "PLATFORM:complete" ||
-    node.nodeType === "NORMAL" ||
-    node.nodeType === "END");
+    node.type === "NORMAL" ||
+    node.type === "END");
 
 
   const label = node.label || node.title || node.name || node.id || "Get Data";
