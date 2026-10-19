@@ -136,15 +136,21 @@ export function FlowSvgContent({
         const isCondition = node.type === "CONDITION";
         const gradId = isCondition ? condGradId : nodeGradId;
 
-        const { fill: resolvedFill, stroke: resolvedStroke } =
-          resolveNodeVisual({
-            node,
-            type,
-            variant,
-            style,
-            plugin,
-          });
-        const nodeFill = isPaintableColor(resolvedFill)
+        const {
+          fill: resolvedFill,
+          stroke: resolvedStroke,
+          gradientStops,
+        } = resolveNodeVisual({
+          node,
+          type,
+          variant,
+          style,
+          plugin,
+        });
+        const customGradId = gradientStops ? `cug-${uid}-${node.id}` : null;
+        const nodeFill = customGradId
+          ? `url(#${customGradId})`
+          : isPaintableColor(resolvedFill)
           ? resolvedFill
           : `url(#${gradId})`;
         const nodeStroke = isPaintableColor(resolvedStroke)
@@ -171,6 +177,20 @@ export function FlowSvgContent({
           : "mdi:checkbox-blank-circle-outline";
         return (
           <g key={node.id} filter={`url(#${shadowId})`}>
+            {gradientStops && (
+              <defs>
+                <linearGradient
+                  id={customGradId}
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop offset="0%" stopColor={gradientStops.from} />
+                  <stop offset="100%" stopColor={gradientStops.to} />
+                </linearGradient>
+              </defs>
+            )}
             <rect
               x={pos.x}
               y={pos.y}
