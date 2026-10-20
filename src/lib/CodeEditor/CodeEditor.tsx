@@ -7,561 +7,18 @@ import { Fab } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import Tooltip from "@mui/material/Tooltip";
 
-export type EditorThemeMode = "light" | "dark";
+import { ctxCompletionRegistry, ensureCompletionProvider } from "./contextProvider";
+import {
+  buildContextDecorations,
+  buildSchemaDecorations,
+  escapeHtml,
+  injectContextStyles,
+} from "./decorations";
+import { severityMap, silenceBuiltInValidators } from "./monacoSetup";
+import { ensureSchemaProviders, schemaRegistry } from "./schemaProvider";
+import type { ContextEntry, SchemaClass } from "./types";
 
-export type LintDiagnostic = {
-  startLineNumber: number;
-  startColumn: number;
-  endLineNumber: number;
-  endColumn: number;
-  message: string;
-  severity?: "error" | "warning" | "info" | "hint";
-};
-
-export type LintAdapter = (params: {
-  value: string;
-  model: Monaco.editor.ITextModel;
-}) => Promise<LintDiagnostic[]> | LintDiagnostic[];
-
-export type FormatAdapter = (params: {
-  value: string;
-  language: string;
-}) => Promise<string> | string;
-
-export type ContextEntry = {
-  key: string;
-  value: unknown;
-  description?: string | null;
-};
-
-export type SchemaProperty = {
-  name: string;
-  type: string;
-  description?: string | null;
-};
-
-export type SchemaClass = {
-  name: string;
-  tableName?: string;
-  description?: string | null;
-  properties: SchemaProperty[];
-};
-
-export type ReusableCodeEditorProps = {
-  value: string;
-  onChange: (value: string) => void;
-  onSave?: (value: string) => void;
-  onRun?: (value: string) => void;
-  readOnly?: boolean;
-  path?: string;
-  language?: string;
-  height?: string | number;
-  minHeight?: number;
-  maxHeight?: number;
-  autoHeight?: boolean;
-  themeMode?: EditorThemeMode;
-  backgroundColor?: string;
-  contentPaddingTop?: number;
-  runButtonLabel?: React.ReactNode;
-  lintAdapter?: LintAdapter;
-  formatAdapter?: FormatAdapter;
-  contextEntries?: ContextEntry[];
-  schemaClasses?: SchemaClass[];
-  showDiagnostics?: boolean;
-};
-
-const severityMap: Record<
-  NonNullable<LintDiagnostic["severity"]>,
-  Monaco.MarkerSeverity
-> = {
-  error: 8,
-  warning: 4,
-  info: 2,
-  hint: 1,
-};
-
-const ctxCompletionRegistry = new Map<string, ContextEntry[]>();
-const ctxProvidersRegistered = new Set<string>();
-
-function ensureCompletionProvider(monaco: typeof Monaco, language: string) {
-  if (ctxProvidersRegistered.has(language)) return;
-  ctxProvidersRegistered.add(language);
-
-  monaco.languages.registerCompletionItemProvider(language, {
-    provideCompletionItems(model, position) {
-      const entries = ctxCompletionRegistry.get(model.uri.toString()) ?? [];
-      if (!entries.length) return { suggestions: [] };
-
-      const word = model.getWordUntilPosition(position);
-      const range = {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: word.startColumn,
-        endColumn: word.endColumn,
-      };
-
-      return {
-        suggestions: entries.map((entry) => ({
-          label: entry.key,
-          kind: monaco.languages.CompletionItemKind.Variable,
-          detail:
-            entry.value === null
-              ? "context · populated at runtime"
-              : `context · ${
-                  typeof entry.value === "object"
-                    ? JSON.stringify(entry.value)
-                    : String(entry.value)
-                }`,
-          documentation: entry.description ?? undefined,
-          insertText: entry.key,
-          range,
-          sortText: `0_${entry.key}`,
-        })),
-      };
-    },
-  });
-}
-
-const schemaRegistry = new Map<string, SchemaClass[]>();
-const schemaProvidersRegistered = new Set<string>();
-
-type ClassMethod = {
-  name: string;
-  signature: string;
-  insertText: string;
-  returns: "list" | "instance" | "scalar";
-  doc: (cls: SchemaClass) => string;
-};
-
-const CLASS_METHODS: ClassMethod[] = [
-  {
-    name: "filter",
-    signature: "filter(row => condition)",
-    insertText: "filter(${1:row} => ${2:condition})",
-    returns: "list",
-    doc: (cls) => `${cls.name} records matching the condition.`,
-  },
-  {
-    name: "find",
-    signature: "find(row => condition)",
-    insertText: "find(${1:row} => ${2:condition})",
-    returns: "instance",
-    doc: (cls) => `The first ${cls.name} matching the condition, or null.`,
-  },
-  {
-    name: "length",
-    signature: "length",
-    insertText: "length",
-    returns: "scalar",
-    doc: (cls) => `How many ${cls.name} records there are.`,
-  },
-];
-
-type InferredType = { className: string; isList: boolean };
-
-function inferVariableTypes(
-  text: string,
-  classes: SchemaClass[]
-): Map<string, InferredType> {
-  const byName = new Map(classes.map((cls) => [cls.name, cls]));
-  const inferred = new Map<string, InferredType>();
-
-  const assignment =
-    /(?:^|\n)\s*([A-Za-z_]\w*)\s*=\s*([A-Za-z_]\w*)\s*\.\s*([A-Za-z_]\w*)\s*\(/g;
-  let match: RegExpExecArray | null;
-  while ((match = assignment.exec(text)) !== null) {
-    const [, variable, owner, method] = match;
-    if (!byName.has(owner)) continue;
-    const known = CLASS_METHODS.find((item) => item.name === method);
-    if (!known || known.returns === "scalar") continue;
-    inferred.set(variable, {
-      className: owner,
-      isList: known.returns === "list",
-    });
-  }
-
-  const creation =
-    /(?:^|\n)\s*([A-Za-z_]\w*)\s*=\s*([A-Za-z_]\w*)\s*\(\s*\)\s*(?=$|\n)/g;
-  while ((match = creation.exec(text)) !== null) {
-    const [, variable, owner] = match;
-    if (byName.has(owner)) {
-      inferred.set(variable, { className: owner, isList: false });
-    }
-  }
-
-  const iteration = /\bfor\s+([A-Za-z_]\w*)\s+(?:in|of)\s+([A-Za-z_]\w*)/g;
-  const alias = /(?:^|\n)\s*([A-Za-z_]\w*)\s*=\s*([A-Za-z_]\w*)\s*(?:$|\n)/g;
-  const arrowParam =
-    /\b([A-Za-z_]\w*)\s*\.\s*(?:filter|find)\s*\(\s*([A-Za-z_]\w*)\s*=>/g;
-
-  for (let pass = 0; pass < 3; pass += 1) {
-    arrowParam.lastIndex = 0;
-    while ((match = arrowParam.exec(text)) !== null) {
-      const [, source, param] = match;
-      const sourceType = byName.has(source)
-        ? { className: source, isList: true }
-        : inferred.get(source);
-      if (!sourceType || !sourceType.isList) continue;
-      inferred.set(param, { className: sourceType.className, isList: false });
-    }
-
-    iteration.lastIndex = 0;
-    while ((match = iteration.exec(text)) !== null) {
-      const [, item, source] = match;
-      const sourceType = byName.has(source)
-        ? { className: source, isList: true }
-        : inferred.get(source);
-      if (!sourceType || !sourceType.isList) continue;
-      inferred.set(item, { className: sourceType.className, isList: false });
-    }
-
-    alias.lastIndex = 0;
-    while ((match = alias.exec(text)) !== null) {
-      const [, target, source] = match;
-      const sourceType = byName.has(source)
-        ? { className: source, isList: true }
-        : inferred.get(source);
-      if (sourceType) inferred.set(target, sourceType);
-    }
-  }
-
-  return inferred;
-}
-
-function propertyDoc(cls: SchemaClass): string {
-  if (!cls.properties.length) return "_No columns yet._";
-  return cls.properties
-    .map((property) => `- \`${property.name}\`: ${property.type}`)
-    .join("\n");
-}
-
-function classDoc(cls: SchemaClass): string {
-  return [
-    cls.description ? `${cls.description}\n` : "",
-    cls.tableName ? `Generated from table \`${cls.tableName}\`.\n` : "",
-    "**Properties**",
-    propertyDoc(cls),
-  ]
-    .filter(Boolean)
-    .join("\n");
-}
-
-function ensureSchemaProviders(monaco: typeof Monaco, language: string) {
-  if (schemaProvidersRegistered.has(language)) return;
-  schemaProvidersRegistered.add(language);
-
-  monaco.languages.registerCompletionItemProvider(language, {
-    triggerCharacters: ["."],
-    provideCompletionItems(model, position) {
-      const classes = schemaRegistry.get(model.uri.toString()) ?? [];
-      if (!classes.length) return { suggestions: [] };
-
-      const word = model.getWordUntilPosition(position);
-      const range = {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: word.startColumn,
-        endColumn: word.endColumn,
-      };
-
-      const linePrefix = model.getValueInRange({
-        startLineNumber: position.lineNumber,
-        startColumn: 1,
-        endLineNumber: position.lineNumber,
-        endColumn: word.startColumn,
-      });
-      const member = /([A-Za-z_]\w*)\s*\.\s*$/.exec(linePrefix);
-
-      if (member) {
-        const owner = member[1];
-        const asClass = classes.find((cls) => cls.name === owner);
-
-        if (asClass) {
-          return {
-            suggestions: [
-              ...CLASS_METHODS.map((method) => ({
-                label: method.signature,
-                kind: monaco.languages.CompletionItemKind.Method,
-                detail: `${asClass.name} · ${
-                  method.returns === "list"
-                    ? `list[${asClass.name}]`
-                    : method.returns === "instance"
-                    ? asClass.name
-                    : "int"
-                }`,
-                documentation: { value: method.doc(asClass) },
-                insertText: method.insertText,
-                insertTextRules:
-                  monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                range,
-                sortText: `0_${method.name}`,
-              })),
-              ...asClass.properties.map((property) => ({
-                label: property.name,
-                kind: monaco.languages.CompletionItemKind.Field,
-                detail: `${asClass.name}.${property.name} · ${property.type}`,
-                documentation: property.description
-                  ? { value: property.description }
-                  : undefined,
-                insertText: property.name,
-                range,
-                sortText: `1_${property.name}`,
-              })),
-            ],
-          };
-        }
-
-        const variable = inferVariableTypes(model.getValue(), classes).get(
-          owner
-        );
-        const target = variable?.isList
-          ? null
-          : classes.find((cls) => cls.name === variable?.className);
-        if (!target) return { suggestions: [] };
-
-        return {
-          suggestions: target.properties.map((property) => ({
-            label: property.name,
-            kind: monaco.languages.CompletionItemKind.Field,
-            detail: `${target.name}.${property.name} · ${property.type}`,
-            documentation: property.description
-              ? { value: property.description }
-              : undefined,
-            insertText: property.name,
-            range,
-            sortText: `0_${property.name}`,
-          })),
-        };
-      }
-
-      return {
-        suggestions: classes.map((cls) => ({
-          label: cls.name,
-          kind: monaco.languages.CompletionItemKind.Class,
-          detail: `table · ${cls.tableName ?? cls.name}`,
-          documentation: { value: classDoc(cls) },
-          insertText: cls.name,
-          range,
-          sortText: `1_${cls.name}`,
-        })),
-      };
-    },
-  });
-
-  monaco.languages.registerHoverProvider(language, {
-    provideHover(model, position) {
-      const classes = schemaRegistry.get(model.uri.toString()) ?? [];
-      if (!classes.length) return null;
-
-      const word = model.getWordAtPosition(position);
-      if (!word) return null;
-
-      const range = new monaco.Range(
-        position.lineNumber,
-        word.startColumn,
-        position.lineNumber,
-        word.endColumn
-      );
-
-      const asClass = classes.find((cls) => cls.name === word.word);
-      if (asClass) {
-        return {
-          range,
-          contents: [
-            { value: `**${asClass.name}** — database class` },
-            { value: classDoc(asClass) },
-          ],
-        };
-      }
-
-      const variables = inferVariableTypes(model.getValue(), classes);
-      const variable = variables.get(word.word);
-      if (variable) {
-        return {
-          range,
-          contents: [
-            {
-              value: `**${word.word}**: ${
-                variable.isList
-                  ? `list[${variable.className}]`
-                  : variable.className
-              }`,
-            },
-          ],
-        };
-      }
-
-      const before = model.getValueInRange({
-        startLineNumber: position.lineNumber,
-        startColumn: 1,
-        endLineNumber: position.lineNumber,
-        endColumn: word.startColumn,
-      });
-      const owner = /([A-Za-z_]\w*)\s*\.\s*$/.exec(before)?.[1];
-      if (!owner) return null;
-
-      const ownerType = variables.get(owner);
-      const target =
-        classes.find((cls) => cls.name === owner) ??
-        classes.find(
-          (cls) =>
-            cls.name === (ownerType?.isList ? null : ownerType?.className)
-        );
-      const property = target?.properties.find(
-        (item) => item.name === word.word
-      );
-      if (!target || !property) return null;
-
-      return {
-        range,
-        contents: [
-          { value: `**${target.name}.${property.name}**: ${property.type}` },
-          ...(property.description ? [{ value: property.description }] : []),
-        ],
-      };
-    },
-  });
-}
-
-function buildSchemaDecorations(
-  model: Monaco.editor.ITextModel,
-  monaco: typeof Monaco,
-  classes: SchemaClass[]
-): Monaco.editor.IModelDeltaDecoration[] {
-  if (!classes.length) return [];
-
-  const decorations: Monaco.editor.IModelDeltaDecoration[] = [];
-  const lines = model.getValue().split("\n");
-
-  for (const cls of classes) {
-    const pattern = new RegExp(`\\b${escapeRegex(cls.name)}\\b`, "g");
-    lines.forEach((line, lineIdx) => {
-      let match: RegExpExecArray | null;
-      pattern.lastIndex = 0;
-      while ((match = pattern.exec(line)) !== null) {
-        const startColumn = match.index + 1;
-        decorations.push({
-          range: new monaco.Range(
-            lineIdx + 1,
-            startColumn,
-            lineIdx + 1,
-            startColumn + cls.name.length
-          ),
-          options: { inlineClassName: "schema-class-ref" },
-        });
-      }
-    });
-  }
-
-  return decorations;
-}
-
-let validatorsSilenced = false;
-
-function silenceBuiltInValidators(monaco: typeof Monaco) {
-  if (validatorsSilenced) return;
-  validatorsSilenced = true;
-
-  const languages = monaco.languages as unknown as {
-    typescript?: Record<
-      "typescriptDefaults" | "javascriptDefaults",
-      { setDiagnosticsOptions: (options: unknown) => void } | undefined
-    >;
-    json?: {
-      jsonDefaults?: { setDiagnosticsOptions: (options: unknown) => void };
-    };
-  };
-
-  const off = { noSemanticValidation: true, noSyntaxValidation: true };
-  languages.typescript?.typescriptDefaults?.setDiagnosticsOptions(off);
-  languages.typescript?.javascriptDefaults?.setDiagnosticsOptions(off);
-  languages.json?.jsonDefaults?.setDiagnosticsOptions({ validate: false });
-}
-
-let ctxStyleInjected = false;
-
-function injectContextStyles() {
-  if (ctxStyleInjected) return;
-  ctxStyleInjected = true;
-  const style = document.createElement("style");
-  style.textContent = `
-    .ctx-var-decl {
-      color: #f59e0b !important;
-      cursor: help;
-    }
-    .ctx-var-ref {
-      color: #60a5fa !important;
-      cursor: help;
-    }
-    .schema-class-ref {
-      color: #c084fc !important;
-      font-weight: 600;
-      cursor: help;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-function buildContextDecorations(
-  model: Monaco.editor.ITextModel,
-  monaco: typeof Monaco,
-  contextEntries: ContextEntry[]
-): Monaco.editor.IModelDeltaDecoration[] {
-  if (!contextEntries.length) return [];
-
-  const text = model.getValue();
-  const lines = text.split("\n");
-  const decorations: Monaco.editor.IModelDeltaDecoration[] = [];
-
-  for (const { key } of contextEntries) {
-    const pattern = new RegExp(`\\b${escapeRegex(key)}\\b`, "g");
-
-    lines.forEach((line, lineIdx) => {
-      const lineNumber = lineIdx + 1;
-      const eqIdx = line.indexOf("=");
-      const isDeclaration =
-        eqIdx > 0 &&
-        line.slice(0, eqIdx).trim() === key &&
-        (line[eqIdx - 1] ?? "") !== "!" &&
-        (line[eqIdx - 1] ?? "") !== "<" &&
-        (line[eqIdx - 1] ?? "") !== ">" &&
-        (line[eqIdx + 1] ?? "") !== "=";
-
-      let match: RegExpExecArray | null;
-      pattern.lastIndex = 0;
-
-      while ((match = pattern.exec(line)) !== null) {
-        const startColumn = match.index + 1;
-        const endColumn = startColumn + key.length;
-        decorations.push({
-          range: new monaco.Range(
-            lineNumber,
-            startColumn,
-            lineNumber,
-            endColumn
-          ),
-          options: {
-            inlineClassName: isDeclaration ? "ctx-var-decl" : "ctx-var-ref",
-          },
-        });
-      }
-    });
-  }
-
-  return decorations;
-}
-
-function escapeRegex(s: string): string {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
+export type { ContextEntry, SchemaClass } from "./types";
 
 export function CodeEditor({
   value,
@@ -584,7 +41,43 @@ export function CodeEditor({
   contextEntries = [],
   schemaClasses = [],
   showDiagnostics = Boolean(lintAdapter),
-}: ReusableCodeEditorProps) {
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  onSave?: (value: string) => void;
+  onRun?: (value: string) => void;
+  readOnly?: boolean;
+  path?: string;
+  language?: string;
+  height?: string | number;
+  minHeight?: number;
+  maxHeight?: number;
+  autoHeight?: boolean;
+  themeMode?: "light" | "dark";
+  backgroundColor?: string;
+  contentPaddingTop?: number;
+  runButtonLabel?: React.ReactNode;
+  lintAdapter?: (params: {
+    value: string;
+    model: Monaco.editor.ITextModel;
+  }) => Promise<
+    {
+      startLineNumber: number;
+      startColumn: number;
+      endLineNumber: number;
+      endColumn: number;
+      message: string;
+      severity?: "error" | "warning" | "info" | "hint";
+    }[]
+  >;
+  formatAdapter?: (params: {
+    value: string;
+    language: string;
+  }) => Promise<string>;
+  contextEntries?: ContextEntry[];
+  schemaClasses?: SchemaClass[];
+  showDiagnostics?: boolean;
+}) {
   const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<typeof Monaco | null>(null);
   const lintTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);

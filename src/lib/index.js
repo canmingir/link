@@ -79,4 +79,4 @@ export {
 
 export { default as ViewPanel } from "./ViewPanel";
 export { CodeEditor } from "./CodeEditor";
-export { default as PlatformLowCodeEditor } from "./PlatformLowCodeEditor";
+export { default as LowCodeEditor } from "./LowCodeEditor";

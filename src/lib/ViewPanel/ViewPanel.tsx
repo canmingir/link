@@ -1,20 +1,18 @@
 import ReactMarkdown from "react-markdown";
 import { Box, CircularProgress, Typography } from "@mui/material";
 
-export type ViewPanelProps = {
-  height?: number | string;
-  content?: string;
-  loading?: boolean;
-  rounded?: boolean;
-  title?: string;
-};
-
 const ViewPanel = ({
   height,
   content,
   loading,
   title = "LOGIC.md",
-}: ViewPanelProps) => {
+}: {
+  height?: number | string;
+  content?: string;
+  loading?: boolean;
+  rounded?: boolean;
+  title?: string;
+}) => {
   return (
     <Box
       sx={{
