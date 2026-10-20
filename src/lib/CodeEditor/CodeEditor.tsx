@@ -80,8 +80,6 @@ const severityMap: Record<
   hint: 1,
 };
 
-// ── Context completion registry ───────────────────────────────────────────
-// Keyed by model URI so each editor instance has its own completion list.
 const ctxCompletionRegistry = new Map<string, ContextEntry[]>();
 const ctxProvidersRegistered = new Set<string>();
 
@@ -117,7 +115,7 @@ function ensureCompletionProvider(monaco: typeof Monaco, language: string) {
           documentation: entry.description ?? undefined,
           insertText: entry.key,
           range,
-          sortText: `0_${entry.key}`, // float context items to top
+          sortText: `0_${entry.key}`,
         })),
       };
     },
@@ -571,7 +569,7 @@ export function CodeEditor({
   onSave,
   onRun,
   readOnly = false,
-  path = "index.ts",
+  path,
   language = "typescript",
   height = "70vh",
   minHeight,
@@ -699,7 +697,6 @@ export function CodeEditor({
 
     if (typeof formatted === "string" && formatted !== currentValue) {
       editor.setValue(formatted);
-      onChange(formatted);
     }
   };
 
@@ -723,8 +720,6 @@ export function CodeEditor({
   const handleMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
     monacoRef.current = monaco;
-    // Discard any collection from a previous mount — it belongs to a disposed
-    // editor/model and calling .set() on it silently does nothing.
     decorationsRef.current = null;
 
     applyCustomTheme();
@@ -752,21 +747,16 @@ export function CodeEditor({
 
     syncModelUri();
 
-    // Re-apply whenever the underlying model is swapped (e.g. path/language change).
     editor.onDidChangeModel(() => {
       decorationsRef.current = null;
       syncModelUri();
       updateDecorations();
     });
 
-    // Re-apply on any content change — this catches programmatic value updates
-    // (@monaco-editor/react suppresses onChange for prop-driven changes, so the
-    // debounced onChange handler alone is not sufficient).
     editor.onDidChangeModelContent(() => {
       updateDecorations();
     });
 
-    // ── Custom tooltip shown BELOW the token ──────────────────────────────
     const tooltipNode = document.createElement("div");
     tooltipNode.style.cssText = [
       "background:#1e1e2e",
@@ -810,7 +800,7 @@ export function CodeEditor({
         pos.lineNumber,
         pos.column + 1
       );
-      const decorations = editor.getDecorationsInRange(range) ?? [];
+      const decorations = editor.getModel()?.getDecorationsInRange(range) ?? [];
       const hit = decorations.find(
         (d) =>
           d.options.inlineClassName === "ctx-var-decl" ||

@@ -275,25 +275,24 @@ const PlatformLowCodeEditor = ({
 
   React.useEffect(
     () => {
-      if (!isControlled && !isLanguageLocked) {
-        const detected = detectLanguage(initialCode);
+      if (!isControlled) {
         setInternalCode(initialCode);
-        applyLanguage(detected);
+        if (!isLanguageLocked) {
+          applyLanguage(detectLanguage(initialCode));
+        }
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [initialCode, isControlled, isLanguageLocked]
   );
 
-  React.useEffect(
-    () => {
-      if (isControlled && !isLanguageLocked) {
-        applyLanguage(detectLanguage(controlledValue));
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [controlledValue, isControlled, isLanguageLocked]
-  );
+  React.useEffect(() => {
+    if (forcedLanguage !== undefined) {
+       applyLanguage(forcedLanguage);
+    } else if (controlledValue !== undefined) {
+       applyLanguage(detectLanguage(controlledValue));
+    }
+   }, [controlledValue, forcedLanguage, applyLanguage]);
 
   const handleCodeChange = (value: string) => {
     if (!isControlled) {
