@@ -63,9 +63,6 @@ async function doRefresh() {
 
 instance.interceptors.response.use(
   (response) => {
-    if (response.headers["content-type"] === "application/json") {
-      response.data = JSON.parse(response.data);
-    }
     publish("LOADED", { loading: false });
     return response;
   },
