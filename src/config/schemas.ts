@@ -95,8 +95,8 @@ export const MenuConfigSchema = Joi.object({
     )
     .optional()
     .default([]),
-  actionButtons: Joi.array().items(Joi.function()).optional().default([]),
-  topBar: Joi.function().optional(),
+  actionButtons: Joi.array().items(Joi.any()).optional().default([]),
+  topBar: Joi.any().optional(),
   fullScreenLayout: Joi.string()
     .valid("left", "right")
     .optional()

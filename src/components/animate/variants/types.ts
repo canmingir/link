@@ -1,8 +1,10 @@
+import type { Easing } from "framer-motion";
+
 export interface AnimateVariantProps {
   durationIn?: number;
   durationOut?: number;
-  easeIn?: number[];
-  easeOut?: number[];
+  easeIn?: Easing;
+  easeOut?: Easing;
   distance?: number;
   staggerIn?: number;
 }
