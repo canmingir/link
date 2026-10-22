@@ -1,10 +1,97 @@
 import { Box } from "@mui/material";
 
-import React, { useId, useMemo } from "react";
+import type { ReactNode } from "react";
+import { useId, useMemo } from "react";
 
+import type { DagLayoutBounds, DagLayoutEdge } from "../utils/dagLayout";
 import { toPxNumber } from "../styles";
 
-const anchorsFor = (sourceBox, targetBox, isHorizontal, tailInset, headInset) => {
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface Gradient {
+  from: string;
+  to: string;
+}
+
+interface EdgeLabelStyle {
+  color?: string;
+  fontSize?: string | number;
+  fontWeight?: string | number;
+  textColor?: string;
+}
+
+export interface DagEdgeProps {
+  lineColor?: string;
+  lineWidth?: string | number;
+  lineStyle?: string;
+  showDots?: boolean;
+  dotRadius?: number;
+  dotColor?: string;
+  showArrow?: boolean;
+  arrowSize?: number;
+  animated?: boolean;
+  animationSpeed?: number;
+  gradient?: string | Gradient | null;
+  curvature?: number;
+  connectorType?: string;
+  startGap?: number;
+  endGap?: number;
+  label?: ReactNode;
+  labelStyle?: EdgeLabelStyle;
+  labelPosition?: number;
+  labelOffsetX?: number;
+  labelOffsetY?: number;
+}
+
+export interface DagBox {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface ResolvedEdge {
+  id: string;
+  d: string;
+  from: Point;
+  to: Point;
+  strokeWidth: number;
+  showArrow: boolean;
+  arrowSize: number;
+  stroke: string;
+  lineStyle: string;
+  animated: boolean;
+  animationSpeed: number;
+  gradient: string | Gradient | null;
+  showDots: boolean;
+  dotRadius: number;
+  dotColor?: string;
+  label?: ReactNode;
+  labelStyle: EdgeLabelStyle;
+  labelPosition: number;
+  labelOffsetX: number;
+  labelOffsetY: number;
+}
+
+interface DagEdgesProps {
+  edges?: DagLayoutEdge[];
+  boxes?: Record<string, DagBox>;
+  bounds?: DagLayoutBounds;
+  orientation?: "horizontal" | "vertical";
+  baseEdgeProps?: DagEdgeProps;
+  resolveEdgeProps?: (edge: DagLayoutEdge) => DagEdgeProps;
+}
+
+const anchorsFor = (
+  sourceBox: DagBox,
+  targetBox: DagBox,
+  isHorizontal: boolean,
+  tailInset: number,
+  headInset: number
+): { from: Point; to: Point } => {
   if (isHorizontal) {
     const from = {
       x: sourceBox.x + sourceBox.width + tailInset,
@@ -28,8 +115,17 @@ const anchorsFor = (sourceBox, targetBox, isHorizontal, tailInset, headInset) =>
   return { from, to };
 };
 
-const buildPath = (from, to, { connectorType, curvature, isHorizontal }) => {
-  const isCornered = connectorType === "cornered" || connectorType === "normal";
+const buildPath = (
+  from: Point,
+  to: Point,
+  {
+    connectorType,
+    curvature,
+    isHorizontal,
+  }: { connectorType: string; curvature: number; isHorizontal: boolean }
+): string => {
+  const isCornered =
+    connectorType === "cornered" || connectorType === "normal";
 
   if (isCornered) {
     if (isHorizontal) {
@@ -50,12 +146,15 @@ const buildPath = (from, to, { connectorType, curvature, isHorizontal }) => {
       to.x - baseCurvature
     } ${to.y}, ${to.x} ${to.y}`;
   }
-  return `M ${from.x} ${from.y} C ${from.x} ${from.y + baseCurvature}, ${to.x} ${
-    to.y - baseCurvature
-  }, ${to.x} ${to.y}`;
+  return `M ${from.x} ${from.y} C ${from.x} ${from.y + baseCurvature}, ${
+    to.x
+  } ${to.y - baseCurvature}, ${to.x} ${to.y}`;
 };
 
-const getDashArray = (lineStyle, strokeWidth) => {
+const getDashArray = (
+  lineStyle: string,
+  strokeWidth: number
+): string | undefined => {
   if (lineStyle === "dashed") return `${strokeWidth * 4},${strokeWidth * 3}`;
   if (lineStyle === "dotted") return `${strokeWidth},${strokeWidth * 2}`;
   return undefined;
@@ -68,19 +167,19 @@ const DagEdges = ({
   orientation = "horizontal",
   baseEdgeProps,
   resolveEdgeProps,
-}) => {
+}: DagEdgesProps) => {
   const uniqueId = useId();
   const isHorizontal = orientation === "horizontal";
 
   const resolved = useMemo(() => {
-    const out = [];
+    const out: ResolvedEdge[] = [];
 
     for (const edge of edges) {
       const sourceBox = boxes?.[edge.source];
       const targetBox = boxes?.[edge.target];
       if (!sourceBox || !targetBox) continue;
 
-      const props = {
+      const props: DagEdgeProps = {
         ...baseEdgeProps,
         ...(resolveEdgeProps?.(edge) ?? {}),
       };
@@ -95,7 +194,7 @@ const DagEdges = ({
         targetBox,
         isHorizontal,
         props.startGap ?? 8,
-        (props.endGap ?? 10) + headRoom,
+        (props.endGap ?? 10) + headRoom
       );
 
       const d = buildPath(from, to, {
@@ -160,7 +259,7 @@ const DagEdges = ({
           )}
 
           {resolved.map((e) =>
-            e.gradient ? (
+            e.gradient && typeof e.gradient === "object" ? (
               <linearGradient
                 key={`grad-${e.id}`}
                 id={`dag-grad-${uniqueId}-${e.id}`}
@@ -173,7 +272,7 @@ const DagEdges = ({
                 <stop offset="0%" stopColor={e.gradient.from} />
                 <stop offset="100%" stopColor={e.gradient.to} />
               </linearGradient>
-            ) : null,
+            ) : null
           )}
 
           {resolved.map((e) =>
@@ -191,24 +290,29 @@ const DagEdges = ({
                 <path
                   d="M 0.5 1 L 10 5 L 0.5 9 Z"
                   fill={
-                    e.gradient ? `url(#dag-grad-${uniqueId}-${e.id})` : e.stroke
+                    e.gradient && typeof e.gradient === "object"
+                      ? `url(#dag-grad-${uniqueId}-${e.id})`
+                      : e.stroke
                   }
                   stroke={
-                    e.gradient ? `url(#dag-grad-${uniqueId}-${e.id})` : e.stroke
+                    e.gradient && typeof e.gradient === "object"
+                      ? `url(#dag-grad-${uniqueId}-${e.id})`
+                      : e.stroke
                   }
                   strokeWidth="1"
                   strokeLinejoin="round"
                 />
               </marker>
-            ) : null,
+            ) : null
           )}
         </defs>
 
         {resolved.map((e) => {
           const dashArray = getDashArray(e.lineStyle, e.strokeWidth);
-          const pathStroke = e.gradient
-            ? `url(#dag-grad-${uniqueId}-${e.id})`
-            : e.stroke;
+          const pathStroke =
+            e.gradient && typeof e.gradient === "object"
+              ? `url(#dag-grad-${uniqueId}-${e.id})`
+              : e.stroke;
           const effectiveDotColor = e.dotColor || e.stroke;
 
           return (
@@ -222,7 +326,9 @@ const DagEdges = ({
                 strokeLinecap={dashArray || e.animated ? "round" : "butt"}
                 strokeLinejoin="round"
                 markerEnd={
-                  e.showArrow ? `url(#dag-arrow-${uniqueId}-${e.id})` : undefined
+                  e.showArrow
+                    ? `url(#dag-arrow-${uniqueId}-${e.id})`
+                    : undefined
                 }
                 style={{
                   transition: "stroke 0.2s ease, stroke-width 0.2s ease",
@@ -242,17 +348,27 @@ const DagEdges = ({
                     cx={e.from.x}
                     cy={e.from.y}
                     r={e.dotRadius}
-                    fill={e.gradient ? e.gradient.from : effectiveDotColor}
+                    fill={
+                      e.gradient && typeof e.gradient === "object"
+                        ? e.gradient.from
+                        : effectiveDotColor
+                    }
                     stroke="#fff"
                     strokeWidth={1.5}
-                    style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.15))" }}
+                    style={{
+                      filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.15))",
+                    }}
                   />
                   {!e.showArrow && (
                     <circle
                       cx={e.to.x}
                       cy={e.to.y}
                       r={e.dotRadius}
-                      fill={e.gradient ? e.gradient.to : effectiveDotColor}
+                      fill={
+                        e.gradient && typeof e.gradient === "object"
+                          ? e.gradient.to
+                          : effectiveDotColor
+                      }
                       stroke="#fff"
                       strokeWidth={1.5}
                       style={{

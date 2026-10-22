@@ -30,6 +30,7 @@ export interface ResolveNodeVisualArgs {
 export interface NodeVisual {
   fill: string | null;
   stroke: string | null;
+  gradientStops: StyleTokens | null;
 }
 
 export function resolveNodeVisual({
@@ -75,16 +76,22 @@ export function resolveNodeVisual({
     ...pluginTokens,
   };
 
-  const border = typeof merged.border === "string" ? merged.border : null;
+  const gradientStops =
+    merged.gradient && typeof merged.gradient === "object"
+      ? (merged.gradient as StyleTokens)
+      : null;
   const fill =
-    (typeof merged.gradient === "string" && merged.gradient) ||
-    (typeof merged.bg === "string" && merged.bg) ||
+    (typeof merged.gradient === "string" ? merged.gradient : null) ||
+    (typeof merged.bg === "string" ? merged.bg : null) ||
     null;
   let stroke =
     typeof merged.borderColor === "string" ? merged.borderColor : null;
-  if (border && (border.startsWith("#") || border.startsWith("rgb"))) {
-    stroke = border;
+  if (
+    typeof merged.border === "string" &&
+    (merged.border.startsWith("#") || merged.border.startsWith("rgb"))
+  ) {
+    stroke = merged.border;
   }
 
-  return { fill, stroke };
+  return { fill, stroke, gradientStops };
 }

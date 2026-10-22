@@ -5,7 +5,7 @@ import type { MiniSvgNode } from "./FlowSvgContent";
 import type { ResolveNodeVisualArgs } from "./resolveNodeVisual";
 import { layoutFlow } from "./layoutFlow";
 
-import type { MouseEvent as ReactMouseEvent, RefObject } from "react";
+import type { PointerEvent as ReactPointerEvent, RefObject } from "react";
 import { alpha, useTheme } from "@mui/material/styles";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -55,8 +55,11 @@ function computeViewportInfo(
 
   if (pairs.length < 2) return null;
 
-  let bestX = null;
-  let bestY = null;
+  type PairPoint = { screen: Point; mini: Point };
+  type BestMatch = { a: PairPoint; b: PairPoint; ds: number; dm: number };
+
+  let bestX: BestMatch | null = null;
+  let bestY: BestMatch | null = null;
 
   for (let i = 0; i < pairs.length; i++) {
     for (let j = i + 1; j < pairs.length; j++) {
@@ -87,6 +90,8 @@ function computeViewportInfo(
   const refX = bestX ?? bestY;
   const refY = bestY ?? bestX;
 
+  if (!refX || !refY) return null;
+
   const offsetX = refX.a.mini.x - refX.a.screen.x * resolvedScaleX;
   const offsetY = refY.a.mini.y - refY.a.screen.y * resolvedScaleY;
 
@@ -100,15 +105,6 @@ function computeViewportInfo(
     scaleX: resolvedScaleX,
     scaleY: resolvedScaleY,
   };
-}
-
-interface FlowMiniMapProps {
-  nodes?: MiniSvgNode[];
-  flowContainerRef: RefObject<HTMLElement | null>;
-  type?: string;
-  variant?: string;
-  style?: ResolveNodeVisualArgs["style"];
-  plugin?: ResolveNodeVisualArgs["plugin"];
 }
 
 interface FlowMiniMapProps {
@@ -191,28 +187,29 @@ export function FlowMiniMap({
         dragStartRef.current = { x: e.clientX, y: e.clientY };
       };
 
-    const handlePointerUp = () => {
-      setIsDragging(false);
-      if (flowContainerRef.current) {
-        flowContainerRef.current.style.pointerEvents = "";
-      }
-    };
+      const handlePointerUp = () => {
+        setIsDragging(false);
+        if (flowContainerRef.current) {
+          flowContainerRef.current.style.pointerEvents = "";
+        }
+      };
 
-    window.addEventListener("pointermove", handlePointerMove);
-    window.addEventListener("pointerup", handlePointerUp);
-    window.addEventListener("pointercancel", handlePointerUp);
-    return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerup", handlePointerUp);
-      window.removeEventListener("pointercancel", handlePointerUp);
-      if (flowContainerRef.current)
-        flowContainerRef.current.style.pointerEvents = "";
-    };
+      window.addEventListener("pointermove", handlePointerMove);
+      window.addEventListener("pointerup", handlePointerUp);
+      window.addEventListener("pointercancel", handlePointerUp);
+      return () => {
+        window.removeEventListener("pointermove", handlePointerMove);
+        window.removeEventListener("pointerup", handlePointerUp);
+        window.removeEventListener("pointercancel", handlePointerUp);
+        if (flowContainerRef.current)
+          flowContainerRef.current.style.pointerEvents = "";
+      };
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [isDragging, svgW, flowContainerRef]
   );
 
-  const handleViewportPointerDown = (e) => {
+  const handleViewportPointerDown = (e: ReactPointerEvent<SVGRectElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(true);

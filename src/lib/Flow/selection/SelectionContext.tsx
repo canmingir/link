@@ -1,4 +1,4 @@
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { Dispatch, MutableRefObject, ReactNode, SetStateAction } from "react";
 import type { FlowNode, FlowNodeMap } from "../types";
 import {
   createContext,
@@ -8,6 +8,21 @@ import {
   useRef,
   useState,
 } from "react";
+
+interface TouchPoint {
+  pointerId: number;
+  x: number;
+  y: number;
+}
+
+/** Token tracking an in-progress touch drag, shared with the viewport so a
+ * second touch point can cancel the single-node drag and start a pinch. */
+export interface NodeTouchDragToken {
+  lastPointer: { pointerId: number; x: number; y: number } | null;
+  cancel?: () => void;
+}
+
+export type PinchBridge = (pointerA: TouchPoint, pointerB: TouchPoint) => void;
 
 export interface Point {
   x: number;
@@ -54,6 +69,8 @@ export interface SelectionContextValue {
   ) => void;
   pasteNodes: (callback: PasteCallback, x?: number, y?: number) => unknown;
   hasClipboard: boolean;
+  pinchBridgeRef: MutableRefObject<PinchBridge | null>;
+  nodeTouchDragRef: MutableRefObject<NodeTouchDragToken | null>;
 }
 
 const SelectionContext = createContext<SelectionContextValue | null>(null);
@@ -156,8 +173,8 @@ export const SelectionProvider = ({ children }: { children: ReactNode }) => {
   const [clipboard, setClipboard] = useState<ClipboardNode[]>([]);
   const nodeHandlersRef = useRef(new Map<string, NodeHandlers>());
   const isPastingRef = useRef(false);
-  const pinchBridgeRef = useRef(null);
-  const nodeTouchDragRef = useRef(null);
+  const pinchBridgeRef = useRef<PinchBridge | null>(null);
+  const nodeTouchDragRef = useRef<NodeTouchDragToken | null>(null);
 
   const selectNode = useCallback((id: string, addToSelection = false) => {
     setSelectedIds((prev) => {

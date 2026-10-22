@@ -33,17 +33,6 @@ import {
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-let pkg = {
-  name: "",
-  description: "",
-};
-
-try {
-  pkg = require("../../../../../../package.json");
-} catch (error) {
-  console.error("Failed to load package.json for About tab:", error);
-}
-
 function a11yProps(index: number) {
   return {
     id: `vertical-tab-${index}`,
@@ -68,8 +57,10 @@ const SettingsDialogTabs = ({
 }) => {
   const [value, setValue] = useState(0);
 
+  const pkgDescription = (pkgJson as { description?: string }).description;
+
   const hasPkgInfo =
-    pkg && (pkg.name || APP_VERSION || pkg.description) ? true : false;
+    pkgJson && (pkgJson.name || APP_VERSION || pkgDescription) ? true : false;
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -312,8 +303,8 @@ const Permission = () => {
 };
 
 const Settings = () => {
-  const [projectId] = useStorage("link", "projectid", null);
-  const { settings, updateSettings } = useSettings(projectId);
+  const [projectId] = useStorage<string | null>("link", "projectid", null);
+  const { settings, updateSettings } = useSettings(projectId ?? undefined);
   const { beta, onUpdate } = useSettingsContext();
 
   const timeZones = [
@@ -326,7 +317,9 @@ const Settings = () => {
 
   const handleChange = (event: { target: { value: string } }) => {
     const newTimeZone = event.target.value;
-    updateSettings(projectId, newTimeZone);
+    if (projectId) {
+      updateSettings(projectId, newTimeZone);
+    }
   };
 
   return (
@@ -399,9 +392,9 @@ const Settings = () => {
 const About = () => {
   const iconSrc = config().template?.login?.icon || "";
 
-  const appName = pkg.name;
+  const appName = pkgJson.name;
   const version = APP_VERSION;
-  const description = pkg.description;
+  const description = (pkgJson as { description?: string }).description;
 
   return (
     <Stack

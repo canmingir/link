@@ -4,7 +4,6 @@ import type { FloatingStructure } from "../hooks/useGraphOperations";
 import type { ImpliedBinding } from "../connectors/ImpliedConnections";
 import ImpliedConnections from "../connectors/ImpliedConnections";
 import type { PasteStructure } from "../selection/SelectionContext";
-import SelectionOverlay from "../selection/SelectionOverlay";
 import { useSelection } from "../selection/SelectionContext";
 
 import {
@@ -13,9 +12,14 @@ import {
   DEFAULT_FIT_VIEW_PADDING,
   DEFAULT_MAX_ZOOM,
   DEFAULT_MIN_ZOOM,
+  LONG_PRESS_MOVE_TOLERANCE,
   clampZoomValue,
   computeFitViewState,
+  computePinchZoomOffset,
+  getTouchDistance,
+  getTouchMidpoint,
 } from "../utils/viewportUtils";
+import type { DagLayoutPositions } from "../utils/dagLayout";
 import type {
   FitAlign,
   FitViewOptions,
@@ -25,7 +29,10 @@ import type {
   SetCenterOptions,
 } from "../types";
 import type { FlowPluginArg, FlowStyleResolver } from "../hooks/useNodeStyle";
-import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
+import type {
+  PointerEvent as ReactPointerEvent,
+  ReactNode,
+} from "react";
 import type { SxProps, Theme } from "@mui/material/styles";
 import {
   forwardRef,
@@ -36,12 +43,24 @@ import {
   useState,
 } from "react";
 
-interface SelectionBox {
-  startX: number;
-  startY: number;
-  currentX: number;
-  currentY: number;
+interface ActivePointer {
+  x: number;
+  y: number;
 }
+
+interface PinchState {
+  lastDistance: number;
+  lastMidpoint: Point;
+}
+
+interface PanState {
+  panStartX: number;
+  panStartY: number;
+  panStartOffset: Point;
+}
+
+type GestureState = PinchState | PanState | null;
+type GestureMode = "pan" | "pinch" | null;
 
 export interface FlowViewportProps {
   children?: ReactNode;
@@ -73,6 +92,7 @@ export interface FlowViewportProps {
   impliedConnections?: ImpliedBinding[];
   showImpliedConnections?: boolean;
   labelForImpliedConnection?: (binding: ImpliedBinding) => ReactNode;
+  positions?: DagLayoutPositions;
   sx?: SxProps<Theme>;
 }
 
@@ -105,6 +125,7 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
       impliedConnections,
       showImpliedConnections = false,
       labelForImpliedConnection,
+      positions,
     },
     ref
   ) {
@@ -116,22 +137,33 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
     const [offset, setOffset] = useState<Point>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(initialZoom);
     const [isDragging, setIsDragging] = useState(false);
-    const [selectionBox, setSelectionBox] = useState<SelectionBox | null>(null);
     const [shouldCenter, setShouldCenter] = useState(true);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const selectionBoxRef = useRef<SelectionBox | null>(null);
     const mousePositionRef = useRef<Point>({ x: 0, y: 0 });
     const innerRef = useRef<HTMLDivElement | null>(null);
     const didDragRef = useRef(false);
 
+    const zoomRef = useRef(zoom);
+    const offsetRef = useRef(offset);
+    useEffect(() => {
+      zoomRef.current = zoom;
+    }, [zoom]);
+    useEffect(() => {
+      offsetRef.current = offset;
+    }, [offset]);
+
+    const activePointersRef = useRef(new Map<number, ActivePointer>());
+    const pinchStateRef = useRef<GestureState>(null);
+    const gestureModeRef = useRef<GestureMode>(null);
+
     const {
       clearSelection,
-      selectMultiple,
-      addToSelection,
       cutSelectedNodes,
       pasteNodes,
       selectedIds,
+      pinchBridgeRef,
+      nodeTouchDragRef,
     } = useSelection();
 
     useEffect(() => {
@@ -230,11 +262,15 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
       [runFitView, zoomIn, zoomOut, setZoomPublic, setCenter, getZoom]
     );
 
+    const didFitOnMountRef = useRef(false);
+    const hasPositions = positions ? Object.keys(positions).length > 0 : true;
+
     useEffect(() => {
-      if (!fitViewOnMount) return;
-      runFitView();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+      if (!fitViewOnMount || didFitOnMountRef.current || !hasPositions) return;
+
+      didFitOnMountRef.current = true;
+      runFitViewRef.current();
+    }, [fitViewOnMount, hasPositions]);
 
     useEffect(() => {
       if (!fitViewOnResize) return;
@@ -262,17 +298,31 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
     }, [fitViewOnResize]);
 
     const nodeCount = nodesById ? Object.keys(nodesById).length : 0;
-    const previousNodeCountRef = useRef(nodeCount);
+
+    const contentKey = positions
+      ? `${nodeCount}:${Object.entries(positions)
+          .map(
+            ([id, box]) => `${id}@${box.x},${box.y},${box.width},${box.height}`
+          )
+          .join("|")}`
+      : `${nodeCount}`;
+    const previousContentKeyRef = useRef(contentKey);
 
     useEffect(() => {
       if (!fitViewOnNodesChange) return;
 
-      if (previousNodeCountRef.current !== nodeCount) {
-        previousNodeCountRef.current = nodeCount;
-        const frame = requestAnimationFrame(() => runFitViewRef.current());
-        return () => cancelAnimationFrame(frame);
+      if (previousContentKeyRef.current !== contentKey) {
+        previousContentKeyRef.current = contentKey;
+        let frame: number | undefined;
+        const timeout = setTimeout(() => {
+          frame = requestAnimationFrame(() => runFitViewRef.current());
+        }, 100);
+        return () => {
+          clearTimeout(timeout);
+          if (frame) cancelAnimationFrame(frame);
+        };
       }
-    }, [fitViewOnNodesChange, nodeCount]);
+    }, [fitViewOnNodesChange, contentKey]);
 
     useEffect(() => {
       onInit?.({
@@ -287,61 +337,75 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
     }, []);
 
     useEffect(() => {
-      const handleMouseMove = (e: MouseEvent) => {
+      const handlePointerMove = (e: PointerEvent) => {
         mousePositionRef.current = { x: e.clientX, y: e.clientY };
       };
 
-      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("pointermove", handlePointerMove);
 
       return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("pointermove", handlePointerMove);
       };
     }, []);
 
-    useEffect(
-      () => {
-        const container = containerRef.current;
-        if (!container) return;
+    useEffect(() => {
+      const container = containerRef.current;
+      if (!container) return;
 
-        const onWheel = (e: WheelEvent) => {
-          e.preventDefault();
+      const onWheel = (e: WheelEvent) => {
+        e.preventDefault();
 
-          let deltaX = e.deltaX;
-          let deltaY = e.deltaY;
-          if (e.deltaMode === 1) {
-            deltaX *= 20;
-            deltaY *= 20;
-          } else if (e.deltaMode === 2) {
-            deltaX *= 400;
-            deltaY *= 400;
-          }
+        let deltaX = e.deltaX;
+        let deltaY = e.deltaY;
+        if (e.deltaMode === 1) {
+          deltaX *= 20;
+          deltaY *= 20;
+        } else if (e.deltaMode === 2) {
+          deltaX *= 400;
+          deltaY *= 400;
+        }
 
-          const wantsZoom = e.ctrlKey || e.metaKey;
+        const wantsZoom = e.ctrlKey || e.metaKey;
 
-          if (wantsZoom) {
-            const maxDelta = 15;
-            const clamped = Math.max(-maxDelta, Math.min(maxDelta, deltaY));
-            const factor = Math.exp(-clamped * 0.007);
-            setZoom((z) => clampZoom(z * factor));
-          } else if (e.shiftKey) {
-            const delta = deltaX !== 0 ? deltaX : deltaY;
-            setOffset((prev) => ({
-              x: prev.x - delta,
-              y: prev.y,
-            }));
-          } else {
-            setOffset((prev) => ({
-              x: prev.x - deltaX,
-              y: prev.y - deltaY,
-            }));
-          }
-        };
-        container.addEventListener("wheel", onWheel, { passive: false });
-        return () => container.removeEventListener("wheel", onWheel);
-      },
+        if (wantsZoom) {
+          const maxDelta = 15;
+          const clamped = Math.max(-maxDelta, Math.min(maxDelta, deltaY));
+          const factor = Math.exp(-clamped * 0.007);
+          const prevZoom = zoomRef.current;
+          const nextZoom = clampZoom(prevZoom * factor);
+          const containerRect = container.getBoundingClientRect();
+          const cursor = {
+            x: e.clientX - (containerRect.left + containerRect.width / 2),
+            y: e.clientY - (containerRect.top + containerRect.height / 2),
+          };
+
+          const nextOffset = computePinchZoomOffset({
+            prevZoom,
+            nextZoom,
+            offset: offsetRef.current,
+            prevMidpoint: cursor,
+            nextMidpoint: cursor,
+          });
+
+          setZoom(nextZoom);
+          setOffset(nextOffset);
+        } else if (e.shiftKey) {
+          const delta = deltaX !== 0 ? deltaX : deltaY;
+          setOffset((prev) => ({
+            x: prev.x - delta,
+            y: prev.y,
+          }));
+        } else {
+          setOffset((prev) => ({
+            x: prev.x - deltaX,
+            y: prev.y - deltaY,
+          }));
+        }
+      };
+      container.addEventListener("wheel", onWheel, { passive: false });
+      return () => container.removeEventListener("wheel", onWheel);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-    );
+    }, []);
 
     useEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {
@@ -390,110 +454,237 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
       zoom,
     ]);
 
-    const handleViewportMouseDown = (e: ReactMouseEvent<HTMLDivElement>) => {
+    const startPanGesture = (startX: number, startY: number) => {
+      gestureModeRef.current = "pan";
+      didDragRef.current = false;
+      setIsDragging(true);
+      pinchStateRef.current = {
+        panStartX: startX,
+        panStartY: startY,
+        panStartOffset: { ...offsetRef.current },
+      };
+    };
+
+    const startPinchGesture = () => {
+      setIsDragging(true);
+
+      const points = [...activePointersRef.current.values()];
+      const midpoint = getTouchMidpoint(points[0], points[1]);
+      gestureModeRef.current = "pinch";
+      pinchStateRef.current = {
+        lastDistance: getTouchDistance(points[0], points[1]),
+        lastMidpoint: midpoint,
+      };
+    };
+
+    useEffect(() => {
+      if (!pinchBridgeRef) return;
+      pinchBridgeRef.current = (pointerA, pointerB) => {
+        activePointersRef.current.clear();
+        activePointersRef.current.set(pointerA.pointerId, {
+          x: pointerA.x,
+          y: pointerA.y,
+        });
+        activePointersRef.current.set(pointerB.pointerId, {
+          x: pointerB.x,
+          y: pointerB.y,
+        });
+        startPinchGesture();
+      };
+    }, [pinchBridgeRef]);
+
+    useEffect(() => {
+      const onPointerDownCapture = (e: PointerEvent) => {
+        if (
+          e.pointerType !== "touch" ||
+          !containerRef.current?.contains(e.target as Node | null)
+        )
+          return;
+        if (activePointersRef.current.has(e.pointerId)) return;
+
+        const wasTracking = activePointersRef.current.size;
+        activePointersRef.current.set(e.pointerId, {
+          x: e.clientX,
+          y: e.clientY,
+        });
+
+        if (wasTracking !== 1) return;
+
+        if (nodeTouchDragRef?.current) {
+          nodeTouchDragRef.current.cancel?.();
+        }
+        startPinchGesture();
+        e.stopPropagation();
+      };
+
+      window.addEventListener("pointerdown", onPointerDownCapture, true);
+      return () =>
+        window.removeEventListener("pointerdown", onPointerDownCapture, true);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [nodeTouchDragRef]);
+
+    const handleViewportPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
       const target = e.target as HTMLElement;
-      if (target?.closest?.(".MuiCard-root") || target?.closest?.("button"))
+      if (
+        target?.closest?.(".MuiCard-root") ||
+        target?.closest?.("button") ||
+        target?.closest?.("[data-handle-type]")
+      )
         return;
 
-      const isPan = e.button === 0 || e.button === 2;
+      const isTouch = e.pointerType === "touch";
+      const isPan = isTouch || e.button === 0;
       if (!isPan) return;
+
+      activePointersRef.current.set(e.pointerId, {
+        x: e.clientX,
+        y: e.clientY,
+      });
+
+      if (activePointersRef.current.size >= 2) {
+        startPinchGesture();
+        return;
+      }
+
+      if (isTouch && nodeTouchDragRef?.current) return;
 
       const startX = e.clientX;
       const startY = e.clientY;
       didDragRef.current = false;
 
-      if (e.button === 0 && (e.shiftKey || e.ctrlKey || e.metaKey)) {
-        setSelectionBox({ startX, startY, currentX: startX, currentY: startY });
-        selectionBoxRef.current = {
-          startX,
-          startY,
-          currentX: startX,
-          currentY: startY,
-        };
-
-        const onMove = (ev: MouseEvent) => {
-          const newBox = {
-            startX,
-            startY,
-            currentX: ev.clientX,
-            currentY: ev.clientY,
-          };
-          setSelectionBox(newBox);
-          selectionBoxRef.current = newBox;
-        };
-
-        const onUp = () => {
-          if (containerRef.current && selectionBoxRef.current) {
-            const box = selectionBoxRef.current;
-            const nodes =
-              containerRef.current.querySelectorAll("[data-node-id]");
-            const selectedNodeIds: string[] = [];
-
-            const boxLeft = Math.min(box.startX, box.currentX);
-            const boxRight = Math.max(box.startX, box.currentX);
-            const boxTop = Math.min(box.startY, box.currentY);
-            const boxBottom = Math.max(box.startY, box.currentY);
-
-            nodes.forEach((node: Element) => {
-              const rect = node.getBoundingClientRect();
-
-              if (
-                rect.left < boxRight &&
-                rect.right > boxLeft &&
-                rect.top < boxBottom &&
-                rect.bottom > boxTop
-              ) {
-                const nodeId = node.getAttribute("data-node-id");
-                if (nodeId) selectedNodeIds.push(nodeId);
-              }
-            });
-
-            if (selectedNodeIds.length > 0) {
-              if (e.shiftKey) {
-                addToSelection(selectedNodeIds);
-              } else {
-                selectMultiple(selectedNodeIds);
-              }
-            }
-          }
-
-          setSelectionBox(null);
-          selectionBoxRef.current = null;
-          window.removeEventListener("mousemove", onMove);
-          window.removeEventListener("mouseup", onUp);
-        };
-
-        window.addEventListener("mousemove", onMove);
-        window.addEventListener("mouseup", onUp);
-        return;
-      }
-
       if (e.button === 0) clearSelection();
 
-      setIsDragging(true);
-      const startOffset = { ...offset };
+      startPanGesture(startX, startY);
+    };
 
-      const onMove = (ev: MouseEvent) => {
-        const dx = ev.clientX - startX;
-        const dy = ev.clientY - startY;
-        if (!didDragRef.current && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
-          didDragRef.current = true;
+    const pendingFrameRef = useRef<number | null>(null);
+
+    useEffect(() => {
+      const applyPinchOrPan = (e: PointerEvent) => {
+        if (gestureModeRef.current === "pinch") {
+          const points = [...activePointersRef.current.values()];
+          const pinchState = pinchStateRef.current as PinchState | null;
+          if (points.length < 2 || !pinchState) return;
+
+          const nextDistance = getTouchDistance(points[0], points[1]);
+          const nextMidpoint = getTouchMidpoint(points[0], points[1]);
+          const { lastDistance, lastMidpoint } = pinchState;
+
+          const distanceDelta =
+            lastDistance > 0
+              ? Math.abs(nextDistance - lastDistance) / lastDistance
+              : 0;
+          const withinDeadzone = lastDistance > 0 && distanceDelta <= 0.003;
+          const scaleFactor = withinDeadzone
+            ? 1
+            : lastDistance > 0
+            ? nextDistance / lastDistance
+            : 1;
+          const nextZoom = clampZoom(zoomRef.current * scaleFactor);
+
+          const containerRect = containerRef.current?.getBoundingClientRect();
+          const originX = containerRect
+            ? containerRect.left + containerRect.width / 2
+            : 0;
+          const originY = containerRect
+            ? containerRect.top + containerRect.height / 2
+            : 0;
+
+          const nextOffset = computePinchZoomOffset({
+            prevZoom: zoomRef.current,
+            nextZoom,
+            offset: offsetRef.current,
+            prevMidpoint: {
+              x: lastMidpoint.x - originX,
+              y: lastMidpoint.y - originY,
+            },
+            nextMidpoint: {
+              x: nextMidpoint.x - originX,
+              y: nextMidpoint.y - originY,
+            },
+          });
+
+          setZoom(nextZoom);
+          setOffset(nextOffset);
+          pinchStateRef.current = {
+            lastDistance: withinDeadzone ? lastDistance : nextDistance,
+            lastMidpoint: nextMidpoint,
+          };
+          return;
         }
-        setOffset({
-          x: startOffset.x + dx,
-          y: startOffset.y + dy,
+
+        if (gestureModeRef.current === "pan") {
+          const panState = pinchStateRef.current as PanState | null;
+          if (!panState) return;
+          const { panStartX, panStartY, panStartOffset } = panState;
+          const dx = e.clientX - panStartX;
+          const dy = e.clientY - panStartY;
+
+          const tolerance =
+            e.pointerType === "touch" ? LONG_PRESS_MOVE_TOLERANCE : 3;
+          if (!didDragRef.current && Math.hypot(dx, dy) > tolerance) {
+            didDragRef.current = true;
+          }
+
+          setOffset({
+            x: panStartOffset.x + dx,
+            y: panStartOffset.y + dy,
+          });
+        }
+      };
+
+      const onWindowPointerMove = (e: PointerEvent) => {
+        if (!activePointersRef.current.has(e.pointerId)) return;
+        activePointersRef.current.set(e.pointerId, {
+          x: e.clientX,
+          y: e.clientY,
+        });
+
+        if (gestureModeRef.current !== "pinch") {
+          applyPinchOrPan(e);
+          return;
+        }
+
+        if (pendingFrameRef.current) return;
+        pendingFrameRef.current = requestAnimationFrame(() => {
+          pendingFrameRef.current = null;
+          applyPinchOrPan(e);
         });
       };
 
-      const onUp = () => {
+      const endPointer = (e: PointerEvent) => {
+        if (pendingFrameRef.current) {
+          cancelAnimationFrame(pendingFrameRef.current);
+          pendingFrameRef.current = null;
+        }
+        activePointersRef.current.delete(e.pointerId);
+
+        if (activePointersRef.current.size >= 2) return;
+
+        if (activePointersRef.current.size === 1) {
+          if (gestureModeRef.current === "pinch") {
+            const [remaining] = [...activePointersRef.current.values()];
+            startPanGesture(remaining.x, remaining.y);
+          }
+          return;
+        }
+
         setIsDragging(false);
-        window.removeEventListener("mousemove", onMove);
-        window.removeEventListener("mouseup", onUp);
+        gestureModeRef.current = null;
+        pinchStateRef.current = null;
       };
 
-      window.addEventListener("mousemove", onMove);
-      window.addEventListener("mouseup", onUp);
-    };
+      window.addEventListener("pointermove", onWindowPointerMove);
+      window.addEventListener("pointerup", endPointer);
+      window.addEventListener("pointercancel", endPointer);
+
+      return () => {
+        window.removeEventListener("pointermove", onWindowPointerMove);
+        window.removeEventListener("pointerup", endPointer);
+        window.removeEventListener("pointercancel", endPointer);
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
       const container = containerRef.current;
@@ -514,8 +705,12 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
     return (
       <Box
         ref={containerRef}
-        onMouseDown={handleViewportMouseDown}
-        onContextMenu={(e) => e.preventDefault()}
+        onPointerDown={handleViewportPointerDown}
+        onContextMenu={(e) => {
+          const isMouseRightClick =
+            e.button === 2 || (e.nativeEvent as MouseEvent)?.button === 2;
+          if (!isMouseRightClick) e.preventDefault();
+        }}
         sx={{
           width: "100%",
           height: height,
@@ -523,15 +718,19 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
           bgcolor: "none",
           cursor: isDragging ? "grabbing" : "default",
           userSelect: "none",
+          touchAction: "none",
+          WebkitTouchCallout: "none",
+          WebkitTapHighlightColor: "transparent",
           position: "relative",
         }}
       >
-        <SelectionOverlay box={selectionBox} selectionColor={selectionColor} />
         <Box
           ref={innerRef}
+          data-flow-dragging={isDragging}
           sx={{
             transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
             transformOrigin: "center center",
+            willChange: "transform",
             width: "100%",
             height: height,
             display: "flex",
@@ -541,7 +740,7 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
                 ? "center"
                 : "flex-start",
             transition: isDragging ? "none" : "transform 0.1s ease-out",
-            pointerEvents: "auto",
+            pointerEvents: isDragging ? "none" : "auto",
             position: "relative",
             pl:
               centered || (!usesFitView && shouldCenter)

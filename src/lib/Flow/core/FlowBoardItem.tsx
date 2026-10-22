@@ -6,7 +6,7 @@ import { useSelection } from "../selection/SelectionContext";
 
 import type { FlowNode, FlowNodeMap, Point } from "../types";
 import type { FlowPluginArg, FlowStyleResolver } from "../hooks/useNodeStyle";
-import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
+import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
 import { assertLinkedGraph, buildTreeFromLinked } from "../utils/flowUtils";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -87,7 +87,7 @@ const FlowBoardItem = ({
       .filter((t): t is NonNullable<typeof t> => Boolean(t));
   }, [nodesById, roots]);
 
-  const handlePointerDown = (e: ReactMouseEvent<HTMLDivElement>) => {
+  const handlePointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     const isTouch = e.pointerType === "touch";
     if (!isTouch && e.button !== 0) return;
     const target = e.target as HTMLElement;
@@ -103,7 +103,7 @@ const FlowBoardItem = ({
     const startPosition = { ...position };
     let lastPosition = startPosition;
 
-    const onMove = (ev: MouseEvent) => {
+    const onMove = (ev: PointerEvent) => {
       if (isTouch && ev.pointerId !== e.pointerId) return;
 
       if (dragToken.lastPointer) {

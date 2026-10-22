@@ -1,5 +1,5 @@
 import Iconify from "../../Iconify";
-import type { MouseEvent as ReactMouseEvent } from "react";
+import type { PointerEvent as ReactPointerEvent } from "react";
 import type { ResolveNodeVisualArgs } from "./resolveNodeVisual";
 import { getFlowColors } from "../flowColors";
 import { resolveNodeVisual } from "./resolveNodeVisual";
@@ -33,7 +33,7 @@ interface FlowSvgContentProps {
   svgH: number;
   uid: string;
   viewportRect?: { x: number; y: number; w: number; h: number } | null;
-  onViewportMouseDown?: (e: ReactMouseEvent<SVGRectElement>) => void;
+  onViewportPointerDown?: (e: ReactPointerEvent<SVGRectElement>) => void;
   isDragging?: boolean;
   type?: string;
   variant?: string;
@@ -171,7 +171,9 @@ export function FlowSvgContent({
           style,
           plugin,
         });
-        const customGradId = gradientStops ? `cug-${uid}-${node.id}` : null;
+        const customGradId = gradientStops
+          ? `cug-${uid}-${node.id}`
+          : undefined;
         const nodeFill = customGradId
           ? `url(#${customGradId})`
           : isPaintableColor(resolvedFill)
@@ -180,7 +182,7 @@ export function FlowSvgContent({
         const nodeStroke = isPaintableColor(resolvedStroke)
           ? resolvedStroke
           : "rgba(255,255,255,0.08)";
-        const rawLabel = node.properties?.label || node.id;
+        const rawLabel: string = node.properties?.label || node.id;
         const label =
           rawLabel.length > 14 ? rawLabel.slice(0, 13) + "…" : rawLabel;
         const action = node.properties?.action || "";
@@ -210,8 +212,14 @@ export function FlowSvgContent({
                   x2="100%"
                   y2="100%"
                 >
-                  <stop offset="0%" stopColor={gradientStops.from} />
-                  <stop offset="100%" stopColor={gradientStops.to} />
+                  <stop
+                    offset="0%"
+                    stopColor={gradientStops.from as string | undefined}
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor={gradientStops.to as string | undefined}
+                  />
                 </linearGradient>
               </defs>
             )}

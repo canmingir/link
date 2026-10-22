@@ -1,12 +1,33 @@
 import { Box } from "@mui/material";
 
-import React, { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
+import type { DagBox, DagEdgeProps } from "../connectors/DagEdges";
 import DagEdges from "../connectors/DagEdges";
+import type {
+  DagLayoutBounds,
+  DagLayoutEdge,
+  DagLayoutPositions,
+} from "../utils/dagLayout";
 import DefaultNodeCard from "./DefaultCard";
 import DraggableNode from "./DraggableNode";
+import type { FlowNode, FlowNodeMap, Point } from "../types";
+import type { FlowPluginArg, FlowStyleResolver } from "../hooks/useNodeStyle";
 import { getContentParts } from "../utils/flowUtils";
 import { useNodeStyle } from "../hooks/useNodeStyle";
+
+interface DagNodeProps {
+  node: FlowNode;
+  positionedStyle: { transform: string };
+  type?: string;
+  variant?: string;
+  style?: FlowStyleResolver;
+  plugin?: FlowPluginArg;
+  onConnect?: (nodeId: string, selectedIds: string[]) => void;
+  registerSize?: (id: string, size: { width: number; height: number }) => void;
+  dragTick?: string;
+  onDrag?: (offset?: Point) => void;
+}
 
 const DagNode = ({
   node,
@@ -19,8 +40,12 @@ const DagNode = ({
   registerSize,
   dragTick,
   onDrag,
-}) => {
-  const { baseStyle, nodeStyle, plugin: _plugin } = useNodeStyle({
+}: DagNodeProps) => {
+  const {
+    baseStyle,
+    nodeStyle,
+    plugin: resolvedPlugin,
+  } = useNodeStyle({
     node,
     type,
     variant,
@@ -42,8 +67,15 @@ const DagNode = ({
   const { title, subtitle, metaEntries } = getContentParts(node);
 
   const content =
-    _plugin && typeof _plugin.node === "function" ? (
-      _plugin.node({ node, title, subtitle, metaEntries, nodeStyle, baseStyle })
+    resolvedPlugin && typeof resolvedPlugin.node === "function" ? (
+      resolvedPlugin.node({
+        node,
+        title,
+        subtitle,
+        metaEntries,
+        nodeStyle,
+        baseStyle,
+      })
     ) : (
       <DefaultNodeCard
         title={title}
@@ -52,25 +84,25 @@ const DagNode = ({
         nodeStyle={nodeStyle}
         baseStyle={baseStyle}
         variant={variant}
-        borderWidth={borderWidth}
-        borderColor={borderColor}
-        cardWidth={cardWidth}
-        shape={shape}
-        shadowLevel={shadowLevel}
-        minHeight={minHeight}
+        borderWidth={borderWidth as number | undefined}
+        borderColor={borderColor as string | undefined}
+        cardWidth={cardWidth as number | undefined}
+        shape={shape as number | string | undefined}
+        shadowLevel={shadowLevel as number | undefined}
+        minHeight={minHeight as number | undefined}
         nodeSx={nodeSx}
       />
     );
 
   const measureRef = useCallback(
-    (el) => {
+    (el: HTMLElement | null) => {
       if (!el) return;
       registerSize?.(node.id, {
         width: el.offsetWidth,
         height: el.offsetHeight,
       });
     },
-    [node.id, registerSize],
+    [node.id, registerSize]
   );
 
   return (
@@ -85,7 +117,7 @@ const DagNode = ({
     >
       <DraggableNode
         nodeId={node.id}
-        selectionColor={selectionColor}
+        selectionColor={selectionColor as string}
         onConnect={onConnect}
         onDrag={onDrag}
         registerRef={measureRef}
@@ -97,6 +129,18 @@ const DagNode = ({
   );
 };
 
+export interface DagCanvasProps {
+  nodesById?: FlowNodeMap;
+  positions?: DagLayoutPositions;
+  layoutEdges?: DagLayoutEdge[];
+  layoutBounds?: DagLayoutBounds;
+  type?: string;
+  variant?: string;
+  style?: FlowStyleResolver;
+  plugin?: FlowPluginArg;
+  onConnect?: (nodeId: string, selectedIds: string[]) => void;
+}
+
 const DagCanvas = ({
   nodesById,
   positions,
@@ -107,29 +151,37 @@ const DagCanvas = ({
   style,
   plugin,
   onConnect,
-}) => {
-  const [sizes, setSizes] = useState({});
-  const [dragOffsets, setDragOffsets] = useState({});
+}: DagCanvasProps) => {
+  const [sizes, setSizes] = useState<
+    Record<string, { width: number; height: number }>
+  >({});
+  const [dragOffsets, setDragOffsets] = useState<Record<string, Point>>({});
 
-  const registerSize = useCallback((id, size) => {
-    setSizes((prev) => {
-      const current = prev[id];
-      if (
-        current &&
-        current.width === size.width &&
-        current.height === size.height
-      ) {
-        return prev;
-      }
-      return { ...prev, [id]: size };
-    });
+  const registerSize = useCallback(
+    (id: string, size: { width: number; height: number }) => {
+      setSizes((prev) => {
+        const current = prev[id];
+        if (
+          current &&
+          current.width === size.width &&
+          current.height === size.height
+        ) {
+          return prev;
+        }
+        return { ...prev, [id]: size };
+      });
+    },
+    []
+  );
+
+  const handleNodeDrag = useCallback((id: string, delta?: Point) => {
+    setDragOffsets((prev) => ({ ...prev, [id]: delta ?? { x: 0, y: 0 } }));
   }, []);
 
-  const handleNodeDrag = useCallback((id, delta) => {
-    setDragOffsets((prev) => ({ ...prev, [id]: delta }));
-  }, []);
-
-  const layoutKey = useMemo(() => JSON.stringify(positions ?? {}), [positions]);
+  const layoutKey = useMemo(
+    () => JSON.stringify(positions ?? {}),
+    [positions]
+  );
   const [appliedLayoutKey, setAppliedLayoutKey] = useState(layoutKey);
   if (layoutKey !== appliedLayoutKey) {
     setAppliedLayoutKey(layoutKey);
@@ -137,7 +189,7 @@ const DagCanvas = ({
   }
 
   const { baseStyle } = useNodeStyle({
-    node: undefined,
+    node: { id: "", type, virtual: true },
     type,
     variant,
     style,
@@ -145,9 +197,9 @@ const DagCanvas = ({
   });
 
   const boxes = useMemo(() => {
-    const out = {};
+    const out: Record<string, DagBox> = {};
     for (const id of Object.keys(positions ?? {})) {
-      const pos = positions[id];
+      const pos = positions?.[id];
       if (!pos) continue;
       const size = sizes[id];
       const drag = dragOffsets[id] ?? { x: 0, y: 0 };
@@ -163,13 +215,14 @@ const DagCanvas = ({
 
   const resolvedPlugin = useMemo(() => {
     if (!plugin) return null;
-    if (typeof plugin === "function") return plugin(type, undefined) || null;
+    if (typeof plugin === "function")
+      return plugin(type, { id: "", type, virtual: true }) || null;
     return plugin;
   }, [plugin, type]);
 
   const styleTokensFor = useCallback(
-    (node) => {
-      let tokens = {};
+    (node: FlowNode) => {
+      let tokens: Record<string, unknown> = {};
       if (typeof style === "function") {
         tokens = style(node) || {};
       } else if (style && typeof style === "object") {
@@ -185,18 +238,18 @@ const DagCanvas = ({
 
       return tokens;
     },
-    [style, resolvedPlugin],
+    [style, resolvedPlugin]
   );
 
   const resolveEdgeProps = useCallback(
-    (edge) => {
+    (edge: DagLayoutEdge): DagEdgeProps => {
       const node = nodesById?.[edge.source];
       const child = nodesById?.[edge.target];
       if (!node || !child) return {};
 
       const tokens = styleTokensFor(node);
 
-      const fromTokens = {};
+      const fromTokens: DagEdgeProps = {};
       for (const key of [
         "lineColor",
         "lineWidth",
@@ -213,28 +266,33 @@ const DagCanvas = ({
         "connectorType",
         "startGap",
         "endGap",
-      ]) {
-        if (tokens[key] !== undefined) fromTokens[key] = tokens[key];
+      ] as const) {
+        if (tokens[key] !== undefined) {
+          (fromTokens as Record<string, unknown>)[key] = tokens[key];
+        }
       }
 
-      const fromPlugin =
+      const fromPlugin: DagEdgeProps =
         resolvedPlugin && typeof resolvedPlugin.edge === "function"
-          ? resolvedPlugin.edge({ node, child, style: tokens }) || {}
+          ? (resolvedPlugin.edge({ node, child, style: tokens }) as
+              | DagEdgeProps
+              | null
+              | undefined) || {}
           : {};
 
       return { ...fromTokens, ...fromPlugin };
     },
-    [resolvedPlugin, nodesById, styleTokensFor],
+    [resolvedPlugin, nodesById, styleTokensFor]
   );
 
-  const baseEdgeProps = useMemo(
+  const baseEdgeProps: DagEdgeProps = useMemo(
     () => ({
       lineColor: baseStyle.lineColor,
       lineWidth: baseStyle.lineWidth,
       lineStyle: baseStyle.lineStyle,
       showDots: baseStyle.showDots,
-      dotRadius: baseStyle.dotRadius,
-      dotColor: baseStyle.dotColor,
+      dotRadius: baseStyle.dotRadius as number | undefined,
+      dotColor: baseStyle.dotColor as string | undefined,
       showArrow: baseStyle.showArrow,
       arrowSize: baseStyle.arrowSize,
       animated: baseStyle.animated,
@@ -242,10 +300,10 @@ const DagCanvas = ({
       gradient: baseStyle.gradient,
       curvature: baseStyle.curvature,
       connectorType: baseStyle.connectorType,
-      startGap: baseStyle.startGap,
-      endGap: baseStyle.endGap,
+      startGap: baseStyle.startGap as number | undefined,
+      endGap: baseStyle.endGap as number | undefined,
     }),
-    [baseStyle],
+    [baseStyle]
   );
 
   const isHorizontal = variant === "horizontal";

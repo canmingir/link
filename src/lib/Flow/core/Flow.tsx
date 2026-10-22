@@ -18,6 +18,8 @@ export interface FlowProps
   data: LinkedGraph;
   editable?: boolean;
   onChange?: (change: GraphChange) => void;
+  onConnectRejected?: (message: string) => void;
+  onLayoutError?: (error: unknown) => void;
 }
 
 export const Flow = forwardRef<FlowViewportHandle, FlowProps>(function Flow(

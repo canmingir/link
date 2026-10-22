@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import { alpha, styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
+import type { FlowNodeData } from "../nodes/FlowNodeView";
 
 const ANIMATION_DELAY_MS = 200;
 
@@ -26,80 +27,56 @@ interface InfoNodeStyle {
 
 const MainContainer = styled("div", {
   shouldForwardProp: (prop) => prop !== "$style" && prop !== "$variant",
-})<{ $style?: Record<string, unknown> }>(({ theme, $style = {}, $variant }) => {
-  const {
-    minWidth = 280,
-    minHeight = 220,
-    maxWidth = 320,
-    maxHeight = "auto",
-    borderRadius = 20,
-    borderColor = "rgba(255, 255, 255, 0.08)",
-    bgFrom,
-    bgTo,
-  } = $style as InfoNodeStyle;
+})<{ $style?: Record<string, unknown>; $variant?: string }>(
+  ({ theme, $style = {}, $variant }) => {
+    const {
+      minWidth = 280,
+      minHeight = 220,
+      maxWidth = 320,
+      maxHeight = "auto",
+      borderRadius = 20,
+      borderColor = "rgba(255, 255, 255, 0.08)",
+      bgFrom,
+      bgTo,
+    } = $style as InfoNodeStyle;
 
-  const defaultFrom = alpha(theme.palette.secondary.light, 0.2);
-  const defaultTo = alpha(theme.palette.primary.main, 0.3);
+    const defaultFrom = alpha(theme.palette.secondary.light, 0.2);
+    const defaultTo = alpha(theme.palette.primary.main, 0.3);
 
-  const isSplit = $variant === "split-icon-panel";
+    const isSplit = $variant === "split-icon-panel";
 
-  return {
-    display: "flex",
-    flexDirection: isSplit ? "row" : "column",
-    alignItems: isSplit
-      ? "stretch"
-      : "flex-start",
-    justifyContent: "flex-start",
-    color: "#ffffff",
-    borderRadius,
-    padding: isSplit ? 0 : "24px",
-    border: `1px solid ${borderColor}`,
-    backdropFilter: "blur(10px)",
-    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-    cursor: "inherit",
-    position: "relative",
-    overflow: "hidden",
-    minWidth,
-    minHeight,
-    maxWidth,
-    maxHeight,
-    background: `linear-gradient(135deg, ${bgFrom || defaultFrom}, ${
-      bgTo || defaultTo
-    })`,
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
-    '[data-flow-dragging="true"] &': {
-      backdropFilter: "none",
-    },
-  };
-});
-
-const TwoColumnRow = styled("div")(() => ({
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "flex-start",
-  justifyContent: "center",
-  width: "100%",
-  gap: "16px",
-}));
-
-const TwoColumnLabelCell = styled("div")(() => ({
-  flex: "0 0 auto",
-  maxWidth: "40%",
-  minWidth: 0,
-  textAlign: "center",
-}));
-
-const TwoColumnDescriptionCell = styled("div")(() => ({
-  flex: 1,
-  minWidth: 0,
-  borderLeft: "1px solid rgba(255, 255, 255, 0.12)",
-  paddingLeft: "16px",
-  textAlign: "center",
-}));
+    return {
+      display: "flex",
+      flexDirection: isSplit ? "row" : "column",
+      alignItems: isSplit ? "stretch" : "flex-start",
+      justifyContent: "flex-start",
+      color: "#ffffff",
+      borderRadius,
+      padding: isSplit ? 0 : "24px",
+      border: `1px solid ${borderColor}`,
+      backdropFilter: "blur(10px)",
+      transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+      cursor: "inherit",
+      position: "relative",
+      overflow: "hidden",
+      minWidth,
+      minHeight,
+      maxWidth,
+      maxHeight,
+      background: `linear-gradient(135deg, ${bgFrom || defaultFrom}, ${
+        bgTo || defaultTo
+      })`,
+      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+      '[data-flow-dragging="true"] &': {
+        backdropFilter: "none",
+      },
+    };
+  }
+);
 
 const SplitIconPanel = styled("div", {
   shouldForwardProp: (prop) => prop !== "$isReversed",
-})(({ $isReversed }) => ({
+})<{ $isReversed?: boolean }>(({ $isReversed }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -135,7 +112,7 @@ const SplitLabelDescWrap = styled("div")(() => ({
 
 const HeaderRow = styled("div", {
   shouldForwardProp: (prop) => prop !== "$variant",
-})(({ $variant }) => {
+})<{ $variant?: string }>(() => {
   return {
     display: "flex",
     flexDirection: "row",
@@ -149,81 +126,87 @@ const HeaderRow = styled("div", {
 
 const IconContainer = styled("div", {
   shouldForwardProp: (prop) => prop !== "$style" && prop !== "$variant",
-})<{ $style?: Record<string, unknown> }>(({ $style = {}, $variant }) => {
-  const {
-    bg = "rgba(255, 255, 255, 0.1)",
-    hoverBg = "rgba(255, 255, 255, 0.2)",
-    borderRadius = 14,
-    padding = 10,
-    borderColor = "rgba(255, 255, 255, 0.1)",
-  } = $style as InfoNodeStyle;
+})<{ $style?: Record<string, unknown>; $variant?: string }>(
+  ({ $style = {}, $variant }) => {
+    const {
+      bg = "rgba(255, 255, 255, 0.1)",
+      hoverBg = "rgba(255, 255, 255, 0.2)",
+      borderRadius = 14,
+      padding = 10,
+      borderColor = "rgba(255, 255, 255, 0.1)",
+    } = $style as InfoNodeStyle;
 
-  const isSplit = $variant === "split-icon-panel";
+    const isSplit = $variant === "split-icon-panel";
 
-  return {
-    backgroundColor: bg,
-    borderRadius,
-    padding: padding,
-    transition: "all 0.4s ease",
-    backdropFilter: "blur(5px)",
-    border: isSplit ? "none" : `1px solid ${borderColor}`,
-    flexShrink: 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    boxShadow: isSplit ? `
+    return {
+      backgroundColor: bg,
+      borderRadius,
+      padding: padding,
+      transition: "all 0.4s ease",
+      backdropFilter: "blur(5px)",
+      border: isSplit ? "none" : `1px solid ${borderColor}`,
+      flexShrink: 0,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      boxShadow: isSplit
+        ? `
             4px 4px 0 rgba(255, 255, 255, 0.3),
             5px 5px 5px rgba(0, 0, 0, 0.5)
-          ` : `
+          `
+        : `
             4px 4px 0 rgba(255, 255, 255, 0.1),
             5px 5px 5px rgba(0, 0, 0, 0.5)
           `,
 
-    '[data-flow-dragging="true"] &': {
-      backdropFilter: "none",
-    },
+      '[data-flow-dragging="true"] &': {
+        backdropFilter: "none",
+      },
 
-    '[data-hovered="true"] &': {
-      backgroundColor: hoverBg,
-    },
-  };
-});
+      '[data-hovered="true"] &': {
+        backgroundColor: hoverBg,
+      },
+    };
+  }
+);
 
 const LabelText = styled("div", {
   shouldForwardProp: (prop) => prop !== "$style" && prop !== "$variant",
-})<{ $style?: Record<string, unknown> }>(({ $style = {}, $variant }) => {
-  const {
-    color = "#ffffff",
-    fontWeight = 700,
-    fontSize = 15,
-    letterSpacing = 0.3,
-  } = $style as InfoNodeStyle;
+})<{ $style?: Record<string, unknown>; $variant?: string }>(
+  ({ $style = {}, $variant }) => {
+    const {
+      color = "#ffffff",
+      fontWeight = 700,
+      fontSize = 15,
+      letterSpacing = 0.3,
+    } = $style as InfoNodeStyle;
 
-  const isSplit = $variant === "split-icon-panel";
+    const isSplit = $variant === "split-icon-panel";
 
-  return {
-    fontWeight,
-    fontSize,
-    letterSpacing: `${letterSpacing}px`,
-    textAlign: "left",
-    transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-    lineHeight:"1.2",
-    opacity: 0,
-    transform: "translateX(10px)",
-    color,
-    flex: isSplit ? "unset" : 1,
-    width: isSplit ? "100%" : "auto",
+    return {
+      fontWeight,
+      fontSize,
+      letterSpacing: `${letterSpacing}px`,
+      textAlign: "left",
+      transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+      lineHeight: "1.2",
+      opacity: 0,
+      transform: "translateX(10px)",
+      color,
+      flex: isSplit ? "unset" : 1,
+      width: isSplit ? "100%" : "auto",
 
-    '&[data-animated="true"]': {
-      opacity: 1,
-      transform: "translateX(0)",
-    },
-  };
-});
+      '&[data-animated="true"]': {
+        opacity: 1,
+        transform: "translateX(0)",
+      },
+    };
+  }
+);
 
 const DescriptionText = styled("div", {
   shouldForwardProp: (prop) => prop !== "$variant",
-})(({ $variant }) => {
+})<{ $variant?: string }>(({ $variant }) => {
   const isSplit = $variant === "split-icon-panel";
 
   return {
@@ -250,7 +233,9 @@ const DescriptionText = styled("div", {
   };
 });
 
-const ActionText = styled("div")(() => {
+const ActionText = styled("div", {
+  shouldForwardProp: (prop) => prop !== "$variant",
+})<{ $variant?: string }>(() => {
   return {
     fontSize: "10px",
     fontWeight: 700,
@@ -272,8 +257,8 @@ const ActionText = styled("div")(() => {
   };
 });
 
-const getIcon = (node) => {
-  if (node.icon) return node.icon;
+const getIcon = (node: FlowNodeData): string => {
+  if (typeof node.icon === "string") return node.icon;
   if (node.type === "CONDITION" || node.type === "decision")
     return "mdi:help-circle-outline";
   if (node.type === "NORMAL") return "mdi:checkbox-blank-circle-outline";
@@ -281,7 +266,7 @@ const getIcon = (node) => {
 };
 
 interface InfoNodeProps {
-  node: InfoNodeData;
+  node: FlowNodeData;
   nodeStyle?: Record<string, unknown>;
   children?: ReactNode;
 }
@@ -290,18 +275,28 @@ const InfoNode = ({ node, nodeStyle = {}, children }: InfoNodeProps) => {
   const [animated, setAnimated] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const variant = nodeStyle.layoutVariant;
+  const variant =
+    typeof nodeStyle.layoutVariant === "string"
+      ? nodeStyle.layoutVariant
+      : undefined;
   const isSplit = variant === "split-icon-panel";
-  const isReversed = isSplit && (node.action === "PLATFORM:complete" ||
-    node.type === "NORMAL" ||
-    node.type === "END");
+  const isReversed =
+    isSplit &&
+    (node.action === "PLATFORM:complete" ||
+      node.type === "NORMAL" ||
+      node.type === "END");
 
+  const label =
+    (node.label as ReactNode) ||
+    (node.title as ReactNode) ||
+    (node.name as ReactNode) ||
+    node.id ||
+    "Get Data";
 
-  const label = node.label || node.title || node.name || node.id || "Get Data";
-
-  const action = node.action || "SYSTEM:DEFAULT_ACTION";
+  const action = (node.action as ReactNode) || "SYSTEM:DEFAULT_ACTION";
   const description =
-    node.description || "Description of the operation goes here.";
+    (node.description as ReactNode) ||
+    "Description of the operation goes here.";
 
   useEffect(() => {
     const timer = setTimeout(() => setAnimated(true), ANIMATION_DELAY_MS);
@@ -338,7 +333,7 @@ const InfoNode = ({ node, nodeStyle = {}, children }: InfoNodeProps) => {
       height={24}
       sx={{
         filter: "none",
-        color: nodeStyle.iconColor || "#ffffff",
+        color: (nodeStyle.iconColor as string) || "#ffffff",
       }}
     />
   );

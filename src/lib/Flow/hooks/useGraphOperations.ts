@@ -14,23 +14,25 @@ import {
   toNextArray,
 } from "../utils/flowUtils";
 
-function isAncestor(nodesById, targetId, sourceId) {
+function isAncestor(
+  nodesById: FlowNodeMap,
+  targetId: string,
+  sourceId: string
+): boolean {
   if (targetId === sourceId) return true;
 
-  const visited = new Set();
+  const visited = new Set<string>();
   const queue = [targetId];
 
   while (queue.length) {
     const id = queue.shift();
-    if (visited.has(id)) continue;
+    if (!id || visited.has(id)) continue;
     visited.add(id);
 
     const node = nodesById[id];
     if (!node) continue;
 
-    const nextIds = toNextArray(node.next).map((n) =>
-      typeof n === "string" ? n : n?.id,
-    );
+    const nextIds = toNextArray(node.next);
 
     for (const nextId of nextIds) {
       if (!nextId) continue;
@@ -42,7 +44,6 @@ function isAncestor(nodesById, targetId, sourceId) {
   return false;
 }
 
-/** A detached (copy/paste) sub-graph living outside the main tree. */
 export type FloatingStructure = FlowStructure & {
   _pasteId?: string;
   id?: string;
@@ -61,6 +62,7 @@ interface UseGraphOperationsParams {
   floatingNodes: FloatingStructure[];
   setFloatingNodes: Dispatch<SetStateAction<FloatingStructure[]>>;
   editable?: boolean;
+  onConnectRejected?: (message: string) => void;
 }
 
 export const useGraphOperations = ({
@@ -358,13 +360,13 @@ export const useGraphOperations = ({
 
           if (isAncestor(updatedNodes, targetNodeId, sourceId)) {
             onConnectRejected?.(
-              `Connecting "${sourceId}" to "${targetNodeId}" would create a cycle.`,
+              `Connecting "${sourceId}" to "${targetNodeId}" would create a cycle.`
             );
             return;
           }
 
-          const currentNext = toNextArray(source.next).map((n) =>
-            typeof n === "string" ? n : n?.id,
+          const currentNext = toNextArray(source.next).map((n: string | { id: string }) =>
+            typeof n === "string" ? n : n?.id
           );
           if (currentNext.includes(targetNodeId)) return;
 
@@ -374,7 +376,7 @@ export const useGraphOperations = ({
         });
 
         if (changed) {
-          onChange({ nodes: updatedNodes, roots });
+          onChange({ nodes: updatedNodes, roots: roots ?? [] });
         }
         return;
       }

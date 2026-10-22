@@ -51,13 +51,21 @@ export const clampZoomValue = (
   maxZoom: number
 ) => Math.min(maxZoom, Math.max(minZoom, zoom));
 
-export const getTouchDistance = (p1, p2) =>
+export const getTouchDistance = (p1: Point, p2: Point): number =>
   Math.hypot(p2.x - p1.x, p2.y - p1.y);
 
-export const getTouchMidpoint = (p1, p2) => ({
+export const getTouchMidpoint = (p1: Point, p2: Point): Point => ({
   x: (p1.x + p2.x) / 2,
   y: (p1.y + p2.y) / 2,
 });
+
+interface ComputePinchZoomOffsetParams {
+  prevZoom: number;
+  nextZoom: number;
+  offset: Point;
+  prevMidpoint: Point;
+  nextMidpoint: Point;
+}
 
 export const computePinchZoomOffset = ({
   prevZoom,
@@ -65,7 +73,7 @@ export const computePinchZoomOffset = ({
   offset,
   prevMidpoint,
   nextMidpoint,
-}) => {
+}: ComputePinchZoomOffsetParams): Point => {
   const scaleRatio = prevZoom !== 0 ? nextZoom / prevZoom : 1;
 
   return {

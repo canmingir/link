@@ -320,7 +320,12 @@ const FlowNodeView = ({
                 arrowSize={childEdgeProps.arrowSize}
                 animated={childEdgeProps.animated}
                 animationSpeed={childEdgeProps.animationSpeed}
-                gradient={gradient}
+                gradient={
+                  childEdgeProps.gradient &&
+                  typeof childEdgeProps.gradient === "object"
+                    ? childEdgeProps.gradient
+                    : null
+                }
                 curvature={childEdgeProps.curvature}
                 connectorType={childEdgeProps.connectorType}
                 startGap={childEdgeProps.startGap}
@@ -360,7 +365,7 @@ const FlowNodeView = ({
               justifyContent: "center",
             }}
           >
-            {node.children.map((child, index) =>
+            {(node.children ?? []).map((child, index) =>
               isStack ? (
                 <Box
                   key={child.id}

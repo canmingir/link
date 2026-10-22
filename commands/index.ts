@@ -101,13 +101,12 @@ Cypress.Commands.add("platformSetup", (itemId, itemFixturePath) => {
   cy.storageSet(`link.refreshtoken`, "TEST_REFRESH_TOKEN");
   cy.storageSet(`link.accesstoken`, "TEST_ACCESS_TOKEN");
 
-    cy.intercept("GET", `https://api.github.com/user`, user).as("getUser");
+  cy.intercept("GET", `https://api.github.com/user`, user).as("getUser");
 
-    cy.intercept("GET", "/projects", {
-      fixture: itemFixturePath,
-    }).as("getTeams");
-  }
-);
+  cy.intercept("GET", "/projects", {
+    fixture: itemFixturePath,
+  }).as("getTeams");
+});
 
 Cypress.Commands.add("selectIconFromPicker", (altText) => {
   cy.get("em-emoji-picker")

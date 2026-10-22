@@ -1,8 +1,15 @@
+import DagCanvas from "../nodes/DagCanvas";
 import type { FlowNodeData } from "../nodes/FlowNodeView";
 import FlowNodeView from "../nodes/FlowNodeView";
 import FlowViewport from "./FlowViewport";
 import type { FlowViewportHandle } from "../types";
 import type { FlowViewportProps } from "./FlowViewport";
+import type {
+  DagDirection,
+  DagLayoutBounds,
+  DagLayoutEdge,
+  DagLayoutPositions,
+} from "../utils/dagLayout";
 import { SelectionProvider } from "../selection/SelectionContext";
 import { forwardRef } from "react";
 import { getBaseStyleForVariant } from "../styles";
@@ -14,6 +21,11 @@ export interface FlowNodeProps extends FlowViewportProps {
   onAddNode?: (...args: unknown[]) => void;
   onDrag?: (offset?: { x: number; y: number }) => void;
   registerRef?: (el: HTMLElement | null) => void;
+  layout?: "tree" | "dag";
+  layoutDirection?: DagDirection;
+  positions?: DagLayoutPositions;
+  layoutEdges?: DagLayoutEdge[];
+  layoutBounds?: DagLayoutBounds;
 }
 
 const FlowNode = forwardRef<FlowViewportHandle, FlowNodeProps>(
@@ -46,6 +58,10 @@ const FlowNode = forwardRef<FlowViewportHandle, FlowNodeProps>(
       impliedConnections,
       showImpliedConnections,
       labelForImpliedConnection,
+      layout,
+      positions,
+      layoutEdges,
+      layoutBounds,
       ...props
     },
     ref
@@ -97,17 +113,31 @@ const FlowNode = forwardRef<FlowViewportHandle, FlowNodeProps>(
           impliedConnections={impliedConnections}
           showImpliedConnections={showImpliedConnections}
           labelForImpliedConnection={labelForImpliedConnection}
+          positions={positions}
         >
-          {node && (
-            <FlowNodeView
-              node={node}
-              onAddNode={onAddNode}
+          {layout === "dag" ? (
+            <DagCanvas
+              nodesById={nodesById}
+              positions={positions}
+              layoutEdges={layoutEdges}
+              layoutBounds={layoutBounds}
               variant={variant}
               style={style}
               plugin={plugin}
               onConnect={onConnect}
-              {...props}
             />
+          ) : (
+            node && (
+              <FlowNodeView
+                node={node}
+                onAddNode={onAddNode}
+                variant={variant}
+                style={style}
+                plugin={plugin}
+                onConnect={onConnect}
+                {...props}
+              />
+            )
           )}
         </FlowViewport>
       </SelectionProvider>

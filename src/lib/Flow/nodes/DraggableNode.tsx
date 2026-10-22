@@ -6,10 +6,14 @@ import {
   LONG_PRESS_DELAY_MS,
   LONG_PRESS_MOVE_TOLERANCE,
 } from "../utils/viewportUtils";
-import React, { useCallback, useEffect, useRef, useState } from "react";
 
-import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
+import type { NodeTouchDragToken } from "../selection/SelectionContext";
+import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+
+interface LongPressContextMenuEvent extends MouseEvent {
+  __fromLongPress?: boolean;
+}
 
 interface DraggableNodeProps {
   children?: ReactNode;
@@ -19,6 +23,7 @@ interface DraggableNodeProps {
   selectionColor?: string;
   initialPosition?: Point;
   onConnect?: (nodeId: string, selectedIds: string[]) => void;
+  dragResetKey?: unknown;
 }
 
 const DraggableNode = ({
@@ -30,14 +35,14 @@ const DraggableNode = ({
   initialPosition,
   onConnect,
   dragResetKey,
-}) => {
-  const [offset, setOffset] = useState(() =>
+}: DraggableNodeProps) => {
+  const [offset, setOffset] = useState<Point>(() =>
     initialPosition ? { ...initialPosition } : { x: 0, y: 0 }
   );
 
   const offsetRef = useRef(offset);
 
-  const applyOffset = useCallback((next) => {
+  const applyOffset = useCallback((next: Point | ((prev: Point) => Point)) => {
     setOffset((prev) => {
       const resolved = typeof next === "function" ? next(prev) : next;
       offsetRef.current = resolved;
@@ -62,8 +67,8 @@ const DraggableNode = ({
   const lastDeltaRef = useRef<Point>({ x: 0, y: 0 });
   const onDragRef = useRef(onDrag);
   const didDragRef = useRef(false);
-  const activeDragRef = useRef(null);
-  const longPressTimerRef = useRef(null);
+  const activeDragRef = useRef<NodeTouchDragToken | null>(null);
+  const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const {
     isSelected,
@@ -116,8 +121,8 @@ const DraggableNode = ({
   }, []);
 
   const handlePointerDown = useCallback(
-    (e: ReactMouseEvent<HTMLDivElement>) => {
-      if (e.target?.closest?.("[data-handle-type]")) return;
+    (e: ReactPointerEvent<HTMLDivElement>) => {
+      if ((e.target as HTMLElement)?.closest?.("[data-handle-type]")) return;
 
       const isTouch = e.pointerType === "touch";
       if (!isTouch && e.button !== 0) return;
@@ -154,7 +159,13 @@ const DraggableNode = ({
       const scale =
         el && rect && el.offsetWidth ? rect.width / el.offsetWidth || 1 : 1;
 
-      const handleMove = (ev: MouseEvent) => {
+      const dragToken: NodeTouchDragToken = {
+        lastPointer: isTouch
+          ? { pointerId: e.pointerId, x: e.clientX, y: e.clientY }
+          : null,
+      };
+
+      const handleMove = (ev: PointerEvent) => {
         if (isTouch && ev.pointerId !== e.pointerId) return;
 
         if (dragToken.lastPointer) {
@@ -199,12 +210,6 @@ const DraggableNode = ({
         onDragRef.current?.(nextOffset);
       };
 
-      const dragToken = {
-        lastPointer: isTouch
-          ? { pointerId: e.pointerId, x: e.clientX, y: e.clientY }
-          : null,
-      };
-
       const clearLongPressTimer = () => {
         if (longPressTimerRef.current) {
           clearTimeout(longPressTimerRef.current);
@@ -234,16 +239,19 @@ const DraggableNode = ({
         activeDragRef.current = dragToken;
         if (nodeTouchDragRef) nodeTouchDragRef.current = dragToken;
 
-        const dispatchTarget = e.target ?? localRef.current;
+        const dispatchTarget = (e.target as HTMLElement) ?? localRef.current;
         longPressTimerRef.current = setTimeout(() => {
           longPressTimerRef.current = null;
           if (didDragRef.current) return;
-          const contextMenuEvent = new MouseEvent("contextmenu", {
-            bubbles: true,
-            cancelable: true,
-            clientX: startX,
-            clientY: startY,
-          });
+          const contextMenuEvent: LongPressContextMenuEvent = new MouseEvent(
+            "contextmenu",
+            {
+              bubbles: true,
+              cancelable: true,
+              clientX: startX,
+              clientY: startY,
+            }
+          );
           contextMenuEvent.__fromLongPress = true;
           dispatchTarget?.dispatchEvent(contextMenuEvent);
         }, LONG_PRESS_DELAY_MS);
@@ -274,8 +282,9 @@ const DraggableNode = ({
       data-node-id={nodeId}
       onPointerDown={handlePointerDown}
       onContextMenu={(e) => {
-        const isMouseRightClick = e.button === 2 || e.nativeEvent?.button === 2;
-        if (!isMouseRightClick && !e.nativeEvent?.__fromLongPress) {
+        const nativeEvent = e.nativeEvent as LongPressContextMenuEvent;
+        const isMouseRightClick = e.button === 2 || nativeEvent?.button === 2;
+        if (!isMouseRightClick && !nativeEvent?.__fromLongPress) {
           e.preventDefault();
         }
       }}

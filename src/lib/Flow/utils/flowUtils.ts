@@ -200,7 +200,7 @@ export const buildDetachedTree = (
 
     const node = nodesById[id];
     const { next, previous, ...rest } = node;
-    const result = { ...rest, id, previous, children: [] };
+    const result: TreeNode = { ...rest, id, previous, children: [] };
 
     const nextIds = Array.isArray(next)
       ? next
