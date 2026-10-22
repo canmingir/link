@@ -6,15 +6,6 @@ import { styled } from "@mui/material/styles";
 
 import { Grid, Tooltip, Typography, tooltipClasses } from "@mui/material";
 
-interface DialogTooltipInnerProps extends Omit<TooltipProps, "title"> {
-  className?: string;
-  open: boolean;
-  handleTooltipClose: () => void;
-  title?: ReactNode;
-  message?: ReactNode;
-  footer?: ReactNode;
-}
-
 const DialogTooltip = styled(
   ({
     className,
@@ -25,7 +16,14 @@ const DialogTooltip = styled(
     footer,
     children,
     ...props
-  }: DialogTooltipInnerProps) => (
+  }: Omit<TooltipProps, "title"> & {
+    className?: string;
+    open: boolean;
+    handleTooltipClose: () => void;
+    title?: ReactNode;
+    message?: ReactNode;
+    footer?: ReactNode;
+  }) => (
     <Tooltip
       open={open}
       onClose={handleTooltipClose}

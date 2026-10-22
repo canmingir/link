@@ -6,21 +6,6 @@ import { checkboxClasses } from "@mui/material/Checkbox";
 import { dividerClasses } from "@mui/material/Divider";
 import { menuItemClasses } from "@mui/material/MenuItem";
 
-type BgBlurProps = {
-  color?: string;
-  blur?: number;
-  opacity?: number;
-  imgUrl?: string;
-};
-
-type BgGradientProps = {
-  direction?: string;
-  startColor?: string;
-  endColor?: string;
-  imgUrl?: string;
-  color?: string;
-};
-
 export const paper = ({
   theme,
   bgcolor,
@@ -82,7 +67,12 @@ export const menuItem = (theme: Theme): CSSObject => ({
   },
 });
 
-export function bgBlur(props?: BgBlurProps): CSSObject {
+export function bgBlur(props?: {
+  color?: string;
+  blur?: number;
+  opacity?: number;
+  imgUrl?: string;
+}): CSSObject {
   const color = props?.color || "#000000";
   const blur = props?.blur || 6;
   const opacity = props?.opacity || 0.8;
@@ -114,7 +104,13 @@ export function bgBlur(props?: BgBlurProps): CSSObject {
   };
 }
 
-export function bgGradient(props?: BgGradientProps): CSSObject {
+export function bgGradient(props?: {
+  direction?: string;
+  startColor?: string;
+  endColor?: string;
+  imgUrl?: string;
+  color?: string;
+}): CSSObject {
   const direction = props?.direction || "to bottom";
   const startColor = props?.startColor;
   const endColor = props?.endColor;

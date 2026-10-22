@@ -12,21 +12,21 @@ const COLORS = [
   "error",
 ] as const;
 
-type FabOwnerState = Omit<FabProps, "variant" | "color"> & {
-  variant?:
-    | "circular"
-    | "extended"
-    | "outlined"
-    | "outlinedExtended"
-    | "soft"
-    | "softExtended";
-  color?: FabProps["color"] | "default";
-};
-
 export function fab(theme: Theme) {
   const lightMode = theme.palette.mode === "light";
 
-  const rootStyles = (ownerState: FabOwnerState) => {
+  const rootStyles = (
+    ownerState: Omit<FabProps, "variant" | "color"> & {
+      variant?:
+        | "circular"
+        | "extended"
+        | "outlined"
+        | "outlinedExtended"
+        | "soft"
+        | "softExtended";
+      color?: FabProps["color"] | "default";
+    }
+  ) => {
     const defaultColor = ownerState.color === "default";
 
     const inheritColor = ownerState.color === "inherit";
@@ -171,8 +171,20 @@ export function fab(theme: Theme) {
         size: "small",
       },
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: FabOwnerState }) =>
-          rootStyles(ownerState),
+        root: ({
+          ownerState,
+        }: {
+          ownerState: Omit<FabProps, "variant" | "color"> & {
+            variant?:
+              | "circular"
+              | "extended"
+              | "outlined"
+              | "outlinedExtended"
+              | "soft"
+              | "softExtended";
+            color?: FabProps["color"] | "default";
+          };
+        }) => rootStyles(ownerState),
       },
     },
   };

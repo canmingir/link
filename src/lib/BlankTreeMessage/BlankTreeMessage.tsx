@@ -1,17 +1,15 @@
 import { AutoAwesome } from "@mui/icons-material";
 import { Box, CardActions, Fab, Typography } from "@mui/material";
 
-interface BlankTreeMessageProps {
-  item: string;
-  openLogicDialog: () => void;
-  functionsExist?: boolean;
-}
-
 function BlankTreeMessage({
   item,
   openLogicDialog,
   functionsExist,
-}: BlankTreeMessageProps) {
+}: {
+  item: string;
+  openLogicDialog: () => void;
+  functionsExist?: boolean;
+}) {
   return (
     <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <Box

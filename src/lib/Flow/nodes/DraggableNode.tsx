@@ -11,21 +11,6 @@ import type { NodeTouchDragToken } from "../selection/SelectionContext";
 import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-interface LongPressContextMenuEvent extends MouseEvent {
-  __fromLongPress?: boolean;
-}
-
-interface DraggableNodeProps {
-  children?: ReactNode;
-  registerRef?: (el: HTMLElement | null) => void;
-  onDrag?: (offset?: Point) => void;
-  nodeId: string;
-  selectionColor?: string;
-  initialPosition?: Point;
-  onConnect?: (nodeId: string, selectedIds: string[]) => void;
-  dragResetKey?: unknown;
-}
-
 const DraggableNode = ({
   children,
   registerRef,
@@ -35,7 +20,16 @@ const DraggableNode = ({
   initialPosition,
   onConnect,
   dragResetKey,
-}: DraggableNodeProps) => {
+}: {
+  children?: ReactNode;
+  registerRef?: (el: HTMLElement | null) => void;
+  onDrag?: (offset?: Point) => void;
+  nodeId: string;
+  selectionColor?: string;
+  initialPosition?: Point;
+  onConnect?: (nodeId: string, selectedIds: string[]) => void;
+  dragResetKey?: unknown;
+}) => {
   const [offset, setOffset] = useState<Point>(() =>
     initialPosition ? { ...initialPosition } : { x: 0, y: 0 }
   );
@@ -243,15 +237,14 @@ const DraggableNode = ({
         longPressTimerRef.current = setTimeout(() => {
           longPressTimerRef.current = null;
           if (didDragRef.current) return;
-          const contextMenuEvent: LongPressContextMenuEvent = new MouseEvent(
-            "contextmenu",
-            {
-              bubbles: true,
-              cancelable: true,
-              clientX: startX,
-              clientY: startY,
-            }
-          );
+          const contextMenuEvent: MouseEvent & {
+            __fromLongPress?: boolean;
+          } = new MouseEvent("contextmenu", {
+            bubbles: true,
+            cancelable: true,
+            clientX: startX,
+            clientY: startY,
+          });
           contextMenuEvent.__fromLongPress = true;
           dispatchTarget?.dispatchEvent(contextMenuEvent);
         }, LONG_PRESS_DELAY_MS);
@@ -282,7 +275,9 @@ const DraggableNode = ({
       data-node-id={nodeId}
       onPointerDown={handlePointerDown}
       onContextMenu={(e) => {
-        const nativeEvent = e.nativeEvent as LongPressContextMenuEvent;
+        const nativeEvent = e.nativeEvent as MouseEvent & {
+          __fromLongPress?: boolean;
+        };
         const isMouseRightClick = e.button === 2 || nativeEvent?.button === 2;
         if (!isMouseRightClick && !nativeEvent?.__fromLongPress) {
           e.preventDefault();

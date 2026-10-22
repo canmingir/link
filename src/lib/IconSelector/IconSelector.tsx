@@ -9,22 +9,18 @@ import type { Theme } from "@mui/material/styles";
 
 import { Dialog, Stack } from "@mui/material";
 
-interface EmojiSelection {
-  shortcodes: string;
-  [key: string]: unknown;
-}
-
-interface IconSelectorProps {
-  handleEmojiSelect: (emoji: EmojiSelection) => void;
-  avatar?: string;
-  iconCategories?: string;
-}
-
 export default function IconSelector({
   handleEmojiSelect,
   avatar,
   iconCategories,
-}: IconSelectorProps) {
+}: {
+  handleEmojiSelect: (emoji: {
+    shortcodes: string;
+    [key: string]: unknown;
+  }) => void;
+  avatar?: string;
+  iconCategories?: string;
+}) {
   const [emojiDialogOpen, setEmojiDialogOpen] = React.useState(false);
   const handleEmojiButtonClick = () => {
     setEmojiDialogOpen(true);
@@ -87,7 +83,10 @@ export default function IconSelector({
         onClose={() => setEmojiDialogOpen(false)}
       >
         <Picker
-          onEmojiSelect={(emoji: EmojiSelection) => {
+          onEmojiSelect={(emoji: {
+            shortcodes: string;
+            [key: string]: unknown;
+          }) => {
             handleEmojiSelect(emoji);
             setEmojiDialogOpen(false);
           }}

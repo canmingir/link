@@ -17,21 +17,6 @@ export interface DevToolTopAction {
   sx?: SxProps<Theme>;
 }
 
-interface SidebarSessionListProps {
-  sessions: StoredSession[];
-  currentSessionId?: string;
-  unreadCount: number;
-  onToggleChat?: () => void;
-  onSessionClick: (
-    event: React.MouseEvent<HTMLElement>,
-    sessionId: string
-  ) => void;
-  onClearAll?: () => void;
-  onNewSession?: () => void;
-  wrapperRef?: React.Ref<HTMLDivElement>;
-  beta?: boolean;
-  topActions?: DevToolTopAction[];
-}
 
 const btnBase = {
   width: 32,
@@ -59,7 +44,21 @@ const SidebarSessionList = ({
   wrapperRef,
   beta,
   topActions,
-}: SidebarSessionListProps) => {
+}: {
+  sessions: StoredSession[];
+  currentSessionId?: string;
+  unreadCount: number;
+  onToggleChat?: () => void;
+  onSessionClick: (
+    event: React.MouseEvent<HTMLElement>,
+    sessionId: string
+  ) => void;
+  onClearAll?: () => void;
+  onNewSession?: () => void;
+  wrapperRef?: React.Ref<HTMLDivElement>;
+  beta?: boolean;
+  topActions?: DevToolTopAction[];
+}) => {
   const sidebarSessions = sessions;
 
   const resolvedTopActions = topActions ?? [];

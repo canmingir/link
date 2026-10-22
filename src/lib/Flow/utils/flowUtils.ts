@@ -12,12 +12,10 @@ import type {
 const nextRefId = (ref: FlowNextRef): string =>
   typeof ref === "string" ? ref : ref?.id;
 
-export interface AssertedLinkedGraph {
+export function assertLinkedGraph(data: unknown): {
   nodesById: FlowNodeMap;
   roots: string[];
-}
-
-export function assertLinkedGraph(data: unknown): AssertedLinkedGraph {
+} {
   if (!data || typeof data !== "object") {
     throw new Error(
       "FlowChart expected a linked graph object: { nodes, roots? }."

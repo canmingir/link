@@ -4,7 +4,7 @@ type StyleTokens = Record<string, unknown>;
 
 /** A minimal node the visual resolver reads: an id, an optional semantic
  * `type`, plus arbitrary domain fields. */
-export interface ResolvableNode {
+interface ResolvableNode {
   id: string;
   type?: string;
   [key: string]: unknown;
@@ -27,19 +27,17 @@ export interface ResolveNodeVisualArgs {
     | StylePlugin;
 }
 
-export interface NodeVisual {
-  fill: string | null;
-  stroke: string | null;
-  gradientStops: StyleTokens | null;
-}
-
 export function resolveNodeVisual({
   node,
   type,
   variant,
   style,
   plugin,
-}: ResolveNodeVisualArgs): NodeVisual {
+}: ResolveNodeVisualArgs): {
+  fill: string | null;
+  stroke: string | null;
+  gradientStops: StyleTokens | null;
+} {
   const variantTokens: StyleTokens =
     variant === "decision"
       ? { ...getDecisionNodeStyle(node?.type ?? "process") }

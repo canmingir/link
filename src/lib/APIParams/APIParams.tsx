@@ -6,13 +6,15 @@ import { Box, Fab } from "@mui/material";
 import type { NamedType, Param } from "../ParamTable/types";
 import { useEffect, useState } from "react";
 
-interface APIParamsProps {
+const APIParams = ({
+  types,
+  paramsRef,
+  addParams,
+}: {
   types: NamedType[];
   paramsRef: MutableRefObject<Param[]>;
   addParams?: MutableRefObject<(() => void) | null>;
-}
-
-const APIParams = ({ types, paramsRef, addParams }: APIParamsProps) => {
+}) => {
   const [params, setParams] = useState<Param[]>(paramsRef.current);
 
   useEffect(() => {

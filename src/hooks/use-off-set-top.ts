@@ -2,9 +2,10 @@ import { useScroll } from "framer-motion";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-type UseScrollOptions = Parameters<typeof useScroll>[0];
-
-export function useOffSetTop(top = 0, options?: UseScrollOptions) {
+export function useOffSetTop(
+  top = 0,
+  options?: Parameters<typeof useScroll>[0]
+) {
   const { scrollY } = useScroll(options);
 
   const [value, setValue] = useState(false);

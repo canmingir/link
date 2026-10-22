@@ -42,26 +42,6 @@ import {
   useRef,
   useState,
 } from "react";
-
-interface ActivePointer {
-  x: number;
-  y: number;
-}
-
-interface PinchState {
-  lastDistance: number;
-  lastMidpoint: Point;
-}
-
-interface PanState {
-  panStartX: number;
-  panStartY: number;
-  panStartOffset: Point;
-}
-
-type GestureState = PinchState | PanState | null;
-type GestureMode = "pan" | "pinch" | null;
-
 export interface FlowViewportProps {
   children?: ReactNode;
   selectionColor?: string;
@@ -153,9 +133,10 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
       offsetRef.current = offset;
     }, [offset]);
 
-    const activePointersRef = useRef(new Map<number, ActivePointer>());
-    const pinchStateRef = useRef<GestureState>(null);
-    const gestureModeRef = useRef<GestureMode>(null);
+
+    const activePointersRef = useRef(new Map<number, { x: number; y: number; }>());
+    const pinchStateRef = useRef<{lastDistance: number; lastMidpoint: Point} | {panStartX: number; panStartY: number; panStartOffset: Point} | null>(null);
+    const gestureModeRef = useRef<"pan" | "pinch" | null>(null);
 
     const {
       clearSelection,
@@ -563,7 +544,7 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
       const applyPinchOrPan = (e: PointerEvent) => {
         if (gestureModeRef.current === "pinch") {
           const points = [...activePointersRef.current.values()];
-          const pinchState = pinchStateRef.current as PinchState | null;
+          const pinchState = pinchStateRef.current as {lastDistance: number; lastMidpoint: Point} | null;
           if (points.length < 2 || !pinchState) return;
 
           const nextDistance = getTouchDistance(points[0], points[1]);
@@ -614,7 +595,7 @@ const FlowViewport = forwardRef<FlowViewportHandle, FlowViewportProps>(
         }
 
         if (gestureModeRef.current === "pan") {
-          const panState = pinchStateRef.current as PanState | null;
+          const panState = pinchStateRef.current as {panStartX: number; panStartY: number; panStartOffset: Point} | null;
           if (!panState) return;
           const { panStartX, panStartY, panStartOffset } = panState;
           const dx = e.clientX - panStartX;

@@ -36,12 +36,14 @@ const clockIcon = () => (
   <Iconify icon="solar:clock-circle-outline" width={24} />
 );
 
-type PickerDefaultProps = {
-  defaultProps: { slots: Record<string, () => JSX.Element> };
-};
-
 const desktopTypes = dateList.reduce(
-  (result: Record<string, PickerDefaultProps>, currentValue: string) => {
+  (
+    result: Record<
+      string,
+      { defaultProps: { slots: Record<string, () => JSX.Element> } }
+    >,
+    currentValue: string
+  ) => {
     result[`Mui${currentValue}`] = {
       defaultProps: {
         slots: {
@@ -59,7 +61,13 @@ const desktopTypes = dateList.reduce(
 );
 
 const timeTypes = timeList.reduce(
-  (result: Record<string, PickerDefaultProps>, currentValue: string) => {
+  (
+    result: Record<
+      string,
+      { defaultProps: { slots: Record<string, () => JSX.Element> } }
+    >,
+    currentValue: string
+  ) => {
     result[`Mui${currentValue}`] = {
       defaultProps: {
         slots: {

@@ -13,16 +13,16 @@ import type { FlowViewportHandle, LinkedGraph } from "../types";
 import { assertLinkedGraph, buildTreeFromLinked } from "../utils/flowUtils";
 import { forwardRef, useMemo, useState } from "react";
 
-export interface FlowProps
-  extends Omit<FlowNodeProps, "node" | "isRoot" | "nodesById"> {
-  data: LinkedGraph;
-  editable?: boolean;
-  onChange?: (change: GraphChange) => void;
-  onConnectRejected?: (message: string) => void;
-  onLayoutError?: (error: unknown) => void;
-}
-
-export const Flow = forwardRef<FlowViewportHandle, FlowProps>(function Flow(
+export const Flow = forwardRef<
+  FlowViewportHandle,
+  Omit<FlowNodeProps, "node" | "isRoot" | "nodesById"> & {
+    data: LinkedGraph;
+    editable?: boolean;
+    onChange?: (change: GraphChange) => void;
+    onConnectRejected?: (message: string) => void;
+    onLayoutError?: (error: unknown) => void;
+  }
+>(function Flow(
   {
     data,
     variant = "simple",

@@ -2,10 +2,8 @@ export const HANDLE_TYPE_ATTR = "data-handle-type";
 export const NODE_ID_ATTR = "data-node-id";
 export const FIELD_ATTR = "data-field";
 
-export type HandleSide = "in" | "out";
-
 export const handleDataAttrs = (
-  side: HandleSide,
+  side: "in" | "out",
   nodeId: string,
   field: string
 ): Record<string, string> => ({

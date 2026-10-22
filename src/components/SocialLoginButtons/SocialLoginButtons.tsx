@@ -3,15 +3,6 @@ import styles from "../../widgets/LoginForm/LoginFormStyles";
 
 import { GitHub, Google, LinkedIn } from "@mui/icons-material";
 
-interface SocialLoginButtonsProps {
-  googleEnable?: boolean;
-  onGoogle?: () => void;
-  githubEnable?: boolean;
-  onGithub?: () => void;
-  linkedinEnable?: boolean;
-  onLinkedin?: () => void;
-}
-
 const SocialLoginButtons = ({
   googleEnable,
   onGoogle,
@@ -19,7 +10,14 @@ const SocialLoginButtons = ({
   onGithub,
   linkedinEnable,
   onLinkedin,
-}: SocialLoginButtonsProps) => {
+}: {
+  googleEnable?: boolean;
+  onGoogle?: () => void;
+  githubEnable?: boolean;
+  onGithub?: () => void;
+  linkedinEnable?: boolean;
+  onLinkedin?: () => void;
+}) => {
   return (
     <>
       {githubEnable && (

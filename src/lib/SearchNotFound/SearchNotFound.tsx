@@ -2,15 +2,13 @@ import Paper from "@mui/material/Paper";
 import type { PaperProps } from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-type SearchNotFoundProps = {
-  query?: string;
-} & PaperProps;
-
 export default function SearchNotFound({
   query,
   sx,
   ...other
-}: SearchNotFoundProps) {
+}: {
+  query?: string;
+} & PaperProps) {
   return query ? (
     <Paper
       sx={{

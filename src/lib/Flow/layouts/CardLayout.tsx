@@ -4,13 +4,6 @@ import { Box, Card, Stack, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { alpha, useTheme } from "@mui/material/styles";
 
-interface BaseCardProps {
-  sx?: SxProps<Theme>;
-  title?: ReactNode;
-  description?: ReactNode;
-  footer?: ReactNode;
-}
-
 const STYLES = {
   width: "100%",
   display: "-webkit-box",
@@ -23,14 +16,6 @@ const STYLES = {
   opacity: 0.85,
 };
 
-interface MediaAvatarCardProps extends BaseCardProps {
-  leftContent?: ReactNode;
-  rightContent?: ReactNode;
-  background?: string;
-  overlayColor?: string;
-  backgroundClassName?: string;
-}
-
 export function MediaAvatarCard({
   sx,
   leftContent,
@@ -41,7 +26,17 @@ export function MediaAvatarCard({
   background,
   overlayColor,
   backgroundClassName = "animated-background-image",
-}: MediaAvatarCardProps) {
+}: {
+  sx?: SxProps<Theme>;
+  title?: ReactNode;
+  description?: ReactNode;
+  footer?: ReactNode;
+  leftContent?: ReactNode;
+  rightContent?: ReactNode;
+  background?: string;
+  overlayColor?: string;
+  backgroundClassName?: string;
+}) {
   const theme = useTheme();
 
   return (
@@ -159,15 +154,6 @@ export function MediaAvatarCard({
   );
 }
 
-interface SideStripeCardProps extends BaseCardProps {
-  stripeContent?: ReactNode;
-  mainContent?: ReactNode;
-  minWidth?: number | string;
-  maxWidth?: number | string;
-  height?: number | string;
-  stripeWidth?: number | string;
-}
-
 export function SideStripeCard({
   sx,
   stripeContent,
@@ -179,7 +165,18 @@ export function SideStripeCard({
   maxWidth = 290,
   height = 100,
   stripeWidth = 65,
-}: SideStripeCardProps) {
+}: {
+  sx?: SxProps<Theme>;
+  title?: ReactNode;
+  description?: ReactNode;
+  footer?: ReactNode;
+  stripeContent?: ReactNode;
+  mainContent?: ReactNode;
+  minWidth?: number | string;
+  maxWidth?: number | string;
+  height?: number | string;
+  stripeWidth?: number | string;
+}) {
   const theme = useTheme();
 
   return (
@@ -303,21 +300,19 @@ export function SideStripeCard({
   );
 }
 
-interface HeaderCardProps {
-  sx?: SxProps<Theme>;
-  header?: ReactNode;
-  children?: ReactNode;
-  height?: number | string;
-  padding?: number | string;
-}
-
 export function HeaderCard({
   sx,
   header,
   children,
   height = 140,
   padding = 2,
-}: HeaderCardProps) {
+}: {
+  sx?: SxProps<Theme>;
+  header?: ReactNode;
+  children?: ReactNode;
+  height?: number | string;
+  padding?: number | string;
+}) {
   const theme = useTheme();
   return (
     <Card
@@ -367,19 +362,17 @@ export function HeaderCard({
   );
 }
 
-interface AvatarRoleCardProps {
-  sx?: SxProps<Theme>;
-  leftContent?: ReactNode;
-  topRightContent?: ReactNode;
-  bottomContent?: ReactNode;
-}
-
 export function AvatarRoleCard({
   sx,
   leftContent,
   topRightContent,
   bottomContent,
-}: AvatarRoleCardProps) {
+}: {
+  sx?: SxProps<Theme>;
+  leftContent?: ReactNode;
+  topRightContent?: ReactNode;
+  bottomContent?: ReactNode;
+}) {
   const theme = useTheme();
 
   return (

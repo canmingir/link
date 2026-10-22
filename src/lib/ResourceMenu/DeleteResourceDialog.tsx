@@ -10,22 +10,17 @@ import {
   Typography,
 } from "@mui/material";
 
-interface DeleteResourceInfo {
-  deleteAdress?: string;
-  deleteList: string[];
-}
-
-interface DeleteResourceDialogProps {
-  open?: boolean;
-  setOpen: (open: boolean) => void;
-  deleteResource: () => void;
-}
-
 const DeleteResourceDialog = forwardRef<
-  DeleteResourceInfo,
-  DeleteResourceDialogProps
+  { deleteAdress?: string; deleteList: string[] },
+  {
+    open?: boolean;
+    setOpen: (open: boolean) => void;
+    deleteResource: () => void;
+  }
 >(({ setOpen, deleteResource }, ref) => {
-  const resource = (ref as RefObject<DeleteResourceInfo>)?.current;
+  const resource = (
+    ref as RefObject<{ deleteAdress?: string; deleteList: string[] }>
+  )?.current;
 
   const handleClose = () => {
     setOpen(false);

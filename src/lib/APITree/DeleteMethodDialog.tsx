@@ -5,15 +5,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-interface DeleteMethodDialogProps {
-  setOpen: (open: boolean) => void;
-  deleteMethod: () => void;
-}
-
 const DeleteMethodDialog = ({
   setOpen,
   deleteMethod,
-}: DeleteMethodDialogProps) => {
+}: {
+  setOpen: (open: boolean) => void;
+  deleteMethod: () => void;
+}) => {
   const handleClose = () => {
     setOpen(false);
   };

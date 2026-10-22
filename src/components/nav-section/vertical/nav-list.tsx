@@ -6,12 +6,13 @@ import { usePathname } from "../../../routes/hooks";
 
 import { useCallback, useEffect, useState } from "react";
 
-interface NavListProps {
+export default function NavList({
+  data,
+  depth,
+}: {
   data: NavItemData;
   depth: number;
-}
-
-export default function NavList({ data, depth }: NavListProps) {
+}) {
   const pathname = usePathname();
   const active = useActiveLink(data.path, !!data.children);
   const [openMenu, setOpenMenu] = useState(active);

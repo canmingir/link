@@ -11,17 +11,11 @@ import {
   Typography,
 } from "@mui/material";
 
-interface NewItem {
-  name?: string;
-  description?: string;
-  icon?: string;
-}
-
-interface ItemSummaryProps {
-  newItem: NewItem;
-}
-
-export default function ItemSummary({ newItem }: ItemSummaryProps) {
+export default function ItemSummary({
+  newItem,
+}: {
+  newItem: { name?: string; description?: string; icon?: string };
+}) {
   return (
     <>
       <DialogContentText sx={{ textAlign: "center", mb: 2 }}>

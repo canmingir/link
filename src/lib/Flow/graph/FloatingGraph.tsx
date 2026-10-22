@@ -7,22 +7,20 @@ import { useMemo } from "react";
 
 import type { FlowPluginArg, FlowStyleResolver } from "../hooks/useNodeStyle";
 
-interface FloatingGraphProps {
-  structure?: FloatingStructure & { _pastePosition?: { x: number; y: number } };
-  variant?: string;
-  style?: FlowStyleResolver;
-  plugin?: FlowPluginArg;
-  selectionColor?: string;
-  onConnect?: (nodeId: string, selectedIds: string[]) => void;
-}
-
 const FloatingGraph = ({
   structure,
   variant,
   style,
   plugin,
   onConnect,
-}: FloatingGraphProps) => {
+}: {
+  structure?: FloatingStructure & { _pastePosition?: { x: number; y: number } };
+  variant?: string;
+  style?: FlowStyleResolver;
+  plugin?: FlowPluginArg;
+  selectionColor?: string;
+  onConnect?: (nodeId: string, selectedIds: string[]) => void;
+}) => {
   const position = structure?._pastePosition || { x: 0, y: 0 };
 
   const treesData = useMemo<TreeNode[]>(() => {

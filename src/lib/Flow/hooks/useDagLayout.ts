@@ -20,21 +20,19 @@ import type {
 import type { FlowNode, FlowNodeMap } from "../types";
 import { getBaseStyleForVariant, toPxNumber } from "../styles";
 
-interface ResolveTokensArgs {
-  node: FlowNode;
-  type?: string;
-  variant?: string;
-  style?: FlowStyleResolver;
-  plugin?: FlowPluginArg;
-}
-
 function resolveTokens({
   node,
   type,
   variant,
   style,
   plugin,
-}: ResolveTokensArgs): Record<string, unknown> {
+}: {
+  node: FlowNode;
+  type?: string;
+  variant?: string;
+  style?: FlowStyleResolver;
+  plugin?: FlowPluginArg;
+}): Record<string, unknown> {
   const baseStyle = getBaseStyleForVariant(variant);
 
   let tokens: Record<string, unknown> = {};
@@ -58,15 +56,11 @@ function resolveTokens({
   return { ...baseStyle, ...tokens, ...pluginTokens };
 }
 
-interface SizeFromTokensResult {
+function sizeFromTokens(tokens: Record<string, unknown>): {
   width: number;
   height: number;
   extraSpacing: number;
-}
-
-function sizeFromTokens(
-  tokens: Record<string, unknown>
-): SizeFromTokensResult {
+} {
   const width = (tokens.nodeWidth ??
     tokens.maxWidth ??
     tokens.minWidth ??
@@ -86,20 +80,6 @@ function sizeFromTokens(
   };
 }
 
-export interface UseDagLayoutArgs {
-  nodesById?: FlowNodeMap;
-  enabled?: boolean;
-  direction?: DagDirection;
-  type?: string;
-  variant?: string;
-  style?: FlowStyleResolver;
-  plugin?: FlowPluginArg;
-  positions?: DagLayoutPositions;
-  layoutEdges?: DagLayoutEdge[];
-  layoutBounds?: DagLayoutBounds;
-  onLayoutError?: (error: unknown) => void;
-}
-
 export function useDagLayout({
   nodesById,
   enabled,
@@ -112,7 +92,19 @@ export function useDagLayout({
   layoutEdges,
   layoutBounds,
   onLayoutError,
-}: UseDagLayoutArgs): DagLayoutResult | null {
+}: {
+  nodesById?: FlowNodeMap;
+  enabled?: boolean;
+  direction?: DagDirection;
+  type?: string;
+  variant?: string;
+  style?: FlowStyleResolver;
+  plugin?: FlowPluginArg;
+  positions?: DagLayoutPositions;
+  layoutEdges?: DagLayoutEdge[];
+  layoutBounds?: DagLayoutBounds;
+  onLayoutError?: (error: unknown) => void;
+}): DagLayoutResult | null {
   const [computed, setComputed] = useState<DagLayoutResult | null>(null);
   const requestRef = useRef(0);
 

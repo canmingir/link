@@ -8,12 +8,13 @@ import { ChevronRight, ExpandMore } from "@mui/icons-material";
 import type { CustomType, SchemaNode } from "../SchemaEditor/types";
 import { useEffect, useState } from "react";
 
-interface SchemaProps {
+const Schema = ({
+  initialData = {},
+  customTypes = [],
+}: {
   initialData?: Partial<SchemaNode> | null;
   customTypes?: CustomType[];
-}
-
-const Schema = ({ initialData = {}, customTypes = [] }: SchemaProps) => {
+}) => {
   const [schemaData, setSchemaData] = useState<SchemaNode>({} as SchemaNode);
 
   useEffect(() => {

@@ -20,7 +20,16 @@ export type FlowNodeData = FlowNodeType & {
   type?: string;
 };
 
-interface FlowNodeViewProps {
+const FlowNodeView = ({
+  node,
+  type,
+  variant,
+  style,
+  plugin,
+  registerRef,
+  onDrag,
+  onConnect,
+}: {
   node: FlowNodeData;
   type?: string;
   variant?: string;
@@ -31,20 +40,8 @@ interface FlowNodeViewProps {
   onConnect?: (nodeId: string, selectedIds: string[]) => void;
   onAddNode?: (...args: unknown[]) => void;
   isRoot?: boolean;
-  /** FlowNode forwards unmatched props through here. */
   [key: string]: unknown;
-}
-
-const FlowNodeView = ({
-  node,
-  type,
-  variant,
-  style,
-  plugin,
-  registerRef,
-  onDrag,
-  onConnect,
-}: FlowNodeViewProps) => {
+}) => {
   const hasChildren = Array.isArray(node.children) && node.children.length > 0;
   const isVirtualRoot = !!node.virtual;
 

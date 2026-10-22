@@ -4,24 +4,20 @@ import { useState } from "react";
 import { Box, Input, MenuItem, Select, Typography } from "@mui/material";
 import type { CustomType, SchemaNode, SchemaType } from "./types";
 
-type EditMode = "name" | "type" | null;
-
-interface SchemaPropertyEditorProps {
-  node: SchemaNode & { level?: number };
-  onNameChange: (newName: string) => void;
-  disableNameChange?: boolean;
-  onTypeChange: (newType: SchemaType) => void;
-  customTypes: CustomType[];
-}
-
 const SchemaPropertyEditor = ({
   node,
   onNameChange,
   disableNameChange,
   onTypeChange,
   customTypes,
-}: SchemaPropertyEditorProps) => {
-  const [editMode, setEditMode] = useState<EditMode>(null);
+}: {
+  node: SchemaNode & { level?: number };
+  onNameChange: (newName: string) => void;
+  disableNameChange?: boolean;
+  onTypeChange: (newType: SchemaType) => void;
+  customTypes: CustomType[];
+}) => {
+  const [editMode, setEditMode] = useState<"name" | "type" | null>(null);
   const [name, setName] = useState(node.name || "");
   const [type, setType] = useState(node.type);
   const [isSelectOpen, setIsSelectOpen] = useState(false);

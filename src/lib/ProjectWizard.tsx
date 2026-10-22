@@ -10,21 +10,6 @@ import StepComponent from "./StepComponent/StepComponent";
 import type { ChangeEvent, ReactNode } from "react";
 import { useEffect, useState } from "react";
 
-type WizardItem = Record<string, unknown> & { id?: string; icon?: string };
-
-interface ProjectWizardProps {
-  itemProperties: string[];
-  onSubmit: (
-    idOrItem: string | WizardItem,
-    rest?: Omit<WizardItem, "id">
-  ) => void;
-  open: boolean;
-  onClose: () => void;
-  itemToEdit?: WizardItem | null;
-  steps?: string[];
-  stepExp?: ReactNode[];
-}
-
 function ProjectWizard({
   itemProperties,
   onSubmit,
@@ -33,7 +18,22 @@ function ProjectWizard({
   itemToEdit,
   steps,
   stepExp,
-}: ProjectWizardProps) {
+}: {
+  itemProperties: string[];
+  onSubmit: (
+    idOrItem:
+      | string
+      | (Record<string, unknown> & { id?: string; icon?: string }),
+    rest?: Omit<Record<string, unknown> & { id?: string; icon?: string }, "id">
+  ) => void;
+  open: boolean;
+  onClose: () => void;
+  itemToEdit?:
+    | (Record<string, unknown> & { id?: string; icon?: string })
+    | null;
+  steps?: string[];
+  stepExp?: ReactNode[];
+}) {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -44,11 +44,12 @@ function ProjectWizard({
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const [newItem, setNewItem] = useState<WizardItem>(
-    itemProperties.reduce<WizardItem>(
-      (obj, property) => ({ ...obj, [property]: "" }),
-      {}
-    )
+  const [newItem, setNewItem] = useState<
+    Record<string, unknown> & { id?: string; icon?: string }
+  >(
+    itemProperties.reduce<
+      Record<string, unknown> & { id?: string; icon?: string }
+    >((obj, property) => ({ ...obj, [property]: "" }), {})
   );
 
   useEffect(() => {
@@ -56,10 +57,9 @@ function ProjectWizard({
       setNewItem(itemToEdit);
     } else if (!open) {
       setNewItem(
-        itemProperties.reduce<WizardItem>(
-          (obj, property) => ({ ...obj, [property]: "" }),
-          {}
-        )
+        itemProperties.reduce<
+          Record<string, unknown> & { id?: string; icon?: string }
+        >((obj, property) => ({ ...obj, [property]: "" }), {})
       );
     }
   }, [open, itemProperties, itemToEdit]);

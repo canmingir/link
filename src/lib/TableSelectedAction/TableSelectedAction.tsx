@@ -4,14 +4,6 @@ import Stack from "@mui/material/Stack";
 import type { StackProps } from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-type TableSelectedActionProps = {
-  dense?: boolean;
-  action?: ReactNode;
-  rowCount: number;
-  numSelected: number;
-  onSelectAllRows: (checked: boolean) => void;
-} & StackProps;
-
 export default function TableSelectedAction({
   dense,
   action,
@@ -20,7 +12,13 @@ export default function TableSelectedAction({
   onSelectAllRows,
   sx,
   ...other
-}: TableSelectedActionProps) {
+}: {
+  dense?: boolean;
+  action?: ReactNode;
+  rowCount: number;
+  numSelected: number;
+  onSelectAllRows: (checked: boolean) => void;
+} & StackProps) {
   if (!numSelected) {
     return null;
   }

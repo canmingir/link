@@ -12,27 +12,30 @@ import specialLoginLayout from "../layouts/auth/special";
 import type { ComponentType, ReactElement, ReactNode } from "react";
 import { Route, Routes } from "react-router-dom";
 
-type LoginLayoutComponent = ComponentType<{ image?: string; title?: string }>;
-
-const loginLayouts: Record<string, LoginLayoutComponent> = {
-  classic: classicLoginLayout as LoginLayoutComponent,
-  modern: modernLoginLayout as LoginLayoutComponent,
-  special: specialLoginLayout as LoginLayoutComponent,
+const loginLayouts: Record<
+  string,
+  ComponentType<{ image?: string; title?: string }>
+> = {
+  classic: classicLoginLayout as ComponentType<{
+    image?: string;
+    title?: string;
+  }>,
+  modern: modernLoginLayout as ComponentType<{
+    image?: string;
+    title?: string;
+  }>,
+  special: specialLoginLayout as ComponentType<{
+    image?: string;
+    title?: string;
+  }>,
 };
-
-interface RoutePage {
-  path: string;
-  element: ReactNode;
-}
-
-interface RouteChild {
-  layout: ReactElement;
-  pages: RoutePage[];
-}
 
 export interface AppRoute {
   container: ReactElement;
-  childs: RouteChild[];
+  childs: {
+    layout: ReactElement;
+    pages: { path: string; element: ReactNode }[];
+  }[];
 }
 
 export default function RouteManager({ routes }: { routes: AppRoute[] }) {

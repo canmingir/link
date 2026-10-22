@@ -5,33 +5,32 @@ import { storage } from "@nucleoidjs/webstorage";
 
 import axios, { AxiosInstance } from "axios";
 
-type UserRecord = {
-  id: string;
-  identityProvider: string;
-  name: string;
-  displayName: string | null;
-  avatarUrl: string | null;
-  email: string | null;
-};
-
-type PermissionRecord = {
-  appId: string;
-  projectId: string;
-  userId: string;
-};
-
-type UserInstance = AxiosInstance & {
-  getUserDetails: () => Promise<UserRecord | null>;
-  getPermittedUsers: () => Promise<UserRecord[]>;
-};
-
 const instance = axios.create({
   headers: {
     common: {
       "Content-Type": "application/json",
     },
   },
-}) as UserInstance;
+}) as AxiosInstance & {
+  getUserDetails: () => Promise<{
+    id: string;
+    identityProvider: string;
+    name: string;
+    displayName: string | null;
+    avatarUrl: string | null;
+    email: string | null;
+  } | null>;
+  getPermittedUsers: () => Promise<
+    {
+      id: string;
+      identityProvider: string;
+      name: string;
+      displayName: string | null;
+      avatarUrl: string | null;
+      email: string | null;
+    }[]
+  >;
+};
 
 instance.interceptors.request.use(async (request) => {
   const refreshToken = await storage.get("link", "refreshtoken");
@@ -75,7 +74,7 @@ instance.getPermittedUsers = async () => {
 
   const uniqueUserIds: string[] = [
     ...new Set<string>(
-      (response.data as PermissionRecord[])
+      (response.data as { appId: string; projectId: string; userId: string }[])
         .filter((p) => p.appId === appId && p.projectId === projectId)
         .map((p) => p.userId)
     ),
@@ -86,36 +85,55 @@ instance.getPermittedUsers = async () => {
 
   if (identityProvider?.toUpperCase() === "GITHUB") {
     const results = await Promise.allSettled(
-      uniqueUserIds.map(async (userId): Promise<UserRecord> => {
-        if (UUID_REGEX.test(userId)) {
+      uniqueUserIds.map(
+        async (
+          userId
+        ): Promise<{
+          id: string;
+          identityProvider: string;
+          name: string;
+          displayName: string | null;
+          avatarUrl: string | null;
+          email: string | null;
+        }> => {
+          if (UUID_REGEX.test(userId)) {
+            return {
+              id: String(userId),
+              identityProvider,
+              name: String(userId),
+              displayName: null,
+              avatarUrl: `https://api.dicebear.com/7.x/bottts/svg?seed=${userId}`,
+              email: null,
+            };
+          }
+          const { data } = await axios.get(
+            `https://api.github.com/user/${userId}`,
+            { headers: { Accept: "application/vnd.github+json" } }
+          );
           return {
-            id: String(userId),
-            identityProvider,
-            name: String(userId),
-            displayName: null,
-            avatarUrl: `https://api.dicebear.com/7.x/bottts/svg?seed=${userId}`,
-            email: null,
+            id: String(data.id),
+            identityProvider: "GITHUB",
+            name: data.login,
+            displayName: data.name || null,
+            avatarUrl: data.avatar_url || null,
+            email: data.email || null,
           };
         }
-        const { data } = await axios.get(
-          `https://api.github.com/user/${userId}`,
-          { headers: { Accept: "application/vnd.github+json" } }
-        );
-        return {
-          id: String(data.id),
-          identityProvider: "GITHUB",
-          name: data.login,
-          displayName: data.name || null,
-          avatarUrl: data.avatar_url || null,
-          email: data.email || null,
-        };
-      })
+      )
     );
 
     return results
       .filter(
-        (r): r is PromiseFulfilledResult<UserRecord> =>
-          r.status === "fulfilled" && r.value !== null
+        (
+          r
+        ): r is PromiseFulfilledResult<{
+          id: string;
+          identityProvider: string;
+          name: string;
+          displayName: string | null;
+          avatarUrl: string | null;
+          email: string | null;
+        }> => r.status === "fulfilled" && r.value !== null
       )
       .map((r) => r.value);
   }
@@ -147,7 +165,16 @@ instance.getPermittedUsers = async () => {
     return uniqueUserIds
       .filter((id) => !UUID_REGEX.test(id))
       .map(
-        (id): UserRecord => ({
+        (
+          id
+        ): {
+          id: string;
+          identityProvider: string;
+          name: string;
+          displayName: string | null;
+          avatarUrl: string | null;
+          email: string | null;
+        } => ({
           id: String(id),
           identityProvider: "COGNITO",
           name: id === currentUserId ? "You" : "Cognito User",

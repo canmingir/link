@@ -4,33 +4,16 @@ import { alpha } from "@mui/material/styles";
 import { Box, Button, Collapse, Stack, Typography } from "@mui/material";
 import React, { memo, useMemo, useState } from "react";
 
-export type ToolStatus =
-  | "awaiting_approval"
-  | "pending"
-  | "success"
-  | "error"
-  | "declined";
-
 export type ToolDecision = "approve" | "decline" | "approve_all";
-
-export interface ToolMessageContent {
-  id: string;
-  name: string;
-  input?: Record<string, unknown>;
-  output?: string;
-  status: ToolStatus;
-}
-
-export interface ToolRendererProps {
-  name: string;
-  input?: Record<string, unknown>;
-  output?: string;
-  status: ToolStatus;
-}
 
 export type ToolRenderers = Record<
   string,
-  React.ComponentType<ToolRendererProps>
+  React.ComponentType<{
+    name: string;
+    input?: Record<string, unknown>;
+    output?: string;
+    status: "awaiting_approval" | "pending" | "success" | "error" | "declined";
+  }>
 >;
 
 function formatLabel(name: string): string {
@@ -58,7 +41,7 @@ function formatValue(value: unknown): string {
   return String(value);
 }
 
-function statusIcon(status: ToolStatus): string {
+function statusIcon(status: "awaiting_approval" | "pending" | "success" | "error" | "declined"): string {
   if (status === "success") return "solar:check-circle-bold";
   if (status === "error") return "solar:close-circle-bold";
   if (status === "declined") return "solar:forbidden-circle-bold";
@@ -67,7 +50,7 @@ function statusIcon(status: ToolStatus): string {
 }
 
 function statusColor(
-  status: ToolStatus
+  status: "awaiting_approval" | "pending" | "success" | "error" | "declined"
 ): "success.main" | "error.main" | "warning.main" | "text.secondary" {
   if (status === "success") return "success.main";
   if (status === "error") return "error.main";
@@ -221,7 +204,13 @@ const ToolMessage: React.FC<{
 }> = memo(({ content, messageRef, renderers, onDecision }) => {
   const [expanded, setExpanded] = useState(false);
 
-  const tool = useMemo<ToolMessageContent | null>(() => {
+  const tool = useMemo<{
+    id: string;
+    name: string;
+    input?: Record<string, unknown>;
+    output?: string;
+    status: "awaiting_approval" | "pending" | "success" | "error" | "declined";
+  } | null>(() => {
     try {
       const parsed = JSON.parse(content);
       if (parsed && typeof parsed.name === "string") return parsed;

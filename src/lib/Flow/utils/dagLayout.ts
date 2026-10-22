@@ -14,14 +14,10 @@ export interface DagLayoutEdge {
   branch: string;
 }
 
-export interface DagLayoutBox {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-export type DagLayoutPositions = Record<string, DagLayoutBox>;
+export type DagLayoutPositions = Record<
+  string,
+  { x: number; y: number; width: number; height: number }
+>;
 
 export interface DagLayoutBounds {
   width: number;
@@ -36,28 +32,13 @@ export interface DagLayoutResult {
 
 export type DagDirection = "RIGHT" | "DOWN" | "LEFT" | "UP";
 
-export interface DagNodeSize {
-  width?: number;
-  height?: number;
-  extraSpacing?: number;
-}
-
-export interface ComputeDagLayoutOptions {
-  direction?: DagDirection;
-  sizeFor?: (node: FlowNodeMap[string]) => DagNodeSize | undefined;
-}
-
 export function buildLayoutEdges(
   nodesById: FlowNodeMap | undefined
 ): DagLayoutEdge[] {
   const edges: DagLayoutEdge[] = [];
   const seen = new Set<string>();
 
-  const push = (
-    source: string,
-    target: string | undefined,
-    branch: string
-  ) => {
+  const push = (source: string, target: string | undefined, branch: string) => {
     if (!target || !nodesById?.[target]) return;
     const id = `${source}->${target}:${branch}`;
     if (seen.has(id)) return;
@@ -85,14 +66,12 @@ export function buildLayoutEdges(
   return edges;
 }
 
-interface EdgeStats {
+function analyzeEdges(edges: DagLayoutEdge[]): {
   hasConditionalBranching: boolean;
   maxBranchingFactor: number;
   maxMergingFactor: number;
   hasMergePoints: boolean;
-}
-
-function analyzeEdges(edges: DagLayoutEdge[]): EdgeStats {
+} {
   const incomingCount: Record<string, number> = {};
   const outgoingCount: Record<string, number> = {};
   let hasConditionalBranching = false;
@@ -114,13 +93,11 @@ function analyzeEdges(edges: DagLayoutEdge[]): EdgeStats {
   };
 }
 
-type ElkOptions = Record<string, string>;
-
 function withExtraSpacing(
-  options: ElkOptions,
+  options: Record<string, string>,
   extraSpacing: number,
   direction: DagDirection
-): ElkOptions {
+): Record<string, string> {
   if (!extraSpacing) return options;
 
   const key =
@@ -131,8 +108,16 @@ function withExtraSpacing(
   return { ...options, [key]: String(Number(options[key]) + extraSpacing) };
 }
 
-function buildElkOptions(stats: EdgeStats, direction: DagDirection) {
-  let options: ElkOptions = {
+function buildElkOptions(
+  stats: {
+    hasConditionalBranching: boolean;
+    maxBranchingFactor: number;
+    maxMergingFactor: number;
+    hasMergePoints: boolean;
+  },
+  direction: DagDirection
+) {
+  let options: Record<string, string> = {
     "elk.algorithm": "layered",
     "elk.direction": direction,
     "elk.layered.spacing.nodeNodeBetweenLayers": "100",
@@ -215,7 +200,10 @@ function centerMergePoints(
 
     const parentCenters = parentIds
       .map((id) => positions[id])
-      .filter((p): p is DagLayoutBox => Boolean(p))
+      .filter(
+        (p): p is { x: number; y: number; width: number; height: number } =>
+          Boolean(p)
+      )
       .map((p) => p[crossAxis] + p[crossSize] / 2);
 
     if (parentCenters.length < 2) continue;
@@ -228,7 +216,12 @@ function centerMergePoints(
 
 export async function computeDagLayout(
   nodesById: FlowNodeMap | undefined,
-  options: ComputeDagLayoutOptions = {}
+  options: {
+    direction?: DagDirection;
+    sizeFor?: (
+      node: FlowNodeMap[string]
+    ) => { width?: number; height?: number; extraSpacing?: number } | undefined;
+  } = {}
 ): Promise<DagLayoutResult> {
   const direction = options.direction ?? "RIGHT";
   const nodeIds = Object.keys(nodesById ?? {});

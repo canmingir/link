@@ -5,15 +5,13 @@ import Stack from "@mui/material/Stack";
 import type { Theme } from "@mui/material/styles";
 import { alpha } from "@mui/material/styles";
 
-interface StretchOptionsProps {
-  value: boolean;
-  onChange: () => void;
-}
-
 export default function StretchOptions({
   value,
   onChange,
-}: StretchOptionsProps) {
+}: {
+  value: boolean;
+  onChange: () => void;
+}) {
   return (
     <ButtonBase
       onClick={onChange}

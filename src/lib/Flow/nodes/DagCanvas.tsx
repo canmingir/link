@@ -16,19 +16,6 @@ import type { FlowPluginArg, FlowStyleResolver } from "../hooks/useNodeStyle";
 import { getContentParts } from "../utils/flowUtils";
 import { useNodeStyle } from "../hooks/useNodeStyle";
 
-interface DagNodeProps {
-  node: FlowNode;
-  positionedStyle: { transform: string };
-  type?: string;
-  variant?: string;
-  style?: FlowStyleResolver;
-  plugin?: FlowPluginArg;
-  onConnect?: (nodeId: string, selectedIds: string[]) => void;
-  registerSize?: (id: string, size: { width: number; height: number }) => void;
-  dragTick?: string;
-  onDrag?: (offset?: Point) => void;
-}
-
 const DagNode = ({
   node,
   positionedStyle,
@@ -40,7 +27,18 @@ const DagNode = ({
   registerSize,
   dragTick,
   onDrag,
-}: DagNodeProps) => {
+}: {
+  node: FlowNode;
+  positionedStyle: { transform: string };
+  type?: string;
+  variant?: string;
+  style?: FlowStyleResolver;
+  plugin?: FlowPluginArg;
+  onConnect?: (nodeId: string, selectedIds: string[]) => void;
+  registerSize?: (id: string, size: { width: number; height: number }) => void;
+  dragTick?: string;
+  onDrag?: (offset?: Point) => void;
+}) => {
   const {
     baseStyle,
     nodeStyle,
@@ -129,18 +127,6 @@ const DagNode = ({
   );
 };
 
-export interface DagCanvasProps {
-  nodesById?: FlowNodeMap;
-  positions?: DagLayoutPositions;
-  layoutEdges?: DagLayoutEdge[];
-  layoutBounds?: DagLayoutBounds;
-  type?: string;
-  variant?: string;
-  style?: FlowStyleResolver;
-  plugin?: FlowPluginArg;
-  onConnect?: (nodeId: string, selectedIds: string[]) => void;
-}
-
 const DagCanvas = ({
   nodesById,
   positions,
@@ -151,7 +137,17 @@ const DagCanvas = ({
   style,
   plugin,
   onConnect,
-}: DagCanvasProps) => {
+}: {
+  nodesById?: FlowNodeMap;
+  positions?: DagLayoutPositions;
+  layoutEdges?: DagLayoutEdge[];
+  layoutBounds?: DagLayoutBounds;
+  type?: string;
+  variant?: string;
+  style?: FlowStyleResolver;
+  plugin?: FlowPluginArg;
+  onConnect?: (nodeId: string, selectedIds: string[]) => void;
+}) => {
   const [sizes, setSizes] = useState<
     Record<string, { width: number; height: number }>
   >({});
@@ -178,10 +174,7 @@ const DagCanvas = ({
     setDragOffsets((prev) => ({ ...prev, [id]: delta ?? { x: 0, y: 0 } }));
   }, []);
 
-  const layoutKey = useMemo(
-    () => JSON.stringify(positions ?? {}),
-    [positions]
-  );
+  const layoutKey = useMemo(() => JSON.stringify(positions ?? {}), [positions]);
   const [appliedLayoutKey, setAppliedLayoutKey] = useState(layoutKey);
   if (layoutKey !== appliedLayoutKey) {
     setAppliedLayoutKey(layoutKey);

@@ -20,13 +20,11 @@ export interface NotificationData {
   avatarUrl?: string | null;
 }
 
-interface NotificationItemProps {
-  notification: NotificationData;
-}
-
 export default function NotificationItem({
   notification,
-}: NotificationItemProps) {
+}: {
+  notification: NotificationData;
+}) {
   const renderAvatar = (
     <ListItemAvatar>
       {notification.avatarUrl ? (

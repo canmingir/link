@@ -5,16 +5,6 @@ import type { ReactNode } from "react";
 
 import { Card, Tooltip, Typography } from "@mui/material";
 
-interface ActionNodeProps {
-  visible?: boolean;
-  delay?: number;
-  isLoading?: boolean;
-  action?: ReactNode;
-  status?: ReactNode;
-  tooltip?: ReactNode;
-  icon?: string;
-}
-
 const ActionNode = ({
   visible,
   delay,
@@ -23,7 +13,15 @@ const ActionNode = ({
   status,
   tooltip,
   icon,
-}: ActionNodeProps) => {
+}: {
+  visible?: boolean;
+  delay?: number;
+  isLoading?: boolean;
+  action?: ReactNode;
+  status?: ReactNode;
+  tooltip?: ReactNode;
+  icon?: string;
+}) => {
   if (isLoading) {
     return <LoadingNode visible={visible} delay={delay} />;
   }

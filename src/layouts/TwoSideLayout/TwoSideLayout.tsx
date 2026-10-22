@@ -3,12 +3,13 @@ import Grid from "@mui/material/Grid";
 import type { ReactNode } from "react";
 import Typography from "@mui/material/Typography";
 
-interface TwoSideLayoutProps {
+export default function TwoSideLayout({
+  rows,
+  title,
+}: {
   rows: Record<string, ReactNode[]> | ReactNode[][];
   title?: ReactNode;
-}
-
-export default function TwoSideLayout({ rows, title }: TwoSideLayoutProps) {
+}) {
   const rowData = rows;
 
   return (

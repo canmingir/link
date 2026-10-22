@@ -6,16 +6,17 @@ import { forwardRef } from "react";
 import type { HTMLAttributes, ReactNode } from "react";
 import type { SxProps, Theme } from "@mui/material/styles";
 
-interface LabelProps extends Omit<HTMLAttributes<HTMLSpanElement>, "color"> {
-  children?: ReactNode;
-  color?: LabelOwnerState["color"];
-  variant?: LabelOwnerState["variant"];
-  startIcon?: ReactNode;
-  endIcon?: ReactNode;
-  sx?: SxProps<Theme>;
-}
-
-const Label = forwardRef<HTMLSpanElement, LabelProps>(
+const Label = forwardRef<
+  HTMLSpanElement,
+  Omit<HTMLAttributes<HTMLSpanElement>, "color"> & {
+    children?: ReactNode;
+    color?: LabelOwnerState["color"];
+    variant?: LabelOwnerState["variant"];
+    startIcon?: ReactNode;
+    endIcon?: ReactNode;
+    sx?: SxProps<Theme>;
+  }
+>(
   (
     {
       children,

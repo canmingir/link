@@ -9,17 +9,18 @@ import { forwardRef } from "react";
 
 import { alpha, styled } from "@mui/material/styles";
 
-interface NavItemProps extends Omit<Partial<ListItemButtonProps>, "title"> {
-  title?: ReactNode;
-  path?: string;
-  icon?: ReactNode;
-  open?: boolean;
-  active?: boolean;
-  hasChild?: boolean;
-  externalLink?: boolean;
-}
-
-export const NavItem = forwardRef<HTMLDivElement, NavItemProps>(
+export const NavItem = forwardRef<
+  HTMLDivElement,
+  Omit<Partial<ListItemButtonProps>, "title"> & {
+    title?: ReactNode;
+    path?: string;
+    icon?: ReactNode;
+    open?: boolean;
+    active?: boolean;
+    hasChild?: boolean;
+    externalLink?: boolean;
+  }
+>(
   (
     { title, path, icon, open, active, hasChild, externalLink, ...other },
     ref
@@ -72,14 +73,9 @@ export const NavItem = forwardRef<HTMLDivElement, NavItemProps>(
   }
 );
 
-interface StyledNavItemProps {
-  open?: boolean;
-  active?: boolean;
-}
-
 const StyledNavItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== "active",
-})<StyledNavItemProps>(({ open, active, theme }) => {
+})<{ open?: boolean; active?: boolean }>(({ open, active, theme }) => {
   const opened = open && !active;
 
   return {

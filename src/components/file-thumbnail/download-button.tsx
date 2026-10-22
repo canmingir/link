@@ -3,11 +3,11 @@ import Iconify from "../Iconify";
 import { bgBlur } from "../../theme/css";
 import { useTheme } from "@mui/material/styles";
 
-interface DownloadButtonProps {
+export default function DownloadButton({
+  onDownload,
+}: {
   onDownload?: () => void;
-}
-
-export default function DownloadButton({ onDownload }: DownloadButtonProps) {
+}) {
   const theme = useTheme();
 
   return (

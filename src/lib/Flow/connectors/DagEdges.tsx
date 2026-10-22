@@ -6,23 +6,6 @@ import { useId, useMemo } from "react";
 import type { DagLayoutBounds, DagLayoutEdge } from "../utils/dagLayout";
 import { toPxNumber } from "../styles";
 
-interface Point {
-  x: number;
-  y: number;
-}
-
-interface Gradient {
-  from: string;
-  to: string;
-}
-
-interface EdgeLabelStyle {
-  color?: string;
-  fontSize?: string | number;
-  fontWeight?: string | number;
-  textColor?: string;
-}
-
 export interface DagEdgeProps {
   lineColor?: string;
   lineWidth?: string | number;
@@ -34,13 +17,18 @@ export interface DagEdgeProps {
   arrowSize?: number;
   animated?: boolean;
   animationSpeed?: number;
-  gradient?: string | Gradient | null;
+  gradient?: string | { from: string; to: string } | null;
   curvature?: number;
   connectorType?: string;
   startGap?: number;
   endGap?: number;
   label?: ReactNode;
-  labelStyle?: EdgeLabelStyle;
+  labelStyle?: {
+    color?: string;
+    fontSize?: string | number;
+    fontWeight?: string | number;
+    textColor?: string;
+  };
   labelPosition?: number;
   labelOffsetX?: number;
   labelOffsetY?: number;
@@ -53,45 +41,16 @@ export interface DagBox {
   height: number;
 }
 
-interface ResolvedEdge {
-  id: string;
-  d: string;
-  from: Point;
-  to: Point;
-  strokeWidth: number;
-  showArrow: boolean;
-  arrowSize: number;
-  stroke: string;
-  lineStyle: string;
-  animated: boolean;
-  animationSpeed: number;
-  gradient: string | Gradient | null;
-  showDots: boolean;
-  dotRadius: number;
-  dotColor?: string;
-  label?: ReactNode;
-  labelStyle: EdgeLabelStyle;
-  labelPosition: number;
-  labelOffsetX: number;
-  labelOffsetY: number;
-}
-
-interface DagEdgesProps {
-  edges?: DagLayoutEdge[];
-  boxes?: Record<string, DagBox>;
-  bounds?: DagLayoutBounds;
-  orientation?: "horizontal" | "vertical";
-  baseEdgeProps?: DagEdgeProps;
-  resolveEdgeProps?: (edge: DagLayoutEdge) => DagEdgeProps;
-}
-
 const anchorsFor = (
   sourceBox: DagBox,
   targetBox: DagBox,
   isHorizontal: boolean,
   tailInset: number,
   headInset: number
-): { from: Point; to: Point } => {
+): {
+  from: { x: number; y: number };
+  to: { x: number; y: number };
+} => {
   if (isHorizontal) {
     const from = {
       x: sourceBox.x + sourceBox.width + tailInset,
@@ -116,16 +75,15 @@ const anchorsFor = (
 };
 
 const buildPath = (
-  from: Point,
-  to: Point,
+  from: { x: number; y: number },
+  to: { x: number; y: number },
   {
     connectorType,
     curvature,
     isHorizontal,
   }: { connectorType: string; curvature: number; isHorizontal: boolean }
 ): string => {
-  const isCornered =
-    connectorType === "cornered" || connectorType === "normal";
+  const isCornered = connectorType === "cornered" || connectorType === "normal";
 
   if (isCornered) {
     if (isHorizontal) {
@@ -167,12 +125,45 @@ const DagEdges = ({
   orientation = "horizontal",
   baseEdgeProps,
   resolveEdgeProps,
-}: DagEdgesProps) => {
+}: {
+  edges?: DagLayoutEdge[];
+  boxes?: Record<string, DagBox>;
+  bounds?: DagLayoutBounds;
+  orientation?: "horizontal" | "vertical";
+  baseEdgeProps?: DagEdgeProps;
+  resolveEdgeProps?: (edge: DagLayoutEdge) => DagEdgeProps;
+}) => {
   const uniqueId = useId();
   const isHorizontal = orientation === "horizontal";
 
   const resolved = useMemo(() => {
-    const out: ResolvedEdge[] = [];
+    const out: {
+      id: string;
+      d: string;
+      from: { x: number; y: number };
+      to: { x: number; y: number };
+      strokeWidth: number;
+      showArrow: boolean;
+      arrowSize: number;
+      stroke: string;
+      lineStyle: string;
+      animated: boolean;
+      animationSpeed: number;
+      gradient: string | { from: string; to: string } | null;
+      showDots: boolean;
+      dotRadius: number;
+      dotColor?: string;
+      label?: ReactNode;
+      labelStyle: {
+        color?: string;
+        fontSize?: string | number;
+        fontWeight?: string | number;
+        textColor?: string;
+      };
+      labelPosition: number;
+      labelOffsetX: number;
+      labelOffsetY: number;
+    }[] = [];
 
     for (const edge of edges) {
       const sourceBox = boxes?.[edge.source];

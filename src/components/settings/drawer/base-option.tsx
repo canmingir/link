@@ -3,19 +3,17 @@ import Stack from "@mui/material/Stack";
 import SvgColor from "../../svg-color";
 import { alpha } from "@mui/material/styles";
 
-interface BaseOptionsProps {
-  icons: string[];
-  options: string[];
-  value: string;
-  onChange: (value: string) => void;
-}
-
 export default function BaseOptions({
   icons,
   options,
   value,
   onChange,
-}: BaseOptionsProps) {
+}: {
+  icons: string[];
+  options: string[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
   return (
     <Stack direction="row" spacing={2}>
       {options.map((option, index: number) => {

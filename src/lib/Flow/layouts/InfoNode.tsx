@@ -7,24 +7,6 @@ import type { FlowNodeData } from "../nodes/FlowNodeView";
 
 const ANIMATION_DELAY_MS = 200;
 
-interface InfoNodeStyle {
-  minWidth?: number | string;
-  minHeight?: number | string;
-  maxWidth?: number | string;
-  maxHeight?: number | string;
-  borderRadius?: number | string;
-  borderColor?: string;
-  bgFrom?: string;
-  bgTo?: string;
-  bg?: string;
-  hoverBg?: string;
-  padding?: number | string;
-  color?: string;
-  fontWeight?: number | string;
-  fontSize?: number | string;
-  letterSpacing?: number | string;
-}
-
 const MainContainer = styled("div", {
   shouldForwardProp: (prop) => prop !== "$style" && prop !== "$variant",
 })<{ $style?: Record<string, unknown>; $variant?: string }>(
@@ -38,7 +20,23 @@ const MainContainer = styled("div", {
       borderColor = "rgba(255, 255, 255, 0.08)",
       bgFrom,
       bgTo,
-    } = $style as InfoNodeStyle;
+    } = $style as {
+      minWidth?: number | string;
+      minHeight?: number | string;
+      maxWidth?: number | string;
+      maxHeight?: number | string;
+      borderRadius?: number | string;
+      borderColor?: string;
+      bgFrom?: string;
+      bgTo?: string;
+      bg?: string;
+      hoverBg?: string;
+      padding?: number | string;
+      color?: string;
+      fontWeight?: number | string;
+      fontSize?: number | string;
+      letterSpacing?: number | string;
+    };
 
     const defaultFrom = alpha(theme.palette.secondary.light, 0.2);
     const defaultTo = alpha(theme.palette.primary.main, 0.3);
@@ -134,7 +132,23 @@ const IconContainer = styled("div", {
       borderRadius = 14,
       padding = 10,
       borderColor = "rgba(255, 255, 255, 0.1)",
-    } = $style as InfoNodeStyle;
+    } = $style as {
+      minWidth?: number | string;
+      minHeight?: number | string;
+      maxWidth?: number | string;
+      maxHeight?: number | string;
+      borderRadius?: number | string;
+      borderColor?: string;
+      bgFrom?: string;
+      bgTo?: string;
+      bg?: string;
+      hoverBg?: string;
+      padding?: number | string;
+      color?: string;
+      fontWeight?: number | string;
+      fontSize?: number | string;
+      letterSpacing?: number | string;
+    };
 
     const isSplit = $variant === "split-icon-panel";
 
@@ -179,7 +193,23 @@ const LabelText = styled("div", {
       fontWeight = 700,
       fontSize = 15,
       letterSpacing = 0.3,
-    } = $style as InfoNodeStyle;
+    } = $style as {
+      minWidth?: number | string;
+      minHeight?: number | string;
+      maxWidth?: number | string;
+      maxHeight?: number | string;
+      borderRadius?: number | string;
+      borderColor?: string;
+      bgFrom?: string;
+      bgTo?: string;
+      bg?: string;
+      hoverBg?: string;
+      padding?: number | string;
+      color?: string;
+      fontWeight?: number | string;
+      fontSize?: number | string;
+      letterSpacing?: number | string;
+    };
 
     const isSplit = $variant === "split-icon-panel";
 
@@ -265,13 +295,15 @@ const getIcon = (node: FlowNodeData): string => {
   return "mdi:map-marker";
 };
 
-interface InfoNodeProps {
+const InfoNode = ({
+  node,
+  nodeStyle = {},
+  children,
+}: {
   node: FlowNodeData;
   nodeStyle?: Record<string, unknown>;
   children?: ReactNode;
-}
-
-const InfoNode = ({ node, nodeStyle = {}, children }: InfoNodeProps) => {
+}) => {
   const [animated, setAnimated] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 

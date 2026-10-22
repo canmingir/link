@@ -6,15 +6,6 @@ import Tooltip from "@mui/material/Tooltip";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { fileData, fileFormat, fileThumb } from "./utils";
 
-interface FileThumbnailProps {
-  file: Parameters<typeof fileData>[0];
-  tooltip?: boolean;
-  imageView?: boolean;
-  onDownload?: () => void;
-  sx?: SxProps<Theme>;
-  imgSx?: SxProps<Theme>;
-}
-
 export default function FileThumbnail({
   file,
   tooltip,
@@ -22,7 +13,14 @@ export default function FileThumbnail({
   onDownload,
   sx,
   imgSx,
-}: FileThumbnailProps) {
+}: {
+  file: Parameters<typeof fileData>[0];
+  tooltip?: boolean;
+  imageView?: boolean;
+  onDownload?: () => void;
+  sx?: SxProps<Theme>;
+  imgSx?: SxProps<Theme>;
+}) {
   const { name = "", path = "", preview = "" } = fileData(file);
 
   const format = fileFormat(path || preview);

@@ -13,27 +13,14 @@ import type { SxProps, Theme } from "@mui/material/styles";
 
 const NARROW_WIDTH = 450;
 
-type DrawerMode = "narrow" | "wide" | "fullscreen";
-
-const modeWidth: Record<DrawerMode, number | string | undefined> = {
+const modeWidth: Record<
+  "narrow" | "wide" | "fullscreen",
+  number | string | undefined
+> = {
   narrow: NARROW_WIDTH,
   wide: undefined,
   fullscreen: "100vw",
 };
-
-interface DrawerLayoutProps extends Omit<DrawerProps, "title"> {
-  open: boolean;
-  onClose: () => void;
-  children?: ReactNode;
-  title?: ReactNode;
-  extraActions?: ReactNode;
-  sx?: SxProps<Theme>;
-  contentSx?: SxProps<Theme>;
-  paperSx?: SxProps<Theme>;
-  titleSx?: SxProps<Theme>;
-  mode?: DrawerMode;
-  disableEnforceFocus?: boolean;
-}
 
 const DrawerLayout = ({
   open,
@@ -49,7 +36,19 @@ const DrawerLayout = ({
   disableEnforceFocus = true,
   slotProps: slotPropsProp,
   ...rest
-}: DrawerLayoutProps) => {
+}: Omit<DrawerProps, "title"> & {
+  open: boolean;
+  onClose: () => void;
+  children?: ReactNode;
+  title?: ReactNode;
+  extraActions?: ReactNode;
+  sx?: SxProps<Theme>;
+  contentSx?: SxProps<Theme>;
+  paperSx?: SxProps<Theme>;
+  titleSx?: SxProps<Theme>;
+  mode?: "narrow" | "wide" | "fullscreen";
+  disableEnforceFocus?: boolean;
+}) => {
   const width = modeWidth[mode];
 
   return (

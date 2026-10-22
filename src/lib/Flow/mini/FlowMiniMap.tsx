@@ -11,33 +11,22 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 const MINIMAP_W = 300;
 
-interface Point {
-  x: number;
-  y: number;
-}
-
-interface ViewportRect {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-interface ViewportInfo {
-  rect: ViewportRect;
-  scaleX: number;
-  scaleY: number;
-}
-
 function computeViewportInfo(
   containerEl: HTMLElement,
   positions: MiniLayout["positions"]
-): ViewportInfo | null {
+): {
+  rect: { x: number; y: number; w: number; h: number };
+  scaleX: number;
+  scaleY: number;
+} | null {
   const containerRect = containerEl.getBoundingClientRect();
   const nodeEls = containerEl.querySelectorAll("[data-node-id]");
 
   const seen = new Set();
-  const pairs: { screen: Point; mini: Point }[] = [];
+  const pairs: {
+    screen: { x: number; y: number };
+    mini: { x: number; y: number };
+  }[] = [];
 
   nodeEls.forEach((el: Element) => {
     const id = el.getAttribute("data-node-id");
@@ -55,8 +44,12 @@ function computeViewportInfo(
 
   if (pairs.length < 2) return null;
 
-  type PairPoint = { screen: Point; mini: Point };
-  type BestMatch = { a: PairPoint; b: PairPoint; ds: number; dm: number };
+  type BestMatch = {
+    a: { screen: { x: number; y: number }; mini: { x: number; y: number } };
+    b: { screen: { x: number; y: number }; mini: { x: number; y: number } };
+    ds: number;
+    dm: number;
+  };
 
   let bestX: BestMatch | null = null;
   let bestY: BestMatch | null = null;
@@ -107,15 +100,6 @@ function computeViewportInfo(
   };
 }
 
-interface FlowMiniMapProps {
-  nodes?: MiniSvgNode[];
-  flowContainerRef: RefObject<HTMLElement | null>;
-  type?: string;
-  variant?: string;
-  style?: ResolveNodeVisualArgs["style"];
-  plugin?: ResolveNodeVisualArgs["plugin"];
-}
-
 export function FlowMiniMap({
   nodes,
   flowContainerRef,
@@ -123,13 +107,29 @@ export function FlowMiniMap({
   variant,
   style,
   plugin,
-}: FlowMiniMapProps) {
+}: {
+  nodes?: MiniSvgNode[];
+  flowContainerRef: RefObject<HTMLElement | null>;
+  type?: string;
+  variant?: string;
+  style?: ResolveNodeVisualArgs["style"];
+  plugin?: ResolveNodeVisualArgs["plugin"];
+}) {
   const theme = useTheme();
   const rafRef = useRef(0);
-  const viewportInfoRef = useRef<ViewportInfo | null>(null);
-  const [viewportRect, setViewportRect] = useState<ViewportRect | null>(null);
+  const viewportInfoRef = useRef<{
+    rect: { x: number; y: number; w: number; h: number };
+    scaleX: number;
+    scaleY: number;
+  } | null>(null);
+  const [viewportRect, setViewportRect] = useState<{
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+  } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const dragStartRef = useRef<Point | null>(null);
+  const dragStartRef = useRef<{ x: number; y: number } | null>(null);
 
   const rawNodes = useMemo(() => nodes ?? [], [nodes]);
 

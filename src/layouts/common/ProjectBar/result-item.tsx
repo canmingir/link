@@ -9,26 +9,19 @@ import { useTheme } from "@mui/material/styles";
 
 import { Stack, Typography, useMediaQuery } from "@mui/material";
 
-interface TitlePart {
-  text: string;
-  highlight?: boolean;
-}
-
-interface ResultItemProps {
-  title: TitlePart[];
-  icon?: string;
-  groupLabel?: ReactNode;
-  onClickItem?: () => void;
-  name?: string;
-}
-
 export default function ResultItem({
   title,
   icon,
   groupLabel,
   onClickItem,
   name,
-}: ResultItemProps) {
+}: {
+  title: { text: string; highlight?: boolean }[];
+  icon?: string;
+  groupLabel?: ReactNode;
+  onClickItem?: () => void;
+  name?: string;
+}) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(435));
 

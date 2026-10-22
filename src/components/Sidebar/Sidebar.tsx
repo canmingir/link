@@ -7,20 +7,20 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import styles from "./styles";
 
-interface SidebarRoute {
-  url: string;
-  name: string;
-  activeIcon: ComponentType;
-  deactiveIcon: ComponentType;
-}
-
-interface SidebarProps {
-  routes: SidebarRoute[];
+const Sidebar = ({
+  routes,
+  isCollapsed,
+  currentPage,
+}: {
+  routes: {
+    url: string;
+    name: string;
+    activeIcon: ComponentType;
+    deactiveIcon: ComponentType;
+  }[];
   isCollapsed?: boolean;
   currentPage?: string;
-}
-
-const Sidebar = ({ routes, isCollapsed, currentPage }: SidebarProps) => {
+}) => {
   const drawerWidth = isCollapsed ? 75 : 280;
 
   return (

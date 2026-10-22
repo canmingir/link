@@ -4,15 +4,17 @@ import type { Theme } from "@mui/material/styles";
 const loadingIndicatorStart = "MuiButton-loadingIndicatorStart";
 const loadingIndicatorEnd = "MuiButton-loadingIndicatorEnd";
 
-type LoadingButtonOwnerState = Omit<ButtonProps, "variant"> & {
-  variant?: "contained" | "outlined" | "text" | "soft";
-};
-
 export function loadingButton(_theme?: Theme) {
   return {
     MuiLoadingButton: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: LoadingButtonOwnerState }) => ({
+        root: ({
+          ownerState,
+        }: {
+          ownerState: Omit<ButtonProps, "variant"> & {
+            variant?: "contained" | "outlined" | "text" | "soft";
+          };
+        }) => ({
           ...(ownerState.variant === "soft" && {
             [`& .${loadingIndicatorStart}`]: {
               left: 10,

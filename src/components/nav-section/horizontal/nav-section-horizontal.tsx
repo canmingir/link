@@ -5,19 +5,17 @@ import { memo } from "react";
 import type { NavGroupData, NavItemData, NavSlotProps } from "../types";
 import type { SxProps, Theme } from "@mui/material/styles";
 
-interface NavSectionHorizontalProps {
-  data: NavGroupData[];
-  slotProps?: NavSlotProps;
-  sx?: SxProps<Theme>;
-  [key: string]: unknown;
-}
-
 function NavSectionHorizontal({
   data,
   slotProps,
   sx,
   ...other
-}: NavSectionHorizontalProps) {
+}: {
+  data: NavGroupData[];
+  slotProps?: NavSlotProps;
+  sx?: SxProps<Theme>;
+  [key: string]: unknown;
+}) {
   return (
     <Stack
       component="nav"

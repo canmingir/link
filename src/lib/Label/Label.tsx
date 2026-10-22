@@ -6,17 +6,18 @@ import { forwardRef } from "react";
 
 import type { SxProps, Theme } from "@mui/material/styles";
 
-interface LabelProps {
-  children?: ReactNode;
-  color?: LabelOwnerState["color"];
-  variant?: LabelOwnerState["variant"];
-  startIcon?: ReactNode;
-  endIcon?: ReactNode;
-  sx?: SxProps<Theme>;
-  onClick?: () => void;
-}
-
-const Label = forwardRef<HTMLSpanElement, LabelProps>(
+const Label = forwardRef<
+  HTMLSpanElement,
+  {
+    children?: ReactNode;
+    color?: LabelOwnerState["color"];
+    variant?: LabelOwnerState["variant"];
+    startIcon?: ReactNode;
+    endIcon?: ReactNode;
+    sx?: SxProps<Theme>;
+    onClick?: () => void;
+  }
+>(
   (
     {
       children,

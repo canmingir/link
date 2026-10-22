@@ -12,14 +12,14 @@ const COLORS = [
   "error",
 ] as const;
 
-type ChipOwnerState = Omit<ChipProps, "variant"> & {
-  variant?: "filled" | "outlined" | "soft";
-};
-
 export function chip(theme: Theme) {
   const lightMode = theme.palette.mode === "light";
 
-  const rootStyles = (ownerState: ChipOwnerState) => {
+  const rootStyles = (
+    ownerState: Omit<ChipProps, "variant"> & {
+      variant?: "filled" | "outlined" | "soft";
+    }
+  ) => {
     const defaultColor = ownerState.color === "default";
 
     const filledVariant = ownerState.variant === "filled";
@@ -124,8 +124,13 @@ export function chip(theme: Theme) {
   return {
     MuiChip: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: ChipOwnerState }) =>
-          rootStyles(ownerState),
+        root: ({
+          ownerState,
+        }: {
+          ownerState: Omit<ChipProps, "variant"> & {
+            variant?: "filled" | "outlined" | "soft";
+          };
+        }) => rootStyles(ownerState),
       },
     },
   };

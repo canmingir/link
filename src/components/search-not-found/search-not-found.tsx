@@ -2,15 +2,11 @@ import Paper from "@mui/material/Paper";
 import type { PaperProps } from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-interface SearchNotFoundProps extends Omit<PaperProps, "children"> {
-  query?: string;
-}
-
 export default function SearchNotFound({
   query,
   sx,
   ...other
-}: SearchNotFoundProps) {
+}: Omit<PaperProps, "children"> & { query?: string }) {
   return query ? (
     <Paper
       sx={[

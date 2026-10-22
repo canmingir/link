@@ -7,13 +7,15 @@ import { usePathname } from "../../../routes/hooks";
 import type { NavItemData, NavSlotProps } from "../types";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-interface NavListProps {
+export default function NavList({
+  data,
+  depth,
+  slotProps,
+}: {
   data: NavItemData;
   depth: number;
   slotProps?: NavSlotProps;
-}
-
-export default function NavList({ data, depth, slotProps }: NavListProps) {
+}) {
   const navRef = useRef<HTMLDivElement | null>(null);
 
   const pathname = usePathname();

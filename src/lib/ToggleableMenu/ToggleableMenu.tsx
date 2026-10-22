@@ -3,12 +3,13 @@ import { useState } from "react";
 import { Box, ClickAwayListener, IconButton } from "@mui/material";
 import type { MouseEvent, ReactNode } from "react";
 
-interface ToggleableMenuProps {
+function ToggleableMenu({
+  defaultIcon,
+  children,
+}: {
   defaultIcon: ReactNode;
   children: ReactNode;
-}
-
-function ToggleableMenu({ defaultIcon, children }: ToggleableMenuProps) {
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleDefaultIconClick = (event: MouseEvent) => {

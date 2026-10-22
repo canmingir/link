@@ -12,14 +12,14 @@ const COLORS = [
   "error",
 ] as const;
 
-type PaginationOwnerState = Omit<PaginationProps, "variant"> & {
-  variant?: "text" | "outlined" | "soft";
-};
-
 export function pagination(theme: Theme) {
   const lightMode = theme.palette.mode === "light";
 
-  const rootStyles = (ownerState: PaginationOwnerState) => {
+  const rootStyles = (
+    ownerState: Omit<PaginationProps, "variant"> & {
+      variant?: "text" | "outlined" | "soft";
+    }
+  ) => {
     const defaultColor = ownerState.color === "standard";
 
     const filledVariant = ownerState.variant === "text";
@@ -82,8 +82,13 @@ export function pagination(theme: Theme) {
   return {
     MuiPagination: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: PaginationOwnerState }) =>
-          rootStyles(ownerState),
+        root: ({
+          ownerState,
+        }: {
+          ownerState: Omit<PaginationProps, "variant"> & {
+            variant?: "text" | "outlined" | "soft";
+          };
+        }) => rootStyles(ownerState),
       },
     },
   };

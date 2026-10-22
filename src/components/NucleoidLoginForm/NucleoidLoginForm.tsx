@@ -3,21 +3,19 @@ import styles from "../../widgets/LoginForm/LoginFormStyles";
 import { Box, Button, Link as MuiLink, TextField } from "@mui/material";
 import type { Dispatch, SetStateAction } from "react";
 
-interface NucleoidLoginFormProps {
-  email: string;
-  password: string;
-  setEmail: Dispatch<SetStateAction<string>>;
-  setPassword: Dispatch<SetStateAction<string>>;
-  onSubmit: (email: string, password: string) => void;
-}
-
 const NucleoidLoginForm = ({
   email,
   password,
   setEmail,
   setPassword,
   onSubmit,
-}: NucleoidLoginFormProps) => (
+}: {
+  email: string;
+  password: string;
+  setEmail: Dispatch<SetStateAction<string>>;
+  setPassword: Dispatch<SetStateAction<string>>;
+  onSubmit: (email: string, password: string) => void;
+}) => (
   <Box
     component="form"
     sx={styles.formBoxStyle}

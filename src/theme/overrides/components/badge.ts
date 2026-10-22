@@ -2,10 +2,6 @@ import type { BadgeProps } from "@mui/material/Badge";
 import type { Theme } from "@mui/material/styles";
 import { badgeClasses } from "@mui/material/Badge";
 
-type BadgeOwnerState = Omit<BadgeProps, "variant"> & {
-  variant?: "alway" | "online" | "busy" | "offline" | "invisible";
-};
-
 export function badge(theme: Theme) {
   return {
     MuiBadge: {
@@ -13,7 +9,13 @@ export function badge(theme: Theme) {
         dot: {
           borderRadius: "50%",
         },
-        root: ({ ownerState }: { ownerState: BadgeOwnerState }) => {
+        root: ({
+          ownerState,
+        }: {
+          ownerState: Omit<BadgeProps, "variant"> & {
+            variant?: "alway" | "online" | "busy" | "offline" | "invisible";
+          };
+        }) => {
           const alway = ownerState.variant === "alway";
 
           const online = ownerState.variant === "online";

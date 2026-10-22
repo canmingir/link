@@ -1,14 +1,5 @@
 import type { ComponentType } from "react";
 
-export type OAuthProviderConfig = {
-  authUrl: string;
-  clientId: string;
-  redirectUri: string;
-  scope: string;
-  response_type: string;
-  userUrl: string;
-};
-
 export type MainConfig = {
   appId: string;
   name: string;
@@ -28,9 +19,30 @@ export type MainConfig = {
   };
   project?: {
     nucleoid?: Record<string, unknown>;
-    github?: OAuthProviderConfig;
-    google?: OAuthProviderConfig;
-    linkedin?: OAuthProviderConfig;
+    github?: {
+      authUrl: string;
+      clientId: string;
+      redirectUri: string;
+      scope: string;
+      response_type: string;
+      userUrl: string;
+    };
+    google?: {
+      authUrl: string;
+      clientId: string;
+      redirectUri: string;
+      scope: string;
+      response_type: string;
+      userUrl: string;
+    };
+    linkedin?: {
+      authUrl: string;
+      clientId: string;
+      redirectUri: string;
+      scope: string;
+      response_type: string;
+      userUrl: string;
+    };
   };
 };
 

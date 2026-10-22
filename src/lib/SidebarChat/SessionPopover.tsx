@@ -9,18 +9,6 @@ import { cleanIconName } from "./cleanIconName";
 import { Box, IconButton, Popover, Tooltip, Typography } from "@mui/material";
 import React, { memo, useEffect, useRef } from "react";
 
-interface SessionPopoverProps {
-  anchorEl: HTMLElement | null;
-  onClose: () => void;
-  onOpenFullChat: () => void;
-  sessions: StoredSession[];
-  activeSessionId: string;
-  currentSessionId?: string;
-  selectedConversationId?: string;
-  messagesEndRef: React.RefObject<HTMLDivElement>;
-  highlightedMessage: React.RefObject<HTMLDivElement>;
-}
-
 const SessionPopover = ({
   anchorEl,
   onClose,
@@ -31,7 +19,17 @@ const SessionPopover = ({
   selectedConversationId,
   messagesEndRef,
   highlightedMessage,
-}: SessionPopoverProps) => {
+}: {
+  anchorEl: HTMLElement | null;
+  onClose: () => void;
+  onOpenFullChat: () => void;
+  sessions: StoredSession[];
+  activeSessionId: string;
+  currentSessionId?: string;
+  selectedConversationId?: string;
+  messagesEndRef: React.RefObject<HTMLDivElement>;
+  highlightedMessage: React.RefObject<HTMLDivElement>;
+}) => {
   const session = sessions.find((s) => s.sessionId === activeSessionId);
   const isCurrent = activeSessionId === currentSessionId;
   const popoverEndRef = useRef<HTMLDivElement>(null);

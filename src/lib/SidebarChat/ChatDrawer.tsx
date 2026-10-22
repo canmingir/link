@@ -22,31 +22,6 @@ import { ToolDecision, ToolRenderers } from "../ChatMessage/ToolMessage";
 
 const DRAWER_WIDTH = 400;
 
-type InputMode = "chat" | "json";
-
-interface ChatDrawerProps {
-  title: string;
-  open: boolean;
-  onClose: () => void;
-  history: { id?: string; content: string; role: string }[];
-  selectedConversationId?: string;
-  readOnly?: boolean;
-  mute: boolean;
-  onMuteToggle: () => void;
-  showLoading: boolean;
-  onSend: (content: string) => void;
-  Presets?: Preset[];
-  selectedPreset?: string;
-  onPresetChange?: (preset: string) => void;
-  messagesEndRef: React.RefObject<HTMLDivElement>;
-  highlightedMessage: React.RefObject<HTMLDivElement>;
-  onNewSession?: () => void;
-  toolRenderers?: ToolRenderers;
-  onToolDecision?: (toolCallId: string, decision: ToolDecision) => void;
-  embedded?: boolean;
-  footer?: React.ReactNode;
-}
-
 const DEFAULT_JSON = `{\n  \n}`;
 
 const ChatDrawer = ({
@@ -69,14 +44,35 @@ const ChatDrawer = ({
   onToolDecision,
   embedded,
   footer,
-}: ChatDrawerProps) => {
+}: {
+  title: string;
+  open: boolean;
+  onClose: () => void;
+  history: { id?: string; content: string; role: string }[];
+  selectedConversationId?: string;
+  readOnly?: boolean;
+  mute: boolean;
+  onMuteToggle: () => void;
+  showLoading: boolean;
+  onSend: (content: string) => void;
+  Presets?: Preset[];
+  selectedPreset?: string;
+  onPresetChange?: (preset: string) => void;
+  messagesEndRef: React.RefObject<HTMLDivElement>;
+  highlightedMessage: React.RefObject<HTMLDivElement>;
+  onNewSession?: () => void;
+  toolRenderers?: ToolRenderers;
+  onToolDecision?: (toolCallId: string, decision: ToolDecision) => void;
+  embedded?: boolean;
+  footer?: React.ReactNode;
+}) => {
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
-  const [inputMode, setInputMode] = useState<InputMode>("chat");
+  const [inputMode, setInputMode] = useState<"chat" | "json">("chat");
   const [jsonValue, setJsonValue] = useState(DEFAULT_JSON);
   const [jsonError, setJsonError] = useState<string | null>(null);
 
   const handleModeChange = useCallback(
-    (_: React.MouseEvent<HTMLElement>, newMode: InputMode | null) => {
+    (_: React.MouseEvent<HTMLElement>, newMode: "chat" | "json" | null) => {
       if (newMode) setInputMode(newMode);
     },
     []

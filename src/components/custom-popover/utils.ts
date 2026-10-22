@@ -1,13 +1,15 @@
 import type { PopoverOrigin } from "@mui/material/Popover";
 
-interface PopoverPosition {
+export function getPosition(arrow: string): {
   style?: Record<string, number>;
   anchorOrigin: PopoverOrigin;
   transformOrigin: PopoverOrigin;
-}
-
-export function getPosition(arrow: string): PopoverPosition {
-  let props: PopoverPosition;
+} {
+  let props: {
+    style?: Record<string, number>;
+    anchorOrigin: PopoverOrigin;
+    transformOrigin: PopoverOrigin;
+  };
 
   switch (arrow) {
     case "top-left":

@@ -8,25 +8,6 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 
 import type { SxProps, Theme } from "@mui/material/styles";
 
-interface HeadCell {
-  id: string;
-  label?: ReactNode;
-  align?: "left" | "center" | "right" | "justify" | "inherit";
-  width?: number | string;
-  minWidth?: number | string;
-}
-
-interface TableHeadCustomProps {
-  order?: "asc" | "desc";
-  orderBy?: string;
-  rowCount?: number;
-  headLabel: HeadCell[];
-  numSelected?: number;
-  onSort?: (id: string) => void;
-  onSelectAllRows?: (checked: boolean) => void;
-  sx?: SxProps<Theme>;
-}
-
 const visuallyHidden = {
   border: 0,
   margin: -1,
@@ -48,7 +29,22 @@ export default function TableHeadCustom({
   onSort,
   onSelectAllRows,
   sx,
-}: TableHeadCustomProps) {
+}: {
+  order?: "asc" | "desc";
+  orderBy?: string;
+  rowCount?: number;
+  headLabel: {
+    id: string;
+    label?: ReactNode;
+    align?: "left" | "center" | "right" | "justify" | "inherit";
+    width?: number | string;
+    minWidth?: number | string;
+  }[];
+  numSelected?: number;
+  onSort?: (id: string) => void;
+  onSelectAllRows?: (checked: boolean) => void;
+  sx?: SxProps<Theme>;
+}) {
   return (
     <TableHead sx={sx}>
       <TableRow>
@@ -62,7 +58,7 @@ export default function TableHeadCustom({
           </TableCell>
         )}
 
-        {headLabel.map((headCell: HeadCell) => (
+        {headLabel.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.align || "left"}

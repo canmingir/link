@@ -4,15 +4,6 @@ import { Box, Button, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { Delete, Save } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
-interface APIDialogActionProps {
-  view?: string;
-  setApiDialogView: (view: string) => void;
-  saveApiDialog: () => void;
-  saveDisable?: boolean;
-  deleteDisable?: boolean;
-  deleteMethod: () => void;
-}
-
 function APIDialogAction({
   view,
   setApiDialogView,
@@ -20,7 +11,14 @@ function APIDialogAction({
   saveDisable,
   deleteDisable,
   deleteMethod,
-}: APIDialogActionProps) {
+}: {
+  view?: string;
+  setApiDialogView: (view: string) => void;
+  saveApiDialog: () => void;
+  saveDisable?: boolean;
+  deleteDisable?: boolean;
+  deleteMethod: () => void;
+}) {
   const [alignment, setAlignment] = useState<string | undefined>();
   const [openToolTip, setOpenToolTip] = useState(false);
 

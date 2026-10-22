@@ -5,14 +5,17 @@ import {
   KeyboardArrowUp,
 } from "@mui/icons-material";
 
-interface ArrowProps {
+function Arrow({
+  up,
+  down,
+  right,
+  left,
+}: {
   up?: boolean;
   down?: boolean;
   right?: boolean;
   left?: boolean;
-}
-
-function Arrow({ up, down, right, left }: ArrowProps) {
+}) {
   return up ? (
     <KeyboardArrowUp />
   ) : down ? (

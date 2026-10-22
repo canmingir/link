@@ -14,33 +14,6 @@ export interface ApiEndpoint {
   [key: string]: unknown;
 }
 
-export interface ApiError {
-  file?: { fileName?: string };
-  messageText?: string;
-  [key: string]: unknown;
-}
-
-interface EndpointPayload {
-  path: string;
-  method: string;
-}
-
-type PayloadMap = Record<string, EndpointPayload>;
-
-interface APITreeProps {
-  api?: ApiEndpoint[];
-  errors?: ApiError[];
-  theme?: Partial<Theme>;
-  expanded?: string[];
-  selected?: string | null;
-  onExpand?: (event: React.SyntheticEvent | null, itemIds: string[]) => void;
-  onSelect?: (
-    event: React.SyntheticEvent | null,
-    itemIds: string | null
-  ) => void;
-  rightClickMethod?: string | null;
-}
-
 function APITree({
   api = [],
   errors = [],
@@ -50,8 +23,27 @@ function APITree({
   onExpand = () => {},
   onSelect = () => {},
   rightClickMethod = null,
-}: APITreeProps) {
-  const map = useMemo<PayloadMap>(() => ({}), []);
+}: {
+  api?: ApiEndpoint[];
+  errors?: {
+    file?: { fileName?: string };
+    messageText?: string;
+    [key: string]: unknown;
+  }[];
+  theme?: Partial<Theme>;
+  expanded?: string[];
+  selected?: string | null;
+  onExpand?: (event: React.SyntheticEvent | null, itemIds: string[]) => void;
+  onSelect?: (
+    event: React.SyntheticEvent | null,
+    itemIds: string | null
+  ) => void;
+  rightClickMethod?: string | null;
+}) {
+  const map = useMemo<Record<string, { path: string; method: string }>>(
+    () => ({}),
+    []
+  );
 
   const treeNodes = useMemo(() => {
     return compile(api, errors, theme, map, rightClickMethod);
@@ -81,9 +73,13 @@ interface TreeGroup {
 
 export const compile = (
   apiData: ApiEndpoint[],
-  errors: ApiError[],
+  errors: {
+    file?: { fileName?: string };
+    messageText?: string;
+    [key: string]: unknown;
+  }[],
   theme: Partial<Theme> | undefined,
-  map: PayloadMap,
+  map: Record<string, { path: string; method: string }>,
   rightClickMethod: string | null = null
 ): ReactNode => {
   if (!apiData || apiData.length === 0) return null;
@@ -141,7 +137,13 @@ export const compile = (
           const [errPath, errMethod] =
             item?.file?.fileName?.split(".", 2) || [];
           return errPath === method.path && errMethod === method.method;
-        }) as ApiError | undefined;
+        }) as
+          | {
+              file?: { fileName?: string };
+              messageText?: string;
+              [key: string]: unknown;
+            }
+          | undefined;
 
         const highlightStyle =
           rightClickMethod === hash

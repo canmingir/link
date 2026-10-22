@@ -6,17 +6,15 @@ import Stack from "@mui/material/Stack";
 import type { NavGroupData, NavItemData, NavSlotProps } from "../types";
 import { memo, useCallback, useState } from "react";
 
-interface NavSectionVerticalProps {
-  data: NavGroupData[];
-  slotProps?: NavSlotProps;
-  [key: string]: unknown;
-}
-
 function NavSectionVertical({
   data,
   slotProps,
   ...other
-}: NavSectionVerticalProps) {
+}: {
+  data: NavGroupData[];
+  slotProps?: NavSlotProps;
+  [key: string]: unknown;
+}) {
   return (
     <>
       <Stack component="nav" id="nav-section-vertical" {...other}>
@@ -35,13 +33,15 @@ function NavSectionVertical({
 
 export default memo(NavSectionVertical);
 
-interface GroupProps {
+function Group({
+  subheader,
+  items,
+  slotProps,
+}: {
   subheader?: string;
   items?: NavItemData[];
   slotProps?: NavSlotProps;
-}
-
-function Group({ subheader, items, slotProps }: GroupProps) {
+}) {
   const [open, setOpen] = useState(true);
 
   const handleToggle = useCallback(() => {

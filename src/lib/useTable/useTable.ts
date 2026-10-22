@@ -1,24 +1,14 @@
 import type { ChangeEvent } from "react";
 import { useCallback, useState } from "react";
 
-export type SortOrder = "asc" | "desc";
-
-export interface UseTableProps {
+export default function useTable(props?: {
   defaultDense?: boolean;
   defaultCurrentPage?: number;
   defaultOrderBy?: string;
   defaultRowsPerPage?: number;
-  defaultOrder?: SortOrder;
+  defaultOrder?: "asc" | "desc";
   defaultSelected?: string[];
-}
-
-interface DeleteRowsInfo {
-  totalRows: number;
-  totalRowsInPage: number;
-  totalRowsFiltered: number;
-}
-
-export default function useTable(props?: UseTableProps) {
+}) {
   const [dense, setDense] = useState(!!props?.defaultDense);
 
   const [page, setPage] = useState(props?.defaultCurrentPage || 0);
@@ -29,7 +19,9 @@ export default function useTable(props?: UseTableProps) {
     props?.defaultRowsPerPage || 5
   );
 
-  const [order, setOrder] = useState<SortOrder>(props?.defaultOrder || "asc");
+  const [order, setOrder] = useState<"asc" | "desc">(
+    props?.defaultOrder || "asc"
+  );
 
   const [selected, setSelected] = useState<string[]>(
     props?.defaultSelected || []
@@ -101,7 +93,15 @@ export default function useTable(props?: UseTableProps) {
   );
 
   const onUpdatePageDeleteRows = useCallback(
-    ({ totalRows, totalRowsInPage, totalRowsFiltered }: DeleteRowsInfo) => {
+    ({
+      totalRows,
+      totalRowsInPage,
+      totalRowsFiltered,
+    }: {
+      totalRows: number;
+      totalRowsInPage: number;
+      totalRowsFiltered: number;
+    }) => {
       const totalSelected = selected.length;
 
       setSelected([]);

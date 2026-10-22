@@ -3,22 +3,6 @@ import type { BaseVariantStyle, FlowStyle } from "../styles";
 
 import { Box, Card, Typography } from "@mui/material";
 
-interface DefaultNodeCardProps {
-  title: ReactNode;
-  subtitle?: ReactNode;
-  metaEntries: [string, unknown][];
-  nodeStyle: FlowStyle;
-  baseStyle: BaseVariantStyle;
-  variant?: string;
-  borderWidth?: number;
-  borderColor?: string;
-  cardWidth?: number;
-  shape?: number | string;
-  shadowLevel?: number;
-  minHeight?: number;
-  nodeSx?: Record<string, unknown>;
-}
-
 const DefaultNodeCard = ({
   title,
   subtitle,
@@ -33,7 +17,21 @@ const DefaultNodeCard = ({
   shadowLevel,
   minHeight,
   nodeSx = {},
-}: DefaultNodeCardProps) => {
+}: {
+  title: ReactNode;
+  subtitle?: ReactNode;
+  metaEntries: [string, unknown][];
+  nodeStyle: FlowStyle;
+  baseStyle: BaseVariantStyle;
+  variant?: string;
+  borderWidth?: number;
+  borderColor?: string;
+  cardWidth?: number;
+  shape?: number | string;
+  shadowLevel?: number;
+  minHeight?: number;
+  nodeSx?: Record<string, unknown>;
+}) => {
   const effectiveWidth = cardWidth || 220;
   const effectiveBorderWidth = borderWidth || 1;
   const effectiveRadius =

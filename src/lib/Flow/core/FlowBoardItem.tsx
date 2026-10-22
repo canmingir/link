@@ -10,18 +10,6 @@ import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
 import { assertLinkedGraph, buildTreeFromLinked } from "../utils/flowUtils";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-interface FlowBoardItemProps {
-  flow?: BoardFlow;
-  flowId?: string | number;
-  position?: Point;
-  onPositionChange?: (position: Point) => void;
-  variant?: string;
-  style?: FlowStyleResolver;
-  plugin?: FlowPluginArg;
-  label?: ReactNode;
-  divider?: ReactNode;
-}
-
 const FlowBoardItem = ({
   flow,
   flowId,
@@ -32,7 +20,17 @@ const FlowBoardItem = ({
   plugin,
   label,
   divider,
-}: FlowBoardItemProps) => {
+}: {
+  flow?: BoardFlow;
+  flowId?: string | number;
+  position?: Point;
+  onPositionChange?: (position: Point) => void;
+  variant?: string;
+  style?: FlowStyleResolver;
+  plugin?: FlowPluginArg;
+  label?: ReactNode;
+  divider?: ReactNode;
+}) => {
   const [position, setPosition] = useState<Point>(
     () => initialPosition || { x: 0, y: 0 }
   );

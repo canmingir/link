@@ -3,15 +3,13 @@ import ButtonBase from "@mui/material/ButtonBase";
 import { alpha } from "@mui/material/styles";
 import { presetOptions } from "../../../theme/options/presets";
 
-interface PresetsOptionsProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
 export default function PresetsOptions({
   value,
   onChange,
-}: PresetsOptionsProps) {
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
   return (
     <Box
       sx={{

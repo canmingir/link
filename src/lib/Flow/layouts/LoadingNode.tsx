@@ -2,12 +2,7 @@ import AnimatedNode from "./AnimatedNode";
 
 import { Card, CircularProgress, Typography } from "@mui/material";
 
-interface LoadingNodeProps {
-  visible?: boolean;
-  delay?: number;
-}
-
-const LoadingNode = ({ visible, delay }: LoadingNodeProps) => (
+const LoadingNode = ({ visible, delay }: { visible?: boolean; delay?: number }) => (
   <AnimatedNode visible={visible} delay={delay}>
     <Card
       sx={{

@@ -7,28 +7,6 @@ import useSound from "use-sound";
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { ToolDecision, ToolRenderers } from "../ChatMessage/ToolMessage";
 
-type Message = { id?: string; content: string; role: string };
-
-interface SidebarChatProps {
-  selectedConversationId?: string;
-  sessionId?: string;
-  title: string;
-  open: boolean;
-  handleToggle: () => void;
-  handleNewUserMessage: (message: string) => void;
-  history?: Message[];
-  readOnly?: boolean;
-  sound?: boolean;
-  Presets?: Preset[];
-  selectedPreset?: string;
-  onPresetChange?: (preset: string) => void;
-  onNewSession?: () => void;
-  toolRenderers?: ToolRenderers;
-  onToolDecision?: (toolCallId: string, decision: ToolDecision) => void;
-  embedded?: boolean;
-  footer?: React.ReactNode;
-}
-
 const SidebarChat = ({
   selectedConversationId,
   title,
@@ -46,7 +24,25 @@ const SidebarChat = ({
   onToolDecision,
   embedded,
   footer,
-}: SidebarChatProps) => {
+}: {
+  selectedConversationId?: string;
+  sessionId?: string;
+  title: string;
+  open: boolean;
+  handleToggle: () => void;
+  handleNewUserMessage: (message: string) => void;
+  history?: { id?: string; content: string; role: string }[];
+  readOnly?: boolean;
+  sound?: boolean;
+  Presets?: Preset[];
+  selectedPreset?: string;
+  onPresetChange?: (preset: string) => void;
+  onNewSession?: () => void;
+  toolRenderers?: ToolRenderers;
+  onToolDecision?: (toolCallId: string, decision: ToolDecision) => void;
+  embedded?: boolean;
+  footer?: React.ReactNode;
+}) => {
   const [aiResponded] = useEvent<{ createdAt?: number } | null>(
     "AI_RESPONDED",
     null

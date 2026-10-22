@@ -3,17 +3,15 @@ import type { BreadcrumbLink } from "./CustomBreadcrumbs";
 import Link from "@mui/material/Link";
 import RouterLink from "../../routes/components/router-link";
 
-interface BreadcrumbsLinkProps {
-  link: BreadcrumbLink;
-  activeLast?: boolean;
-  disabled?: boolean;
-}
-
 export default function BreadcrumbsLink({
   link,
   activeLast,
   disabled,
-}: BreadcrumbsLinkProps) {
+}: {
+  link: BreadcrumbLink;
+  activeLast?: boolean;
+  disabled?: boolean;
+}) {
   const styles = {
     typography: "body2",
     alignItems: "center",

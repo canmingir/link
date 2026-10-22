@@ -6,24 +6,22 @@ import { Divider, MenuItem, Select } from "@mui/material";
 import type { NamedType, SchemaMap } from "./types";
 import { forwardRef, useState } from "react";
 
-/** Ref target: a map of id → node whose `type` this menu can mutate. */
-type TypeMenuRef = Record<string, { type: string }> | null;
-
-interface TypeMenuProps {
-  id?: string;
-  type?: string;
-  types?: NamedType[];
-  map?: SchemaMap;
-  edit?: boolean;
-  setKey?: (key: string) => void;
-  primitive?: boolean;
-  objAndArr?: boolean;
-  globalTypes?: boolean;
-  disabled?: boolean;
-  onChange?: (type: string) => void;
-}
-
-const TypeMenu = forwardRef<TypeMenuRef, TypeMenuProps>(
+const TypeMenu = forwardRef<
+  Record<string, { type: string }> | null,
+  {
+    id?: string;
+    type?: string;
+    types?: NamedType[];
+    map?: SchemaMap;
+    edit?: boolean;
+    setKey?: (key: string) => void;
+    primitive?: boolean;
+    objAndArr?: boolean;
+    globalTypes?: boolean;
+    disabled?: boolean;
+    onChange?: (type: string) => void;
+  }
+>(
   (
     {
       id,
@@ -42,7 +40,7 @@ const TypeMenu = forwardRef<TypeMenuRef, TypeMenuProps>(
     const [selectedType, setSelectedType] = useState(type);
 
     function updateType(id: string | undefined, value: string) {
-      const refMap = ref as unknown as TypeMenuRef;
+      const refMap = ref as unknown as Record<string, { type: string }> | null;
       if (refMap && id) {
         refMap[id].type = value;
       } else if (map) {

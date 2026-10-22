@@ -5,19 +5,27 @@ import userInstance from "../http/user";
 
 import { useCallback, useEffect, useState } from "react";
 
-export type User = {
-  id?: string;
-  name: string;
-  avatarUrl: string;
-  email?: string | null;
-  displayName?: string | null;
-  identityProvider?: string;
-  role?: string;
-};
-
 export function useUser() {
-  const [user, setUser] = useState<User>({ name: "", avatarUrl: "" });
-  const [users, setUsers] = useState<User[]>([]);
+  const [user, setUser] = useState<{
+    id?: string;
+    name: string;
+    avatarUrl: string;
+    email?: string | null;
+    displayName?: string | null;
+    identityProvider?: string;
+    role?: string;
+  }>({ name: "", avatarUrl: "" });
+  const [users, setUsers] = useState<
+    {
+      id?: string;
+      name: string;
+      avatarUrl: string;
+      email?: string | null;
+      displayName?: string | null;
+      identityProvider?: string;
+      role?: string;
+    }[]
+  >([]);
   const { loading, error, handleResponse } = useApi();
 
   useEffect(() => {
@@ -27,14 +35,35 @@ export function useUser() {
 
   const getUser = useCallback(() => {
     handleResponse(userInstance.getUserDetails(), (response) => {
-      if (response) setUser(response as User);
+      if (response)
+        setUser(
+          response as {
+            id?: string;
+            name: string;
+            avatarUrl: string;
+            email?: string | null;
+            displayName?: string | null;
+            identityProvider?: string;
+            role?: string;
+          }
+        );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getPermittedUsers = useCallback(() => {
     handleResponse(userInstance.getPermittedUsers(), (response) =>
-      setUsers(response as User[])
+      setUsers(
+        response as {
+          id?: string;
+          name: string;
+          avatarUrl: string;
+          email?: string | null;
+          displayName?: string | null;
+          identityProvider?: string;
+          role?: string;
+        }[]
+      )
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

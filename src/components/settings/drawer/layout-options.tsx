@@ -4,17 +4,15 @@ import Stack from "@mui/material/Stack";
 
 import { alpha, useTheme } from "@mui/material/styles";
 
-interface LayoutOptionsProps {
-  options: string[];
-  value: string;
-  onChange: (value: string) => void;
-}
-
 export default function LayoutOptions({
   options,
   value,
   onChange,
-}: LayoutOptionsProps) {
+}: {
+  options: string[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
   const theme = useTheme();
   const renderNav = (option: string, selected: boolean) => {
     const background = `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`;

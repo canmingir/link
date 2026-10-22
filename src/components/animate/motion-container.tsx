@@ -4,18 +4,16 @@ import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { varContainer } from "./variants";
 
-interface MotionContainerProps extends BoxProps {
-  animate?: boolean;
-  action?: boolean;
-  children?: ReactNode;
-}
-
 export default function MotionContainer({
   animate,
   action = false,
   children,
   ...other
-}: MotionContainerProps) {
+}: BoxProps & {
+  animate?: boolean;
+  action?: boolean;
+  children?: ReactNode;
+}) {
   if (action) {
     return (
       <Box

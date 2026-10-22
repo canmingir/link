@@ -6,19 +6,17 @@ import { useState } from "react";
 
 import type { SxProps, Theme } from "@mui/material/styles";
 
-interface LogoProps {
-  disabledLink?: boolean;
-  sx?: SxProps<Theme>;
-  maxSize?: number;
-  isLogin?: boolean;
-}
-
 const Logo = ({
   disabledLink = false,
   sx,
   maxSize = 100,
   isLogin = false,
-}: LogoProps) => {
+}: {
+  disabledLink?: boolean;
+  sx?: SxProps<Theme>;
+  maxSize?: number;
+  isLogin?: boolean;
+}) => {
   const icon = config().template.login?.icon;
 
   const [isSquare, setIsSquare] = useState(false);

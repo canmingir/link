@@ -13,18 +13,6 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-interface APIPathProps {
-  method: string;
-  path: string;
-  methodRef: MutableRefObject<string>;
-  pathRef: MutableRefObject<string>;
-  onTypesButtonClick?: () => void;
-  allowedMethods: string[];
-  isMethodDisabled?: boolean;
-  isPathDisabled?: boolean;
-  validatePath: (path: string) => void;
-}
-
 const APIPath = ({
   method,
   path,
@@ -35,7 +23,17 @@ const APIPath = ({
   isMethodDisabled,
   isPathDisabled,
   validatePath,
-}: APIPathProps) => {
+}: {
+  method: string;
+  path: string;
+  methodRef: MutableRefObject<string>;
+  pathRef: MutableRefObject<string>;
+  onTypesButtonClick?: () => void;
+  allowedMethods: string[];
+  isMethodDisabled?: boolean;
+  isPathDisabled?: boolean;
+  validatePath: (path: string) => void;
+}) => {
   const [selectedMethod, setSelectedMethod] = useState(
     allowedMethods.includes(method) ? method : allowedMethods[0] || ""
   );

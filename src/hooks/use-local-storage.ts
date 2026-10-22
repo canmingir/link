@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-type StateObject = Record<string, unknown>;
-
-export function useLocalStorage<T extends StateObject>(
+export function useLocalStorage<T extends Record<string, unknown>>(
   key: string,
   initialState: T
 ) {

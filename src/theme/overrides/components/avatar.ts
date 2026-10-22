@@ -13,11 +13,11 @@ const PALETTE_COLORS = [
   "error",
 ] as const;
 
-type PaletteColorName = (typeof PALETTE_COLORS)[number];
-
 const COLORS = ["default", ...PALETTE_COLORS] as const;
 
-const colorByName = (name: string): PaletteColorName | "default" => {
+const colorByName = (
+  name: string
+): (typeof PALETTE_COLORS)[number] | "default" => {
   const charAt = name.charAt(0).toLowerCase();
 
   if (["a", "c", "f"].includes(charAt)) return "primary";

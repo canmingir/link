@@ -1,10 +1,8 @@
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Breakpoint, useTheme } from "@mui/material/styles";
 
-type ResponsiveQuery = "up" | "down" | "between" | "only";
-
 export function useResponsive(
-  query: ResponsiveQuery,
+  query: "up" | "down" | "between" | "only",
   start?: Breakpoint | number,
   end?: Breakpoint | number
 ) {

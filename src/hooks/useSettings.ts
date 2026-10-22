@@ -4,10 +4,8 @@ import useApi from "./useApi";
 import { publish, useEvent } from "@nucleoidai/react-event";
 import { useCallback, useEffect, useState } from "react";
 
-type Settings = { timeZone: string };
-
 function useSettings(id?: string) {
-  const [settings, setSettings] = useState<Settings>({
+  const [settings, setSettings] = useState<{ timeZone: string }>({
     timeZone: "",
   });
   const { loading, error, handleResponse } = useApi();
@@ -26,7 +24,7 @@ function useSettings(id?: string) {
   const getSettings = useCallback(
     (id: string) => {
       handleResponse(http.get(`/projects/${id}/settings`), (response) => {
-        setSettings(response.data as Settings);
+        setSettings(response.data as { timeZone: string });
       });
     },
     [handleResponse]

@@ -1,10 +1,6 @@
-export interface VarBgProps {
-  colors?: string[];
+export const varBgColor = (props?: {colors?: string[];
   duration?: number;
-  ease?: string;
-}
-
-export const varBgColor = (props?: VarBgProps) => {
+  ease?: string;}) => {
   const colors = props?.colors || ["#19dcea", "#b22cff"];
   const duration = props?.duration || 5;
   const ease = props?.ease || "linear";
@@ -17,7 +13,9 @@ export const varBgColor = (props?: VarBgProps) => {
   };
 };
 
-export const varBgKenburns = (props?: VarBgProps) => {
+export const varBgKenburns = (props?: {colors?: string[];
+  duration?: number;
+  ease?: string;}) => {
   const duration = props?.duration || 5;
   const ease = props?.ease || "easeOut";
 
@@ -59,7 +57,9 @@ export const varBgKenburns = (props?: VarBgProps) => {
   };
 };
 
-export const varBgPan = (props?: VarBgProps) => {
+export const varBgPan = (props?: {colors?: string[];
+  duration?: number;
+  ease?: string;}) => {
   const colors = props?.colors || ["#ee7752", "#e73c7e", "#23a6d5", "#23d5ab"];
   const duration = props?.duration || 5;
   const ease = props?.ease || "linear";

@@ -10,22 +10,6 @@ import {
   IconButton,
 } from "@mui/material";
 
-interface DialogDimensions {
-  width: string;
-  height: string;
-}
-
-interface APITreeDialogProps {
-  title?: ReactNode;
-  minWidth?: number;
-  children?: ReactNode;
-  action?: ReactNode;
-  open: boolean;
-  handleClose: () => void;
-  maximizedDimensions?: DialogDimensions;
-  minimizedDimensions?: DialogDimensions;
-}
-
 function APITreeDialog({
   title,
   minWidth = 600,
@@ -35,7 +19,16 @@ function APITreeDialog({
   handleClose,
   maximizedDimensions = { width: "65rem", height: "50rem" },
   minimizedDimensions = { width: "55rem", height: "40rem" },
-}: APITreeDialogProps) {
+}: {
+  title?: ReactNode;
+  minWidth?: number;
+  children?: ReactNode;
+  action?: ReactNode;
+  open: boolean;
+  handleClose: () => void;
+  maximizedDimensions?: { width: string; height: string };
+  minimizedDimensions?: { width: string; height: string };
+}) {
   const [maximized, setMaximized] = useState(false);
   const currentDimensions = maximized
     ? maximizedDimensions

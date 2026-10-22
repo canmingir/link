@@ -110,17 +110,19 @@ export function fileNameByUrl(fileUrl: string) {
   return fileUrl.split("/").pop();
 }
 
-interface FileLike {
-  preview?: string;
-  name?: string;
-  size?: number;
-  path?: string;
-  type?: string;
-  lastModified?: number;
-  lastModifiedDate?: Date;
-}
-
-export function fileData(file: string | FileLike) {
+export function fileData(
+  file:
+    | string
+    | {
+        preview?: string;
+        name?: string;
+        size?: number;
+        path?: string;
+        type?: string;
+        lastModified?: number;
+        lastModifiedDate?: Date;
+      }
+) {
   if (typeof file === "string") {
     return {
       key: file,

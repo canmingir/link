@@ -90,14 +90,17 @@ export default function NavList({ data }: { data: NavListData }) {
   );
 }
 
-interface NavSubListProps {
+function NavSubList({
+  data,
+  subheader,
+  sx,
+  ...other
+}: {
   data?: NavItemData[];
   subheader?: string;
   sx?: SxProps<Theme>;
   [key: string]: unknown;
-}
-
-function NavSubList({ data, subheader, sx, ...other }: NavSubListProps) {
+}) {
   const pathname = usePathname();
 
   const dashboard = subheader === "Dashboard";

@@ -9,13 +9,15 @@ import { useState } from "react";
 
 import { Box, Divider, Paper } from "@mui/material";
 
-interface APITypesProps {
+const APITypes = ({
+  tstypes,
+  nuctypes,
+  typesRef,
+}: {
   tstypes: ApiType[];
   nuctypes: ApiType[];
   typesRef?: Ref<SchemaEditorHandle>;
-}
-
-const APITypes = ({ tstypes, nuctypes, typesRef }: APITypesProps) => {
+}) => {
   const combinedData: ApiType[] = [
     ...tstypes.map((item) => ({ ...item, isTypeScript: true })),
     ...nuctypes.map((item) => ({ ...item, isTypeScript: false })),

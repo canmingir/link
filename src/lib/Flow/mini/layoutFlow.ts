@@ -14,12 +14,10 @@ export interface MiniNode {
   false?: string[];
 }
 
-export type EdgeKind = "default" | "true" | "false";
-
 export interface MiniEdge {
   from: string;
   to: string;
-  kind: EdgeKind;
+  kind: "default" | "true" | "false";
 }
 
 export interface MiniLayout {

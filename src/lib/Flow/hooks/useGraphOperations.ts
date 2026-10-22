@@ -55,16 +55,6 @@ export interface GraphChange {
   roots: string[];
 }
 
-interface UseGraphOperationsParams {
-  nodesById: FlowNodeMap | null | undefined;
-  roots: string[] | null | undefined;
-  onChange?: (change: GraphChange) => void;
-  floatingNodes: FloatingStructure[];
-  setFloatingNodes: Dispatch<SetStateAction<FloatingStructure[]>>;
-  editable?: boolean;
-  onConnectRejected?: (message: string) => void;
-}
-
 export const useGraphOperations = ({
   nodesById,
   roots,
@@ -73,7 +63,15 @@ export const useGraphOperations = ({
   setFloatingNodes,
   editable,
   onConnectRejected,
-}: UseGraphOperationsParams) => {
+}: {
+  nodesById: FlowNodeMap | null | undefined;
+  roots: string[] | null | undefined;
+  onChange?: (change: GraphChange) => void;
+  floatingNodes: FloatingStructure[];
+  setFloatingNodes: Dispatch<SetStateAction<FloatingStructure[]>>;
+  editable?: boolean;
+  onConnectRejected?: (message: string) => void;
+}) => {
   const findFloatingStructure = useCallback(
     (nodeId: string) => {
       const index = floatingNodes.findIndex(

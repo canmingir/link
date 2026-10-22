@@ -27,13 +27,11 @@ instance.interceptors.request.use((request) => {
   return request;
 });
 
-type QueueEntry = {
+let isRefreshing = false;
+let failedQueue: {
   resolve: (token: string | null) => void;
   reject: (error: unknown) => void;
-};
-
-let isRefreshing = false;
-let failedQueue: QueueEntry[] = [];
+}[] = [];
 
 function processQueue(error: unknown, token: string | null = null) {
   failedQueue.forEach(({ resolve, reject }) => {

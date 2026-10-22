@@ -1,41 +1,3 @@
-export interface Point {
-  x: number;
-  y: number;
-}
-
-export interface Bounds {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-export interface ViewportTransform {
-  zoom: number;
-  offset: Point;
-}
-
-export type FitAlign = "center" | "start";
-
-interface FitTransformParams {
-  bounds: Bounds;
-  containerWidth: number;
-  containerHeight: number;
-  padding?: number;
-  minZoom?: number;
-  maxZoom?: number;
-  align?: FitAlign;
-}
-
-interface FitViewParams {
-  zoom: number;
-  offset: Point;
-  padding?: number;
-  minZoom?: number;
-  maxZoom?: number;
-  align?: FitAlign;
-}
-
 export const DEFAULT_MIN_ZOOM = 0.25;
 export const DEFAULT_MAX_ZOOM = 2.5;
 export const DEFAULT_FIT_VIEW_PADDING = 40;
@@ -51,21 +13,18 @@ export const clampZoomValue = (
   maxZoom: number
 ) => Math.min(maxZoom, Math.max(minZoom, zoom));
 
-export const getTouchDistance = (p1: Point, p2: Point): number =>
-  Math.hypot(p2.x - p1.x, p2.y - p1.y);
+export const getTouchDistance = (
+  p1: { x: number; y: number },
+  p2: { x: number; y: number }
+): number => Math.hypot(p2.x - p1.x, p2.y - p1.y);
 
-export const getTouchMidpoint = (p1: Point, p2: Point): Point => ({
+export const getTouchMidpoint = (
+  p1: { x: number; y: number },
+  p2: { x: number; y: number }
+): { x: number; y: number } => ({
   x: (p1.x + p2.x) / 2,
   y: (p1.y + p2.y) / 2,
 });
-
-interface ComputePinchZoomOffsetParams {
-  prevZoom: number;
-  nextZoom: number;
-  offset: Point;
-  prevMidpoint: Point;
-  nextMidpoint: Point;
-}
 
 export const computePinchZoomOffset = ({
   prevZoom,
@@ -73,7 +32,13 @@ export const computePinchZoomOffset = ({
   offset,
   prevMidpoint,
   nextMidpoint,
-}: ComputePinchZoomOffsetParams): Point => {
+}: {
+  prevZoom: number;
+  nextZoom: number;
+  offset: { x: number; y: number };
+  prevMidpoint: { x: number; y: number };
+  nextMidpoint: { x: number; y: number };
+}): { x: number; y: number } => {
   const scaleRatio = prevZoom !== 0 ? nextZoom / prevZoom : 1;
 
   return {
@@ -90,7 +55,15 @@ export const computeFitTransform = ({
   minZoom = DEFAULT_MIN_ZOOM,
   maxZoom = DEFAULT_MAX_ZOOM,
   align = "center",
-}: FitTransformParams): ViewportTransform => {
+}: {
+  bounds: { x: number; y: number; width: number; height: number };
+  containerWidth: number;
+  containerHeight: number;
+  padding?: number;
+  minZoom?: number;
+  maxZoom?: number;
+  align?: "center" | "start";
+}): { zoom: number; offset: { x: number; y: number } } => {
   const availableWidth = Math.max(0, containerWidth - 2 * padding);
   const availableHeight = Math.max(0, containerHeight - 2 * padding);
 
@@ -126,8 +99,13 @@ export const computeFitTransform = ({
 
 export const computeContentBounds = (
   containerEl: HTMLElement | null,
-  { zoom, offset }: ViewportTransform
-): Bounds | null => {
+  { zoom, offset }: { zoom: number; offset: { x: number; y: number } }
+): {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+} | null => {
   if (!containerEl) return null;
 
   const nodeEls = containerEl.querySelectorAll("[data-node-id]");
@@ -158,8 +136,22 @@ export const computeContentBounds = (
 
 export const computeFitViewState = (
   containerEl: HTMLElement | null,
-  { zoom, offset, padding, minZoom, maxZoom, align }: FitViewParams
-): ViewportTransform | null => {
+  {
+    zoom,
+    offset,
+    padding,
+    minZoom,
+    maxZoom,
+    align,
+  }: {
+    zoom: number;
+    offset: { x: number; y: number };
+    padding: number;
+    minZoom: number;
+    maxZoom: number;
+    align: "center" | "start";
+  }
+): { zoom: number; offset: { x: number; y: number } } | null => {
   if (!containerEl) return null;
   const bounds = computeContentBounds(containerEl, { zoom, offset });
   if (!bounds) return null;

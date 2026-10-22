@@ -5,14 +5,14 @@ import { buttonClasses } from "@mui/material/Button";
 
 const COLORS = ["primary", "secondary", "info", "success", "warning", "error"] as const;
 
-type ButtonOwnerState = Omit<ButtonProps, "variant"> & {
-  variant?: "contained" | "outlined" | "text" | "soft";
-};
-
 export function button(theme: Theme) {
   const lightMode = theme.palette.mode === "light";
 
-  const rootStyles = (ownerState: ButtonOwnerState) => {
+  const rootStyles = (
+    ownerState: Omit<ButtonProps, "variant"> & {
+      variant?: "contained" | "outlined" | "text" | "soft";
+    }
+  ) => {
     const inheritColor = ownerState.color === "inherit";
 
     const containedVariant = ownerState.variant === "contained";
@@ -133,8 +133,13 @@ export function button(theme: Theme) {
   return {
     MuiButton: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: ButtonOwnerState }) =>
-          rootStyles(ownerState),
+        root: ({
+          ownerState,
+        }: {
+          ownerState: Omit<ButtonProps, "variant"> & {
+            variant?: "contained" | "outlined" | "text" | "soft";
+          };
+        }) => rootStyles(ownerState),
       },
     },
   };

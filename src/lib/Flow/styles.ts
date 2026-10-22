@@ -1,8 +1,3 @@
-export type FlowVariant = "card" | "pill" | "n8n" | "simple";
-
-/** The resolved style bag the node/edge renderers read from. Every field is
- * optional because it may come from the variant default, a per-node style
- * function, or a plugin; unknown extras are permitted. */
 export interface FlowStyle {
   direction?: "vertical" | "horizontal";
   lineColor?: string;
@@ -71,7 +66,7 @@ export const toPxNumber = (
 };
 
 export const getBaseStyleForVariant = (
-  v: FlowVariant | string | undefined
+  v: "card" | "pill" | "n8n" | "simple" | string | undefined
 ): BaseVariantStyle => {
   switch (v) {
     case "card":
@@ -158,44 +153,32 @@ export const getBaseStyleForVariant = (
   }
 };
 
-type DecisionNodeType = "start" | "decision" | "process" | "end";
-
-interface DecisionNodeStyle {
-  bg: string;
-  borderColor: string;
-  shape: number;
-}
-
 export const getDecisionNodeStyle = (
-  nodeType: DecisionNodeType | string
-): DecisionNodeStyle => {
-  const styles: Record<DecisionNodeType, DecisionNodeStyle> = {
+  nodeType: "start" | "decision" | "process" | "end" | string
+): {bg: string; borderColor: string; shape: number} => {
+  const styles: Record<"start" | "decision" | "process" | "end", {bg: string; borderColor: string; shape: number}> = {
     start: { bg: "#E8F5E9", borderColor: "#4CAF50", shape: 8 },
     decision: { bg: "#FFF3E0", borderColor: "#FF9800", shape: 24 },
     process: { bg: "#E3F2FD", borderColor: "#2196F3", shape: 8 },
     end: { bg: "#FFEBEE", borderColor: "#F44336", shape: 8 },
   };
-  return styles[nodeType as DecisionNodeType] || styles.process;
-};
-
-/** Loosely-typed style bag consumed by the node renderers; callers pass a
- * subset of these keys plus arbitrary extras. */
-export type SemanticStyleInput = Record<string, unknown> & {
-  border?: unknown;
-  borderWidth?: unknown;
-  borderColor?: unknown;
-  lineWidth?: unknown;
-  size?: unknown;
-  cardWidth?: unknown;
-  gap?: unknown;
-  shape?: unknown;
-  minHeight?: unknown;
-  shadow?: unknown;
-  shadowLevel?: unknown;
+  return styles[nodeType as "start" | "decision" | "process" | "end"] || styles.process;
 };
 
 export const applySemanticTokens = (
-  styleObj: SemanticStyleInput,
+  styleObj: Record<string, unknown> & {
+    border?: unknown;
+    borderWidth?: unknown;
+    borderColor?: unknown;
+    lineWidth?: unknown;
+    size?: unknown;
+    cardWidth?: unknown;
+    gap?: unknown;
+    shape?: unknown;
+    minHeight?: unknown;
+    shadow?: unknown;
+    shadowLevel?: unknown;
+  },
   base: Partial<BaseVariantStyle>
 ): Record<string, unknown> => {
   const s: Record<string, unknown> = { ...styleObj };

@@ -12,13 +12,15 @@ import type {
 } from "@mui/x-data-grid";
 import type { NamedType, Param } from "./types";
 
-interface ParamTableProps {
+const ParamTable = ({
+  types,
+  params,
+  setParams,
+}: {
   types: NamedType[];
   params: Param[];
   setParams: Dispatch<SetStateAction<Param[]>>;
-}
-
-const ParamTable = ({ types, params, setParams }: ParamTableProps) => {
+}) => {
   const columns: GridColDef<Param>[] = [
     {
       field: "name",

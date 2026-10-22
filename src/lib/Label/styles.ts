@@ -3,17 +3,15 @@ import type { ElementType } from "react";
 
 import { alpha, styled } from "@mui/material/styles";
 
-type LabelColor =
-  | "default"
-  | "primary"
-  | "secondary"
-  | "info"
-  | "success"
-  | "warning"
-  | "error";
-
 export interface LabelOwnerState {
-  color?: LabelColor;
+  color?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "info"
+    | "success"
+    | "warning"
+    | "error";
   variant?: "filled" | "outlined" | "soft";
 }
 

@@ -14,16 +14,6 @@ export interface BreadcrumbLink {
   icon?: ReactNode;
 }
 
-interface CustomBreadcrumbsProps {
-  links: BreadcrumbLink[];
-  action?: ReactNode;
-  heading?: string;
-  moreLink?: string[];
-  activeLast?: boolean;
-  sx?: SxProps<Theme>;
-  [key: string]: unknown;
-}
-
 export default function CustomBreadcrumbs({
   links,
   action,
@@ -32,7 +22,15 @@ export default function CustomBreadcrumbs({
   activeLast,
   sx,
   ...other
-}: CustomBreadcrumbsProps) {
+}: {
+  links: BreadcrumbLink[];
+  action?: ReactNode;
+  heading?: string;
+  moreLink?: string[];
+  activeLast?: boolean;
+  sx?: SxProps<Theme>;
+  [key: string]: unknown;
+}) {
   const lastLink = links[links.length - 1].name;
 
   return (

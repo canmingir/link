@@ -6,15 +6,6 @@ import { useState } from "react";
 import { Add, Delete, Edit, MoreVert } from "@mui/icons-material";
 import { Box, Fab, IconButton, Typography } from "@mui/material";
 
-interface TypeListProps {
-  combinedData: ApiType[];
-  selectedType: string | null;
-  onTypeSelect: (name: string | null) => void;
-  onAddType: (typeName: string) => void;
-  onUpdateType: (oldTypeName: string | null, newTypeName: string) => void;
-  onDeleteType: (typeName: string) => void;
-}
-
 const TypeList = ({
   combinedData,
   selectedType,
@@ -22,7 +13,14 @@ const TypeList = ({
   onAddType,
   onUpdateType,
   onDeleteType,
-}: TypeListProps) => {
+}: {
+  combinedData: ApiType[];
+  selectedType: string | null;
+  onTypeSelect: (name: string | null) => void;
+  onAddType: (typeName: string) => void;
+  onUpdateType: (oldTypeName: string | null, newTypeName: string) => void;
+  onDeleteType: (typeName: string) => void;
+}) => {
   const [isAddingType, setIsAddingType] = useState(false);
   const [editingType, setEditingType] = useState<string | null>(null);
 

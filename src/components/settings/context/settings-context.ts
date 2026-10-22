@@ -10,7 +10,7 @@ export type SettingsValueProps = {
   beta?: boolean;
 };
 
-export type SettingsContextProps = SettingsValueProps & {
+type SettingsContextValue = SettingsValueProps & {
   onUpdate: (name: string, value: unknown) => void;
   canReset: boolean;
   onReset: VoidFunction;
@@ -19,8 +19,8 @@ export type SettingsContextProps = SettingsValueProps & {
   onToggle: VoidFunction;
 };
 
-export const SettingsContext = createContext<SettingsContextProps>(
-  {} as SettingsContextProps
+export const SettingsContext = createContext<SettingsContextValue>(
+  {} as SettingsContextValue
 );
 
 export const useSettingsContext = () => {

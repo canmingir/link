@@ -9,18 +9,11 @@ export interface NavItem {
   [key: string]: unknown;
 }
 
-export interface NavGroup {
-  subheader: string;
-  items: NavItem[];
-}
-
-export interface SearchResult {
-  group?: string;
-  title: string;
-  path?: string;
-}
-
-export function getAllItems({ data }: { data: NavGroup[] }): SearchResult[] {
+export function getAllItems({
+  data,
+}: {
+  data: { subheader: string; items: NavItem[] }[];
+}): { group?: string; title: string; path?: string }[] {
   const reduceItems = data
     .map((list) => handleLoop(list.items, list.subheader))
     .flat();
@@ -96,9 +89,11 @@ export function handleLoop(
 }
 
 export function groupedData(
-  array: SearchResult[]
-): Record<string, SearchResult[]> {
-  const group = array.reduce<Record<string, SearchResult[]>>((groups, item) => {
+  array: { group?: string; title: string; path?: string }[]
+): Record<string, { group?: string; title: string; path?: string }[]> {
+  const group = array.reduce<
+    Record<string, { group?: string; title: string; path?: string }[]>
+  >((groups, item) => {
     const key = item.group ?? "";
     groups[key] = groups[key] || [];
 

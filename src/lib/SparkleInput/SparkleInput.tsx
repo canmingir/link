@@ -1,18 +1,16 @@
 import type { TextFieldProps } from "@mui/material";
 import { IconButton, InputAdornment, SvgIcon, TextField } from "@mui/material";
 
-type SparkleInputProps = {
-  prop?: string;
-  sparkle?: boolean;
-} & Omit<TextFieldProps, "label">;
-
 export default function SparkleInput({
   prop,
   onChange,
   value,
   sparkle = true,
   ...others
-}: SparkleInputProps) {
+}: {
+  prop?: string;
+  sparkle?: boolean;
+} & Omit<TextFieldProps, "label">) {
   return (
     <TextField
       autoFocus

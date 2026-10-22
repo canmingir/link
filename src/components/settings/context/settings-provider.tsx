@@ -8,15 +8,13 @@ import { useCallback, useMemo, useState } from "react";
 
 const STORAGE_KEY = "link.settings";
 
-interface SettingsProviderProps {
-  children: ReactNode;
-  defaultSettings: SettingsValueProps;
-}
-
 export function SettingsProvider({
   children,
   defaultSettings,
-}: SettingsProviderProps) {
+}: {
+  children: ReactNode;
+  defaultSettings: SettingsValueProps;
+}) {
   const { state, update, reset } = useLocalStorage(
     STORAGE_KEY,
     defaultSettings

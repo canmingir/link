@@ -5,16 +5,14 @@ import { motion } from "framer-motion";
 import { useResponsive } from "../../hooks/use-responsive";
 import { varContainer } from "./variants";
 
-interface MotionViewportProps extends BoxProps {
-  children?: ReactNode;
-  disableAnimatedMobile?: boolean;
-}
-
 export default function MotionViewport({
   children,
   disableAnimatedMobile = true,
   ...other
-}: MotionViewportProps) {
+}: BoxProps & {
+  children?: ReactNode;
+  disableAnimatedMobile?: boolean;
+}) {
   const smDown = useResponsive("down", "sm");
 
   if (smDown && disableAnimatedMobile) {

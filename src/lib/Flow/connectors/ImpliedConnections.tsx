@@ -15,26 +15,6 @@ export interface ImpliedBinding {
   field: string;
 }
 
-interface ImpliedConnectionsProps {
-  containerEl?: HTMLElement | null;
-  bindings?: ImpliedBinding[];
-  labelForBinding?: (binding: ImpliedBinding) => ReactNode;
-  stroke?: string;
-  strokeWidth?: number;
-  tick?: number | string;
-}
-
-interface ImpliedPath {
-  id: string;
-  d: string;
-  title: ReactNode;
-}
-
-interface ImpliedState {
-  paths: ImpliedPath[];
-  dims: { w: number; h: number } | null;
-}
-
 const ImpliedConnections = ({
   containerEl,
   bindings = [],
@@ -42,9 +22,19 @@ const ImpliedConnections = ({
   stroke,
   strokeWidth = 1.5,
   tick = 0,
-}: ImpliedConnectionsProps) => {
+}: {
+  containerEl?: HTMLElement | null;
+  bindings?: ImpliedBinding[];
+  labelForBinding?: (binding: ImpliedBinding) => ReactNode;
+  stroke?: string;
+  strokeWidth?: number;
+  tick?: number | string;
+}) => {
   const theme = useTheme();
-  const [state, setState] = useState<ImpliedState>({ paths: [], dims: null });
+  const [state, setState] = useState<{
+    paths: { id: string; d: string; title: ReactNode }[];
+    dims: { w: number; h: number } | null;
+  }>({ paths: [], dims: null });
   const rootRef = useRef<HTMLDivElement | null>(null);
   const lastKeyRef = useRef("");
 
@@ -52,8 +42,9 @@ const ImpliedConnections = ({
 
   const bindingsKey = useMemo(() => JSON.stringify(bindings), [bindings]);
 
-  const labelRef =
-    useRef<ImpliedConnectionsProps["labelForBinding"]>(labelForBinding);
+  const labelRef = useRef<((binding: ImpliedBinding) => ReactNode) | undefined>(
+    labelForBinding
+  );
   labelRef.current = labelForBinding;
 
   useLayoutEffect(() => {
@@ -77,7 +68,7 @@ const ImpliedConnections = ({
         : 1;
 
       const handles = collectHandles(container);
-      const paths: ImpliedPath[] = [];
+      const paths: { id: string; d: string; title: ReactNode }[] = [];
 
       for (const b of bindings) {
         const sourceEl = handles.get(handleKey("out", b.sourceNodeId, b.field));

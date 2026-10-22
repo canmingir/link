@@ -7,14 +7,6 @@ import { menuItemClasses } from "@mui/material/MenuItem";
 
 import type { SxProps, Theme } from "@mui/material/styles";
 
-interface CustomPopoverProps extends Omit<PopoverProps, "open" | "sx"> {
-  open?: HTMLElement | null;
-  children?: ReactNode;
-  arrow?: string;
-  hiddenArrow?: boolean;
-  sx?: SxProps<Theme>;
-}
-
 export default function CustomPopover({
   open,
   children,
@@ -22,7 +14,13 @@ export default function CustomPopover({
   hiddenArrow,
   sx,
   ...other
-}: CustomPopoverProps) {
+}: Omit<PopoverProps, "open" | "sx"> & {
+  open?: HTMLElement | null;
+  children?: ReactNode;
+  arrow?: string;
+  hiddenArrow?: boolean;
+  sx?: SxProps<Theme>;
+}) {
   const { style, anchorOrigin, transformOrigin } = getPosition(arrow);
 
   return (

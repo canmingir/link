@@ -9,13 +9,9 @@ import {
   getDecisionNodeStyle,
 } from "../styles";
 
-type StyleArg = FlowNode & { type?: string; virtual?: boolean };
-
-export type FlowStyleResolver = ((node: StyleArg) => FlowStyle) | FlowStyle;
-
-/** A node/edge rendering plugin. Its hooks receive a loosely-shaped bag
- * (node, optional child, current style) and return partial style overrides;
- * `node` may also return a rendered element. */
+export type FlowStyleResolver =
+  | ((node: FlowNode & { type?: string; virtual?: boolean }) => FlowStyle)
+  | FlowStyle;
 export interface FlowStylePlugin {
   style?: (args: Record<string, unknown>) => FlowStyle | null | undefined;
   edge?: (args: Record<string, unknown>) => FlowStyle | null | undefined;
@@ -23,23 +19,11 @@ export interface FlowStylePlugin {
 }
 
 export type FlowPluginArg =
-  | ((type: string | undefined, node: StyleArg) => FlowStylePlugin | null)
+  | ((
+      type: string | undefined,
+      node: FlowNode & { type?: string; virtual?: boolean }
+    ) => FlowStylePlugin | null)
   | FlowStylePlugin;
-
-export interface UseNodeStyleArgs {
-  node: StyleArg;
-  type?: string;
-  variant?: string;
-  style?: FlowStyleResolver;
-  plugin?: FlowPluginArg;
-}
-
-export interface NodeStyleResult {
-  baseStyle: BaseVariantStyle;
-  nodeStyle: FlowStyle;
-  edgeStyle: FlowStyle;
-  plugin: FlowStylePlugin | null;
-}
 
 export const useNodeStyle = ({
   node,
@@ -47,7 +31,18 @@ export const useNodeStyle = ({
   variant,
   style,
   plugin,
-}: UseNodeStyleArgs): NodeStyleResult => {
+}: {
+  node: FlowNode & { type?: string; virtual?: boolean };
+  type?: string;
+  variant?: string;
+  style?: FlowStyleResolver;
+  plugin?: FlowPluginArg;
+}): {
+  baseStyle: BaseVariantStyle;
+  nodeStyle: FlowStyle;
+  edgeStyle: FlowStyle;
+  plugin: FlowStylePlugin | null;
+} => {
   return useMemo(() => {
     const baseStyle = getBaseStyleForVariant(variant);
 

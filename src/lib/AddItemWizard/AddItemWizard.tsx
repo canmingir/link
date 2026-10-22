@@ -11,33 +11,47 @@ import type { ChangeEvent, ReactNode } from "react";
 import { Grid, Stack, Switch, Typography } from "@mui/material";
 import { publish, useEvent } from "@nucleoidai/react-event";
 
-interface WizardItemDetails {
-  name?: string;
-  description?: string;
-  icon?: string;
-  [key: string]: unknown;
-}
-
-export interface WizardItem {
-  details: WizardItemDetails;
-  [key: string]: unknown;
-}
-
-interface AddItemWizardProps {
-  onSubmit: (items: WizardItem[]) => void;
-  items: WizardItem[];
-  steps?: string[];
-  stepExp?: ReactNode[];
-}
-
 function AddItemWizard({
   onSubmit,
   items,
   steps,
   stepExp,
-}: AddItemWizardProps) {
+}: {
+  onSubmit: (
+    items: {
+      details: {
+        name?: string;
+        description?: string;
+        icon?: string;
+        [key: string]: unknown;
+      };
+      [key: string]: unknown;
+    }[]
+  ) => void;
+  items: {
+    details: {
+      name?: string;
+      description?: string;
+      icon?: string;
+      [key: string]: unknown;
+    };
+    [key: string]: unknown;
+  }[];
+  steps?: string[];
+  stepExp?: ReactNode[];
+}) {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [newItems, setNewItems] = React.useState<WizardItem[]>(items);
+  const [newItems, setNewItems] = React.useState<
+    {
+      details: {
+        name?: string;
+        description?: string;
+        icon?: string;
+        [key: string]: unknown;
+      };
+      [key: string]: unknown;
+    }[]
+  >(items);
   const [platformDialog] = useEvent("PLATFORM_DIALOG", { open: false });
 
   const handleNext = () => {

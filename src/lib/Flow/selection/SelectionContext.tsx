@@ -1,4 +1,9 @@
-import type { Dispatch, MutableRefObject, ReactNode, SetStateAction } from "react";
+import type {
+  Dispatch,
+  MutableRefObject,
+  ReactNode,
+  SetStateAction,
+} from "react";
 import type { FlowNode, FlowNodeMap } from "../types";
 import {
   createContext,
@@ -15,28 +20,22 @@ interface TouchPoint {
   y: number;
 }
 
-/** Token tracking an in-progress touch drag, shared with the viewport so a
- * second touch point can cancel the single-node drag and start a pinch. */
 export interface NodeTouchDragToken {
   lastPointer: { pointerId: number; x: number; y: number } | null;
   cancel?: () => void;
 }
 
-export type PinchBridge = (pointerA: TouchPoint, pointerB: TouchPoint) => void;
+type PinchBridge = (pointerA: TouchPoint, pointerB: TouchPoint) => void;
 
-export interface Point {
+interface Point {
   x: number;
   y: number;
 }
-
-/** Per-node imperative handlers registered by `<DraggableNode>`. */
-export interface NodeHandlers {
+interface NodeHandlers {
   setOffset?: Dispatch<SetStateAction<Point>>;
   onDrag?: () => void;
 }
-
-/** A node captured onto the clipboard by a cut. */
-export interface ClipboardNode extends FlowNode {
+interface ClipboardNode extends FlowNode {
   _originalId?: string;
 }
 
@@ -48,7 +47,7 @@ export interface PasteStructure {
 
 type PasteCallback = (data: PasteStructure, position: Point) => unknown;
 
-export interface SelectionContextValue {
+interface SelectionContextValue {
   selectedIds: Set<string>;
   selectNode: (id: string, addToSelection?: boolean) => void;
   deselectNode: (id: string) => void;

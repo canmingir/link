@@ -4,56 +4,6 @@ import type { ReactNode } from "react";
 
 import { useId, useLayoutEffect, useMemo, useState } from "react";
 
-interface Gradient {
-  from: string;
-  to: string;
-}
-
-interface ConnectorLabelStyle {
-  color?: string;
-  fontSize?: string | number;
-  fontWeight?: string | number;
-  textColor?: string;
-}
-
-interface DynamicConnectorProps {
-  containerEl?: HTMLElement | null;
-  parentEl?: HTMLElement | null;
-  childEls?: (HTMLElement | null)[];
-  stroke?: string;
-  strokeWidth?: number;
-  lineStyle?: string;
-  tick?: number | string;
-  orientation?: "vertical" | "horizontal";
-  showDots?: boolean;
-  dotRadius?: number;
-  dotColor?: string;
-  showArrow?: boolean;
-  arrowSize?: number;
-  animated?: boolean;
-  animationSpeed?: number;
-  gradient?: Gradient | null;
-  curvature?: number;
-  connectorType?: string;
-  label?: ReactNode;
-  labelStyle?: ConnectorLabelStyle;
-  labelPosition?: number;
-  labelOffsetX?: number;
-  labelOffsetY?: number;
-  startGap?: number;
-  endGap?: number;
-}
-
-interface ConnectorDims {
-  w: number;
-  h: number;
-}
-
-interface ConnectorPoints {
-  parent: Point | null;
-  children: Point[];
-}
-
 const DynamicConnector = ({
   containerEl,
   parentEl,
@@ -80,10 +30,44 @@ const DynamicConnector = ({
   labelOffsetY = -10,
   startGap = 8,
   endGap = 10,
-}: DynamicConnectorProps) => {
+}: {
+  containerEl?: HTMLElement | null;
+  parentEl?: HTMLElement | null;
+  childEls?: (HTMLElement | null)[];
+  stroke?: string;
+  strokeWidth?: number;
+  lineStyle?: string;
+  tick?: number | string;
+  orientation?: "vertical" | "horizontal";
+  showDots?: boolean;
+  dotRadius?: number;
+  dotColor?: string;
+  showArrow?: boolean;
+  arrowSize?: number;
+  animated?: boolean;
+  animationSpeed?: number;
+  gradient?: { from: string; to: string } | null;
+  curvature?: number;
+  connectorType?: string;
+  label?: ReactNode;
+  labelStyle?: {
+    color?: string;
+    fontSize?: string | number;
+    fontWeight?: string | number;
+    textColor?: string;
+  };
+  labelPosition?: number;
+  labelOffsetX?: number;
+  labelOffsetY?: number;
+  startGap?: number;
+  endGap?: number;
+}) => {
   const uniqueId = useId();
-  const [dims, setDims] = useState<ConnectorDims | null>(null);
-  const [points, setPoints] = useState<ConnectorPoints>({
+  const [dims, setDims] = useState<{ w: number; h: number } | null>(null);
+  const [points, setPoints] = useState<{
+    parent: Point | null;
+    children: Point[];
+  }>({
     parent: null,
     children: [],
   });

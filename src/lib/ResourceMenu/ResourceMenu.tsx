@@ -8,26 +8,22 @@ import { Delete, Http, Source } from "@mui/icons-material";
 import { Divider, Fade, Menu, MenuItem, Typography } from "@mui/material";
 import { publish, useEvent } from "@nucleoidai/react-event";
 
-interface ResourceMenuProps {
+const ResourceMenu = (props: {
   anchor?: { clientX?: number; clientY?: number } | null;
   openMenu?: boolean;
   handleClose: () => void;
   hash?: string;
   map?: Record<string, { path: string }>;
-}
-
-interface DeleteResourceInfo {
-  deleteAdress?: string;
-  deleteList: string[];
-}
-
-const ResourceMenu = (props: ResourceMenuProps) => {
+}) => {
   const { anchor, openMenu, handleClose, hash, map } = props;
 
   const [methodDisabled, setMethodDisabled] = React.useState<boolean>();
   const [alertMessage, setAlertMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  const resourceRef = useRef<DeleteResourceInfo | null>(null);
+  const resourceRef = useRef<{
+    deleteAdress?: string;
+    deleteList: string[];
+  } | null>(null);
 
   const [api] = useEvent<{ path: string }[]>("API_DATA_CHANGED", []);
   const [selectedAPI] = useEvent("SELECTED_API_CHANGED", {

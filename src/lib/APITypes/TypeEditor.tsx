@@ -3,17 +3,15 @@ import { useState } from "react";
 import { Box, IconButton, TextField } from "@mui/material";
 import { Check, Close } from "@mui/icons-material";
 
-interface TypeEditorProps {
-  initialValue?: string;
-  onConfirm: (value: string) => void;
-  onCancel: () => void;
-}
-
 const TypeEditor = ({
   initialValue = "",
   onConfirm,
   onCancel,
-}: TypeEditorProps) => {
+}: {
+  initialValue?: string;
+  onConfirm: (value: string) => void;
+  onCancel: () => void;
+}) => {
   const [typeName, setTypeName] = useState(initialValue);
 
   const handleConfirm = () => {

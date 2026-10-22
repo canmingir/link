@@ -5,12 +5,12 @@ import { buttonGroupClasses } from "@mui/material/ButtonGroup";
 
 const COLORS = ["primary", "secondary", "info", "success", "warning", "error"] as const;
 
-type ButtonGroupOwnerState = Omit<ButtonGroupProps, "variant"> & {
-  variant?: "contained" | "outlined" | "text" | "soft";
-};
-
 export function buttonGroup(theme: Theme) {
-  const rootStyles = (ownerState: ButtonGroupOwnerState) => {
+  const rootStyles = (
+    ownerState: Omit<ButtonGroupProps, "variant"> & {
+      variant?: "contained" | "outlined" | "text" | "soft";
+    }
+  ) => {
     const inheritColor = ownerState.color === "inherit";
 
     const containedVariant = ownerState.variant === "contained";
@@ -80,8 +80,13 @@ export function buttonGroup(theme: Theme) {
   return {
     MuiButtonGroup: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: ButtonGroupOwnerState }) =>
-          rootStyles(ownerState),
+        root: ({
+          ownerState,
+        }: {
+          ownerState: Omit<ButtonGroupProps, "variant"> & {
+            variant?: "contained" | "outlined" | "text" | "soft";
+          };
+        }) => rootStyles(ownerState),
       },
     },
   };

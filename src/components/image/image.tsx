@@ -7,30 +7,31 @@ import { getRatio } from "./utils";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { alpha, useTheme } from "@mui/material/styles";
 
-interface ImageProps {
-  ratio?: string;
-  overlay?: string;
-  disabledEffect?: boolean;
-  alt?: string;
-  src?: string;
-  afterLoad?: () => void;
-  delayTime?: number;
-  threshold?: number;
-  beforeLoad?: () => void;
-  delayMethod?: "debounce" | "throttle";
-  placeholder?: ReactNode;
-  wrapperProps?: Record<string, unknown>;
-  scrollPosition?: { x: number; y: number };
-  effect?: string;
-  visibleByDefault?: boolean;
-  wrapperClassName?: string;
-  useIntersectionObserver?: boolean;
-  sx?: SxProps<Theme>;
-  className?: string;
-  style?: React.CSSProperties;
-}
-
-const Image = forwardRef<HTMLSpanElement, ImageProps>(
+const Image = forwardRef<
+  HTMLSpanElement,
+  {
+    ratio?: string;
+    overlay?: string;
+    disabledEffect?: boolean;
+    alt?: string;
+    src?: string;
+    afterLoad?: () => void;
+    delayTime?: number;
+    threshold?: number;
+    beforeLoad?: () => void;
+    delayMethod?: "debounce" | "throttle";
+    placeholder?: ReactNode;
+    wrapperProps?: Record<string, unknown>;
+    scrollPosition?: { x: number; y: number };
+    effect?: string;
+    visibleByDefault?: boolean;
+    wrapperClassName?: string;
+    useIntersectionObserver?: boolean;
+    sx?: SxProps<Theme>;
+    className?: string;
+    style?: React.CSSProperties;
+  }
+>(
   (
     {
       ratio,

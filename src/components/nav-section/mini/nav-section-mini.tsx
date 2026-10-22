@@ -4,13 +4,15 @@ import { memo } from "react";
 
 import type { NavGroupData, NavItemData, NavSlotProps } from "../types";
 
-interface NavSectionMiniProps {
+function NavSectionMini({
+  data,
+  slotProps,
+  ...other
+}: {
   data: NavGroupData[];
   slotProps?: NavSlotProps;
   [key: string]: unknown;
-}
-
-function NavSectionMini({ data, slotProps, ...other }: NavSectionMiniProps) {
+}) {
   return (
     <Stack
       component="nav"

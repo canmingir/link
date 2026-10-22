@@ -25,22 +25,6 @@ export interface MiniSvgNode extends MiniNode {
   [key: string]: unknown;
 }
 
-interface FlowSvgContentProps {
-  nodes: MiniSvgNode[];
-  positions: MiniLayout["positions"];
-  edgeList: MiniEdge[];
-  svgW: number;
-  svgH: number;
-  uid: string;
-  viewportRect?: { x: number; y: number; w: number; h: number } | null;
-  onViewportPointerDown?: (e: ReactPointerEvent<SVGRectElement>) => void;
-  isDragging?: boolean;
-  type?: string;
-  variant?: string;
-  style?: ResolveNodeVisualArgs["style"];
-  plugin?: ResolveNodeVisualArgs["plugin"];
-}
-
 export function FlowSvgContent({
   nodes,
   positions,
@@ -55,7 +39,21 @@ export function FlowSvgContent({
   variant,
   style,
   plugin,
-}: FlowSvgContentProps) {
+}: {
+  nodes: MiniSvgNode[];
+  positions: MiniLayout["positions"];
+  edgeList: MiniEdge[];
+  svgW: number;
+  svgH: number;
+  uid: string;
+  viewportRect?: { x: number; y: number; w: number; h: number } | null;
+  onViewportPointerDown?: (e: ReactPointerEvent<SVGRectElement>) => void;
+  isDragging?: boolean;
+  type?: string;
+  variant?: string;
+  style?: ResolveNodeVisualArgs["style"];
+  plugin?: ResolveNodeVisualArgs["plugin"];
+}) {
   const theme = useTheme();
   const c = getFlowColors(theme);
   const dotColor = c.dot;

@@ -7,16 +7,6 @@ import Stepper from "@mui/material/Stepper";
 
 import { Box, Button, Stack } from "@mui/material";
 
-interface StepComponentProps {
-  activeStep: number;
-  steps?: string[];
-  stepExp?: ReactNode[];
-  handleNext: () => void;
-  handleBack: () => void;
-  handleSave: () => void;
-  children?: ReactNode;
-}
-
 export default function StepComponent({
   activeStep,
   steps = [],
@@ -25,7 +15,15 @@ export default function StepComponent({
   handleBack,
   handleSave,
   children,
-}: StepComponentProps) {
+}: {
+  activeStep: number;
+  steps?: string[];
+  stepExp?: ReactNode[];
+  handleNext: () => void;
+  handleBack: () => void;
+  handleSave: () => void;
+  children?: ReactNode;
+}) {
   return (
     <>
       <Stepper

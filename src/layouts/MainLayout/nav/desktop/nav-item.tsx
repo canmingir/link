@@ -12,17 +12,18 @@ import { styled } from "@mui/material/styles";
 
 import type { SxProps, Theme } from "@mui/material/styles";
 
-interface NavItemProps extends Omit<Partial<ListItemButtonProps>, "title"> {
-  title?: ReactNode;
-  path?: string;
-  open?: boolean;
-  active?: boolean;
-  hasChild?: boolean;
-  externalLink?: boolean;
-  subItem?: boolean;
-}
-
-export const NavItem = forwardRef<HTMLDivElement, NavItemProps>(
+export const NavItem = forwardRef<
+  HTMLDivElement,
+  Omit<Partial<ListItemButtonProps>, "title"> & {
+    title?: ReactNode;
+    path?: string;
+    open?: boolean;
+    active?: boolean;
+    hasChild?: boolean;
+    externalLink?: boolean;
+    subItem?: boolean;
+  }
+>(
   (
     { title, path, open, active, hasChild, externalLink, subItem, ...other },
     ref
@@ -75,88 +76,84 @@ export const NavItem = forwardRef<HTMLDivElement, NavItemProps>(
   }
 );
 
-interface StyledNavItemProps {
-  open?: boolean;
-  active?: boolean;
-  subItem?: boolean;
-}
-
 const StyledNavItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== "active" && prop !== "subItem",
-})<StyledNavItemProps>(({ open, active, subItem, theme }) => {
-  const opened = open && !active;
+})<{ open?: boolean; active?: boolean; subItem?: boolean }>(
+  ({ open, active, subItem, theme }) => {
+    const opened = open && !active;
 
-  const dotStyles = {
-    width: 6,
-    height: 6,
-    left: -12,
-    opacity: 0.64,
-    content: '""',
-    borderRadius: "50%",
-    position: "absolute",
-    backgroundColor: "currentColor",
-    ...(active && {
-      color: theme.palette.primary.main,
-    }),
-  };
-
-  return {
-    ...(!subItem && {
-      ...theme.typography.body2,
-      padding: 0,
-      height: "100%",
-      fontWeight: theme.typography.fontWeightMedium,
-      transition: theme.transitions.create(["all"], {
-        duration: theme.transitions.duration.shorter,
-      }),
-      "&:hover": {
-        opacity: 0.64,
-        backgroundColor: "transparent",
-        "&:before": {
-          ...dotStyles,
-        },
-      },
+    const dotStyles = {
+      width: 6,
+      height: 6,
+      left: -12,
+      opacity: 0.64,
+      content: '""',
+      borderRadius: "50%",
+      position: "absolute",
+      backgroundColor: "currentColor",
       ...(active && {
         color: theme.palette.primary.main,
-        fontWeight: theme.typography.fontWeightSemiBold,
-        "&:before": {
-          ...dotStyles,
-        },
       }),
-      ...(opened && {
-        opacity: 0.64,
-        "&:before": {
-          ...dotStyles,
-        },
-      }),
-    }),
+    };
 
-    ...(subItem && {
-      ...theme.typography.body2,
-      padding: 0,
-      fontSize: 13,
-      color: theme.palette.text.secondary,
-      fontWeight: theme.typography.fontWeightMedium,
-      transition: theme.transitions.create(["all"], {
-        duration: theme.transitions.duration.shorter,
-      }),
-      "&:hover": {
-        backgroundColor: "transparent",
-        color: theme.palette.text.primary,
-        "&:before": {
-          ...dotStyles,
+    return {
+      ...(!subItem && {
+        ...theme.typography.body2,
+        padding: 0,
+        height: "100%",
+        fontWeight: theme.typography.fontWeightMedium,
+        transition: theme.transitions.create(["all"], {
+          duration: theme.transitions.duration.shorter,
+        }),
+        "&:hover": {
+          opacity: 0.64,
+          backgroundColor: "transparent",
+          "&:before": {
+            ...dotStyles,
+          },
         },
-      },
-      ...(active && {
-        color: theme.palette.text.primary,
-        fontWeight: theme.typography.fontWeightSemiBold,
-        "&:before": {
-          ...dotStyles,
-        },
+        ...(active && {
+          color: theme.palette.primary.main,
+          fontWeight: theme.typography.fontWeightSemiBold,
+          "&:before": {
+            ...dotStyles,
+          },
+        }),
+        ...(opened && {
+          opacity: 0.64,
+          "&:before": {
+            ...dotStyles,
+          },
+        }),
       }),
-    }),
-  };
-});
+
+      ...(subItem && {
+        ...theme.typography.body2,
+        padding: 0,
+        fontSize: 13,
+        color: theme.palette.text.secondary,
+        fontWeight: theme.typography.fontWeightMedium,
+        transition: theme.transitions.create(["all"], {
+          duration: theme.transitions.duration.shorter,
+        }),
+        "&:hover": {
+          backgroundColor: "transparent",
+          color: theme.palette.text.primary,
+          "&:before": {
+            ...dotStyles,
+          },
+        },
+        ...(active && {
+          color: theme.palette.text.primary,
+          fontWeight: theme.typography.fontWeightSemiBold,
+          "&:before": {
+            ...dotStyles,
+          },
+        }),
+      }),
+    };
+  }
+);
 
 export function NavItemDashboard({
   path,

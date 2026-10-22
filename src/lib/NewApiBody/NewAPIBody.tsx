@@ -7,27 +7,23 @@ import type { ViewParam } from "./ParamView";
 import { Box, Divider, Paper, Typography } from "@mui/material";
 import type { CustomType, SchemaNode } from "../SchemaEditor/types";
 
-interface Api {
-  path?: string;
-  method?: string;
-  params?: ViewParam[];
-  request?: { schema?: Partial<SchemaNode> };
-  response?: { schema?: Partial<SchemaNode> };
-}
-
-interface NewAPIBodyProps {
-  types: CustomType[];
-  api: Api;
-  requestSchemaRef: Ref<SchemaEditorHandle>;
-  responseSchemaRef: Ref<SchemaEditorHandle>;
-}
-
 const NewAPIBody = ({
   types,
   api,
   requestSchemaRef,
   responseSchemaRef,
-}: NewAPIBodyProps) => {
+}: {
+  types: CustomType[];
+  api: {
+    path?: string;
+    method?: string;
+    params?: ViewParam[];
+    request?: { schema?: Partial<SchemaNode> };
+    response?: { schema?: Partial<SchemaNode> };
+  };
+  requestSchemaRef: Ref<SchemaEditorHandle>;
+  responseSchemaRef: Ref<SchemaEditorHandle>;
+}) => {
   return (
     <Box
       sx={{
