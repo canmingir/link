@@ -2,14 +2,6 @@ import { Box, Typography } from "@mui/material";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { type Theme, alpha } from "@mui/material/styles";
 
-type PaletteColor =
-  | "primary"
-  | "secondary"
-  | "success"
-  | "error"
-  | "warning"
-  | "info";
-
 const Swipe = ({
   checked,
   onChange,
@@ -35,8 +27,14 @@ const Swipe = ({
   ariaLabel?: string;
   offLabel?: string;
   onLabel?: string;
-  color?: PaletteColor;
-  idleColor?: PaletteColor;
+  color?: "primary" | "secondary" | "success" | "error" | "warning" | "info";
+  idleColor?:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "warning"
+    | "info";
   variant?: "solid" | "gradient";
   width?: number;
   height?: number;

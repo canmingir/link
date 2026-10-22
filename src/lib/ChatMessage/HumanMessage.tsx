@@ -22,8 +22,8 @@ const HumanMessage = memo(
     messageRef,
   }: {
     message: { id: string; content: string };
-    selectedId: string;
-    messageRef: React.RefObject<HTMLDivElement>;
+    selectedId?: string;
+    messageRef?: React.RefObject<HTMLDivElement>;
   }) => {
     const isJson = useMemo(
       () => tryParseJson(message.content),
@@ -96,7 +96,7 @@ const HumanMessage = memo(
               <Editor
                 height={`${editorHeight}px`}
                 defaultLanguage="json"
-                value={formattedJson}
+                value={formattedJson ?? undefined}
                 theme="vs-dark"
                 options={{
                   readOnly: true,
