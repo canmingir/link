@@ -95,13 +95,11 @@ Cypress.Commands.add("checkRoute", (route: string) => {
   cy.url().should("include", route);
 });
 
-Cypress.Commands.add(
-  "platformSetup",
-  (itemId, itemFixturePath, config: { name: string }) => {
-    cy.storageSet("link.projectid", itemId);
+Cypress.Commands.add("platformSetup", (itemId, itemFixturePath) => {
+  cy.storageSet("link.projectid", itemId);
 
-    cy.storageSet(`${config.name}.refreshtoken`, "TEST_REFRESH_TOKEN");
-    cy.storageSet(`${config.name}.accesstoken`, "TEST_ACCESS_TOKEN");
+  cy.storageSet(`link.refreshtoken`, "TEST_REFRESH_TOKEN");
+  cy.storageSet(`link.accesstoken`, "TEST_ACCESS_TOKEN");
 
     cy.intercept("GET", `https://api.github.com/user`, user).as("getUser");
 

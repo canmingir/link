@@ -74,14 +74,12 @@ export function buildTreeFromLinked(
       if (!nextId || !nodesById[nextId]) continue;
 
       const target = nodesById[nextId];
-      if (
-        target.previous === null ||
-        target.previous === undefined ||
-        target.previous === id
-      ) {
-        const built = dfs(nextId);
-        if (built) out.children.push(built);
-      }
+      const isOwner = target.previous == null || target.previous === id;
+      if (!isOwner) continue;
+      if (seen.has(nextId)) continue;
+
+      const built = dfs(nextId);
+      if (built) out.children.push(built);
     }
     return out;
   };
@@ -201,8 +199,8 @@ export const buildDetachedTree = (
     seen.add(id);
 
     const node = nodesById[id];
-    const { next, ...rest } = node;
-    const result: TreeNode = { ...rest, id, children: [] };
+    const { next, previous, ...rest } = node;
+    const result = { ...rest, id, previous, children: [] };
 
     const nextIds = Array.isArray(next)
       ? next
@@ -213,6 +211,11 @@ export const buildDetachedTree = (
     nextIds.forEach((nxt) => {
       const nextId = nextRefId(nxt);
       if (!nextId || !nodesById[nextId]) return;
+
+      const target = nodesById[nextId];
+      const isOwner = target.previous == null || target.previous === id;
+      if (!isOwner) return;
+      if (seen.has(nextId)) return;
 
       const child = buildNode(nextId);
       if (child) result.children.push(child);

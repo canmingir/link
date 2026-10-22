@@ -1,4 +1,5 @@
 import FlowNode from "./FlowNode";
+import { useDagLayout } from "../hooks/useDagLayout";
 import type { FlowNodeData } from "../nodes/FlowNodeView";
 import type { FlowNodeProps } from "./FlowNode";
 import { useGraphOperations } from "../hooks/useGraphOperations";
@@ -43,12 +44,34 @@ export const Flow = forwardRef<FlowViewportHandle, FlowProps>(function Flow(
     impliedConnections,
     showImpliedConnections = false,
     labelForImpliedConnection,
+    onConnectRejected,
+    layout = "tree",
+    layoutDirection = "RIGHT",
+    positions,
+    layoutEdges,
+    layoutBounds,
+    onLayoutError,
   },
   ref
 ) {
   const [floatingNodes, setFloatingNodes] = useState<FloatingStructure[]>([]);
 
+  const isDag = layout === "dag";
+
   const { nodesById, roots } = useMemo(() => assertLinkedGraph(data), [data]);
+
+  const dagLayout = useDagLayout({
+    nodesById,
+    enabled: isDag,
+    direction: layoutDirection,
+    variant,
+    style,
+    plugin,
+    positions,
+    layoutEdges,
+    layoutBounds,
+    onLayoutError,
+  });
 
   const { handleCut, handlePaste, handleConnect } = useGraphOperations({
     nodesById,
@@ -57,6 +80,7 @@ export const Flow = forwardRef<FlowViewportHandle, FlowProps>(function Flow(
     floatingNodes,
     setFloatingNodes,
     editable,
+    onConnectRejected,
   });
 
   const allNodesById = useMemo(() => {
@@ -74,6 +98,7 @@ export const Flow = forwardRef<FlowViewportHandle, FlowProps>(function Flow(
   }, [nodesById, floatingNodes]);
 
   const treeData = useMemo(() => {
+    if (isDag) return null;
     if (!roots?.length) return null;
 
     if (roots.length === 1) {
@@ -92,7 +117,7 @@ export const Flow = forwardRef<FlowViewportHandle, FlowProps>(function Flow(
     return children.length > 0
       ? { id: "__root__", label: "Start", virtual: true, children }
       : null;
-  }, [nodesById, roots]);
+  }, [isDag, nodesById, roots]);
 
   return (
     <Box
@@ -136,6 +161,10 @@ export const Flow = forwardRef<FlowViewportHandle, FlowProps>(function Flow(
         impliedConnections={impliedConnections}
         showImpliedConnections={showImpliedConnections}
         labelForImpliedConnection={labelForImpliedConnection}
+        layout={layout}
+        positions={dagLayout?.positions}
+        layoutEdges={dagLayout?.edges}
+        layoutBounds={dagLayout?.bounds}
       />
     </Box>
   );

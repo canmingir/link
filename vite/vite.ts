@@ -1,5 +1,6 @@
 import { ConfigSchema } from "../src/config/schemas";
 import checker from "vite-plugin-checker";
+import fs from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
 import react from "@vitejs/plugin-react";
@@ -13,6 +14,22 @@ const { value, error } = ConfigSchema.validate(config);
 if (error) {
   console.error(error.stack);
   process.exit(-1);
+}
+
+function readAppVersion() {
+  const versionPath = path.join(process.cwd(), "src", "version.json");
+
+  if (!fs.existsSync(versionPath)) {
+    return "DEV";
+  }
+
+  try {
+    const { version } = JSON.parse(fs.readFileSync(versionPath, "utf8"));
+    return version || "DEV";
+  } catch (error) {
+    console.error("Failed to read version.json:", error);
+    return "DEV";
+  }
 }
 
 async function vite() {
@@ -45,6 +62,9 @@ async function vite() {
       },
     },
     base,
+    define: {
+      __APP_VERSION__: JSON.stringify(readAppVersion()),
+    },
     optimizeDeps: {
       esbuildOptions: {
         jsx: "automatic",

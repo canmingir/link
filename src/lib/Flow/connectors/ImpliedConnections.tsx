@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import type { ReactNode } from "react";
 import { useTheme } from "@mui/material/styles";
-
 import { collectHandles, handleKey } from "./handleAttrs";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 
@@ -47,6 +46,7 @@ const ImpliedConnections = ({
   const theme = useTheme();
   const [state, setState] = useState<ImpliedState>({ paths: [], dims: null });
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const lastKeyRef = useRef("");
 
   const lineColor = stroke ?? theme.palette.action.disabled;
 
@@ -62,6 +62,7 @@ const ImpliedConnections = ({
       rootRef.current?.parentElement) as HTMLElement | null;
 
     if (!container || !bindings.length) {
+      lastKeyRef.current = "";
       setState({ paths: [], dims: null });
       return;
     }
@@ -100,17 +101,24 @@ const ImpliedConnections = ({
         });
       }
 
-      setState({
-        paths,
-        dims: { w: cRect.width / scaleX, h: cRect.height / scaleY },
-      });
+      const w = cRect.width / scaleX;
+      const h = cRect.height / scaleY;
+      const key = `${w}x${h}|${paths.map((p) => `${p.id}:${p.d}`).join(";")}`;
+      if (key === lastKeyRef.current) return;
+      lastKeyRef.current = key;
+
+      setState({ paths, dims: { w, h } });
     };
 
+    let frame = 0;
+    const loop = () => {
+      update();
+      frame = requestAnimationFrame(loop);
+    };
+    frame = requestAnimationFrame(loop);
     update();
 
-    const ro = new ResizeObserver(update);
-    ro.observe(container);
-    return () => ro.disconnect();
+    return () => cancelAnimationFrame(frame);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [containerEl, bindingsKey, tick]);
 

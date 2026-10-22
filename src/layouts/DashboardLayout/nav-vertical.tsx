@@ -1,3 +1,4 @@
+import { APP_VERSION_LABEL } from "../../utils/app-version";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Iconify from "../../components/Iconify";
@@ -90,7 +91,7 @@ export default function NavVertical({
               fontSize: 12,
             }}
           >
-            Beta
+            {APP_VERSION_LABEL}
           </Typography>
         </Box>
       ) : (

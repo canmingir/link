@@ -72,6 +72,8 @@ const DEFAULT_CONTEXT: SelectionContextValue = {
   cutSelectedNodes: () => {},
   pasteNodes: () => {},
   hasClipboard: false,
+  pinchBridgeRef: { current: null },
+  nodeTouchDragRef: { current: null },
 };
 
 const filterNextToSelection = (
@@ -154,6 +156,8 @@ export const SelectionProvider = ({ children }: { children: ReactNode }) => {
   const [clipboard, setClipboard] = useState<ClipboardNode[]>([]);
   const nodeHandlersRef = useRef(new Map<string, NodeHandlers>());
   const isPastingRef = useRef(false);
+  const pinchBridgeRef = useRef(null);
+  const nodeTouchDragRef = useRef(null);
 
   const selectNode = useCallback((id: string, addToSelection = false) => {
     setSelectedIds((prev) => {
@@ -302,6 +306,8 @@ export const SelectionProvider = ({ children }: { children: ReactNode }) => {
       cutSelectedNodes,
       pasteNodes,
       hasClipboard,
+      pinchBridgeRef,
+      nodeTouchDragRef,
     }),
     [
       selectedIds,

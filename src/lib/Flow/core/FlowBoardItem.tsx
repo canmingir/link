@@ -2,6 +2,7 @@ import type { BoardFlow } from "./FlowBoard";
 import { Box } from "@mui/material";
 import type { FlowNodeData } from "../nodes/FlowNodeView";
 import FlowNodeView from "../nodes/FlowNodeView";
+import { useSelection } from "../selection/SelectionContext";
 
 import type { FlowNode, FlowNodeMap, Point } from "../types";
 import type { FlowPluginArg, FlowStyleResolver } from "../hooks/useNodeStyle";
@@ -45,6 +46,7 @@ const FlowBoardItem = ({
   );
 
   const didDragRef = useRef(false);
+  const { nodeTouchDragRef } = useSelection();
 
   const namespacedFlow = useMemo(() => {
     if (flowId === null || flowId === undefined) return flow;
@@ -85,11 +87,13 @@ const FlowBoardItem = ({
       .filter((t): t is NonNullable<typeof t> => Boolean(t));
   }, [nodesById, roots]);
 
-  const handleMouseDown = (e: ReactMouseEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return;
+  const handlePointerDown = (e: ReactMouseEvent<HTMLDivElement>) => {
+    const isTouch = e.pointerType === "touch";
+    if (!isTouch && e.button !== 0) return;
     const target = e.target as HTMLElement;
     if (target?.closest?.(".MuiCard-root") || target?.closest?.("button"))
       return;
+    if (isTouch && nodeTouchDragRef?.current) return;
 
     e.stopPropagation();
     didDragRef.current = false;
@@ -100,6 +104,16 @@ const FlowBoardItem = ({
     let lastPosition = startPosition;
 
     const onMove = (ev: MouseEvent) => {
+      if (isTouch && ev.pointerId !== e.pointerId) return;
+
+      if (dragToken.lastPointer) {
+        dragToken.lastPointer = {
+          pointerId: ev.pointerId,
+          x: ev.clientX,
+          y: ev.clientY,
+        };
+      }
+
       const dx = ev.clientX - startX;
       const dy = ev.clientY - startY;
       if (!didDragRef.current && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
@@ -110,13 +124,31 @@ const FlowBoardItem = ({
     };
 
     const onUp = () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      if (nodeTouchDragRef?.current === dragToken) {
+        nodeTouchDragRef.current = null;
+      }
       if (didDragRef.current) onPositionChange?.(lastPosition);
     };
 
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
+    const dragToken = {
+      lastPointer: isTouch
+        ? { pointerId: e.pointerId, x: e.clientX, y: e.clientY }
+        : null,
+      cancel: () => {
+        didDragRef.current = false;
+        setPosition(startPosition);
+        onUp();
+      },
+    };
+
+    if (isTouch && nodeTouchDragRef) nodeTouchDragRef.current = dragToken;
+
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
   };
 
   if (!treesData.length) return null;
@@ -124,13 +156,17 @@ const FlowBoardItem = ({
   return (
     <Box
       data-flow-id={label}
-      onMouseDown={handleMouseDown}
+      onPointerDown={handlePointerDown}
+      onContextMenu={(e) => e.preventDefault()}
       sx={{
         position: "absolute",
         left: "50%",
         top: "50%",
         transform: `translate(${position.x}px, ${position.y}px)`,
         cursor: "grab",
+        touchAction: "none",
+        userSelect: "none",
+        WebkitTouchCallout: "none",
         "&:active": { cursor: "grabbing" },
       }}
     >

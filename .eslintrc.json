@@ -56,6 +56,9 @@
       }
     ]
   },
+  "globals": {
+    "__APP_VERSION__": "readonly"
+  },
   "overrides": [
     {
       "files": ["**/*.ts", "**/*.tsx"],

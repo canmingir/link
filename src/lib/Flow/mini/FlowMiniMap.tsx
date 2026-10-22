@@ -36,11 +36,13 @@ function computeViewportInfo(
   const containerRect = containerEl.getBoundingClientRect();
   const nodeEls = containerEl.querySelectorAll("[data-node-id]");
 
+  const seen = new Set();
   const pairs: { screen: Point; mini: Point }[] = [];
 
   nodeEls.forEach((el: Element) => {
     const id = el.getAttribute("data-node-id");
-    if (!id || !positions[id]) return;
+    if (!id || !positions[id] || seen.has(id)) return;
+    seen.add(id);
     const rect = el.getBoundingClientRect();
     pairs.push({
       screen: {
@@ -53,33 +55,60 @@ function computeViewportInfo(
 
   if (pairs.length < 2) return null;
 
-  const p1 = pairs[0];
-  const p2 = pairs[1];
-  const dsx = p2.screen.x - p1.screen.x;
-  const dsy = p2.screen.y - p1.screen.y;
-  const dmx = p2.mini.x - p1.mini.x;
-  const dmy = p2.mini.y - p1.mini.y;
+  let bestX = null;
+  let bestY = null;
 
-  const scaleX =
-    Math.abs(dsx) > 1 ? dmx / dsx : Math.abs(dsy) > 1 ? dmy / dsy : null;
-  const scaleY =
-    Math.abs(dsy) > 1 ? dmy / dsy : Math.abs(dsx) > 1 ? dmx / dsx : null;
+  for (let i = 0; i < pairs.length; i++) {
+    for (let j = i + 1; j < pairs.length; j++) {
+      const a = pairs[i];
+      const b = pairs[j];
+      const dsx = b.screen.x - a.screen.x;
+      const dsy = b.screen.y - a.screen.y;
+      const dmx = b.mini.x - a.mini.x;
+      const dmy = b.mini.y - a.mini.y;
 
-  if (scaleX === null || scaleY === null) return null;
+      if (Math.abs(dsx) > Math.abs(bestX?.ds ?? 0)) {
+        bestX = { a, b, ds: dsx, dm: dmx };
+      }
+      if (Math.abs(dsy) > Math.abs(bestY?.ds ?? 0)) {
+        bestY = { a, b, ds: dsy, dm: dmy };
+      }
+    }
+  }
 
-  const offsetX = p1.mini.x - p1.screen.x * scaleX;
-  const offsetY = p1.mini.y - p1.screen.y * scaleY;
+  const scaleX = bestX && Math.abs(bestX.ds) > 1 ? bestX.dm / bestX.ds : null;
+  const scaleY = bestY && Math.abs(bestY.ds) > 1 ? bestY.dm / bestY.ds : null;
+
+  const resolvedScaleX = scaleX ?? scaleY;
+  const resolvedScaleY = scaleY ?? scaleX;
+
+  if (resolvedScaleX === null || resolvedScaleY === null) return null;
+
+  const refX = bestX ?? bestY;
+  const refY = bestY ?? bestX;
+
+  const offsetX = refX.a.mini.x - refX.a.screen.x * resolvedScaleX;
+  const offsetY = refY.a.mini.y - refY.a.screen.y * resolvedScaleY;
 
   return {
     rect: {
       x: offsetX,
       y: offsetY,
-      w: containerRect.width * scaleX,
-      h: containerRect.height * scaleY,
+      w: containerRect.width * resolvedScaleX,
+      h: containerRect.height * resolvedScaleY,
     },
-    scaleX,
-    scaleY,
+    scaleX: resolvedScaleX,
+    scaleY: resolvedScaleY,
   };
+}
+
+interface FlowMiniMapProps {
+  nodes?: MiniSvgNode[];
+  flowContainerRef: RefObject<HTMLElement | null>;
+  type?: string;
+  variant?: string;
+  style?: ResolveNodeVisualArgs["style"];
+  plugin?: ResolveNodeVisualArgs["plugin"];
 }
 
 interface FlowMiniMapProps {
@@ -134,7 +163,7 @@ export function FlowMiniMap({
 
       const container = flowContainerRef.current;
 
-      const handleMouseMove = (e: MouseEvent) => {
+      const handlePointerMove = (e: MouseEvent) => {
         if (!dragStartRef.current || !viewportInfoRef.current) return;
 
         const dx_css = e.clientX - dragStartRef.current.x;
@@ -162,26 +191,28 @@ export function FlowMiniMap({
         dragStartRef.current = { x: e.clientX, y: e.clientY };
       };
 
-      const handleMouseUp = () => {
-        setIsDragging(false);
-        if (container) {
-          container.style.pointerEvents = "";
-        }
-      };
+    const handlePointerUp = () => {
+      setIsDragging(false);
+      if (flowContainerRef.current) {
+        flowContainerRef.current.style.pointerEvents = "";
+      }
+    };
 
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
-      return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleMouseUp);
-        if (container) container.style.pointerEvents = "";
-      };
-    },
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerUp);
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerUp);
+      if (flowContainerRef.current)
+        flowContainerRef.current.style.pointerEvents = "";
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [isDragging, svgW, flowContainerRef]
   );
 
-  const handleViewportMouseDown = (e: ReactMouseEvent<SVGRectElement>) => {
+  const handleViewportPointerDown = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(true);
@@ -215,6 +246,8 @@ export function FlowMiniMap({
         zIndex: 10,
         cursor: isDragging ? "grabbing" : "default",
         userSelect: "none",
+        touchAction: "none",
+        WebkitTouchCallout: "none",
       }}
     >
       <FlowSvgContent
@@ -225,7 +258,7 @@ export function FlowMiniMap({
         svgH={svgH}
         uid="minimap"
         viewportRect={viewportRect}
-        onViewportMouseDown={handleViewportMouseDown}
+        onViewportPointerDown={handleViewportPointerDown}
         isDragging={isDragging}
         type={type}
         variant={variant}

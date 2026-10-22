@@ -7,6 +7,7 @@ import { useSettingsContext } from "../components/settings/context";
 import { useStorage } from "@nucleoidjs/webstorage";
 import { useUser } from "../hooks/use-user";
 
+import { APP_VERSION, APP_VERSION_LABEL } from "../utils/app-version";
 import {
   Avatar,
   Box,
@@ -32,11 +33,16 @@ import {
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-const pkg: { name: string; version: string; description: string } = {
-  name: pkgJson.name ?? "",
-  version: pkgJson.version ?? "",
-  description: (pkgJson as { description?: string }).description ?? "",
+let pkg = {
+  name: "",
+  description: "",
 };
+
+try {
+  pkg = require("../../../../../../package.json");
+} catch (error) {
+  console.error("Failed to load package.json for About tab:", error);
+}
 
 function a11yProps(index: number) {
   return {
@@ -63,7 +69,7 @@ const SettingsDialogTabs = ({
   const [value, setValue] = useState(0);
 
   const hasPkgInfo =
-    pkg && (pkg.name || pkg.version || pkg.description) ? true : false;
+    pkg && (pkg.name || APP_VERSION || pkg.description) ? true : false;
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -306,7 +312,7 @@ const Permission = () => {
 };
 
 const Settings = () => {
-  const [projectId] = useStorage("link", "projectid");
+  const [projectId] = useStorage("link", "projectid", null);
   const { settings, updateSettings } = useSettings(projectId);
   const { beta, onUpdate } = useSettingsContext();
 
@@ -394,7 +400,7 @@ const About = () => {
   const iconSrc = config().template?.login?.icon || "";
 
   const appName = pkg.name;
-  const version = pkg.version;
+  const version = APP_VERSION;
   const description = pkg.description;
 
   return (
@@ -460,7 +466,7 @@ const About = () => {
             )}
 
             <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-              <Chip size="small" label={`v${version}`} />
+              <Chip size="small" label={APP_VERSION_LABEL} />
             </Stack>
           </Box>
         </Stack>
