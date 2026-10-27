@@ -2,6 +2,10 @@
   "name": "@canmingir/link",
   "version": "1.2.89",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canmingir/link.git"
+  },
   "type": "module",
   "bin": {
     "link-server": "./server/server.ts"
