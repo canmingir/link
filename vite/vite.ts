@@ -6,7 +6,7 @@ import { pathToFileURL } from "url";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
-const configUrl = pathToFileURL(path.join(process.cwd(), "config.js")).href;
+const configUrl = pathToFileURL(path.join(process.cwd(), "config.ts")).href;
 const { default: config } = await import(configUrl);
 
 const { value, error } = ConfigSchema.validate(config);
@@ -104,7 +104,7 @@ async function vite() {
           },
           assetFileNames: `assets/[name].[hash].[ext]`,
           manualChunks(id: string) {
-            if (id.includes("config.js") && !id.includes("node_modules")) {
+            if (id.includes("config.ts") && !id.includes("node_modules")) {
               return "config";
             }
           },

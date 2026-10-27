@@ -1,6 +1,6 @@
-import configMain from "../../../../../../config.js";
-import configMenu from "../../../../../../config.menu.js";
-import configTemplate from "../../../../../../config.template.js";
+import configMain from "../../../../../../config.ts";
+import configMenu from "../../../../../../config.menu.ts";
+import configTemplate from "../../../../../../config.template.ts";
 import { publish } from "@nucleoidai/react-event";
 
 import {
@@ -29,7 +29,7 @@ function init() {
   if (errorConfig || errorMenu || errorTemplate) {
     publish("CONFIG_INITIALIZE_FAILED", {
       error: errorConfig?.stack || errorMenu?.stack || errorTemplate?.stack,
-      file: errorMenu ? "config.menu.js" : "config.template.js",
+      file: errorMenu ? "config.menu.ts" : "config.template.ts",
     });
   }
 
