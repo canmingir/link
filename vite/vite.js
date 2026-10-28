@@ -58,6 +58,7 @@ async function vite() {
     ],
     server: {
       port: 3000,
+      allowedHosts: [".trycloudflare.com"],
       proxy: {
         "/api": {
           target: api?.split("/api")?.[0],
