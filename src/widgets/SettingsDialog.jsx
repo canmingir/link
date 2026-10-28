@@ -1,3 +1,12 @@
+import Iconify from "../components/Iconify";
+import config from "../config/config";
+import { useEvent } from "@nucleoidai/react-event";
+import useSettings from "../hooks/useSettings";
+import { useSettingsContext } from "../components/settings/context";
+import { useStorage } from "@nucleoidjs/webstorage";
+import { useUser } from "../hooks/use-user";
+
+import { APP_VERSION, APP_VERSION_LABEL } from "../utils/app-version";
 import {
   Avatar,
   Box,
@@ -23,16 +32,8 @@ import {
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-import Iconify from "../components/Iconify";
-import config from "../config/config";
-import { useEvent } from "@nucleoidai/react-event";
-import useSettings from "../hooks/useSettings";
-import { useSettingsContext } from "../components/settings/context";
-import { useUser } from "../hooks/use-user";
-
 let pkg = {
   name: "",
-  version: "",
   description: "",
 };
 
@@ -59,7 +60,7 @@ const SettingsDialogTabs = ({ tabs }) => {
   const [value, setValue] = useState(0);
 
   const hasPkgInfo =
-    pkg && (pkg.name || pkg.version || pkg.description) ? true : false;
+    pkg && (pkg.name || APP_VERSION || pkg.description) ? true : false;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -296,7 +297,7 @@ const Permission = () => {
 };
 
 const Settings = () => {
-  const projectId = localStorage.getItem("projectId");
+  const [projectId] = useStorage("link", "projectid", null);
   const { settings, updateSettings } = useSettings(projectId);
   const { beta, onUpdate } = useSettingsContext();
 
@@ -384,7 +385,7 @@ const About = () => {
   const iconSrc = config().template?.login?.icon || "";
 
   const appName = pkg.name;
-  const version = pkg.version;
+  const version = APP_VERSION;
   const description = pkg.description;
 
   return (
@@ -450,7 +451,7 @@ const About = () => {
             )}
 
             <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-              <Chip size="small" label={`v${version}`} />
+              <Chip size="small" label={APP_VERSION_LABEL} />
             </Stack>
           </Box>
         </Stack>

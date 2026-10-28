@@ -13,7 +13,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(async (request) => {
-  const refreshToken = await storage.get("link", "refreshToken");
+  const refreshToken = await storage.get("link", "refreshtoken");
   if (refreshToken) {
     request.headers["Authorization"] = `Bearer ${refreshToken}`;
   }
@@ -22,7 +22,7 @@ instance.interceptors.request.use(async (request) => {
 
 instance.getUserDetails = async () => {
   try {
-    const refreshToken = storage.get("link", "refreshToken");
+    const refreshToken = storage.get("link", "refreshtoken");
 
     if (!refreshToken) {
       return null;
@@ -47,8 +47,8 @@ instance.getUserDetails = async () => {
 
 instance.getPermittedUsers = async () => {
   const { appId } = config();
-  const projectId = storage.get("projectId");
-  const identityProvider = storage.get("link", "identityProvider");
+  const projectId = storage.get("link", "projectid");
+  const identityProvider = storage.get("link", "identityprovider");
 
   const response = await http.get("/permissions");
 
@@ -110,7 +110,7 @@ instance.getPermittedUsers = async () => {
   }
 
   if (identityProvider?.toUpperCase() === "COGNITO") {
-    const accessToken = await storage.get("link", "accessToken");
+    const accessToken = await storage.get("link", "accesstoken");
     let currentUserId = null;
 
     try {

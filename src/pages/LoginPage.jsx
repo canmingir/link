@@ -16,8 +16,8 @@ function LoginPage() {
 
   function token() {
     if (
-      storage.get("link", "refreshToken") &&
-      storage.get("link", "accessToken")
+      storage.get("link", "refreshtoken") &&
+      storage.get("link", "accesstoken")
     ) {
       return true;
     } else {
@@ -28,6 +28,8 @@ function LoginPage() {
   useEffect(() => {
     if (token()) {
       navigate("/");
+    } else {
+      storage.clear();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);

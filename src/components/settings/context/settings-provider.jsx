@@ -5,7 +5,7 @@ import { useLocalStorage } from "../../../hooks/use-local-storage";
 
 import { useCallback, useMemo, useState } from "react";
 
-const STORAGE_KEY = "settings";
+const STORAGE_KEY = "link.settings";
 
 export function SettingsProvider({ children, defaultSettings }) {
   const { state, update, reset } = useLocalStorage(

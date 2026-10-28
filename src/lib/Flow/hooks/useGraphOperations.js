@@ -12,6 +12,34 @@ import {
   toNextArray,
 } from "../utils/flowUtils";
 
+function isAncestor(nodesById, targetId, sourceId) {
+  if (targetId === sourceId) return true;
+
+  const visited = new Set();
+  const queue = [targetId];
+
+  while (queue.length) {
+    const id = queue.shift();
+    if (visited.has(id)) continue;
+    visited.add(id);
+
+    const node = nodesById[id];
+    if (!node) continue;
+
+    const nextIds = toNextArray(node.next).map((n) =>
+      typeof n === "string" ? n : n?.id,
+    );
+
+    for (const nextId of nextIds) {
+      if (!nextId) continue;
+      if (nextId === sourceId) return true;
+      if (!visited.has(nextId)) queue.push(nextId);
+    }
+  }
+
+  return false;
+}
+
 export const useGraphOperations = ({
   nodesById,
   roots,
@@ -19,6 +47,7 @@ export const useGraphOperations = ({
   floatingNodes,
   setFloatingNodes,
   editable,
+  onConnectRejected,
 }) => {
   const findFloatingStructure = useCallback(
     (nodeId) => {
@@ -295,6 +324,37 @@ export const useGraphOperations = ({
         return;
       }
 
+      if (sourceInTree && targetInTree) {
+        const updatedNodes = { ...nodesById };
+        let changed = false;
+
+        selectedIds.forEach((sourceId) => {
+          const source = updatedNodes[sourceId];
+          if (!source || sourceId === targetNodeId) return;
+
+          if (isAncestor(updatedNodes, targetNodeId, sourceId)) {
+            onConnectRejected?.(
+              `Connecting "${sourceId}" to "${targetNodeId}" would create a cycle.`,
+            );
+            return;
+          }
+
+          const currentNext = toNextArray(source.next).map((n) =>
+            typeof n === "string" ? n : n?.id,
+          );
+          if (currentNext.includes(targetNodeId)) return;
+
+          updatedNodes[sourceId] = { ...source };
+          addToNext(updatedNodes[sourceId], [targetNodeId]);
+          changed = true;
+        });
+
+        if (changed) {
+          onChange({ nodes: updatedNodes, roots });
+        }
+        return;
+      }
+
       if (sourceFloating && targetFloating) {
         const { structure: sourceStruct, index: sourceIndex } = sourceFloating;
         const { index: targetIndex } = targetFloating;
@@ -355,6 +415,7 @@ export const useGraphOperations = ({
       roots,
       findFloatingStructure,
       setFloatingNodes,
+      onConnectRejected,
     ]
   );
 

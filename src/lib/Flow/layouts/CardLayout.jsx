@@ -1,7 +1,7 @@
-import React from "react";
-
 import { Box, Card, Stack, Typography } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
+
+import React from "react";
 
 const STYLES = {
   width: "100%",
@@ -158,7 +158,7 @@ export function SideStripeCard({
   const theme = useTheme();
 
   return (
-    <Box sx={{ cursor: "pointer" }}>
+    <Box sx={{ cursor: "inherit" }}>
       <Card
         sx={{
           display: "flex",
@@ -315,7 +315,7 @@ export function HeaderCard({
           left: 0,
           background: `linear-gradient(135deg, ${alpha(
             theme.palette.secondary.light,
-            0.2
+            0.2,
           )}, ${alpha(theme.palette.primary.main, 0.3)})`,
           borderRadius: "8px 8px 0 0",
           transition: "height 0.3s ease-in-out",
@@ -369,7 +369,7 @@ export function AvatarRoleCard({
           left: 0,
           background: `linear-gradient(135deg, ${alpha(
             theme.palette.secondary.light,
-            0.2
+            0.2,
           )}, ${alpha(theme.palette.primary.main, 0.3)})`,
           borderRadius: "8px 8px 0 0",
           transition: "height 0.3s ease-in-out",
@@ -385,8 +385,9 @@ export function AvatarRoleCard({
           direction="row"
           sx={{
             justifyContent: "space-between",
-            alignItems: "flex-start"
-          }}>
+            alignItems: "flex-start",
+          }}
+        >
           {leftContent}
           {topRightContent}
         </Stack>

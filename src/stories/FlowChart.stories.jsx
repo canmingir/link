@@ -331,3 +331,64 @@ export const TaskFlow = {
     );
   },
 };
+
+const chainedChildrenTree = {
+  id: "1",
+  title: "Technical Support Agent",
+  description: "Owns multiple Blueprints",
+  status: "active",
+  children: [
+    {
+      id: "2",
+      title: "VM Provisioning Request",
+      description: "First Blueprint",
+      status: "active",
+      children: [],
+    },
+    {
+      id: "3",
+      title: "VM Termination Request",
+      description: "Second Blueprint",
+      status: "active",
+      children: [],
+    },
+    {
+      id: "4",
+      title: "VM Metrics Health Check",
+      description: "Third Blueprint",
+      status: "active",
+      children: [],
+    },
+  ],
+};
+
+export const ChainedChildren = {
+  args: {
+    type: "default",
+    data: treeToLinked(chainedChildrenTree),
+    variant: "card",
+    style: {
+      border: "light",
+      size: "small",
+      shadow: "heavy",
+      shape: "square",
+      childrenLayout: "chain",
+    },
+  },
+};
+
+export const StackedChildren = {
+  args: {
+    type: "default",
+    data: treeToLinked(chainedChildrenTree),
+    variant: "card",
+    style: {
+      border: "light",
+      size: "small",
+      shadow: "heavy",
+      shape: "square",
+      childrenLayout: "stack",
+      stackOverlap: 24,
+    },
+  },
+};

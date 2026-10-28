@@ -51,6 +51,7 @@ const SessionPopover = ({
       onClose={onClose}
       anchorOrigin={{ vertical: "center", horizontal: "left" }}
       transformOrigin={{ vertical: "center", horizontal: "right" }}
+      sx={{ zIndex: (theme) => theme.zIndex.modal + 3 }}
       slotProps={{
         paper: {
           sx: {

@@ -46,6 +46,7 @@ const DefaultNodeCard = ({
         }`,
         boxShadow: effectiveShadow,
         transition: "background-color 0.3s ease, box-shadow 0.3s ease",
+        touchAction: "manipulation",
         "&:hover": {
           bgcolor: nodeStyle.hoverBg || nodeStyle.bg || "grey.100",
           boxShadow: effectiveShadow + 1,

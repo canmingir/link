@@ -1,7 +1,11 @@
 {
   "name": "@canmingir/link",
-  "version": "1.2.61",
+  "version": "1.2.90",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canmingir/link.git"
+  },
   "type": "module",
   "bin": {
     "link-server": "./server/server.ts",
@@ -48,6 +52,7 @@
     "axios-retry": "^4.4.1",
     "cypress": "^15.3.0",
     "date-fns": "^3.6.0",
+    "elkjs": "^0.10.0",
     "framer-motion": "^11.3.6",
     "highlight.js": "^11.10.0",
     "joi": "^17.13.3",
@@ -88,6 +93,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.21.5",
     "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.29.7",
     "@chromatic-com/storybook": "^4.1.1",
     "@storybook/addon-a11y": "^9.1.8",
     "@storybook/addon-docs": "^9.1.8",

@@ -1,13 +1,11 @@
 import { ConfigSchema } from "../src/config/schemas.js";
-import { NGROK_HOST_SUFFIXES } from "../tunnel/hosts.js";
-import autoLogin from "./autologin.js";
 import checker from "vite-plugin-checker";
+import fs from "fs";
 import path from "path";
 import react from "@vitejs/plugin-react";
 import { splitVendorChunkPlugin } from "vite";
 import svgr from "vite-plugin-svgr";
-import tunnelConfig, { tunnelConfigEsbuild } from "./tunnel-config.js";
-import { fileURLToPath, pathToFileURL } from "url";
+import { pathToFileURL } from "url";
 
 // Resolved against the consumer's cwd (not a relative import) so this keeps
 // working whether @canmingir/link is a real copy or a symlinked/linked package.
@@ -23,37 +21,20 @@ if (error) {
   process.exit(-1);
 }
 
-const tunnelUrl = process.env.LINK_TUNNEL_URL;
-const configPath = fileURLToPath(configUrl);
+function readAppVersion() {
+  const versionPath = path.join(process.cwd(), "src", "version.json");
 
-function tunnelPlugins() {
-  const url = tunnelUrl;
-
-  if (!url) return [];
-
-  const plugins = [tunnelConfig({ config, url, configPath })];
-
-  const projectId = process.env.LINK_TUNNEL_AUTOLOGIN_PROJECT_ID;
-
-  if (!projectId) return plugins;
-
-  let storage = {};
-  try {
-    storage = JSON.parse(process.env.LINK_TUNNEL_AUTOLOGIN_STORAGE || "{}");
-  } catch {
-    storage = {};
+  if (!fs.existsSync(versionPath)) {
+    return "DEV";
   }
 
-  return [
-    ...plugins,
-    autoLogin({
-      appId: value.appId,
-      projectId,
-      identityProvider: value.credentials?.provider ?? "DEMO",
-      requestUrl: value.credentials?.requestUrl ?? "/api/oauth",
-      storage,
-    }),
-  ];
+  try {
+    const { version } = JSON.parse(fs.readFileSync(versionPath, "utf8"));
+    return version || "DEV";
+  } catch (error) {
+    console.error("Failed to read version.json:", error);
+    return "DEV";
+  }
 }
 
 async function vite() {
@@ -65,7 +46,6 @@ async function vite() {
       splitVendorChunkPlugin(),
       react(),
       svgr(),
-      ...tunnelPlugins(),
       checker({
         eslint: {
           lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}"',
@@ -78,7 +58,6 @@ async function vite() {
     ],
     server: {
       port: 3000,
-      allowedHosts: NGROK_HOST_SUFFIXES,
       proxy: {
         "/api": {
           target: api?.split("/api")?.[0],
@@ -89,13 +68,12 @@ async function vite() {
       },
     },
     base,
+    define: {
+      __APP_VERSION__: JSON.stringify(readAppVersion()),
+    },
     optimizeDeps: {
-      force: Boolean(tunnelUrl),
       esbuildOptions: {
         jsx: "automatic",
-        plugins: tunnelUrl
-          ? [tunnelConfigEsbuild({ config, url: tunnelUrl, configPath })]
-          : [],
       },
       include: [
         "@mui/material",

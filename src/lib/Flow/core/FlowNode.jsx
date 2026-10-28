@@ -1,26 +1,47 @@
+import DagCanvas from "../nodes/DagCanvas";
 import FlowNodeView from "../nodes/FlowNodeView";
 import FlowViewport from "./FlowViewport";
-import React from "react";
+import React, { forwardRef } from "react";
 import { SelectionProvider } from "../selection/SelectionContext";
 import { getBaseStyleForVariant } from "../styles";
 
-const FlowNode = ({
-  isRoot = false,
-  onAddNode,
-  variant,
-  nodesById,
-  onPaste,
-  onCut,
-  onConnect,
-  floatingNodes,
-  style,
-  plugin,
-  node,
-  height,
-  initialZoom,
-  centered,
-  ...props
-}) => {
+const FlowNode = forwardRef(function FlowNode(
+  {
+    isRoot = false,
+    onAddNode,
+    variant,
+    nodesById,
+    onPaste,
+    onCut,
+    onConnect,
+    floatingNodes,
+    style,
+    plugin,
+    node,
+    height,
+    initialZoom,
+    centered,
+    minZoom,
+    maxZoom,
+    fitViewPadding,
+    fitViewMinZoom,
+    fitViewMaxZoom,
+    fitViewAlign,
+    fitViewOnMount,
+    fitViewOnResize,
+    fitViewOnNodesChange,
+    onInit,
+    impliedConnections,
+    showImpliedConnections,
+    labelForImpliedConnection,
+    layout,
+    positions,
+    layoutEdges,
+    layoutBounds,
+    ...props
+  },
+  ref,
+) {
   if (!isRoot) {
     if (!node) return null;
     return (
@@ -42,6 +63,7 @@ const FlowNode = ({
   return (
     <SelectionProvider>
       <FlowViewport
+        ref={ref}
         selectionColor={selectionColor}
         nodesById={nodesById}
         onPaste={onPaste}
@@ -54,21 +76,49 @@ const FlowNode = ({
         height={height}
         initialZoom={initialZoom}
         centered={centered}
+        minZoom={minZoom}
+        maxZoom={maxZoom}
+        fitViewPadding={fitViewPadding}
+        fitViewMinZoom={fitViewMinZoom}
+        fitViewMaxZoom={fitViewMaxZoom}
+        fitViewAlign={fitViewAlign}
+        fitViewOnMount={fitViewOnMount}
+        fitViewOnResize={fitViewOnResize}
+        fitViewOnNodesChange={fitViewOnNodesChange}
+        onInit={onInit}
+        impliedConnections={impliedConnections}
+        showImpliedConnections={showImpliedConnections}
+        labelForImpliedConnection={labelForImpliedConnection}
+        positions={positions}
       >
-        {node && (
-          <FlowNodeView
-            node={node}
-            onAddNode={onAddNode}
+        {layout === "dag" ? (
+          <DagCanvas
+            nodesById={nodesById}
+            positions={positions}
+            layoutEdges={layoutEdges}
+            layoutBounds={layoutBounds}
             variant={variant}
             style={style}
             plugin={plugin}
             onConnect={onConnect}
             {...props}
           />
+        ) : (
+          node && (
+            <FlowNodeView
+              node={node}
+              onAddNode={onAddNode}
+              variant={variant}
+              style={style}
+              plugin={plugin}
+              onConnect={onConnect}
+              {...props}
+            />
+          )
         )}
       </FlowViewport>
     </SelectionProvider>
   );
-};
+});
 
 export default FlowNode;

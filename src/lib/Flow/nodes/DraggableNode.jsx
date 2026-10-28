@@ -1,7 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-
 import { Box } from "@mui/material";
 import { useSelection } from "../selection/SelectionContext";
+
+import {
+  LONG_PRESS_DELAY_MS,
+  LONG_PRESS_MOVE_TOLERANCE,
+} from "../utils/viewportUtils";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 const DraggableNode = ({
   children,
@@ -11,23 +15,41 @@ const DraggableNode = ({
   selectionColor = "#373739",
   initialPosition,
   onConnect,
+  dragResetKey,
 }) => {
   const [offset, setOffset] = useState(() =>
-    initialPosition ? { ...initialPosition } : { x: 0, y: 0 },
+    initialPosition ? { ...initialPosition } : { x: 0, y: 0 }
   );
+
+  const offsetRef = useRef(offset);
+
+  const applyOffset = useCallback((next) => {
+    setOffset((prev) => {
+      const resolved = typeof next === "function" ? next(prev) : next;
+      offsetRef.current = resolved;
+      return resolved;
+    });
+  }, []);
 
   useEffect(() => {
     if (initialPosition) {
-      setOffset({ ...initialPosition });
+      applyOffset({ ...initialPosition });
     } else {
-      setOffset({ x: 0, y: 0 });
+      applyOffset({ x: 0, y: 0 });
     }
-  }, [initialPosition]);
+  }, [initialPosition, applyOffset]);
+
+  useEffect(() => {
+    if (dragResetKey === undefined) return;
+    applyOffset({ x: 0, y: 0 });
+  }, [dragResetKey, applyOffset]);
 
   const localRef = useRef(null);
   const lastDeltaRef = useRef({ x: 0, y: 0 });
   const onDragRef = useRef(onDrag);
   const didDragRef = useRef(false);
+  const activeDragRef = useRef(null);
+  const longPressTimerRef = useRef(null);
 
   const {
     isSelected,
@@ -37,6 +59,7 @@ const DraggableNode = ({
     registerNodeHandlers,
     moveSelectedNodes,
     selectedIds,
+    nodeTouchDragRef,
   } = useSelection();
 
   const selected = isSelected(nodeId);
@@ -49,17 +72,17 @@ const DraggableNode = ({
     if (!nodeId) return;
 
     return registerNodeHandlers(nodeId, {
-      setOffset,
-      onDrag: () => onDragRef.current?.(),
+      setOffset: applyOffset,
+      onDrag: () => onDragRef.current?.(offsetRef.current),
     });
-  }, [nodeId, registerNodeHandlers]);
+  }, [nodeId, registerNodeHandlers, applyOffset]);
 
   const setRef = useCallback(
     (el) => {
       localRef.current = el;
       registerRef?.(el);
     },
-    [registerRef],
+    [registerRef]
   );
 
   useEffect(() => {
@@ -78,20 +101,26 @@ const DraggableNode = ({
     return () => el.removeEventListener("click", onClickCapture, true);
   }, []);
 
-  const handleMouseDown = useCallback(
+  const handlePointerDown = useCallback(
     (e) => {
-      if (e.button !== 0) return;
+      if (e.target?.closest?.("[data-handle-type]")) return;
+
+      const isTouch = e.pointerType === "touch";
+      if (!isTouch && e.button !== 0) return;
+      if (isTouch && activeDragRef.current) return;
+      if (isTouch && nodeTouchDragRef?.current) return;
+
       e.stopPropagation();
 
       didDragRef.current = false;
 
-      if (onConnect && e.altKey) {
+      if (onConnect && !isTouch && e.altKey) {
         e.preventDefault();
         onConnect(nodeId, [...selectedIds]);
         return;
       }
 
-      if (e.shiftKey || e.ctrlKey || e.metaKey) {
+      if (!isTouch && (e.shiftKey || e.ctrlKey || e.metaKey)) {
         toggleSelection(nodeId);
         return;
       }
@@ -106,9 +135,33 @@ const DraggableNode = ({
       const startOffset = { ...offset };
       lastDeltaRef.current = { x: 0, y: 0 };
 
+      const el = localRef.current;
+      const rect = el?.getBoundingClientRect();
+      const scale =
+        el && rect && el.offsetWidth ? rect.width / el.offsetWidth || 1 : 1;
+
       const handleMove = (ev) => {
-        const dx = ev.clientX - startX;
-        const dy = ev.clientY - startY;
+        if (isTouch && ev.pointerId !== e.pointerId) return;
+
+        if (dragToken.lastPointer) {
+          dragToken.lastPointer = {
+            pointerId: ev.pointerId,
+            x: ev.clientX,
+            y: ev.clientY,
+          };
+        }
+
+        const dx = (ev.clientX - startX) / scale;
+        const dy = (ev.clientY - startY) / scale;
+
+        if (
+          isTouch &&
+          longPressTimerRef.current &&
+          Math.hypot(dx, dy) > LONG_PRESS_MOVE_TOLERANCE
+        ) {
+          clearTimeout(longPressTimerRef.current);
+          longPressTimerRef.current = null;
+        }
 
         if (!didDragRef.current && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
           didDragRef.current = true;
@@ -118,25 +171,73 @@ const DraggableNode = ({
         const deltaDy = dy - lastDeltaRef.current.y;
         lastDeltaRef.current = { x: dx, y: dy };
 
-        setOffset({
+        const nextOffset = {
           x: startOffset.x + dx,
           y: startOffset.y + dy,
-        });
+        };
+
+        applyOffset(nextOffset);
 
         if (selectedIds.size > 1) {
           moveSelectedNodes(deltaDx, deltaDy, nodeId);
         }
 
-        onDragRef.current?.();
+        onDragRef.current?.(nextOffset);
+      };
+
+      const dragToken = {
+        lastPointer: isTouch
+          ? { pointerId: e.pointerId, x: e.clientX, y: e.clientY }
+          : null,
+      };
+
+      const clearLongPressTimer = () => {
+        if (longPressTimerRef.current) {
+          clearTimeout(longPressTimerRef.current);
+          longPressTimerRef.current = null;
+        }
       };
 
       const handleUp = () => {
-        window.removeEventListener("mousemove", handleMove);
-        window.removeEventListener("mouseup", handleUp);
+        clearLongPressTimer();
+        window.removeEventListener("pointermove", handleMove);
+        window.removeEventListener("pointerup", handleUp);
+        window.removeEventListener("pointercancel", handleUp);
+        if (activeDragRef.current === dragToken) {
+          activeDragRef.current = null;
+          if (nodeTouchDragRef?.current === dragToken) {
+            nodeTouchDragRef.current = null;
+          }
+        }
       };
 
-      window.addEventListener("mousemove", handleMove);
-      window.addEventListener("mouseup", handleUp);
+      dragToken.cancel = () => {
+        didDragRef.current = false;
+        handleUp();
+      };
+
+      if (isTouch) {
+        activeDragRef.current = dragToken;
+        if (nodeTouchDragRef) nodeTouchDragRef.current = dragToken;
+
+        const dispatchTarget = e.target ?? localRef.current;
+        longPressTimerRef.current = setTimeout(() => {
+          longPressTimerRef.current = null;
+          if (didDragRef.current) return;
+          const contextMenuEvent = new MouseEvent("contextmenu", {
+            bubbles: true,
+            cancelable: true,
+            clientX: startX,
+            clientY: startY,
+          });
+          contextMenuEvent.__fromLongPress = true;
+          dispatchTarget?.dispatchEvent(contextMenuEvent);
+        }, LONG_PRESS_DELAY_MS);
+      }
+
+      window.addEventListener("pointermove", handleMove);
+      window.addEventListener("pointerup", handleUp);
+      window.addEventListener("pointercancel", handleUp);
     },
     [
       nodeId,
@@ -148,14 +249,22 @@ const DraggableNode = ({
       clearSelection,
       moveSelectedNodes,
       onConnect,
-    ],
+      applyOffset,
+      nodeTouchDragRef,
+    ]
   );
 
   return (
     <Box
       ref={setRef}
       data-node-id={nodeId}
-      onMouseDown={handleMouseDown}
+      onPointerDown={handlePointerDown}
+      onContextMenu={(e) => {
+        const isMouseRightClick = e.button === 2 || e.nativeEvent?.button === 2;
+        if (!isMouseRightClick && !e.nativeEvent?.__fromLongPress) {
+          e.preventDefault();
+        }
+      }}
       sx={{
         display: "inline-flex",
         flexDirection: "column",
@@ -163,6 +272,10 @@ const DraggableNode = ({
         position: "relative",
         transform: `translate(${offset.x}px, ${offset.y}px)`,
         cursor: "grab",
+        touchAction: "none",
+        userSelect: "none",
+        WebkitTouchCallout: "none",
+        WebkitTapHighlightColor: "transparent",
         "&:active": { cursor: "grabbing" },
       }}
     >

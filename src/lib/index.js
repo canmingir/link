@@ -24,6 +24,10 @@ export { default as useChart } from "./useChart/useChart";
 
 export { default as Flow } from "./Flow/core/Flow";
 export { default as FlowBoard } from "./Flow/core/FlowBoard";
+export { default as ImpliedConnections } from "./Flow/connectors/ImpliedConnections";
+export { default as FlowMiniMap } from "./Flow/mini/FlowMiniMap";
+export { FlowSvgContent } from "./Flow/mini/FlowSvgContent";
+export { layoutFlow } from "./Flow/mini/layoutFlow";
 export {
   HeaderCard,
   MediaAvatarCard,
@@ -42,7 +46,7 @@ export { default as APIPath } from "./APIPath";
 export { default as APITypes } from "./APITypes";
 export { default as BlankTreeMessage } from "./BlankTreeMessage";
 export { default as DialogTooltip } from "./DialogTootip";
-export { default as NucDialog } from "./NucDialog";
+export { default as APITreeDialog } from "./APITreeDialog";
 export { default as ParamTable } from "./ParamTable";
 export { default as ResourceMenu } from "./ResourceMenu";
 export { default as Schema } from "./Schema";
@@ -59,6 +63,11 @@ export { default as DevTool } from "./DevTool";
 
 export { default as SidebarChat } from "./SidebarChat/SidebarChat";
 export { default as PresetSelector } from "./PresetSelector/PresetSelector";
+export { default as LinkSwipe } from "./LinkSwipe/LinkSwipe";
+export {
+  default as ConnectionsPanel,
+  handleDataAttrs,
+} from "./ConnectionsPanel/ConnectionsPanel";
 export {
   AIMessage,
   ErrorMessage,
@@ -67,3 +76,7 @@ export {
   MessageList,
   ToolMessage,
 } from "./ChatMessage";
+
+export { default as ViewPanel } from "./ViewPanel";
+export { CodeEditor } from "./CodeEditor";
+export { default as LowCodeEditor } from "./LowCodeEditor";

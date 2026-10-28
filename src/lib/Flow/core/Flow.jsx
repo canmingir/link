@@ -1,24 +1,63 @@
 import { Box, alpha } from "@mui/material";
-import React, { useMemo, useState } from "react";
+import React, { forwardRef, useMemo, useState } from "react";
 import { assertLinkedGraph, buildTreeFromLinked } from "../utils/flowUtils";
 
 import FlowNode from "./FlowNode";
+import { useDagLayout } from "../hooks/useDagLayout";
 import { useGraphOperations } from "../hooks/useGraphOperations";
 
-export const Flow = ({
-  data,
-  variant = "simple",
-  style,
-  plugin,
-  editable = false,
-  onChange,
-  height,
-  initialZoom,
-  centered = false,
-}) => {
+export const Flow = forwardRef(function Flow(
+  {
+    data,
+    variant = "simple",
+    style,
+    plugin,
+    editable = false,
+    onChange,
+    height,
+    initialZoom,
+    centered = false,
+    minZoom,
+    maxZoom,
+    fitViewPadding,
+    fitViewMinZoom,
+    fitViewMaxZoom,
+    fitViewAlign,
+    fitViewOnMount,
+    fitViewOnResize,
+    fitViewOnNodesChange,
+    onInit,
+    impliedConnections,
+    showImpliedConnections = false,
+    labelForImpliedConnection,
+    onConnectRejected,
+    layout = "tree",
+    layoutDirection = "RIGHT",
+    positions,
+    layoutEdges,
+    layoutBounds,
+    onLayoutError,
+  },
+  ref,
+) {
   const [floatingNodes, setFloatingNodes] = useState([]);
 
+  const isDag = layout === "dag";
+
   const { nodesById, roots } = useMemo(() => assertLinkedGraph(data), [data]);
+
+  const dagLayout = useDagLayout({
+    nodesById,
+    enabled: isDag,
+    direction: layoutDirection,
+    variant,
+    style,
+    plugin,
+    positions,
+    layoutEdges,
+    layoutBounds,
+    onLayoutError,
+  });
 
   const { handleCut, handlePaste, handleConnect } = useGraphOperations({
     nodesById,
@@ -27,6 +66,7 @@ export const Flow = ({
     floatingNodes,
     setFloatingNodes,
     editable,
+    onConnectRejected,
   });
 
   const allNodesById = useMemo(() => {
@@ -44,6 +84,7 @@ export const Flow = ({
   }, [nodesById, floatingNodes]);
 
   const treeData = useMemo(() => {
+    if (isDag) return null;
     if (!roots?.length) return null;
 
     if (roots.length === 1) {
@@ -62,7 +103,7 @@ export const Flow = ({
     return children.length > 0
       ? { id: "__root__", label: "Start", virtual: true, children }
       : null;
-  }, [nodesById, roots]);
+  }, [isDag, nodesById, roots]);
 
   return (
     <Box
@@ -79,6 +120,7 @@ export const Flow = ({
       }}
     >
       <FlowNode
+        ref={ref}
         node={treeData}
         variant={variant}
         style={style}
@@ -92,9 +134,26 @@ export const Flow = ({
         height={height}
         initialZoom={initialZoom}
         centered={centered}
+        minZoom={minZoom}
+        maxZoom={maxZoom}
+        fitViewPadding={fitViewPadding}
+        fitViewMinZoom={fitViewMinZoom}
+        fitViewMaxZoom={fitViewMaxZoom}
+        fitViewAlign={fitViewAlign}
+        fitViewOnMount={fitViewOnMount}
+        fitViewOnResize={fitViewOnResize}
+        fitViewOnNodesChange={fitViewOnNodesChange}
+        onInit={onInit}
+        impliedConnections={impliedConnections}
+        showImpliedConnections={showImpliedConnections}
+        labelForImpliedConnection={labelForImpliedConnection}
+        layout={layout}
+        positions={dagLayout?.positions}
+        layoutEdges={dagLayout?.edges}
+        layoutBounds={dagLayout?.bounds}
       />
     </Box>
   );
-};
+});
 
 export default Flow;

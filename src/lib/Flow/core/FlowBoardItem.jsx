@@ -3,6 +3,7 @@ import { assertLinkedGraph, buildTreeFromLinked } from "../utils/flowUtils";
 
 import { Box } from "@mui/material";
 import FlowNodeView from "../nodes/FlowNodeView";
+import { useSelection } from "../selection/SelectionContext";
 
 const FlowBoardItem = ({
   flow,
@@ -16,7 +17,7 @@ const FlowBoardItem = ({
   divider,
 }) => {
   const [position, setPosition] = useState(
-    () => initialPosition || { x: 0, y: 0 },
+    () => initialPosition || { x: 0, y: 0 }
   );
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const FlowBoardItem = ({
   }, [initialPosition?.x, initialPosition?.y]);
 
   const didDragRef = useRef(false);
+  const { nodeTouchDragRef } = useSelection();
 
   const namespacedFlow = useMemo(() => {
     if (flowId == null) return flow;
@@ -36,8 +38,8 @@ const FlowBoardItem = ({
       const nextArr = Array.isArray(node.next)
         ? node.next.map((n) => (typeof n === "string" ? ns(n) : n))
         : node.next != null
-          ? ns(node.next)
-          : undefined;
+        ? ns(node.next)
+        : undefined;
       nodes[ns(id)] = {
         ...node,
         id: ns(id),
@@ -51,7 +53,7 @@ const FlowBoardItem = ({
 
   const { nodesById, roots } = useMemo(
     () => assertLinkedGraph(namespacedFlow),
-    [namespacedFlow],
+    [namespacedFlow]
   );
 
   const treesData = useMemo(() => {
@@ -61,10 +63,12 @@ const FlowBoardItem = ({
       .filter(Boolean);
   }, [nodesById, roots]);
 
-  const handleMouseDown = (e) => {
-    if (e.button !== 0) return;
+  const handlePointerDown = (e) => {
+    const isTouch = e.pointerType === "touch";
+    if (!isTouch && e.button !== 0) return;
     if (e.target?.closest?.(".MuiCard-root") || e.target?.closest?.("button"))
       return;
+    if (isTouch && nodeTouchDragRef?.current) return;
 
     e.stopPropagation();
     didDragRef.current = false;
@@ -75,6 +79,16 @@ const FlowBoardItem = ({
     let lastPosition = startPosition;
 
     const onMove = (ev) => {
+      if (isTouch && ev.pointerId !== e.pointerId) return;
+
+      if (dragToken.lastPointer) {
+        dragToken.lastPointer = {
+          pointerId: ev.pointerId,
+          x: ev.clientX,
+          y: ev.clientY,
+        };
+      }
+
       const dx = ev.clientX - startX;
       const dy = ev.clientY - startY;
       if (!didDragRef.current && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
@@ -85,13 +99,31 @@ const FlowBoardItem = ({
     };
 
     const onUp = () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      if (nodeTouchDragRef?.current === dragToken) {
+        nodeTouchDragRef.current = null;
+      }
       if (didDragRef.current) onPositionChange?.(lastPosition);
     };
 
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
+    const dragToken = {
+      lastPointer: isTouch
+        ? { pointerId: e.pointerId, x: e.clientX, y: e.clientY }
+        : null,
+      cancel: () => {
+        didDragRef.current = false;
+        setPosition(startPosition);
+        onUp();
+      },
+    };
+
+    if (isTouch && nodeTouchDragRef) nodeTouchDragRef.current = dragToken;
+
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
   };
 
   if (!treesData.length) return null;
@@ -99,13 +131,17 @@ const FlowBoardItem = ({
   return (
     <Box
       data-flow-id={label}
-      onMouseDown={handleMouseDown}
+      onPointerDown={handlePointerDown}
+      onContextMenu={(e) => e.preventDefault()}
       sx={{
         position: "absolute",
         left: "50%",
         top: "50%",
         transform: `translate(${position.x}px, ${position.y}px)`,
         cursor: "grab",
+        touchAction: "none",
+        userSelect: "none",
+        WebkitTouchCallout: "none",
         "&:active": { cursor: "grabbing" },
       }}
     >
