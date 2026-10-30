@@ -1,0 +1,139 @@
+import Page from "../layouts/Page";
+import React from "react";
+import config from "../config/config";
+import oauth from "../http/oauth";
+import { publish } from "@nucleoidai/react-event";
+import qs from "qs";
+import { storage } from "@nucleoidjs/webstorage";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import { useEffect, useRef } from "react";
+
+function Callback() {
+  const { project: appConfig, name, appId } = config();
+  const projectBar = config().template?.projectBar;
+
+  const { google, github, linkedin } = appConfig ?? {};
+  const location = useLocation();
+  const navigate = useNavigate();
+  const hasProcessed = useRef(false);
+
+  useEffect(
+    () => {
+      if (hasProcessed.current) {
+        return;
+      }
+
+      const parsedQuery = qs.parse(location.search, {
+        ignoreQueryPrefix: true,
+      });
+      const code = parsedQuery.code as string | undefined;
+      const error = parsedQuery.error as string | undefined;
+      const errorDescription = parsedQuery.error_description as
+        | string
+        | undefined;
+      const state = parsedQuery.state as string | undefined;
+
+      let identityProvider: string | undefined;
+      let stateData: { identityProvider?: string } = {};
+
+      if (state) {
+        stateData = JSON.parse(decodeURIComponent(state));
+        identityProvider = stateData.identityProvider?.toUpperCase();
+      }
+
+      if (error) {
+        console.error("OAuth error:", error, errorDescription);
+        navigate(
+          "/login?error=" + encodeURIComponent(errorDescription || error)
+        );
+        return;
+      }
+
+      if (!code) {
+        console.error("No authorization code received");
+        navigate(
+          "/login?error=" + encodeURIComponent("No authorization code received")
+        );
+        return;
+      }
+      hasProcessed.current = true;
+
+      const providerConfigs: Record<string, typeof github> = {
+        GITHUB: github,
+        LINKEDIN: linkedin,
+        GOOGLE: google,
+      };
+
+      const providerConfig = identityProvider
+        ? providerConfigs[identityProvider]
+        : undefined;
+
+      if (!providerConfig) {
+        console.error("Could not determine OAuth provider or redirect URI");
+        navigate(
+          "/login?error=" + encodeURIComponent("Invalid OAuth provider")
+        );
+        return;
+      }
+
+      const redirectUri = providerConfig.redirectUri;
+
+      let projectId;
+      const defaultProjectId = "05708cf7-b9bf-4209-95fe-68d9138d2032";
+
+      if (projectBar) {
+        projectId = storage.get("link", "projectid");
+      } else {
+        projectId = defaultProjectId;
+        storage.set("link", "projectid", projectId);
+      }
+
+      oauth
+        .post("/oauth", {
+          ...(projectId && { projectId }),
+          appId,
+          code,
+          redirectUri,
+          identityProvider: identityProvider,
+          grant_type: "authorization_code",
+        })
+        .then(({ data }) => {
+          const accessToken = data.accessToken;
+          const refreshToken = data.refreshToken;
+
+          storage.set("link", "accesstoken", accessToken);
+          storage.set("link", "refreshtoken", refreshToken);
+          // TODO - update provider info
+          storage.set("link", "identityprovider", identityProvider);
+
+          publish("LOGIN", { data: data });
+
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+          );
+
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error("OAuth error:", error);
+          const errorMessage =
+            error.response?.data?.message ||
+            error.response?.data ||
+            error.message ||
+            "Authentication failed";
+
+          navigate("/login?error=" + encodeURIComponent(errorMessage));
+        });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [location.search, navigate]
+  );
+
+  return <Page title={`${name} - Callback`}></Page>;
+}
+
+export default Callback;

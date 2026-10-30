@@ -7,7 +7,10 @@ import { Fab } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import Tooltip from "@mui/material/Tooltip";
 
-import { ctxCompletionRegistry, ensureCompletionProvider } from "./contextProvider";
+import {
+  ctxCompletionRegistry,
+  ensureCompletionProvider,
+} from "./contextProvider";
 import {
   buildContextDecorations,
   buildSchemaDecorations,

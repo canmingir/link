@@ -5,7 +5,10 @@ import type { ContextEntry } from "./types";
 export const ctxCompletionRegistry = new Map<string, ContextEntry[]>();
 const ctxProvidersRegistered = new Set<string>();
 
-export function ensureCompletionProvider(monaco: typeof Monaco, language: string) {
+export function ensureCompletionProvider(
+  monaco: typeof Monaco,
+  language: string
+) {
   if (ctxProvidersRegistered.has(language)) return;
   ctxProvidersRegistered.add(language);
 
