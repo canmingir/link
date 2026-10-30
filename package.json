@@ -29,7 +29,11 @@
     },
     "./platform/cypress": {
       "types": "./dist/cypress/cypress.d.ts",
-      "import": "./dist/cypress/cypress.js"
+      "import": "./dist/cypress/cypress.js",
+      "require": "./dist/cypress/cypress.js"
+    },
+    "./platform/cypress/types": {
+      "types": "./dist/cypress/index.d.ts"
     },
     "./platform/commands": {
       "types": "./dist/commands/index.d.ts",
@@ -81,7 +85,6 @@
     "aws-amplify": "^6.16.0",
     "axios": "^1.10.0",
     "axios-retry": "^4.4.1",
-    "cypress": "^15.3.0",
     "date-fns": "^3.6.0",
     "elkjs": "^0.10.0",
     "framer-motion": "^11.3.6",
@@ -94,10 +97,8 @@
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
     "qs": "^6.11.2",
-    "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.52.1",
@@ -146,6 +147,7 @@
     "@vitest/coverage-v8": "^3.2.4",
     "babel-jest": "^29.5.0",
     "concurrently": "^8.2.2",
+    "cypress": "^15.3.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-cypress": "^2.15.1",
@@ -158,10 +160,17 @@
     "nodemon": "^3.0.1",
     "playwright": "^1.55.1",
     "prettier": "^2.8.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "storybook": "^9.1.8",
     "typescript": "^5.7.3",
     "vite": "^7.3.1",
     "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "cypress": ">=13",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "overrides": {
     "react-is": "^18.3.1"

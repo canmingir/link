@@ -20,7 +20,10 @@ function copyAssets(dir) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       copyAssets(full);
-    } else if (assetExtensions.includes(path.extname(entry.name))) {
+    } else if (
+      assetExtensions.includes(path.extname(entry.name)) ||
+      entry.name.endsWith(".d.ts")
+    ) {
       const rel = path.relative(root, full);
       const dest = path.join(distDir, rel);
       fs.mkdirSync(path.dirname(dest), { recursive: true });

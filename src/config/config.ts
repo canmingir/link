@@ -1,7 +1,7 @@
-import configMain from "../../../../../../config.ts";
+import { publish } from "@nucleoidai/react-event";
 import configMenu from "../../../../../../config.menu.ts";
 import configTemplate from "../../../../../../config.template.ts";
-import { publish } from "@nucleoidai/react-event";
+import configMain from "../../../../../../config.ts";
 
 import {
   ConfigSchema,

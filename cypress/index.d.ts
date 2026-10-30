@@ -17,11 +17,11 @@ declare global {
       platformSetup(
         itemId: string,
         itemFixturePath: string,
-        config: { name: string }
       ): Chainable<void>;
       selectIconFromPicker(altText: string): Chainable<void>;
     }
   }
 }
 
-export {};
+export { };
+
