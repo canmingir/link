@@ -15,7 +15,11 @@ function parseArgs(): Record<string, string> {
   const result: Record<string, string> = {};
 
   for (let i = 0; i < args.length; i++) {
-    if (args[i].startsWith("--") && args[i + 1] && !args[i + 1].startsWith("--")) {
+    if (
+      args[i].startsWith("--") &&
+      args[i + 1] &&
+      !args[i + 1].startsWith("--")
+    ) {
       result[args[i].slice(2)] = args[i + 1];
       i++;
     }
@@ -26,7 +30,7 @@ function parseArgs(): Record<string, string> {
 
 async function getDefaultDashboardDist(): Promise<string> {
   try {
-    const configPath = path.join(process.cwd(), "config.js");
+    const configPath = path.join(process.cwd(), "config.ts");
     const { default: config } = await import(configPath);
     const base = (config.base as string)?.replace(/^\//, "") ?? "dashboard";
     return `./${base}/dist`;
@@ -37,7 +41,7 @@ async function getDefaultDashboardDist(): Promise<string> {
 
 async function proxyRequest(
   req: Request,
-  targetUrl: string,
+  targetUrl: string
 ): Promise<Response> {
   const headers = new Headers(req.headers);
   headers.delete("host");
@@ -67,7 +71,7 @@ async function proxyRequest(
 
 async function serveStatic(
   pathname: string,
-  dashboardDist: string,
+  dashboardDist: string
 ): Promise<Response> {
   const subPath = pathname.replace(/^\/dashboard\/?/, "") || "index.html";
   const file = Bun.file(path.join(dashboardDist, subPath));
@@ -84,7 +88,7 @@ const parsed = parseArgs();
 const PORT = Number(parsed["port"] ?? 3000);
 const API_TARGET = parsed["api"] ?? "http://localhost:4000";
 const DASHBOARD_DIST = path.resolve(
-  parsed["dist-location"] ?? await getDefaultDashboardDist()
+  parsed["dist-location"] ?? (await getDefaultDashboardDist())
 );
 
 const server = Bun.serve({
@@ -105,7 +109,7 @@ const server = Bun.serve({
       if (url.pathname.startsWith("/api")) {
         const newPath = url.pathname.replace(/^\/api/, "") || "/";
         console.info(
-          `[Proxy] ${req.method} ${url.pathname} → ${API_TARGET}${newPath}`,
+          `[Proxy] ${req.method} ${url.pathname} → ${API_TARGET}${newPath}`
         );
         return await proxyRequest(req, `${API_TARGET}${newPath}${url.search}`);
       }
@@ -127,5 +131,5 @@ const server = Bun.serve({
 });
 
 console.log(
-  `Server running on port ${server.port} [static: ${DASHBOARD_DIST}]`,
+  `Server running on port ${server.port} [static: ${DASHBOARD_DIST}]`
 );

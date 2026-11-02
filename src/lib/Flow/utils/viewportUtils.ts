@@ -1,0 +1,168 @@
+export const DEFAULT_MIN_ZOOM = 0.25;
+export const DEFAULT_MAX_ZOOM = 2.5;
+export const DEFAULT_FIT_VIEW_PADDING = 40;
+export const DEFAULT_FIT_VIEW_MIN_ZOOM = 0.5;
+export const DEFAULT_FIT_VIEW_MAX_ZOOM = 1;
+
+export const LONG_PRESS_DELAY_MS = 2000;
+export const LONG_PRESS_MOVE_TOLERANCE = 10;
+
+export const clampZoomValue = (
+  zoom: number,
+  minZoom: number,
+  maxZoom: number
+) => Math.min(maxZoom, Math.max(minZoom, zoom));
+
+export const getTouchDistance = (
+  p1: { x: number; y: number },
+  p2: { x: number; y: number }
+): number => Math.hypot(p2.x - p1.x, p2.y - p1.y);
+
+export const getTouchMidpoint = (
+  p1: { x: number; y: number },
+  p2: { x: number; y: number }
+): { x: number; y: number } => ({
+  x: (p1.x + p2.x) / 2,
+  y: (p1.y + p2.y) / 2,
+});
+
+export const computePinchZoomOffset = ({
+  prevZoom,
+  nextZoom,
+  offset,
+  prevMidpoint,
+  nextMidpoint,
+}: {
+  prevZoom: number;
+  nextZoom: number;
+  offset: { x: number; y: number };
+  prevMidpoint: { x: number; y: number };
+  nextMidpoint: { x: number; y: number };
+}): { x: number; y: number } => {
+  const scaleRatio = prevZoom !== 0 ? nextZoom / prevZoom : 1;
+
+  return {
+    x: nextMidpoint.x - (prevMidpoint.x - offset.x) * scaleRatio,
+    y: nextMidpoint.y - (prevMidpoint.y - offset.y) * scaleRatio,
+  };
+};
+
+export const computeFitTransform = ({
+  bounds,
+  containerWidth,
+  containerHeight,
+  padding = DEFAULT_FIT_VIEW_PADDING,
+  minZoom = DEFAULT_MIN_ZOOM,
+  maxZoom = DEFAULT_MAX_ZOOM,
+  align = "center",
+}: {
+  bounds: { x: number; y: number; width: number; height: number };
+  containerWidth: number;
+  containerHeight: number;
+  padding?: number;
+  minZoom?: number;
+  maxZoom?: number;
+  align?: "center" | "start";
+}): { zoom: number; offset: { x: number; y: number } } => {
+  const availableWidth = Math.max(0, containerWidth - 2 * padding);
+  const availableHeight = Math.max(0, containerHeight - 2 * padding);
+
+  const scaleX = bounds.width > 0 ? availableWidth / bounds.width : Infinity;
+  const scaleY = bounds.height > 0 ? availableHeight / bounds.height : Infinity;
+  const rawZoom = Math.min(scaleX, scaleY);
+
+  const zoom = clampZoomValue(rawZoom, minZoom, maxZoom);
+
+  const centerX = bounds.x + bounds.width / 2;
+  const centerY = bounds.y + bounds.height / 2;
+
+  const overflowsX = bounds.width * zoom > availableWidth + 0.5;
+  const overflowsY = bounds.height * zoom > availableHeight + 0.5;
+
+  const offsetX =
+    align === "start" && overflowsX
+      ? -containerWidth / 2 + padding - zoom * bounds.x
+      : -zoom * centerX;
+  const offsetY =
+    align === "start" && overflowsY
+      ? -containerHeight / 2 + padding - zoom * bounds.y
+      : -zoom * centerY;
+
+  return {
+    zoom,
+    offset: {
+      x: offsetX,
+      y: offsetY,
+    },
+  };
+};
+
+export const computeContentBounds = (
+  containerEl: HTMLElement | null,
+  { zoom, offset }: { zoom: number; offset: { x: number; y: number } }
+): {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+} | null => {
+  if (!containerEl) return null;
+
+  const nodeEls = containerEl.querySelectorAll("[data-node-id]");
+  if (nodeEls.length === 0) return null;
+
+  const containerRect = containerEl.getBoundingClientRect();
+  const originX = containerRect.left + containerRect.width / 2;
+  const originY = containerRect.top + containerRect.height / 2;
+
+  const toContentX = (screenX: number) => (screenX - originX - offset.x) / zoom;
+  const toContentY = (screenY: number) => (screenY - originY - offset.y) / zoom;
+
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+
+  nodeEls.forEach((el: Element) => {
+    const rect = el.getBoundingClientRect();
+    minX = Math.min(minX, toContentX(rect.left));
+    maxX = Math.max(maxX, toContentX(rect.right));
+    minY = Math.min(minY, toContentY(rect.top));
+    maxY = Math.max(maxY, toContentY(rect.bottom));
+  });
+
+  return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+};
+
+export const computeFitViewState = (
+  containerEl: HTMLElement | null,
+  {
+    zoom,
+    offset,
+    padding,
+    minZoom,
+    maxZoom,
+    align,
+  }: {
+    zoom: number;
+    offset: { x: number; y: number };
+    padding: number;
+    minZoom: number;
+    maxZoom: number;
+    align: "center" | "start";
+  }
+): { zoom: number; offset: { x: number; y: number } } | null => {
+  if (!containerEl) return null;
+  const bounds = computeContentBounds(containerEl, { zoom, offset });
+  if (!bounds) return null;
+
+  return computeFitTransform({
+    bounds,
+    containerWidth: containerEl.clientWidth,
+    containerHeight: containerEl.clientHeight,
+    padding,
+    minZoom,
+    maxZoom,
+    align,
+  });
+};

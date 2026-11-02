@@ -1,9 +1,9 @@
 import { AIMessage } from "./AIMessage";
 import { ErrorMessage } from "./ErrorMessage";
 import { HumanMessage } from "./HumanMessage";
-import { ToolDecision, ToolMessage, ToolRenderers } from "./ToolMessage";
 
 import React, { memo } from "react";
+import { ToolDecision, ToolMessage, ToolRenderers } from "./ToolMessage";
 
 const MessageList = memo(
   ({
@@ -18,7 +18,7 @@ const MessageList = memo(
   }: {
     error?: string;
     messages: { id: string; content: string; role: string }[];
-    selectedId: string;
+    selectedId?: string;
     messagesEndRef: { current: HTMLDivElement | null };
     highlightedMessage: { current: HTMLDivElement | null };
     onErrorClose?: () => void;

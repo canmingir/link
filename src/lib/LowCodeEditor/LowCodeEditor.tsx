@@ -11,17 +11,17 @@ import {
   Tooltip,
 } from "@mui/material";
 
-import {
-  CodeEditor,
-  type ContextEntry,
-  type SchemaClass,
-} from "../CodeEditor";
+import { CodeEditor, type ContextEntry, type SchemaClass } from "../CodeEditor";
 import React from "react";
 import ViewPanel from "../ViewPanel";
 import SpeedIcon from "@mui/icons-material/Speed";
 import { useNavigate } from "react-router-dom";
 
-import { defaultLanguage, detectLanguage, getExtension } from "./languageOptions";
+import {
+  defaultLanguage,
+  detectLanguage,
+  getExtension,
+} from "./languageOptions";
 
 const LowCodeEditor = ({
   initialCode = defaultLanguage.starterCode,
@@ -115,11 +115,11 @@ const LowCodeEditor = ({
 
   React.useEffect(() => {
     if (forcedLanguage !== undefined) {
-       applyLanguage(forcedLanguage);
+      applyLanguage(forcedLanguage);
     } else if (controlledValue !== undefined) {
-       applyLanguage(detectLanguage(controlledValue));
+      applyLanguage(detectLanguage(controlledValue));
     }
-   }, [controlledValue, forcedLanguage, applyLanguage]);
+  }, [controlledValue, forcedLanguage, applyLanguage]);
 
   const handleCodeChange = (value: string) => {
     if (!isControlled) {

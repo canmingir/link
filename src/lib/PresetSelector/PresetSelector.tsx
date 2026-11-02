@@ -1,4 +1,4 @@
-import { Iconify } from "@canmingir/link/platform/components";
+import Iconify from "../Iconify";
 import React from "react";
 import { alpha } from "@mui/material/styles";
 
@@ -11,16 +11,18 @@ import {
   Typography,
 } from "@mui/material";
 
+export interface Preset {
+  id: string;
+  title: string;
+  description?: string;
+}
+
 const PresetSelector = ({
   Presets,
   selectedPreset,
   onPresetChange,
 }: {
-  Presets: Array<{
-    id: string;
-    title: string;
-    description?: string;
-  }>;
+  Presets: Preset[];
   selectedPreset?: string;
   onPresetChange: (presetId: string) => void;
 }) => {
