@@ -9,6 +9,7 @@ import { RouterLink } from "../../../../routes/components";
 import { forwardRef } from "react";
 import { motion } from "framer-motion";
 import { styled } from "@mui/material/styles";
+import { useSettingsContext } from "../../../../components/settings";
 
 import type { SxProps, Theme } from "@mui/material/styles";
 
@@ -164,6 +165,8 @@ export function NavItemDashboard({
   sx?: SxProps<Theme>;
   [key: string]: unknown;
 }) {
+  const settings = useSettingsContext();
+
   return (
     <Link
       component={RouterLink}
@@ -183,12 +186,16 @@ export function NavItemDashboard({
         }}
       >
         <motion.div
-          whileTap="tap"
-          whileHover="hover"
-          variants={{
-            hover: { scale: 1.02 },
-            tap: { scale: 0.98 },
-          }}
+          whileTap={settings.animation ? "tap" : undefined}
+          whileHover={settings.animation ? "hover" : undefined}
+          variants={
+            settings.animation
+              ? {
+                  hover: { scale: 1.02 },
+                  tap: { scale: 0.98 },
+                }
+              : undefined
+          }
         >
           <Box
             component="img"

@@ -16,9 +16,9 @@ export default function DashboardLayout() {
   const lgUp = useResponsive("up", "lg");
 
   const nav = useBoolean();
-  const isHorizontal = settings.themeLayout === "horizontal";
+  const isHorizontal = settings.themelayout === "horizontal";
 
-  const isMini = settings.themeLayout === "mini";
+  const isMini = settings.themelayout === "mini";
 
   const renderNavMini = <NavMini />;
 

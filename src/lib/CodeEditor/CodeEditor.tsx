@@ -35,7 +35,7 @@ export function CodeEditor({
   minHeight,
   maxHeight,
   autoHeight = false,
-  themeMode = "light",
+  thememode = "light",
   backgroundColor,
   contentPaddingTop = 16,
   runButtonLabel = <PlayArrowIcon fontSize="small" />,
@@ -56,7 +56,7 @@ export function CodeEditor({
   minHeight?: number;
   maxHeight?: number;
   autoHeight?: boolean;
-  themeMode?: "light" | "dark";
+  thememode?: "light" | "dark";
   backgroundColor?: string;
   contentPaddingTop?: number;
   runButtonLabel?: React.ReactNode;
@@ -95,9 +95,9 @@ export function CodeEditor({
   const [autoHeightPx, setAutoHeightPx] = useState<number>(0);
   const [hasSelection, setHasSelection] = useState(false);
 
-  const baseTheme = themeMode === "dark" ? "vs-dark" : "vs-light";
+  const baseTheme = thememode === "dark" ? "vs-dark" : "vs-light";
   const defineThemeBase: Monaco.editor.BuiltinTheme =
-    themeMode === "dark" ? "vs-dark" : "vs";
+    thememode === "dark" ? "vs-dark" : "vs";
   const theme = useMemo(
     () => (backgroundColor ? "reusable-code-editor-custom" : baseTheme),
     [backgroundColor, baseTheme]

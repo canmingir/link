@@ -12,6 +12,7 @@ import { logout } from "../../widgets/Login/amplifyAuth";
 import { motion } from "framer-motion";
 import { storage } from "@nucleoidjs/webstorage";
 import { useRouter } from "../../routes/hooks";
+import { useSettingsContext } from "../../components/settings";
 import { useUser } from "../../hooks/use-user";
 import { varHover } from "../../components/animate";
 
@@ -21,6 +22,7 @@ export default function AccountPopover() {
   const { options } = config().menu;
   const router = useRouter();
   const { user } = useUser();
+  const settings = useSettingsContext();
 
   const popover = usePopover();
 
@@ -45,9 +47,9 @@ export default function AccountPopover() {
     <>
       <IconButton
         component={motion.button}
-        whileTap="tap"
-        whileHover="hover"
-        variants={varHover(1.05)}
+        whileTap={settings.animation ? "tap" : undefined}
+        whileHover={settings.animation ? "hover" : undefined}
+        variants={settings.animation ? varHover(1.05) : undefined}
         onClick={popover.onOpen}
         data-cy="account-popover"
         sx={{
