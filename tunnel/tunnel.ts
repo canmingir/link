@@ -40,18 +40,24 @@ const cloudflared = spawn(
 const urlPattern = /https:\/\/[a-z0-9-]+\.trycloudflare\.com/;
 let printed = false;
 
-const onData = (chunk: Buffer) => {
-  const text = chunk.toString();
-  if (!printed) {
+const createOnData = () => {
+  let pending = "";
+  return (chunk: Buffer) => {
+    if (printed) return;
+    const text = pending + chunk.toString();
     const match = text.match(urlPattern);
     if (match) {
       printed = true;
+      pending = "";
       log(`Public URL: ${match[0]}`);
+    } else {
+      pending = text.slice(-256);
     }
-  }
+  };
 };
 
-cloudflared.stdout.on("data", onData);
+const onData = createOnData();
+cloudflared.stdout.on("data", createOnData());
 cloudflared.stderr.on("data", onData);
 
 cloudflared.on("exit", (code) => process.exit(code ?? 0));
