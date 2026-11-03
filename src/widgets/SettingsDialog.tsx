@@ -382,7 +382,11 @@ const Settings = () => {
           }}
         >
           <ListItemText primary="Beta" secondary="Enable beta features" />
-          <Switch checked={beta} onChange={() => onUpdate("beta", !beta)} />
+          <Switch
+            checked={beta}
+            onChange={() => onUpdate("beta", !beta)}
+            slotProps={{ input: { "aria-label": "Enable Animations" } }}
+          />
         </ListItem>
         <ListItem
           sx={{
