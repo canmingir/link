@@ -30,8 +30,11 @@ if (config().credentials?.provider === "COGNITO") {
 setTimeout(() => {
   const { api } = config();
 
-  oauth.defaults.baseURL = api;
-  http.defaults.baseURL = api;
+  const isLocalApi = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/.test(api);
+  const baseURL = isLocalApi ? `${window.location.origin}/api` : api;
+
+  oauth.defaults.baseURL = baseURL;
+  http.defaults.baseURL = baseURL;
 }, 0);
 
 const Platform = ({ routes }: { routes: AppRoute[] }) => {
