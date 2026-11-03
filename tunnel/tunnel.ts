@@ -10,9 +10,19 @@ function err(message: string) {
   process.stderr.write(`\x1b[31m[tunnel]\x1b[0m ${message}\n`);
 }
 
+const portArg = process.argv[2];
 const port = Number(
-  process.argv[2]?.replace("--port=", "") ?? process.env.PORT ?? 3000
+  (portArg === "--port"
+    ? (process.argv[3] ?? "")
+    : portArg?.replace(/^--port=/, "")) ??
+    process.env.TUNNEL_PORT ??
+    3000
 );
+
+if (!Number.isInteger(port) || port < 1 || port > 65535) {
+  err("Port must be an integer between 1 and 65535");
+  process.exit(1);
+}
 
 if (spawnSync("cloudflared", ["--version"], { stdio: "ignore" }).error) {
   err("cloudflared not found: brew install cloudflared");
