@@ -10,7 +10,9 @@ function err(message: string) {
   process.stderr.write(`\x1b[31m[tunnel]\x1b[0m ${message}\n`);
 }
 
-const port = Number(process.argv[2]?.replace("--port=", "") ?? process.env.PORT ?? 3000);
+const port = Number(
+  process.argv[2]?.replace("--port=", "") ?? process.env.PORT ?? 3000
+);
 
 if (spawnSync("cloudflared", ["--version"], { stdio: "ignore" }).error) {
   err("cloudflared not found: brew install cloudflared");

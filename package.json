@@ -52,7 +52,8 @@
   "files": [
     "dist",
     "server/server.ts",
-    "server/tsconfig.json"
+    "server/tsconfig.json",
+    "tunnel/tunnel.ts"
   ],
   "scripts": {
     "dev": "cd project && concurrently \"npm run dev\" \"npm run server\"",
