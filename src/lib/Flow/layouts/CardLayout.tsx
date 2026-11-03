@@ -18,6 +18,7 @@ const STYLES = {
 
 export function MediaAvatarCard({
   sx,
+  className = "anim-hover-tilt",
   leftContent,
   rightContent,
   title,
@@ -28,6 +29,7 @@ export function MediaAvatarCard({
   backgroundClassName = "animated-background-image",
 }: {
   sx?: SxProps<Theme>;
+  className?: string;
   title?: ReactNode;
   description?: ReactNode;
   footer?: ReactNode;
@@ -41,6 +43,7 @@ export function MediaAvatarCard({
 
   return (
     <Card
+      className={className}
       sx={{
         p: 0,
         minWidth: 350,
@@ -156,6 +159,7 @@ export function MediaAvatarCard({
 
 export function SideStripeCard({
   sx,
+  className = "anim-hover-tilt",
   stripeContent,
   mainContent,
   title,
@@ -167,6 +171,7 @@ export function SideStripeCard({
   stripeWidth = 65,
 }: {
   sx?: SxProps<Theme>;
+  className?: string;
   title?: ReactNode;
   description?: ReactNode;
   footer?: ReactNode;
@@ -182,6 +187,7 @@ export function SideStripeCard({
   return (
     <Box sx={{ cursor: "inherit" }}>
       <Card
+        className={className}
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -302,12 +308,14 @@ export function SideStripeCard({
 
 export function HeaderCard({
   sx,
+  className = "anim-hover-tilt",
   header,
   children,
   height = 140,
   padding = 2,
 }: {
   sx?: SxProps<Theme>;
+  className?: string;
   header?: ReactNode;
   children?: ReactNode;
   height?: number | string;
@@ -316,6 +324,7 @@ export function HeaderCard({
   const theme = useTheme();
   return (
     <Card
+      className={className}
       sx={{
         p: padding,
         minWidth: 200,

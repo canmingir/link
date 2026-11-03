@@ -305,7 +305,7 @@ const Permission = () => {
 const Settings = () => {
   const [projectId] = useStorage<string | null>("link", "projectid", null);
   const { settings, updateSettings } = useSettings(projectId ?? undefined);
-  const { beta, onUpdate } = useSettingsContext();
+  const { beta, animation, onUpdate } = useSettingsContext();
 
   const timeZones = [
     "Asia/Kolkata",
@@ -382,7 +382,31 @@ const Settings = () => {
           }}
         >
           <ListItemText primary="Beta" secondary="Enable beta features" />
-          <Switch checked={beta} onChange={() => onUpdate("beta", !beta)} />
+          <Switch
+            checked={beta}
+            onChange={() => onUpdate("beta", !beta)}
+            slotProps={{ input: { "aria-label": "Enable Animations" } }}
+          />
+        </ListItem>
+        <ListItem
+          sx={{
+            backgroundColor: "background.paper",
+            boxShadow: 1,
+            borderRadius: 1,
+            m: 1,
+            p: 2,
+            ":hover": { boxShadow: 3 },
+            transition: "all 0.2s ease-in-out",
+          }}
+        >
+          <ListItemText
+            primary="Enable Animations"
+            secondary="Turn on all transitions and animations across the app"
+          />
+          <Switch
+            checked={Boolean(animation)}
+            onChange={() => onUpdate("animation", !animation)}
+          />
         </ListItem>
       </List>
     </Stack>

@@ -19,9 +19,9 @@ export default function Main({
 }) {
   const settings = useSettingsContext();
   const lgUp = useResponsive("up", "lg");
-  const isNavHorizontal = settings.themeLayout === "horizontal";
+  const isNavHorizontal = settings.themelayout === "horizontal";
 
-  const isNavMini = settings.themeLayout === "mini";
+  const isNavMini = settings.themelayout === "mini";
 
   if (isNavHorizontal) {
     return (

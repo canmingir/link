@@ -25,9 +25,9 @@ export default function Header({ onOpenNav }: { onOpenNav?: () => void }) {
   const projectBar = config().template?.projectBar;
   const TopBar = config().menu?.topBar;
 
-  const isNavHorizontal = settings.themeLayout === "horizontal";
+  const isNavHorizontal = settings.themelayout === "horizontal";
 
-  const isNavMini = settings.themeLayout === "mini";
+  const isNavMini = settings.themelayout === "mini";
 
   const lgUp = useResponsive("up", "lg");
 

@@ -6,14 +6,14 @@ import { useEffect } from "react";
 
 export default function RTL({
   children,
-  themeDirection,
+  themedirection,
 }: {
   children: React.ReactNode;
-  themeDirection: "ltr" | "rtl";
+  themedirection: "ltr" | "rtl";
 }) {
   useEffect(() => {
-    document.dir = themeDirection;
-  }, [themeDirection]);
+    document.dir = themedirection;
+  }, [themedirection]);
 
   const cacheRtl = createCache({
     key: "rtl",
@@ -22,7 +22,7 @@ export default function RTL({
     stylisPlugins: [rtlPlugin],
   });
 
-  if (themeDirection === "rtl") {
+  if (themedirection === "rtl") {
     return <CacheProvider value={cacheRtl}>{children}</CacheProvider>;
   }
 

@@ -180,6 +180,10 @@ const IconContainer = styled("div", {
       '[data-hovered="true"] &': {
         backgroundColor: hoverBg,
       },
+
+      'html.disable-animations [data-hovered="true"] &': {
+        backgroundColor: bg,
+      },
     };
   }
 );
@@ -433,6 +437,7 @@ const InfoNode = ({
 
   return (
     <MainContainer
+      className="anim-hover-tilt"
       $style={layoutStyle}
       $variant={variant}
       data-hovered={isHovered}

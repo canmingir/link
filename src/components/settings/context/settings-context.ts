@@ -1,13 +1,14 @@
 import { createContext, useContext } from "react";
 
 export type SettingsValueProps = {
-  themeMode: "light" | "dark";
-  themeDirection: "ltr" | "rtl";
-  themeContrast: "default" | "bold";
-  themeLayout: "vertical" | "horizontal" | "mini";
-  themeColorPresets: "default" | "cyan" | "purple" | "blue" | "orange" | "red";
-  themeStretch: boolean;
+  thememode: "light" | "dark";
+  themedirection: "ltr" | "rtl";
+  themecontrast: "default" | "bold";
+  themelayout: "vertical" | "horizontal" | "mini";
+  themecolorpresets: "default" | "cyan" | "purple" | "blue" | "orange" | "red";
+  themestretch: boolean;
   beta?: boolean;
+  animation?: boolean;
 };
 
 type SettingsContextValue = SettingsValueProps & {

@@ -1,2 +1,25 @@
 /* scrollbar */
 @import 'simplebar-react/dist/simplebar.min.css';
+
+/* disable animations */
+html.disable-animations,
+html.disable-animations *,
+html.disable-animations *::before,
+html.disable-animations *::after {
+  transition-duration: 0.001ms !important;
+  transition-delay: 0ms !important;
+  animation-duration: 0.001ms !important;
+  animation-delay: 0ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}
+
+html.disable-animations .anim-hover-tilt:hover,
+html.disable-animations .anim-hover-scale:hover {
+  transform: none !important;
+  filter: none !important;
+}
+
+html.disable-animations .anim-hover-shadow:hover {
+  box-shadow: var(--anim-hover-shadow-base, none) !important;
+}

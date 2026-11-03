@@ -48,13 +48,14 @@ const Platform = ({ routes }: { routes: AppRoute[] }) => {
     <>
       <SettingsProvider
         defaultSettings={{
-          themeMode: template.theme.mode || "dark",
-          themeDirection: "ltr",
-          themeContrast: "default",
-          themeLayout: "vertical",
-          themeColorPresets: template.theme.colorPresets || "default",
-          themeStretch: false,
+          thememode: template.theme.mode || "dark",
+          themedirection: "ltr",
+          themecontrast: "default",
+          themelayout: "vertical",
+          themecolorpresets: template.theme.colorPresets || "default",
+          themestretch: false,
           beta: false,
+          animation: true,
         }}
       >
         <ThemeProvider>

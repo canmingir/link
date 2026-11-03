@@ -64,8 +64,8 @@ export default function SettingsDrawer() {
       </Typography>
 
       <BaseOptions
-        value={settings.themeMode}
-        onChange={(newValue) => settings.onUpdate("themeMode", newValue)}
+        value={settings.thememode}
+        onChange={(newValue) => settings.onUpdate("thememode", newValue)}
         options={["light", "dark"]}
         icons={["sun", "moon"]}
       />
@@ -79,8 +79,8 @@ export default function SettingsDrawer() {
       </Typography>
 
       <BaseOptions
-        value={settings.themeContrast}
-        onChange={(newValue) => settings.onUpdate("themeContrast", newValue)}
+        value={settings.themecontrast}
+        onChange={(newValue) => settings.onUpdate("themecontrast", newValue)}
         options={["default", "bold"]}
         icons={["contrast", "contrast_bold"]}
       />
@@ -94,8 +94,8 @@ export default function SettingsDrawer() {
       </Typography>
 
       <BaseOptions
-        value={settings.themeDirection}
-        onChange={(newValue) => settings.onUpdate("themeDirection", newValue)}
+        value={settings.themedirection}
+        onChange={(newValue) => settings.onUpdate("themedirection", newValue)}
         options={["ltr", "rtl"]}
         icons={["align_left", "align_right"]}
       />
@@ -109,8 +109,8 @@ export default function SettingsDrawer() {
       </Typography>
 
       <LayoutOptions
-        value={settings.themeLayout}
-        onChange={(newValue) => settings.onUpdate("themeLayout", newValue)}
+        value={settings.themelayout}
+        onChange={(newValue) => settings.onUpdate("themelayout", newValue)}
         options={["vertical", "horizontal", "mini"]}
       />
     </div>
@@ -134,9 +134,9 @@ export default function SettingsDrawer() {
       </Typography>
 
       <StretchOptions
-        value={settings.themeStretch}
+        value={settings.themestretch}
         onChange={() =>
-          settings.onUpdate("themeStretch", !settings.themeStretch)
+          settings.onUpdate("themestretch", !settings.themestretch)
         }
       />
     </div>
@@ -149,9 +149,9 @@ export default function SettingsDrawer() {
       </Typography>
 
       <PresetsOptions
-        value={settings.themeColorPresets}
+        value={settings.themecolorpresets}
         onChange={(newValue) =>
-          settings.onUpdate("themeColorPresets", newValue)
+          settings.onUpdate("themecolorpresets", newValue)
         }
       />
     </div>

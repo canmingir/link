@@ -15,6 +15,7 @@ import Typography from "@mui/material/Typography";
 import { motion } from "framer-motion";
 import { useBoolean } from "../../../hooks/use-boolean";
 import { useResponsive } from "../../../hooks/use-responsive";
+import { useSettingsContext } from "../../../components/settings";
 import { varHover } from "../../../components/animate";
 
 import { useCallback, useState } from "react";
@@ -39,6 +40,7 @@ const TABS = [
 
 export default function NotificationsPopover() {
   const drawer = useBoolean();
+  const settings = useSettingsContext();
 
   const smUp = useResponsive("up", "sm");
 
@@ -135,9 +137,9 @@ export default function NotificationsPopover() {
     <>
       <IconButton
         component={motion.button}
-        whileTap="tap"
-        whileHover="hover"
-        variants={varHover(1.05)}
+        whileTap={settings.animation ? "tap" : undefined}
+        whileHover={settings.animation ? "hover" : undefined}
+        variants={settings.animation ? varHover(1.05) : undefined}
         color={drawer.value ? "primary" : "default"}
         onClick={drawer.onTrue}
       >

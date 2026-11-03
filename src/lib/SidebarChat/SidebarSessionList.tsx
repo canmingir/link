@@ -17,7 +17,6 @@ export interface DevToolTopAction {
   sx?: SxProps<Theme>;
 }
 
-
 const btnBase = {
   width: 32,
   height: 32,
@@ -81,6 +80,7 @@ const SidebarSessionList = ({
           enterNextDelay={1000}
         >
           <Box
+            className="anim-hover-scale"
             onClick={action.onClick}
             sx={[
               {

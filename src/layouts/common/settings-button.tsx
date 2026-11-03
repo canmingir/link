@@ -4,10 +4,12 @@ import Iconify from "../../components/Iconify";
 import SettingsDialog from "../../widgets/SettingsDialog";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useSettingsContext } from "../../components/settings";
 import { varHover } from "../../components/animate";
 
 export default function SettingsButton() {
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const settings = useSettingsContext();
 
   return (
     <>
@@ -19,14 +21,14 @@ export default function SettingsButton() {
         transition={{
           duration: 12,
           ease: "linear",
-          repeat: Infinity,
+          repeat: settings.animation ? Infinity : 0,
         }}
       >
         <IconButton
           component={motion.button}
-          whileTap="tap"
-          whileHover="hover"
-          variants={varHover(1.05)}
+          whileTap={settings.animation ? "tap" : undefined}
+          whileHover={settings.animation ? "hover" : undefined}
+          variants={settings.animation ? varHover(1.05) : undefined}
           aria-label="settings"
           onClick={() => setSettingsOpen(true)}
           sx={{

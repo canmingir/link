@@ -7,23 +7,19 @@ export function useLocalStorage<T extends Record<string, unknown>>(
   const [state, setState] = useState<T>(initialState);
 
   useEffect(() => {
-    const restored = getStorage(key);
+    const restored = getStorageAll(key, initialState);
 
-    if (restored) {
-      setState((prevValue) => ({
-        ...prevValue,
-        ...restored,
-      }));
-    }
+    setState((prevValue) => ({
+      ...prevValue,
+      ...restored,
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 
   const updateState = useCallback(
     (updateValue: Partial<T>) => {
       setState((prevValue) => {
-        setStorage(key, {
-          ...prevValue,
-          ...updateValue,
-        });
+        setStorageAll(key, updateValue);
 
         return {
           ...prevValue,
@@ -44,7 +40,7 @@ export function useLocalStorage<T extends Record<string, unknown>>(
   );
 
   const reset = useCallback(() => {
-    removeStorage(key);
+    removeStorageAll(key, initialState);
     setState(initialState);
   }, [initialState, key]);
 
@@ -55,13 +51,50 @@ export function useLocalStorage<T extends Record<string, unknown>>(
   };
 }
 
+const storageKey = (key: string, field: string) => `${key}.${field}`;
+
+const getStorageAll = <T extends Record<string, unknown>>(
+  key: string,
+  initialState: T
+) => {
+  const value: Partial<T> = {};
+
+  Object.keys(initialState).forEach((field) => {
+    const restored = getStorage(storageKey(key, field));
+
+    if (restored !== null) {
+      value[field as keyof T] = restored;
+    }
+  });
+
+  return value;
+};
+
+const setStorageAll = <T extends Record<string, unknown>>(
+  key: string,
+  updateValue: Partial<T>
+) => {
+  Object.keys(updateValue).forEach((field) => {
+    setStorage(storageKey(key, field), updateValue[field as keyof T]);
+  });
+};
+
+const removeStorageAll = <T extends Record<string, unknown>>(
+  key: string,
+  initialState: T
+) => {
+  Object.keys(initialState).forEach((field) => {
+    removeStorage(storageKey(key, field));
+  });
+};
+
 export const getStorage = (key: string) => {
   let value = null;
 
   try {
     const result = window.localStorage.getItem(key);
 
-    if (result) {
+    if (result !== null) {
       value = JSON.parse(result);
     }
   } catch (error) {

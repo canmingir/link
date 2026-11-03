@@ -13,11 +13,12 @@ import { shadows } from "./shadows";
 import { typography } from "./typography";
 import { useSettingsContext } from "../components/settings";
 
+import { MotionConfig } from "framer-motion";
 import {
   ThemeProvider as MuiThemeProvider,
   createTheme,
 } from "@mui/material/styles";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 
 export default function ThemeProvider({
   children,
@@ -25,22 +26,22 @@ export default function ThemeProvider({
   children?: React.ReactNode;
 }) {
   const settings = useSettingsContext();
-  const contrast = createContrast(settings.themeContrast, settings.themeMode);
-  const presets = createPresets(settings.themeColorPresets);
+  const contrast = createContrast(settings.themecontrast, settings.thememode);
+  const presets = createPresets(settings.themecolorpresets);
 
   const theme = useMemo(() => {
     const baseOptions: ThemeOptions & Record<string, unknown> = {
       palette: {
-        ...palette(settings.themeMode),
+        ...palette(settings.thememode),
         ...presets.palette,
         ...contrast.palette,
       },
       customShadows: {
-        ...customShadows(settings.themeMode),
+        ...customShadows(settings.thememode),
         ...presets.customShadows,
       },
-      direction: settings.themeDirection,
-      shadows: shadows(settings.themeMode),
+      direction: settings.themedirection,
+      shadows: shadows(settings.thememode),
       shape: { borderRadius: 8 },
       typography,
     };
@@ -79,19 +80,29 @@ export default function ThemeProvider({
 
     return createTheme(baseOptions);
   }, [
-    settings.themeMode,
-    settings.themeDirection,
+    settings.thememode,
+    settings.themedirection,
+    settings.themecontrast, // Added this to the dependency array
     presets.palette,
     presets.customShadows,
     contrast.palette,
     contrast.components,
   ]);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      "disable-animations",
+      !settings.animation
+    );
+  }, [settings.animation]);
+
   return (
     <MuiThemeProvider theme={theme}>
-      <RTL themeDirection={settings.themeDirection}>
+      <RTL themedirection={settings.themedirection}>
         <CssBaseline />
-        {children}
+        <MotionConfig reducedMotion={settings.animation ? "never" : "always"}>
+          {children}
+        </MotionConfig>
       </RTL>
     </MuiThemeProvider>
   );

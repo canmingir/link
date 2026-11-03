@@ -30,8 +30,8 @@ export default function NavToggleButton({
       size="small"
       onClick={() =>
         settings.onUpdate(
-          "themeLayout",
-          settings.themeLayout === "vertical" ? "mini" : "vertical"
+          "themelayout",
+          settings.themelayout === "vertical" ? "mini" : "vertical"
         )
       }
       sx={{
@@ -52,7 +52,7 @@ export default function NavToggleButton({
       <Iconify
         width={16}
         icon={
-          settings.themeLayout === "vertical"
+          settings.themelayout === "vertical"
             ? "eva:arrow-ios-back-fill"
             : "eva:arrow-ios-forward-fill"
         }
