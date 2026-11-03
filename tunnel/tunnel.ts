@@ -42,9 +42,12 @@ const onData = (chunk: Buffer) => {
 };
 
 cloudflared.stdout.on("data", onData);
-cloudflared.stderr.on("data", onData);
+cloudflared.stderr.on("data", (chunk: Buffer) => {
+  process.stderr.write(chunk);
+  onData(chunk);
+});
 
-cloudflared.on("exit", (code) => process.exit(code ?? 0));
+cloudflared.on("exit", (code) => process.exit(code ?? 1));
 
 process.on("SIGINT", () => cloudflared.kill("SIGTERM"));
 process.on("SIGTERM", () => cloudflared.kill("SIGTERM"));
