@@ -62,6 +62,13 @@ export {
 export { default as DevTool } from "./DevTool";
 
 export { default as SidebarChat } from "./SidebarChat/SidebarChat";
+export type {
+  ChatInputErrors,
+  ChatInputField,
+  ChatInputMode,
+  ChatInputSubmit,
+  ChatJsonSubmit,
+} from "./SidebarChat/types";
 export { default as PresetSelector } from "./PresetSelector/PresetSelector";
 export { default as LinkSwipe } from "./LinkSwipe/LinkSwipe";
 export {

@@ -21,10 +21,12 @@ const PresetSelector = ({
   Presets,
   selectedPreset,
   onPresetChange,
+  required = false,
 }: {
   Presets: Preset[];
   selectedPreset?: string;
   onPresetChange: (presetId: string) => void;
+  required?: boolean;
 }) => {
   return (
     <Box
@@ -48,7 +50,17 @@ const PresetSelector = ({
           Preset
         </InputLabel>
         <Select
-          value={selectedPreset || "Automatic"}
+          value={selectedPreset || (required ? "" : "Automatic")}
+          displayEmpty={required}
+          renderValue={
+            required && !selectedPreset
+              ? () => (
+                  <Typography sx={{ color: "rgba(255, 255, 255, 0.5)" }}>
+                    Select a blueprint
+                  </Typography>
+                )
+              : undefined
+          }
           onChange={(e) => onPresetChange(e.target.value)}
           label="Preset"
           sx={{
@@ -88,9 +100,11 @@ const PresetSelector = ({
             },
           }}
         >
-          <MenuItem value="Automatic">
-            <Typography sx={{ color: "white" }}>Automatic</Typography>
-          </MenuItem>
+          {!required && (
+            <MenuItem value="Automatic">
+              <Typography sx={{ color: "white" }}>Automatic</Typography>
+            </MenuItem>
+          )}
           {Presets.map((Preset) => (
             <MenuItem key={Preset.id} value={Preset.id}>
               <Box

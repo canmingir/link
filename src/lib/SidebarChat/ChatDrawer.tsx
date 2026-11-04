@@ -1,5 +1,6 @@
 import Editor from "@monaco-editor/react";
 import Iconify from "../Iconify";
+import InputForm from "./InputForm";
 import type { Preset } from "../PresetSelector/PresetSelector";
 import PresetSelector from "../PresetSelector/PresetSelector";
 import Scrollbar from "../Scrollbar/Scrollbar";
@@ -16,8 +17,14 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import type {
+  ChatInputField,
+  ChatInputMode,
+  ChatInputSubmit,
+  ChatJsonSubmit,
+} from "./types";
 import { LoadingMessage, MessageList } from "../ChatMessage";
-import React, { memo, useCallback, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { ToolDecision, ToolRenderers } from "../ChatMessage/ToolMessage";
 
 const DRAWER_WIDTH = 400;
@@ -44,6 +51,13 @@ const ChatDrawer = ({
   onToolDecision,
   embedded,
   footer,
+  inputFields,
+  onSubmitForm,
+  jsonTemplate,
+  onSubmitJson,
+  inputModes,
+  presetRequired,
+  panel,
 }: {
   title: string;
   open: boolean;
@@ -65,15 +79,41 @@ const ChatDrawer = ({
   onToolDecision?: (toolCallId: string, decision: ToolDecision) => void;
   embedded?: boolean;
   footer?: React.ReactNode;
+  inputFields?: ChatInputField[];
+  onSubmitForm?: ChatInputSubmit;
+  jsonTemplate?: string;
+  onSubmitJson?: ChatJsonSubmit;
+  inputModes?: ChatInputMode[];
+  presetRequired?: boolean;
+  panel?: React.ReactNode;
 }) => {
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
-  const [inputMode, setInputMode] = useState<"chat" | "json">("chat");
-  const [jsonValue, setJsonValue] = useState(DEFAULT_JSON);
+  const initialJson = jsonTemplate ?? DEFAULT_JSON;
+  const [selectedMode, setSelectedMode] = useState<ChatInputMode>("chat");
+  const [jsonValue, setJsonValue] = useState(initialJson);
   const [jsonError, setJsonError] = useState<string | null>(null);
+  const [jsonSubmitError, setJsonSubmitError] = useState<string | null>(null);
+  const [jsonSubmitting, setJsonSubmitting] = useState(false);
+
+  const hasForm = Boolean(
+    onSubmitForm && (inputFields?.length || inputModes?.includes("form"))
+  );
+  const modes: ChatInputMode[] = (
+    inputModes ?? (["chat", "json", "form"] as ChatInputMode[])
+  ).filter((mode) => mode !== "form" || hasForm);
+  const inputMode: ChatInputMode = modes.includes(selectedMode)
+    ? selectedMode
+    : modes[0] ?? "chat";
+
+  useEffect(() => {
+    setJsonValue(initialJson);
+    setJsonError(null);
+    setJsonSubmitError(null);
+  }, [initialJson]);
 
   const handleModeChange = useCallback(
-    (_: React.MouseEvent<HTMLElement>, newMode: "chat" | "json" | null) => {
-      if (newMode) setInputMode(newMode);
+    (_: React.MouseEvent<HTMLElement>, newMode: ChatInputMode | null) => {
+      if (newMode) setSelectedMode(newMode);
     },
     []
   );
@@ -95,6 +135,7 @@ const ChatDrawer = ({
   const handleJsonChange = useCallback((value: string | undefined) => {
     const v = value ?? "";
     setJsonValue(v);
+    setJsonSubmitError(null);
     try {
       JSON.parse(v);
       setJsonError(null);
@@ -103,16 +144,42 @@ const ChatDrawer = ({
     }
   }, []);
 
-  const handleJsonSend = useCallback(() => {
+  const handleJsonSend = useCallback(async () => {
+    let parsed: unknown;
     try {
-      const parsed = JSON.parse(jsonValue);
-      onSend(JSON.stringify(parsed));
-      setJsonValue(DEFAULT_JSON);
-      setJsonError(null);
+      parsed = JSON.parse(jsonValue);
     } catch {
       setJsonError("Invalid JSON — fix before sending");
+      return;
     }
-  }, [jsonValue, onSend]);
+
+    if (!onSubmitJson) {
+      onSend(JSON.stringify(parsed));
+      setJsonValue(initialJson);
+      setJsonError(null);
+      return;
+    }
+
+    if (jsonSubmitting) return;
+
+    setJsonSubmitting(true);
+    setJsonSubmitError(null);
+    try {
+      const response = await onSubmitJson(parsed);
+      if (typeof response === "string") {
+        setJsonSubmitError(response);
+      } else {
+        setJsonValue(initialJson);
+        setJsonError(null);
+      }
+    } catch (error) {
+      setJsonSubmitError(
+        error instanceof Error ? error.message : "Failed to send JSON"
+      );
+    } finally {
+      setJsonSubmitting(false);
+    }
+  }, [jsonValue, onSend, onSubmitJson, jsonSubmitting, initialJson]);
 
   const handleJsonKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
@@ -179,6 +246,7 @@ const ChatDrawer = ({
             Presets={Presets}
             selectedPreset={selectedPreset}
             onPresetChange={onPresetChange ?? (() => {})}
+            required={presetRequired}
           />
         </Box>
       )}
@@ -186,17 +254,23 @@ const ChatDrawer = ({
       {/* Messages */}
       <Box sx={{ flex: 1, minWidth: 0, overflow: "hidden", p: 2 }}>
         <Scrollbar sx={{ height: "100%", width: "100%" }}>
-          <MessageList
-            messages={
-              history as { id: string; content: string; role: string }[]
-            }
-            selectedId={selectedConversationId}
-            messagesEndRef={messagesEndRef}
-            highlightedMessage={highlightedMessage}
-            toolRenderers={toolRenderers}
-            onToolDecision={onToolDecision}
-          />
-          {showLoading && <LoadingMessage messagesEndRef={messagesEndRef} />}
+          {panel ?? (
+            <>
+              <MessageList
+                messages={
+                  history as { id: string; content: string; role: string }[]
+                }
+                selectedId={selectedConversationId}
+                messagesEndRef={messagesEndRef}
+                highlightedMessage={highlightedMessage}
+                toolRenderers={toolRenderers}
+                onToolDecision={onToolDecision}
+              />
+              {showLoading && (
+                <LoadingMessage messagesEndRef={messagesEndRef} />
+              )}
+            </>
+          )}
         </Scrollbar>
       </Box>
 
@@ -222,7 +296,7 @@ const ChatDrawer = ({
               gap: 1,
             }}
           >
-            {!embedded && (
+            {!embedded && modes.length > 1 && (
               <ToggleButtonGroup
                 value={inputMode}
                 exclusive
@@ -248,21 +322,35 @@ const ChatDrawer = ({
                   },
                 }}
               >
-                <ToggleButton value="chat">
-                  <Iconify
-                    icon="solar:chat-round-line-bold-duotone"
-                    sx={{ width: 14, height: 14, mr: 0.5 }}
-                  />
-                  Chat
-                </ToggleButton>
+                {modes.includes("chat") && (
+                  <ToggleButton value="chat">
+                    <Iconify
+                      icon="solar:chat-round-line-bold-duotone"
+                      sx={{ width: 14, height: 14, mr: 0.5 }}
+                    />
+                    Chat
+                  </ToggleButton>
+                )}
 
-                <ToggleButton value="json">
-                  <Iconify
-                    icon="solar:code-bold-duotone"
-                    sx={{ width: 14, height: 14, mr: 0.5 }}
-                  />
-                  JSON
-                </ToggleButton>
+                {modes.includes("json") && (
+                  <ToggleButton value="json">
+                    <Iconify
+                      icon="solar:code-bold-duotone"
+                      sx={{ width: 14, height: 14, mr: 0.5 }}
+                    />
+                    JSON
+                  </ToggleButton>
+                )}
+
+                {modes.includes("form") && (
+                  <ToggleButton value="form">
+                    <Iconify
+                      icon="solar:list-check-bold-duotone"
+                      sx={{ width: 14, height: 14, mr: 0.5 }}
+                    />
+                    Form
+                  </ToggleButton>
+                )}
               </ToggleButtonGroup>
             )}
           </Box>
@@ -364,20 +452,21 @@ const ChatDrawer = ({
                 <Typography
                   variant="caption"
                   sx={{
-                    color: jsonError
-                      ? "error.main"
-                      : (theme) => alpha(theme.palette.text.secondary, 0.5),
+                    color:
+                      jsonError || jsonSubmitError
+                        ? "error.main"
+                        : (theme) => alpha(theme.palette.text.secondary, 0.5),
                     fontSize: "0.7rem",
                   }}
                 >
-                  {jsonError ?? "⌘↵ to send"}
+                  {jsonError ?? jsonSubmitError ?? "⌘↵ to send"}
                 </Typography>
                 <Tooltip title="Send JSON (⌘↵)" placement="top">
                   <span>
                     <IconButton
                       onClick={handleJsonSend}
                       size="small"
-                      disabled={!!jsonError}
+                      disabled={!!jsonError || jsonSubmitting}
                       sx={{
                         color: (theme) =>
                           jsonError
@@ -394,6 +483,10 @@ const ChatDrawer = ({
                 </Tooltip>
               </Box>
             </Box>
+          )}
+
+          {inputMode === "form" && inputFields && onSubmitForm && (
+            <InputForm fields={inputFields} onSubmit={onSubmitForm} />
           )}
         </Box>
       )}
