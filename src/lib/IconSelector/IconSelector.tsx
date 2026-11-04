@@ -6,6 +6,7 @@ import Picker from "@emoji-mart/react";
 import React from "react";
 import SvgColor from "../SvgColor";
 import type { Theme } from "@mui/material/styles";
+import { getIconifyUrl } from "../../utils/iconify-url";
 
 import { Dialog, Stack } from "@mui/material";
 
@@ -66,7 +67,7 @@ export default function IconSelector({
             >
               {avatar ? (
                 <SvgColor
-                  src={`https://api.iconify.design/${avatar}.svg`}
+                  src={getIconifyUrl(avatar)}
                   variant="square"
                   sx={{ width: 82, height: 82 }}
                 />

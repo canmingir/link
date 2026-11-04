@@ -15,6 +15,7 @@ import type { Theme } from "@mui/material/styles";
 import { alpha } from "@mui/material/styles";
 import { applyFilter } from "./utils";
 import config from "../../../config/config";
+import { getIconifyUrl } from "../../../utils/iconify-url";
 import match from "autosuggest-highlight/match";
 import oauth from "../../../http/oauth";
 import parse from "autosuggest-highlight/parse";
@@ -174,7 +175,7 @@ function ProjectBar() {
     <List data-cy="item-list" disablePadding>
       {dataFiltered.map((item) => {
         const title = item?.name;
-        const icon = item?.icon?.slice(1, -1);
+        const icon = item?.icon;
         const organizationName = item?.organization?.name;
         const partsTitle = parse(title, match(title, searchQuery));
         return (
@@ -220,11 +221,8 @@ function ProjectBar() {
         <SvgColor
           src={
             selectedProjectId
-              ? `https://api.iconify.design/${selectedProject?.icon?.slice(
-                  1,
-                  -1
-                )}.svg`
-              : "https://api.iconify.design/ph:circle-duotone.svg"
+              ? getIconifyUrl(selectedProject?.icon)
+              : getIconifyUrl("ph:circle-duotone")
           }
           sx={{ width: 32, height: 32 }}
         />

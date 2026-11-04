@@ -1,5 +1,6 @@
 import React from "react";
 import SvgColor from "../SvgColor";
+import { getIconifyUrl } from "../../utils/iconify-url";
 
 import {
   Card,
@@ -86,10 +87,7 @@ export default function ItemsSummary({
                       }}
                     >
                       <SvgColor
-                        src={`https://api.iconify.design/${newItems[0].details.icon?.slice(
-                          1,
-                          -1
-                        )}.svg`}
+                        src={getIconifyUrl(newItems[0].details.icon)}
                         variant="square"
                         sx={{
                           width: 82,
@@ -157,10 +155,7 @@ export default function ItemsSummary({
                       }}
                     >
                       <SvgColor
-                        src={`https://api.iconify.design/${newItems[1].details.icon?.slice(
-                          1,
-                          -1
-                        )}.svg`}
+                        src={getIconifyUrl(newItems[1].details.icon)}
                         variant="square"
                         sx={{
                           width: 82,

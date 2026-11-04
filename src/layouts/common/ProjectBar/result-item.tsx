@@ -5,6 +5,7 @@ import ListItemText from "@mui/material/ListItemText";
 import type { ReactNode } from "react";
 import SvgColor from "../../../components/svg-color";
 import { alpha } from "@mui/material/styles";
+import { getIconifyUrl } from "../../../utils/iconify-url";
 import { useTheme } from "@mui/material/styles";
 
 import { Stack, Typography, useMediaQuery } from "@mui/material";
@@ -66,7 +67,7 @@ export default function ResultItem({
     >
       <Stack>
         <SvgColor
-          src={`https://api.iconify.design/${icon}.svg`}
+          src={getIconifyUrl(icon)}
           sx={{
             width: 32,
             height: 32,
