@@ -2,6 +2,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Grid from "@mui/material/Grid";
 import React from "react";
 import SvgColor from "../SvgColor";
+import { getIconifyUrl } from "../../utils/iconify-url";
 
 import {
   Card,
@@ -64,10 +65,7 @@ export default function ItemSummary({
                     }}
                   >
                     <SvgColor
-                      src={`https://api.iconify.design/${newItem.icon?.slice(
-                        1,
-                        -1
-                      )}.svg`}
+                      src={getIconifyUrl(newItem.icon)}
                       variant="square"
                       sx={{ width: 82, height: 82 }}
                     />
