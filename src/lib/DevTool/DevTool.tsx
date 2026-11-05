@@ -30,6 +30,7 @@ interface DevToolShellProps {
   onNewSession?: () => void;
   beta?: boolean;
   topActions?: DevToolTopAction[];
+  renderSession?: (session: StoredSession) => ReactNode;
   children: (args: DevToolShellRenderArgs) => ReactNode;
 }
 
@@ -60,6 +61,7 @@ const DevTool = ({
   onNewSession,
   beta,
   topActions,
+  renderSession,
 }: DevToolProps) => {
   const isShell = typeof children === "function";
 
@@ -92,6 +94,7 @@ const DevTool = ({
       onNewSession={onNewSession}
       beta={beta}
       topActions={topActions}
+      renderSession={renderSession}
     >
       {children}
     </DevToolShell>
@@ -111,6 +114,7 @@ const DevToolShell = ({
   onNewSession,
   beta,
   topActions,
+  renderSession,
   children,
 }: DevToolShellProps) => {
   const currentSessionId = sessionId || selectedConversationId;
@@ -202,6 +206,7 @@ const DevToolShell = ({
         selectedConversationId={selectedConversationId}
         messagesEndRef={messagesEndRef}
         highlightedMessage={highlightedMessage}
+        renderSession={renderSession}
       />
 
       {chat}

@@ -19,6 +19,7 @@ const SessionPopover = ({
   selectedConversationId,
   messagesEndRef,
   highlightedMessage,
+  renderSession,
 }: {
   anchorEl: HTMLElement | null;
   onClose: () => void;
@@ -29,6 +30,7 @@ const SessionPopover = ({
   selectedConversationId?: string;
   messagesEndRef: React.RefObject<HTMLDivElement>;
   highlightedMessage: React.RefObject<HTMLDivElement>;
+  renderSession?: (session: StoredSession) => React.ReactNode;
 }) => {
   const session = sessions.find((s) => s.sessionId === activeSessionId);
   const isCurrent = activeSessionId === currentSessionId;
@@ -182,18 +184,20 @@ const SessionPopover = ({
       <Box sx={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
         {session ? (
           <Scrollbar sx={{ height: "100%", px: 1.5, py: 1 }}>
-            <MessageList
-              messages={
-                session.messages as {
-                  id: string;
-                  content: string;
-                  role: string;
-                }[]
-              }
-              selectedId={isCurrent ? selectedConversationId : undefined}
-              messagesEndRef={messagesEndRef}
-              highlightedMessage={highlightedMessage}
-            />
+            {renderSession?.(session) ?? (
+              <MessageList
+                messages={
+                  session.messages as {
+                    id: string;
+                    content: string;
+                    role: string;
+                  }[]
+                }
+                selectedId={isCurrent ? selectedConversationId : undefined}
+                messagesEndRef={messagesEndRef}
+                highlightedMessage={highlightedMessage}
+              />
+            )}
             <div ref={popoverEndRef} />
           </Scrollbar>
         ) : (

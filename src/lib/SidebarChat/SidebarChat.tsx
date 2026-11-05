@@ -1,4 +1,10 @@
 import ChatDrawer from "./ChatDrawer";
+import type {
+  ChatInputField,
+  ChatInputMode,
+  ChatInputSubmit,
+  ChatJsonSubmit,
+} from "./types";
 import MessageSfx from "./messageSFX.mp3";
 import type { Preset } from "../PresetSelector/PresetSelector";
 import { useEvent } from "@nucleoidai/react-event";
@@ -24,6 +30,13 @@ const SidebarChat = ({
   onToolDecision,
   embedded,
   footer,
+  inputFields,
+  onSubmitForm,
+  jsonTemplate,
+  onSubmitJson,
+  inputModes,
+  presetRequired,
+  panel,
 }: {
   selectedConversationId?: string;
   sessionId?: string;
@@ -42,6 +55,13 @@ const SidebarChat = ({
   onToolDecision?: (toolCallId: string, decision: ToolDecision) => void;
   embedded?: boolean;
   footer?: React.ReactNode;
+  inputFields?: ChatInputField[];
+  onSubmitForm?: ChatInputSubmit;
+  jsonTemplate?: string;
+  onSubmitJson?: ChatJsonSubmit;
+  inputModes?: ChatInputMode[];
+  presetRequired?: boolean;
+  panel?: React.ReactNode;
 }) => {
   const [aiResponded] = useEvent<{ createdAt?: number } | null>(
     "AI_RESPONDED",
@@ -131,6 +151,13 @@ const SidebarChat = ({
       onToolDecision={onToolDecision}
       embedded={embedded}
       footer={footer}
+      inputFields={inputFields}
+      onSubmitForm={onSubmitForm}
+      jsonTemplate={jsonTemplate}
+      onSubmitJson={onSubmitJson}
+      inputModes={inputModes}
+      presetRequired={presetRequired}
+      panel={panel}
     />
   );
 };
