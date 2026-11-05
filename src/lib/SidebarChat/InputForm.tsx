@@ -1,4 +1,5 @@
 import Iconify from "../Iconify";
+import type { Theme } from "@mui/material/styles";
 import { alpha } from "@mui/material/styles";
 
 import {
@@ -135,7 +136,7 @@ const InputForm = ({
 
   const fieldSx = {
     "& .MuiOutlinedInput-root": {
-      bgcolor: (theme: any) => alpha(theme.palette.background.paper, 0.8),
+      bgcolor: (theme: Theme) => alpha(theme.palette.background.paper, 0.8),
     },
   };
 
