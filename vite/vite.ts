@@ -1,6 +1,7 @@
 import { ConfigSchema } from "../src/config/schemas";
 import checker from "vite-plugin-checker";
 import fs from "fs";
+import { layers } from "./layers";
 import path from "path";
 import { pathToFileURL } from "url";
 import react from "@vitejs/plugin-react";
@@ -32,12 +33,17 @@ function readAppVersion() {
   }
 }
 
-async function vite() {
+type ViteOptions = {
+  layers?: string[];
+};
+
+async function vite({ layers: names = [] }: ViteOptions = {}) {
   const base = value.base;
   const api = value.api;
 
   return {
     plugins: [
+      ...(names.length ? [layers({ layers: names })] : []),
       react(),
       svgr(),
       checker({
@@ -115,4 +121,6 @@ async function vite() {
   };
 }
 
-export { vite };
+export { layers, vite };
+export type { LayersOptions } from "./layers";
+export type { ViteOptions };
