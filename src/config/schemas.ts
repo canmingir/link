@@ -12,6 +12,14 @@ export const ConfigSchema = Joi.object({
   }).optional(),
   credentials: Joi.object({
     provider: Joi.string().valid("DEMO", "COGNITO").required(),
+    username: Joi.string().when("provider", {
+      is: "DEMO",
+      then: Joi.optional().default("admin"),
+    }),
+    password: Joi.string().when("provider", {
+      is: "DEMO",
+      then: Joi.optional().default("admin"),
+    }),
     region: Joi.string().optional(),
     userPoolId: Joi.string().optional(),
     clientId: Joi.string().optional(),

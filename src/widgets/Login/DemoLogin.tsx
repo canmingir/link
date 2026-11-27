@@ -3,14 +3,11 @@ import { storage } from "@nucleoidjs/webstorage";
 import { useNavigate } from "react-router-dom";
 
 import {
-  Box,
   Button,
   IconButton,
   InputAdornment,
   Stack,
   TextField,
-  Typography,
-  alpha,
 } from "@mui/material";
 import React, { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -119,26 +116,6 @@ export default function DemoLogin() {
       >
         Sign in &rarr;
       </Button>
-
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Typography variant="caption" sx={{ color: "text.disabled" }}>
-          Demo credentials:&nbsp;
-          <Box
-            component="span"
-            sx={{
-              color: "text.secondary",
-              fontWeight: 600,
-              fontFamily: "monospace",
-              px: 0.5,
-              py: 0.25,
-              borderRadius: 0.5,
-              bgcolor: (theme) => alpha(theme.palette.grey[500], 0.1),
-            }}
-          >
-            admin / admin
-          </Box>
-        </Typography>
-      </Box>
     </Stack>
   );
 }

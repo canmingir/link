@@ -42,7 +42,7 @@ function processQueue(error: unknown, token: string | null = null) {
 }
 
 async function doRefresh() {
-  const { appId } = config();
+  const { appId, credentials } = config();
   const projectId = storage.get("link", "projectid");
   const identityProvider = storage.get("link", "identityprovider");
 
@@ -52,8 +52,8 @@ async function doRefresh() {
     projectId,
     identityProvider,
     ...(identityProvider === "DEMO" && {
-      username: "admin",
-      password: "admin",
+      username: credentials?.username,
+      password: credentials?.password,
     }),
   });
 

@@ -12,6 +12,8 @@ export type MainConfig = {
   };
   credentials?: {
     provider: "DEMO" | "COGNITO";
+    username?: string;
+    password?: string;
     region?: string;
     userPoolId?: string;
     clientId?: string;
