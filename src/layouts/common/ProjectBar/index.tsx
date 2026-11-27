@@ -34,7 +34,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 
 function ProjectBar() {
   const label = config().template?.projectBar?.label;
-  const { appId } = config();
+  const { appId, credentials } = config();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down(435));
   const { loading, projects, getProjects } = useProjects();
@@ -123,8 +123,8 @@ function ProjectBar() {
     };
 
     if (identityProvider === "DEMO") {
-      payload.username = "admin";
-      payload.password = "admin";
+      payload.username = credentials?.username;
+      payload.password = credentials?.password;
     } else {
       payload.refreshToken = storage.get("link", "refreshtoken");
     }
