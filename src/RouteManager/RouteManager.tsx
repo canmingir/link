@@ -1,7 +1,6 @@
 import Callback from "../pages/Callback";
 import CompactLayout from "../layouts/CompactLayout";
 import ConfigError from "../pages/ConfigError";
-import { HelmetProvider } from "react-helmet-async";
 import LoginPage from "../pages/LoginPage";
 import NotFoundPage from "../pages/404";
 import classicLoginLayout from "../layouts/auth/classic";
@@ -10,6 +9,7 @@ import modernLoginLayout from "../layouts/auth/modern";
 import specialLoginLayout from "../layouts/auth/special";
 
 import type { ComponentType, ReactElement, ReactNode } from "react";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Route, Routes } from "react-router-dom";
 
 const loginLayouts: Record<
@@ -39,6 +39,7 @@ export interface AppRoute {
 }
 
 export default function RouteManager({ routes }: { routes: AppRoute[] }) {
+  const { name } = config();
   const loginConfig = config().template?.login;
 
   const isLoginConfigured = config().project && loginConfig;
@@ -48,6 +49,10 @@ export default function RouteManager({ routes }: { routes: AppRoute[] }) {
 
   return (
     <HelmetProvider>
+      <Helmet>
+        {name ? <title>{name}</title> : null}
+        {loginConfig?.icon ? <link rel="icon" href={loginConfig.icon} /> : null}
+      </Helmet>
       <Routes>
         {isLoginConfigured && (
           <>
